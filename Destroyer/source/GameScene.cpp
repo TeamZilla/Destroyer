@@ -1,6 +1,4 @@
 #include <GameScene.hpp>
-
-#include <UtH/UtHEngine.hpp> 
 //When you want debug, use WriteLog(...), works like printf.
 
 using namespace uth;
@@ -13,6 +11,7 @@ bool GameScene::Init()
  	m_shader.LoadShader("Shaders/Default.vert", "Shaders/Default.frag");
 	m_shader.Use();
 	uthEngine.GetWindow().SetShader(&m_shader);
+	m_heli = new Heli(pmath::Vec2f(0, 0));
 
 	uthEngine.GetWindow().GetCamera().SetPosition(uthEngine.GetWindow().GetSize() / 2);
 	//TODO: Initialisation functions
@@ -27,6 +26,7 @@ bool GameScene::Update(float dt)
 	//TODO: Update functions
 	m_bgManager.Update(dt);
 	m_player.Update(dt);
+	m_heli->Update(dt);
 
 	if (uthInput.Keyboard.IsKeyDown(Keyboard::Space) || uthInput.Common.Event() == uth::InputEvent::TAP)
 	{
@@ -53,7 +53,7 @@ bool GameScene::Draw()
 	m_bgManager.DrawBack();
 
 	m_player.Draw();
-
+	m_heli->Draw();
 	m_bgManager.DrawFront();
 	return true; // Drawing succeeded.
 }
