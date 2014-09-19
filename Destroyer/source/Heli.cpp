@@ -42,9 +42,8 @@ void Heli::Update(float dt)
 	{
 		SetNextPos(uthInput.Common.Position());
 
-		std::cout << "(" << m_nextPos.x << " , " << m_nextPos.y << ")" << std::endl;
-		std::cout << "LinearSpeed: "<<m_linearSpeed << std::endl;
-		std::cout << "(" << m_moveDir.x << " , " << m_moveDir.y << ")" << std::endl;
+		std::cout << "(" << m_curPos.x << " , " << m_curPos.y << ")" << std::endl;
+
 	}
 }
 
@@ -73,48 +72,35 @@ void Heli::Navigate(pmath::Vec2f targ)
 
 void Heli::LinearMove()
 {
-	if (isMoving)
-	{ 
-	m_curPos = m_prevPos + m_acceleration * m_linearSpeed * m_moveDir;
+
+	m_acceleration = std::pow(((m_nextPos - m_curPos).length() / m_pathLenght - 0.5), 2);
+	m_curPos += m_acceleration * m_linearSpeed * m_moveDir;
+	std::cout << "Acceleration: " << m_acceleration << std::endl;
+
+	if (std::abs((m_curPos - m_nextPos).length()) < 2)
+	{
+		m_curPos = m_nextPos;
+		isMoving = 0;
 	}
+
 }
 
 
 void Heli::Pilot()
 {
-	Navigate(m_nextPos);
-
-	if (m_pathLenght != 0)
+	if (!isMoving)
 	{
-		m_acceleration = std::powf(((m_nextPos - m_curPos).length() / m_pathLenght - 0.5), 2);
-		isMoving = 1;
+		Navigate(m_nextPos);
 	}
-	else
+	if (isMoving)
 	{
-		m_acceleration = 0;
-		isMoving = 0;
+		LinearMove();
 	}
-
 	Hover();
 
 	// direction change
 	transform.SetScale((m_shootingTarget.x - transform.GetPosition().x) / std::abs(m_shootingTarget.x - transform.GetPosition().x), 1);
 
-
-	// linear move
-	if (std::abs((m_curPos - m_nextPos).length()) > 1 && isMoving) // checks if transport is needed. 4 pixel accuracy.
-	{
-		if (std::abs((m_curPos - m_nextPos).length()) <= 1) // aprosimates position to exact place.
-		{
-			m_curPos = m_nextPos;
-			isMoving = 0;
-		}
-
-		else
-		{
-			LinearMove();
-		}
-	}
 
 	transform.SetPosition(m_curPos + m_hoverDisplacement); // sums up hover origin and hover displacement. Puts the object into the point.
 
@@ -138,6 +124,7 @@ void Heli::Draw()
 void Heli::SetNextPos(pmath::Vec2f targ)
 {
 	m_nextPos = targ;
+	isMoving = 0;
 }
 
 void Heli::SetShootTarget(pmath::Vec2f targ)
