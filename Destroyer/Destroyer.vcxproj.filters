@@ -21,13 +21,19 @@
     <ClCompile Include="source\GameScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\Player.cpp">
+    <ClCompile Include="Heli.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Shock.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\BackgroundManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\Background.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\BackgroundManager.cpp">
+    <ClCompile Include="source\Player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -38,7 +44,10 @@
     <ClInclude Include="include\GameScene.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Player.hpp">
+    <ClInclude Include="Shock.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Heli.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Background.hpp">
