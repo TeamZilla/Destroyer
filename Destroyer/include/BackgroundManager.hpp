@@ -4,6 +4,7 @@
 
 #include <UtH/UtHEngine.hpp>
 #include <Background.hpp>
+#include <vector>
 
 class BackgroundManager
 {
@@ -24,8 +25,10 @@ private:
 	const float c_frontSpeedM = 300;
 	const float c_mountainSpeedM = 30;
 	bool  m_isTurned, m_isTurning;
-	void GoLeft(float dt);
+	void Movement(float dt);
 	void GoRight(float dt);
+
+	std::vector<Background*> m_bgs;
 
 public:
 	BackgroundManager(float bY, float fY, float mY);
@@ -34,7 +37,6 @@ public:
 	void Update(float);
 	void DrawFront();
 	void DrawBack();
-	void Turning(float);
 	void ChangeDirection();
 	void CheckSpeed(float);
 };

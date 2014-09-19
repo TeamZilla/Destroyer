@@ -20,29 +20,20 @@ BackgroundManager::BackgroundManager(float bY, float fY, float mY)
 	auto frontTex = uthRS.LoadTexture("backgrounds/lamps.png");
 	auto mountTex = uthRS.LoadTexture("backgrounds/mountain.png");
 
-	//Put city background in place
-	m_back_1 = new Background(backTex);
-	m_back_1->transform.SetPosition(
-		-uthEngine.GetWindow().GetSize().x / 2, m_backSpawnY);
-	m_back_2 = new Background(backTex);
-	m_back_2->transform.SetPosition(
-		m_back_1->transform.GetPosition().x + m_back_1->transform.GetSize().x, m_backSpawnY);
+	m_bgs.push_back(new Background(backTex));
+	m_bgs.push_back(new Background(backTex));
+	m_bgs.push_back(new Background(frontTex));
+	m_bgs.push_back(new Background(frontTex));
+	m_bgs.push_back(new Background(mountTex));
+	m_bgs.push_back(new Background(mountTex));
 
-	//Put front background in place
-	m_front_1 = new Background(frontTex);
-	m_front_1->transform.SetPosition(
-		-uthEngine.GetWindow().GetSize().x / 2, m_frontSpawnY);
-	m_front_2 = new Background(frontTex);
-	m_front_2->transform.SetPosition(
-		m_front_1->transform.GetPosition().x + m_front_1->transform.GetSize().x, m_frontSpawnY);
+	m_bgs[0]->transform.SetPosition(-uthEngine.GetWindow().GetSize().x / 2, m_backSpawnY);
+	m_bgs[1]->transform.SetPosition(m_bgs[0]->transform.GetPosition().x + m_bgs[0]->transform.GetSize().x, m_backSpawnY);
+	m_bgs[2]->transform.SetPosition(-uthEngine.GetWindow().GetSize().x / 2, m_frontSpawnY);
+	m_bgs[3]->transform.SetPosition(m_bgs[2]->transform.GetPosition().x + m_bgs[2]->transform.GetSize().x, m_frontSpawnY);
+	m_bgs[4]->transform.SetPosition(-uthEngine.GetWindow().GetSize().x / 2, m_mountainSpawnY);
+	m_bgs[5]->transform.SetPosition(m_bgs[4]->transform.GetPosition().x + m_bgs[4]->transform.GetSize().x, m_mountainSpawnY);
 
-	//Put mountain background in place
-	m_mountain_1 = new Background(mountTex);
-	m_mountain_1->transform.SetPosition(
-		-uthEngine.GetWindow().GetSize().x / 2, m_mountainSpawnY);
-	m_mountain_2 = new Background(mountTex);
-	m_mountain_2->transform.SetPosition(
-		m_mountain_1->transform.GetPosition().x + m_mountain_1->transform.GetSize().x, m_mountainSpawnY);
 }
 void BackgroundManager::Update(float dt)
 {
@@ -50,134 +41,87 @@ void BackgroundManager::Update(float dt)
 	{
 		m_isTurned = !m_isTurned;
 	}
-	GoLeft(dt);
+	Movement(dt);
 }
-void BackgroundManager::GoLeft(float dt)
+void BackgroundManager::Movement(float dt)
 {
-	// Mountain movement
+	// Set speed relevant to direction where we are going 
 	if (m_isTurned)
+	{
 		m_mountainSpeed = -(c_mountainSpeedM + m_playerSpeed)*dt;
-	else
-		m_mountainSpeed = (c_mountainSpeedM + m_playerSpeed)*dt;
-
-	m_mountain_1->transform.SetPosition(
-		m_mountain_1->transform.GetPosition().x + m_mountainSpeed, m_mountainSpawnY);
-	m_mountain_2->transform.SetPosition(
-		m_mountain_2->transform.GetPosition().x + m_mountainSpeed, m_mountainSpawnY);
-	// Back city movement
-	if (m_isTurned)
 		m_backSpeed = -(c_backSpeedM + m_playerSpeed)*dt;
-	else
-		m_backSpeed = (c_backSpeedM + m_playerSpeed)*dt;
-	m_back_1->transform.SetPosition(
-		m_back_1->transform.GetPosition().x + m_backSpeed, m_backSpawnY);
-	m_back_2->transform.SetPosition(
-		m_back_2->transform.GetPosition().x + m_backSpeed, m_backSpawnY);
-	// Front city movement
-	if (m_isTurned)
 		m_frontSpeed = -(c_frontSpeedM + m_playerSpeed)*dt;
+	}
 	else
+	{
+		m_mountainSpeed = (c_mountainSpeedM + m_playerSpeed)*dt;
+		m_backSpeed = (c_backSpeedM + m_playerSpeed)*dt;
 		m_frontSpeed = (c_frontSpeedM + m_playerSpeed)*dt;
-	m_front_1->transform.SetPosition(
-		m_front_1->transform.GetPosition().x + m_frontSpeed, m_frontSpawnY);
-	m_front_2->transform.SetPosition(
-		m_front_2->transform.GetPosition().x + m_frontSpeed, m_frontSpawnY);
-
-	auto cameraLeftBound = uthEngine.GetWindow().GetCamera().GetPosition().x - uthEngine.GetWindow().GetSize().x / 2;
+	}
+	// Make backgrounds move with given speed
+	m_bgs[0]->transform.SetPosition(m_bgs[0]->transform.GetPosition().x + m_backSpeed, m_backSpawnY);
+	m_bgs[1]->transform.SetPosition(m_bgs[1]->transform.GetPosition().x + m_backSpeed, m_backSpawnY);
+	m_bgs[2]->transform.SetPosition(m_bgs[2]->transform.GetPosition().x + m_frontSpeed, m_frontSpawnY);
+	m_bgs[3]->transform.SetPosition(m_bgs[3]->transform.GetPosition().x + m_frontSpeed, m_frontSpawnY);
+	m_bgs[4]->transform.SetPosition(m_bgs[4]->transform.GetPosition().x + m_mountainSpeed, m_mountainSpawnY);
+	m_bgs[5]->transform.SetPosition(m_bgs[5]->transform.GetPosition().x + m_mountainSpeed, m_mountainSpawnY);
+	// Set screen bounds
+	auto cameraLeftBound  = uthEngine.GetWindow().GetCamera().GetPosition().x - uthEngine.GetWindow().GetSize().x / 2;
 	auto cameraRightBound = uthEngine.GetWindow().GetCamera().GetPosition().x + uthEngine.GetWindow().GetSize().x / 2;
-	if (m_isTurned)
-		m_xBound = cameraLeftBound;
-	else
-		m_xBound = cameraRightBound;
-
-	auto& M1T = m_mountain_1->transform;  auto& B1T = m_back_1->transform;  auto& F1T = m_front_1->transform;
-	auto& M2T = m_mountain_2->transform;  auto& B2T = m_back_2->transform;  auto& F2T = m_front_2->transform;
-	// Mountain looping method
-	if (m_isTurned)
+	// Set references to variables for easier use
+	auto& M1T = m_bgs[4]->transform;  auto& B1T = m_bgs[2]->transform;  auto& F1T = m_bgs[0]->transform;
+	auto& M2T = m_bgs[5]->transform;  auto& B2T = m_bgs[3]->transform;  auto& F2T = m_bgs[1]->transform;
+	// Looping method
+	for (int i = 0; i < m_bgs.size(); ++i)
 	{
-		if (M1T.GetPosition().x <= m_xBound - M1T.GetSize().x)
+		if (m_isTurned) // Is player going right
 		{
-			M1T.SetPosition(M2T.GetPosition().x + M2T.GetSize().x, m_mountainSpawnY);
+			m_xBound = cameraLeftBound;
+			if ((i % 2) == 0)
+			{
+				auto& A = m_bgs[i]->transform;
+				auto& B = m_bgs[i + 1]->transform;
+				if (A.GetPosition().x <= m_xBound - A.GetSize().x)
+				{
+					A.SetPosition(B.GetPosition().x + B.GetSize().x, m_mountainSpawnY);
+				}
+				if (B.GetPosition().x <= m_xBound - B.GetSize().x)
+				{
+					B.SetPosition(A.GetPosition().x + A.GetSize().x, m_mountainSpawnY);
+				}
+			}
 		}
-		if (M2T.GetPosition().x <= m_xBound - M2T.GetSize().x)
+		else // Is player going left
 		{
-			M2T.SetPosition(M1T.GetPosition().x + M1T.GetSize().x, m_mountainSpawnY);
+			m_xBound = cameraRightBound;
+			if ((i % 2) == 0)
+			{
+				auto& A = m_bgs[i]->transform;
+				auto& B = m_bgs[i + 1]->transform;
+				if (A.GetPosition().x >= m_xBound)
+				{
+					A.SetPosition(B.GetPosition().x - B.GetSize().x, m_mountainSpawnY);
+				}
+				if (B.GetPosition().x >= m_xBound)
+				{
+					B.SetPosition(A.GetPosition().x - A.GetSize().x, m_mountainSpawnY);
+				}
+			}
+				
 		}
 	}
-	else
-	{
-		if (M1T.GetPosition().x >= m_xBound)
-		{
-			M1T.SetPosition(M2T.GetPosition().x - M2T.GetSize().x, m_mountainSpawnY);
-		}
-		if (M2T.GetPosition().x >= m_xBound)
-		{
-			M2T.SetPosition(M1T.GetPosition().x - M1T.GetSize().x, m_mountainSpawnY);
-		}
-	}
-	// Front city looping method
-	if (m_isTurned)
-	{
-		if (F1T.GetPosition().x <= m_xBound - F1T.GetSize().x)
-		{
-			F1T.SetPosition(F2T.GetPosition().x + F2T.GetSize().x, m_frontSpawnY);
-		}
-		if (F2T.GetPosition().x <= m_xBound - F2T.GetSize().x)
-		{
-			F2T.SetPosition(F1T.GetPosition().x + F1T.GetSize().x, m_frontSpawnY);
-		}
-	}
-	else
-	{
-		if (F1T.GetPosition().x >= m_xBound)
-		{
-			F1T.SetPosition(F2T.GetPosition().x - F2T.GetSize().x, m_frontSpawnY);
-		}
-		if (F2T.GetPosition().x >= m_xBound)
-		{
-			F2T.SetPosition(F1T.GetPosition().x - F1T.GetSize().x, m_frontSpawnY);
-		}
-	}
-	// Back city looping method
-	if (m_isTurned)
-	{
-		if (B1T.GetPosition().x <= m_xBound - B1T.GetSize().x)
-		{
-			B1T.SetPosition(B2T.GetPosition().x + B2T.GetSize().x, m_backSpawnY);
-		}
-		if (B2T.GetPosition().x <= m_xBound - B2T.GetSize().x)
-		{
-			B2T.SetPosition(B1T.GetPosition().x + B1T.GetSize().x, m_backSpawnY);
-		}
-	}
-	else
-	{
-		if (B1T.GetPosition().x >= m_xBound)
-		{
-			B1T.SetPosition(B2T.GetPosition().x - B2T.GetSize().x, m_frontSpawnY);
-		}
-		if (B2T.GetPosition().x >= m_xBound)
-		{
-			B2T.SetPosition(B1T.GetPosition().x - B1T.GetSize().x, m_frontSpawnY);
-		}
-	}
-
-}
-void BackgroundManager::Turning(float dt)
-{
-	
 }
 void BackgroundManager::DrawFront()
 {
-	m_front_1->Draw();
-	m_front_2->Draw();
+	m_bgs[2]->Draw();
+	m_bgs[3]->Draw();
 }
 void BackgroundManager::DrawBack()
 {
-	m_mountain_1->Draw();
-	m_mountain_2->Draw();
-	m_back_1->Draw();
-	m_back_2->Draw();
+	m_bgs[4]->Draw();
+	m_bgs[5]->Draw();
+	m_bgs[0]->Draw();
+	m_bgs[1]->Draw();
 }
 void BackgroundManager::ChangeDirection()
 {
