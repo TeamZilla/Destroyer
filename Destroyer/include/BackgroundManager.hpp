@@ -18,7 +18,7 @@ private:
 	Background* m_mountain_1;
 	Background* m_mountain_2;
 
-	float m_backSpawnY, m_frontSpawnY, m_mountainSpawnY;
+	float m_backSpawnY, m_frontSpawnY, m_mountainSpawnY, m_xBound;
 	float m_backSpeed, m_frontSpeed, m_mountainSpeed, m_playerSpeed;
 	const float c_backSpeedM = 150;
 	const float c_frontSpeedM = 300;
@@ -35,7 +35,7 @@ public:
 	void DrawFront();
 	void DrawBack();
 	void Turning(float);
-	void CheckIfTurned(bool);
+	void ChangeDirection();
 	void CheckSpeed(float);
 };
 
