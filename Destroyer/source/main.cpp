@@ -13,8 +13,8 @@ int main()
 
 	while (uthEngine.Running())
 	{
-		uthEngine.Update();
 
+		uthEngine.Update();
 		uthEngine.Draw();
 	}
 

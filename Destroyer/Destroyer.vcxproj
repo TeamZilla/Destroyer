@@ -84,21 +84,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Heli.cpp" />
-    <ClCompile Include="Shock.cpp" />
     <ClCompile Include="source\Background.cpp" />
     <ClCompile Include="source\BackgroundManager.cpp" />
     <ClCompile Include="source\GameScene.cpp" />
+    <ClCompile Include="source\Heli.cpp" />
     <ClCompile Include="source\main.cpp" />
     <ClCompile Include="source\Player.cpp" />
+    <ClCompile Include="source\Shock.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Heli.hpp" />
     <ClInclude Include="include\Background.hpp" />
     <ClInclude Include="include\BackgroundManager.hpp" />
     <ClInclude Include="include\GameScene.hpp" />
+    <ClInclude Include="include\Heli.hpp" />
     <ClInclude Include="include\Scenes.hpp" />
-    <ClInclude Include="Shock.hpp" />
+    <ClInclude Include="include\Shock.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
