@@ -97,6 +97,7 @@
     <ClInclude Include="include\BackgroundManager.hpp" />
     <ClInclude Include="include\GameScene.hpp" />
     <ClInclude Include="include\Heli.hpp" />
+    <ClInclude Include="include\Player.hpp" />
     <ClInclude Include="include\Scenes.hpp" />
     <ClInclude Include="include\Shock.hpp" />
   </ItemGroup>

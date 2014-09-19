@@ -15,10 +15,13 @@ Player::Player()
 	m_speed = 0;
 	m_isGoingRight = true;
 }
-
 void Player::Update(float dt)
 {
 	GameObject::Update(dt);
+}
+void Player::ChangeDirection()
+{
+	transform.SetScale(transform.GetScale().x*-1, transform.GetScale().y);
 }
 void Player::Draw()
 {

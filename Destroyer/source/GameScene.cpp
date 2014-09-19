@@ -28,6 +28,20 @@ bool GameScene::Update(float dt)
 	m_bgManager.Update(dt);
 	m_player.Update(dt);
 
+	if (uthInput.Keyboard.IsKeyDown(Keyboard::Space) || uthInput.Common.Event() == uth::InputEvent::TAP)
+	{
+		m_bgManager.ChangeDirection();
+		m_player.ChangeDirection();
+	}
+	if (uthInput.Keyboard.IsKeyDown(Keyboard::Up))
+	{
+
+	}
+	if (uthInput.Keyboard.IsKeyDown(Keyboard::Down))
+	{
+
+	}
+
 	return true; // Update succeeded.
 }
 

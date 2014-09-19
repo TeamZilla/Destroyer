@@ -37,10 +37,6 @@ BackgroundManager::BackgroundManager(float bY, float fY, float mY)
 }
 void BackgroundManager::Update(float dt)
 {
-	if (uthInput.Keyboard.IsKeyDown(Keyboard::Space) || uthInput.Common.Event() == uth::InputEvent::TAP)
-	{
-		m_isTurned = !m_isTurned;
-	}
 	Movement(dt);
 }
 void BackgroundManager::Movement(float dt)

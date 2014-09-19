@@ -17,7 +17,7 @@ public:
 
 	void Update(float);
 	void Draw();
-
+	void ChangeDirection();
 	float getSpeed();
 	bool CheckIfGoingRight();
 };
