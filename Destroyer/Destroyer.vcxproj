@@ -84,11 +84,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="source\Background.cpp" />
+    <ClCompile Include="source\BackgroundManager.cpp" />
     <ClCompile Include="source\GameScene.cpp" />
     <ClCompile Include="source\main.cpp" />
+    <ClCompile Include="source\Player.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\Background.hpp" />
+    <ClInclude Include="include\BackgroundManager.hpp" />
     <ClInclude Include="include\GameScene.hpp" />
+    <ClInclude Include="include\Player.hpp" />
     <ClInclude Include="include\Scenes.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
