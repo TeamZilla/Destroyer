@@ -12,8 +12,7 @@ bool GameScene::Init()
 	m_shader.Use();
 	uthEngine.GetWindow().SetShader(&m_shader);
 	m_heli = new Heli(pmath::Vec2f(0, 0));
-
-	uthEngine.GetWindow().GetCamera().SetPosition(uthEngine.GetWindow().GetSize() / 2);
+	m_bgManager.SetCameraStartPos(uthEngine.GetWindow().GetSize() / 2);
 	//TODO: Initialisation functions
 	
 	return true;
