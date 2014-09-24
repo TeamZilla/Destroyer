@@ -2,6 +2,8 @@
 #ifndef Heli_HPP
 #define Heli_HPP
 
+
+#include <Missile.hpp>
 #include <UtH/UtHEngine.hpp>
 
 class Heli : public uth::GameObject
@@ -52,16 +54,25 @@ private:
 	float m_hoverRatio;
 
 
-	// Stutterin
-	void Stutter();
 
 	//shooting
 	bool isRight;
 	bool isShooting;
+	bool isCool;
 	float m_missileCooldownTimer;
 	float m_missileCD_min;
 	float m_missileCD_max;
 
+	void m_shoot();
+	void m_launch();
+	void burst();
+	int m_missileClip;
+	float m_missileCount;
+	float m_missileRegenTimer;
+	float m_missileRegenTime;
+	float m_shootDelay;
+	float burstTimer;
+	Missile *m_missile;
 	pmath::Vec2f m_shootingTarget;
 
 

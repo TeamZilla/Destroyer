@@ -90,6 +90,7 @@
     <ClCompile Include="source\Health.cpp" />
     <ClCompile Include="source\Heli.cpp" />
     <ClCompile Include="source\main.cpp" />
+    <ClCompile Include="source\Missile.cpp" />
     <ClCompile Include="source\Player.cpp" />
     <ClCompile Include="source\Shock.cpp" />
   </ItemGroup>
@@ -99,6 +100,7 @@
     <ClInclude Include="include\GameScene.hpp" />
     <ClInclude Include="include\Health.hpp" />
     <ClInclude Include="include\Heli.hpp" />
+    <ClInclude Include="include\Missile.hpp" />
     <ClInclude Include="include\Player.hpp" />
     <ClInclude Include="include\Scenes.hpp" />
     <ClInclude Include="include\Shock.hpp" />

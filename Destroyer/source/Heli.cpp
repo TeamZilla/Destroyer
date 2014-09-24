@@ -1,4 +1,5 @@
 #include "Heli.hpp"
+#include "Missile.hpp"
 using namespace uth;
 
 Heli::Heli(pmath::Vec2f givenPos)
@@ -23,6 +24,14 @@ Heli::Heli(pmath::Vec2f givenPos)
 	m_acceleration = 0;
 	m_pathLenght = 0;
 	m_shootingTarget = pmath::Vec2f(500,0);
+	m_shootDelay = 1;
+	burstTimer = 0;
+	m_missileClip = 6;
+	m_missileClip = m_missileCount;
+	m_shootingTarget = pmath::Vec2f(600, -100);
+
+	m_missileRegenTimer = 0;
+	m_missileRegenTime = 3;
 }
 
 Heli::Heli()
@@ -45,6 +54,7 @@ void Heli::Update(float dt)
 		//std::cout << "(" << m_curPos.x << " , " << m_curPos.y << ")" << std::endl;
 
 	}
+	m_missile->Update(m_dt);
 }
 
 void Heli::Hover()
@@ -73,14 +83,14 @@ void Heli::Navigate(pmath::Vec2f targ)
 void Heli::LinearMove()
 {
 
-	m_acceleration = std::pow(((m_nextPos - m_curPos).length() / m_pathLenght - 0.5), 2);
+	m_acceleration = std::pow(((m_nextPos - m_curPos).length() / m_pathLenght ), 2); // <<<< make better acceleration function!
 	m_curPos += m_acceleration * m_linearSpeed * m_moveDir;
-	//std::cout << "Acceleration: " << m_acceleration << std::endl;
 
 	if (std::abs((m_curPos - m_nextPos).length()) < 2)
 	{
 		m_curPos = m_nextPos;
 		isMoving = 0;
+		m_acceleration = 0;
 	}
 
 }
@@ -99,20 +109,16 @@ void Heli::Pilot()
 	Hover();
 
 	// direction change
-	transform.SetScale((m_shootingTarget.x - transform.GetPosition().x) / std::abs(m_shootingTarget.x - transform.GetPosition().x), 1);
+	transform.SetScale((-m_shootingTarget.x + transform.GetPosition().x) / std::abs(m_shootingTarget.x - transform.GetPosition().x), 1);
 
 
 	transform.SetPosition(m_curPos + m_hoverDisplacement); // sums up hover origin and hover displacement. Puts the object into the point.
 
 
 	// SHOOTING:
+	m_shoot();
 
-	if (isShooting == 1 && m_missileCooldownTimer <= 0)
-	{
-		////// call missile spawner here
-		Randomizer::GetFloat(m_missileCD_min, m_missileCD_max);
-	}
-	--m_missileCooldownTimer;
+
 }
 
 void Heli::Draw()
@@ -150,4 +156,55 @@ void Heli::SetLinearSpeed(float linear)
 void Heli::SetHoverSpeed(float hover)
 {
 	m_hoverSpeed = hover;
+}
+
+void Heli::m_shoot()
+{
+	std::cout << "               Shoot" << std::endl;
+	if (m_missileCount >= m_missileClip)
+	{
+		isShooting = 1;
+		burst();
+	}
+
+
+	if (m_missileCount < m_missileClip)
+	{
+		if (m_missileRegenTimer >= m_missileRegenTime)
+		{
+			++m_missileCount;
+			m_missileCooldownTimer = 0;
+		}
+		m_missileCooldownTimer += m_dt;
+	}
+
+}
+
+void Heli::m_launch()
+{
+	m_missile = new Missile(transform.GetPosition(), m_shootingTarget, m_dt);
+	std::cout << "       Launch" << std::endl;
+}
+
+void Heli::burst()
+{
+	std::cout << "burst" << std::endl;
+	if (burstTimer <= 0)
+	{
+		isCool = 1;
+		burstTimer = m_shootDelay;
+	}
+
+	if (isCool && isShooting)
+	{
+		m_launch();
+		--m_missileClip;
+	}
+
+	if (m_missileCount == 0)
+	{
+		isShooting = 0;
+	}
+
+	burstTimer -= m_dt;
 }
