@@ -33,6 +33,7 @@ bool GameScene::Update(float dt)
 	{
 		m_bgManager.ChangeDirection();
 		m_player.ChangeDirection();
+		m_health.TakeDamage(1);
 	}
 	if (uthInput.Keyboard.IsKeyDown(Keyboard::Up))
 	{
@@ -54,9 +55,9 @@ bool GameScene::Draw()
 	m_bgManager.DrawBack();
 
 	m_player.Draw();
-	m_health.Draw();
 	m_heli->Draw();
 	m_bgManager.DrawFront();
+	m_health.Draw();
 	return true; // Drawing succeeded.
 }
 
