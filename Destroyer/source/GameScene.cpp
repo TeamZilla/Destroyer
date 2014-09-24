@@ -12,8 +12,7 @@ bool GameScene::Init()
 	m_shader.Use();
 	uthEngine.GetWindow().SetShader(&m_shader);
 	m_heli = new Heli(pmath::Vec2f(0, 0));
-
-	uthEngine.GetWindow().GetCamera().SetPosition(uthEngine.GetWindow().GetSize() / 2);
+	m_bgManager.SetCameraStartPos(uthEngine.GetWindow().GetSize() / 2);
 	//TODO: Initialisation functions
 	
 	return true;
@@ -26,7 +25,23 @@ bool GameScene::Update(float dt)
 	//TODO: Update functions
 	m_bgManager.Update(dt);
 	m_player.Update(dt);
+	m_health.Update(dt);
 	m_heli->Update(dt);
+
+	if (uthInput.Keyboard.IsKeyDown(Keyboard::Space) || uthInput.Common.Event() == uth::InputEvent::TAP)
+	{
+		m_bgManager.ChangeDirection();
+		m_player.ChangeDirection();
+		m_health.TakeDamage(1);
+	}
+	if (uthInput.Keyboard.IsKeyDown(Keyboard::Up))
+	{
+
+	}
+	if (uthInput.Keyboard.IsKeyDown(Keyboard::Down))
+	{
+
+	}
 
 	return true; // Update succeeded.
 }
@@ -41,6 +56,7 @@ bool GameScene::Draw()
 	m_player.Draw();
 	m_heli->Draw();
 	m_bgManager.DrawFront();
+	m_health.Draw();
 	return true; // Drawing succeeded.
 }
 
