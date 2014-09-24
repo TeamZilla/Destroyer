@@ -27,6 +27,7 @@ bool GameScene::Update(float dt)
 	//TODO: Update functions
 	m_bgManager.Update(dt);
 	m_player.Update(dt);
+	m_health.Update(dt);
 
 	return true; // Update succeeded.
 }
@@ -39,6 +40,7 @@ bool GameScene::Draw()
 	m_bgManager.DrawBack();
 
 	m_player.Draw();
+	m_health.Draw();
 
 	m_bgManager.DrawFront();
 	return true; // Drawing succeeded.

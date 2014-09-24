@@ -4,7 +4,9 @@
 
 #include <UtH/UtHEngine.hpp>
 #include <Player.hpp>
+#include <Health.hpp>
 #include <BackgroundManager.hpp>
+
 
 class GameScene : public uth::Scene
 {
@@ -14,6 +16,8 @@ private: // Just place everything else as private.
 
 	BackgroundManager m_bgManager;
 	Player m_player;
+	Health m_health;
+
 
 public: // Every one of these public functions are required.
 	GameScene();
