@@ -36,11 +36,11 @@ void Health::Update(float dt)
 	{
 		n = m_Mhealth - m_Chealth;
 		GetComponent<Sprite>("Sprite")->SetColor(0+n, 1-n, 0, 1);
+		transform.SetScale(m_Chealth, 1);
 
 	}
 	if(m_Chealth == 0)
 	{
-		m_Chealth = 0;
 		GetComponent<Sprite>("Sprite")->SetColor(0, 0, 1, 1);
 	}
 }
