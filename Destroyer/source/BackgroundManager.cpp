@@ -14,6 +14,10 @@ BackgroundManager::BackgroundManager(float bY, float fY, float mY)
 	m_isTurned = true;
 	m_isTurning = false;
 	m_xBound = 0;
+	m_cameraPan = 0;
+	m_cameraPanSpd = 50;
+	m_cameraPanMax = 25;
+	m_isCameraTurning = true;
 	//Set textures
 	auto backTex  = uthRS.LoadTexture("backgrounds/buildings.png");
 	auto frontTex = uthRS.LoadTexture("backgrounds/lamps.png");
@@ -42,14 +46,31 @@ void BackgroundManager::Update(float dt)
 void BackgroundManager::CameraMovement(float dt)
 {
 	m_camera = &uthEngine.GetWindow().GetCamera();
+	if (!m_isCameraTurning)
+	{
+		m_isCameraTurning = true;
+		m_cameraPan = 0;
+	}
 	//Change direction depending where player is looking
 	if (m_isTurned)
 	{
-		m_camera->SetPosition(m_cameraStartPos.x + 150, m_cameraStartPos.y);
+		m_cameraPan += m_cameraPanSpd*dt;
+		m_camera->SetPosition(m_camera->GetPosition().x + m_cameraPan, m_cameraStartPos.y);
+		if (m_camera->GetPosition().x >= (m_cameraStartPos.x + 150))
+		{
+			m_camera->SetPosition(m_cameraStartPos.x + 150, m_cameraStartPos.y);
+			m_isCameraTurning = false;
+		}
 	}
 	else
 	{
-		m_camera->SetPosition(m_cameraStartPos.x - 150, m_cameraStartPos.y);
+		m_cameraPan -= m_cameraPanSpd*dt;
+		m_camera->SetPosition(m_camera->GetPosition().x + m_cameraPan, m_cameraStartPos.y);
+		if (m_camera->GetPosition().x <= (m_cameraStartPos.x - 150))
+		{
+			m_camera->SetPosition(m_cameraStartPos.x - 150, m_cameraStartPos.y);
+			m_isCameraTurning = false;
+		}
 	}
 }
 void BackgroundManager::Movement(float dt)
