@@ -29,6 +29,8 @@ private:
 	void GoRight(float dt);
 
 	std::vector<Background*> m_bgs;
+	uth::Camera* m_camera;
+	pmath::Vec2 m_cameraStartPos;
 
 public:
 	BackgroundManager(float bY, float fY, float mY);
@@ -39,6 +41,8 @@ public:
 	void DrawBack();
 	void ChangeDirection();
 	void CheckSpeed(float);
+	void CameraMovement(float dt);
+	void SetCameraStartPos(pmath::Vec2);
 };
 
 #endif //BackgroundManager_HPP

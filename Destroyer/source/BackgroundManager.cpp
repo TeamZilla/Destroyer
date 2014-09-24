@@ -14,7 +14,6 @@ BackgroundManager::BackgroundManager(float bY, float fY, float mY)
 	m_isTurned = true;
 	m_isTurning = false;
 	m_xBound = 0;
-
 	//Set textures
 	auto backTex  = uthRS.LoadTexture("backgrounds/buildings.png");
 	auto frontTex = uthRS.LoadTexture("backgrounds/lamps.png");
@@ -37,7 +36,21 @@ BackgroundManager::BackgroundManager(float bY, float fY, float mY)
 }
 void BackgroundManager::Update(float dt)
 {
+	CameraMovement(dt);
 	Movement(dt);
+}
+void BackgroundManager::CameraMovement(float dt)
+{
+	m_camera = &uthEngine.GetWindow().GetCamera();
+	//Change direction depending where player is looking
+	if (m_isTurned)
+	{
+		m_camera->SetPosition(m_cameraStartPos.x + 150, m_cameraStartPos.y);
+	}
+	else
+	{
+		m_camera->SetPosition(m_cameraStartPos.x - 150, m_cameraStartPos.y);
+	}
 }
 void BackgroundManager::Movement(float dt)
 {
@@ -109,14 +122,14 @@ void BackgroundManager::Movement(float dt)
 }
 void BackgroundManager::DrawFront()
 {
-	m_bgs[2]->Draw();
+	m_bgs[2]->Draw();//Frontcity
 	m_bgs[3]->Draw();
 }
 void BackgroundManager::DrawBack()
 {
-	m_bgs[4]->Draw();
+	m_bgs[4]->Draw();//Mountain
 	m_bgs[5]->Draw();
-	m_bgs[0]->Draw();
+	m_bgs[0]->Draw();//Backcity
 	m_bgs[1]->Draw();
 }
 void BackgroundManager::ChangeDirection()
@@ -126,6 +139,11 @@ void BackgroundManager::ChangeDirection()
 void BackgroundManager::CheckSpeed(float speed)
 {
 	m_playerSpeed = speed;
+}
+void BackgroundManager::SetCameraStartPos(pmath::Vec2 pos)
+{
+	uthEngine.GetWindow().GetCamera().SetPosition(pos);
+	m_cameraStartPos = pos;
 }
 // Deconstructor
 BackgroundManager::~BackgroundManager()
