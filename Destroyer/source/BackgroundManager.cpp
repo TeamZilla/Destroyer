@@ -15,9 +15,9 @@ BackgroundManager::BackgroundManager(float bY, float fY, float mY)
 	m_isTurning = false;
 	m_xBound = 0;
 	m_cameraPan = 0;
-	m_cameraPanSpd = 50;
+	m_cameraPanSpd = 5;
 	m_cameraPanMax = 25;
-	m_isCameraTurning = true;
+	m_isCameraTurning = false;
 	//Set textures
 	auto backTex  = uthRS.LoadTexture("backgrounds/buildings.png");
 	auto frontTex = uthRS.LoadTexture("backgrounds/lamps.png");
@@ -46,6 +46,7 @@ void BackgroundManager::Update(float dt)
 void BackgroundManager::CameraMovement(float dt)
 {
 	m_camera = &uthEngine.GetWindow().GetCamera();
+	m_camera->SetPosition(m_cameraPan, m_cameraStartPos.y);
 	if (!m_isCameraTurning)
 	{
 		m_isCameraTurning = true;
@@ -54,22 +55,22 @@ void BackgroundManager::CameraMovement(float dt)
 	//Change direction depending where player is looking
 	if (m_isTurned)
 	{
-		m_cameraPan += m_cameraPanSpd*dt;
-		m_camera->SetPosition(m_camera->GetPosition().x + m_cameraPan, m_cameraStartPos.y);
+		m_cameraPan += dt*m_cameraPanSpd * ((m_cameraStartPos.x + 150) - m_camera->GetPosition().x);
 		if (m_camera->GetPosition().x >= (m_cameraStartPos.x + 150))
 		{
 			m_camera->SetPosition(m_cameraStartPos.x + 150, m_cameraStartPos.y);
 			m_isCameraTurning = false;
+			m_cameraPan = 0;
 		}
 	}
 	else
 	{
-		m_cameraPan -= m_cameraPanSpd*dt;
-		m_camera->SetPosition(m_camera->GetPosition().x + m_cameraPan, m_cameraStartPos.y);
+		m_cameraPan += dt*m_cameraPanSpd * ((m_cameraStartPos.x - 150) - m_camera->GetPosition().x);
 		if (m_camera->GetPosition().x <= (m_cameraStartPos.x - 150))
 		{
 			m_camera->SetPosition(m_cameraStartPos.x - 150, m_cameraStartPos.y);
 			m_isCameraTurning = false;
+			m_cameraPan = 0;
 		}
 	}
 }
@@ -163,8 +164,8 @@ void BackgroundManager::CheckSpeed(float speed)
 }
 void BackgroundManager::SetCameraStartPos(pmath::Vec2 pos)
 {
-	uthEngine.GetWindow().GetCamera().SetPosition(pos);
 	m_cameraStartPos = pos;
+	uthEngine.GetWindow().GetCamera().SetPosition(pos);
 }
 // Deconstructor
 BackgroundManager::~BackgroundManager()

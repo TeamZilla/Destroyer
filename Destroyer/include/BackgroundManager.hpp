@@ -22,10 +22,10 @@ private:
 	float m_backSpawnY, m_frontSpawnY, m_mountainSpawnY, m_xBound;
 	float m_backSpeed, m_frontSpeed, m_mountainSpeed, m_playerSpeed;
 	float m_cameraPan, m_cameraPanMax, m_cameraPanSpd, m_isCameraTurning;
-	const float c_backSpeedM = 150;
-	const float c_frontSpeedM = 300;
-	const float c_mountainSpeedM = 30;
-	bool  m_isTurned, m_isTurning;
+	const float c_backSpeedM = 100;
+	const float c_frontSpeedM = 230;
+	const float c_mountainSpeedM = 5;
+	bool  m_isTurned, m_isTurning, m_isSet;
 	void Movement(float dt);
 	void GoRight(float dt);
 

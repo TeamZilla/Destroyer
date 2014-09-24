@@ -42,7 +42,7 @@ void Heli::Update(float dt)
 	{
 		SetNextPos(uthInput.Common.Position());
 
-		std::cout << "(" << m_curPos.x << " , " << m_curPos.y << ")" << std::endl;
+		//std::cout << "(" << m_curPos.x << " , " << m_curPos.y << ")" << std::endl;
 
 	}
 }
@@ -75,7 +75,7 @@ void Heli::LinearMove()
 
 	m_acceleration = std::pow(((m_nextPos - m_curPos).length() / m_pathLenght - 0.5), 2);
 	m_curPos += m_acceleration * m_linearSpeed * m_moveDir;
-	std::cout << "Acceleration: " << m_acceleration << std::endl;
+	//std::cout << "Acceleration: " << m_acceleration << std::endl;
 
 	if (std::abs((m_curPos - m_nextPos).length()) < 2)
 	{
