@@ -8,8 +8,9 @@ class Player : public uth::GameObject
 {
 private:
 
-	float m_speed;
-	bool m_isGoingRight;
+	float m_speed, m_jumpSpeed, m_jumpHeight, m_dt;
+	bool m_isGoingRight, m_isJumping;
+	pmath::Vec2 m_tempPos;
 
 public:
 	Player();
@@ -18,6 +19,8 @@ public:
 	void Update(float);
 	void Draw();
 	void ChangeDirection();
+	void Jump();
+	void Jumping();
 	float getSpeed();
 	bool CheckIfGoingRight();
 };

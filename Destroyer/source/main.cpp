@@ -10,7 +10,9 @@ int main()
 	uthSceneM.registerNewSceneFunc(NewSceneFunc, COUNT);
 
 	uthEngine.Init();
-
+#if _DEBUG
+		uthSceneM.GoToScene(0);
+#endif
 	while (uthEngine.Running())
 	{
 
