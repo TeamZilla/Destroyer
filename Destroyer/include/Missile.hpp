@@ -22,11 +22,13 @@ private:
 	void explodeCheck();
 	float time;
 	float m_lenght;
+	float speed;
 	pmath::Vec2f startPos;
 	pmath::Vec2f targPos;
 	pmath::Vec2f m_pos;
 	pmath::Vec2f mainDir;
 	pmath::Vec2f altDir;
+	float waveFreq;
 	float pathAlteration;
 	float curveDepth;
 	float m_dt;

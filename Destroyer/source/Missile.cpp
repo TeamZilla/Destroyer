@@ -10,19 +10,33 @@ Missile::Missile(pmath::Vec2f start, pmath::Vec2f targ, float dt)
 	startPos = start;
 	targPos = targ;
 	mainDir = (targPos - startPos);
-	altDir.x = targPos.y;
-	altDir.y = -targPos.x;
-	pathAlteration = Randomizer::GetFloat(-2, 2);
+	altDir.x = mainDir.y;
+	altDir.y = -mainDir.x;
+	altDir.normalize();
+	pathAlteration = Randomizer::GetFloat(-13.5, 13.5);
 	m_dt = dt;
+	time = 0;
 	m_lenght = (targPos - startPos).length();
-	curveDepth = 5;
+	curveDepth = 40;
+	speed = 500 + Randomizer::GetFloat(-100, 100);
+	waveFreq = 10;
+
 }
 
 
 void Missile::pathFunc()
 {
-	transform.SetPosition(startPos + m_dt / m_lenght * mainDir + altDir * (sin(m_dt + pathAlteration) + sin(m_dt / 2 + pathAlteration) + sin(m_dt/3 +pathAlteration) * curveDepth));
-	std::cout << "Pos: " << transform.GetPosition().x << std::endl;
+
+	auto calc = pmath::Vec2f(
+		
+	startPos + 
+
+	time * speed / m_lenght * mainDir +
+
+	altDir * (sin(waveFreq * time + pathAlteration) + sin(waveFreq * time/ 2 + pathAlteration) + sin(waveFreq * time / 3 + pathAlteration) * curveDepth));
+
+	transform.SetPosition(calc);
+
 	time += m_dt;
 }
 
@@ -38,7 +52,6 @@ void Missile::Update(float dt)
 {
 	pathFunc();
 	explodeCheck();
-	Draw();
 }
 
 void Missile::explodeCheck()
