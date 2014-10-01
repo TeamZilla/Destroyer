@@ -18,18 +18,19 @@ BackgroundManager::BackgroundManager(float bY, float fY, float mY)
 	m_cameraPanSpd = 5;
 	m_cameraPanMax = 25;
 	m_isCameraTurning = false;
+
 	//Set textures
 	auto backTex  = uthRS.LoadTexture("backgrounds/buildings.png");
 	auto frontTex = uthRS.LoadTexture("backgrounds/lamps.png");
 	auto mountTex = uthRS.LoadTexture("backgrounds/mountain.png");
-
+	//Push backgrounds to m_bgs vector
 	m_bgs.push_back(new Background(backTex));
 	m_bgs.push_back(new Background(backTex));
 	m_bgs.push_back(new Background(frontTex));
 	m_bgs.push_back(new Background(frontTex));
 	m_bgs.push_back(new Background(mountTex));
 	m_bgs.push_back(new Background(mountTex));
-
+	//Start positions
 	m_bgs[0]->transform.SetPosition(-uthEngine.GetWindow().GetSize().x / 2, m_backSpawnY);
 	m_bgs[1]->transform.SetPosition(m_bgs[0]->transform.GetPosition().x + m_bgs[0]->transform.GetSize().x, m_backSpawnY);
 	m_bgs[2]->transform.SetPosition(-uthEngine.GetWindow().GetSize().x / 2, m_frontSpawnY);

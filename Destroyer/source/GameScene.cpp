@@ -36,7 +36,7 @@ bool GameScene::Update(float dt)
 	}
 	if (uthInput.Keyboard.IsKeyDown(Keyboard::Up))
 	{
-
+		m_player.Jump();
 	}
 	if (uthInput.Keyboard.IsKeyDown(Keyboard::Down))
 	{

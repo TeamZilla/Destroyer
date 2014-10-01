@@ -11,6 +11,8 @@ int main()
 
 	uthEngine.Init();
 
+	uthSceneM.GoToScene(0);  // Remove on finished product!! t. Jani from engine team.
+
 	while (uthEngine.Running())
 	{
 
