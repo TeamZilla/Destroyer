@@ -10,9 +10,9 @@ int main()
 	uthSceneM.registerNewSceneFunc(NewSceneFunc, COUNT);
 
 	uthEngine.Init();
-
-	uthSceneM.GoToScene(0);  // Remove on finished product!! t. Jani from engine team.
-
+#if _DEBUG
+		uthSceneM.GoToScene(0);
+#endif
 	while (uthEngine.Running())
 	{
 
