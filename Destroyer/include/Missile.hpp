@@ -28,6 +28,7 @@ private:
 	pmath::Vec2f m_pos;
 	pmath::Vec2f mainDir;
 	pmath::Vec2f altDir;
+	float waveFreq;
 	float pathAlteration;
 	float curveDepth;
 	float m_dt;

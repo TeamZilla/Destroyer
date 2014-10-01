@@ -13,12 +13,13 @@ Missile::Missile(pmath::Vec2f start, pmath::Vec2f targ, float dt)
 	altDir.x = mainDir.y;
 	altDir.y = -mainDir.x;
 	altDir.normalize();
-	pathAlteration = Randomizer::GetFloat(-2, 2);
+	pathAlteration = Randomizer::GetFloat(-13.5, 13.5);
 	m_dt = dt;
 	time = 0;
 	m_lenght = (targPos - startPos).length();
-	curveDepth = 4;
-	speed = 300;
+	curveDepth = 40;
+	speed = 500 + Randomizer::GetFloat(-100, 100);
+	waveFreq = 10;
 
 }
 
@@ -32,7 +33,7 @@ void Missile::pathFunc()
 
 	time * speed / m_lenght * mainDir +
 
-	altDir * (sin(time + pathAlteration) + sin(time/ 2 + pathAlteration) + sin(time / 3 + pathAlteration) * curveDepth));
+	altDir * (sin(waveFreq * time + pathAlteration) + sin(waveFreq * time/ 2 + pathAlteration) + sin(waveFreq * time / 3 + pathAlteration) * curveDepth));
 
 	transform.SetPosition(calc);
 

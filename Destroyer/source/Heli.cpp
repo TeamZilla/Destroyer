@@ -24,14 +24,14 @@ Heli::Heli(pmath::Vec2f givenPos)
 	m_acceleration = 0;
 	m_pathLenght = 0;
 	m_shootingTarget = pmath::Vec2f(500,0);
-	m_shootDelay = 0.8;
+	m_shootDelay = 0.16;
 	burstTimer = 0;
 	m_missileClip = 6;
 	m_missileCount = m_missileClip;
-	m_shootingTarget = pmath::Vec2f(600, -100);
+	m_shootingTarget = pmath::Vec2f(0,0);
 
 	m_missileRegenTimer = 0;
-	m_missileRegenTime = 7;
+	m_missileRegenTime = 1;
 }
 
 Heli::Heli()
