@@ -22,6 +22,7 @@ private:
 	void explodeCheck();
 	float time;
 	float m_lenght;
+	float speed;
 	pmath::Vec2f startPos;
 	pmath::Vec2f targPos;
 	pmath::Vec2f m_pos;

@@ -2,7 +2,7 @@
 #ifndef Heli_HPP
 #define Heli_HPP
 
-
+#include <vector>
 #include <Missile.hpp>
 #include <UtH/UtHEngine.hpp>
 
@@ -63,9 +63,11 @@ private:
 	float m_missileCD_min;
 	float m_missileCD_max;
 
-	void m_shoot();
+	std::vector <Missile*> m_missiles;
+	void m_shooter();
 	void m_launch();
 	void burst();
+	void m_reload();
 	int m_missileClip;
 	float m_missileCount;
 	float m_missileRegenTimer;
