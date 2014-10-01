@@ -18,6 +18,7 @@ BackgroundManager::BackgroundManager(float bY, float fY, float mY)
 	m_cameraPanSpd = 5;
 	m_cameraPanMax = 25;
 	m_isCameraTurning = false;
+	m_isShaking = false;
 
 	//Set textures
 	auto backTex  = uthRS.LoadTexture("backgrounds/buildings.png");
@@ -43,6 +44,14 @@ void BackgroundManager::Update(float dt)
 {
 	CameraMovement(dt);
 	Movement(dt);
+	if (m_isShaking)
+	{
+		m_shakeDelay -= dt;
+		if (m_shakeDelay <= 0)
+		{
+			ParallerShake(dt);
+		}
+	}
 }
 void BackgroundManager::CameraMovement(float dt)
 {
@@ -157,7 +166,10 @@ void BackgroundManager::DrawBack()
 }
 void BackgroundManager::ChangeDirection()
 {
-	m_isTurned = !m_isTurned;
+	if (!m_isShaking)
+	{
+		m_isTurned = !m_isTurned;
+	}
 }
 void BackgroundManager::CheckSpeed(float speed)
 {
@@ -167,6 +179,53 @@ void BackgroundManager::SetCameraStartPos(pmath::Vec2 pos)
 {
 	m_cameraStartPos = pos;
 	uthEngine.GetWindow().GetCamera().SetPosition(pos);
+}
+void BackgroundManager::Shake(float amount, float delay)
+{
+	//Set amount and delay to parameters
+	if (!m_isShaking)
+	{
+		m_shakeDelay = delay;
+		m_shakeAmount = amount;
+		m_shakeTimer = 1.5;
+		m_isShaking = true;
+	}
+	//Put temp position of each bg in memory
+	for (int i = 0; i < m_bgs.size(); ++i)
+	{
+		m_bgPos.push_back(new pmath::Vec2(m_bgs[i]->transform.GetPosition()));
+	}
+}
+void BackgroundManager::ParallerShake(float dt)
+{
+	m_shakeTimer -= dt;
+	m_shakeAmount = m_shakeTimer*5;
+	if (m_shakeTimer >= 0)
+	{
+		//Shake amount randomisation
+		auto am = Randomizer::GetFloat(-m_shakeAmount, m_shakeAmount);
+		//Shake every background but different amount
+		for (int i = 0; i < m_bgs.size(); ++i)
+		{
+			if (i < 2)
+				m_bgs[i]->transform.SetPosition(m_bgs[i]->transform.GetPosition().x, m_bgPos[i]->y + am);
+			else if (i >= 2 && i < 4)
+				m_bgs[i]->transform.SetPosition(m_bgs[i]->transform.GetPosition().x, m_bgPos[i]->y + am * 5);
+			else
+				m_bgs[i]->transform.SetPosition(m_bgs[i]->transform.GetPosition().x, m_bgPos[i]->y + am / 5);
+		}
+	}
+	else
+	{
+		//Put background in right position
+		m_isShaking = false;
+		for (int i = 0; i < m_bgs.size(); ++i)
+		{
+			m_bgs[i]->transform.SetPosition(m_bgs[i]->transform.GetPosition().x, m_bgPos[i]->y);
+		}
+		m_bgPos.clear();
+	}
+
 }
 // Deconstructor
 BackgroundManager::~BackgroundManager()
