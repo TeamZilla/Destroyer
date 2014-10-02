@@ -20,6 +20,8 @@ Missile::Missile(pmath::Vec2f start, pmath::Vec2f targ, float dt)
 	curveDepth = 40;
 	speed = 500 + Randomizer::GetFloat(-100, 100);
 	waveFreq = 10;
+	m_angle = 0;
+	sliding = 0.7;
 
 }
 
@@ -51,6 +53,7 @@ Missile::~Missile()
 void Missile::Update(float dt)
 {
 	pathFunc();
+	rotation();
 	explodeCheck();
 }
 
@@ -61,4 +64,21 @@ void Missile::explodeCheck()
 void Missile::Draw()
 {
 	GameObject::Draw(uthEngine.GetWindow());
+}
+
+void Missile::rotation()
+{
+	pmath::Vec2f rotDir = transform.GetPosition() - prevPos;
+	
+	if (rotDir.x != 0)
+	{
+		m_angle = atanf(rotDir.y / rotDir.x);
+		m_angle = sliding * 360 * m_angle / 3.14159;
+	}
+	else
+	{
+		m_angle = 0;
+	}
+	transform.SetRotation(m_angle);
+	prevPos = transform.GetPosition();
 }
