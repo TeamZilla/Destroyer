@@ -20,6 +20,13 @@ bool GameScene::Init()
 	m_bgManager.SetCameraStartPos(uthEngine.GetWindow().GetSize() / 2);
 	//TODO: Initialisation functions
 	
+
+	//SOUNDTEST START
+
+	m_music = uth::Sound::Load("Audio/Music/city_theme.wav");
+	m_music->Play();
+	m_music->Loop(true);
+
 	return true;
 }
 
@@ -48,14 +55,14 @@ bool GameScene::Update(float dt)
 
 	if(uthInput.Touch.Motion() == TouchMotion::DRAG)
 	{
-		if (touchStart.y + 50 > touchEnd.y - 50)
+		if (touchStart.y - 80 > touchEnd.y + 80)
 		{
 			if (!m_player.m_isCrouching)
 			{
 				m_player.Jump();
 			}
 		}
-		else if (touchStart.y - 50 < touchEnd.y + 50)
+		else if (touchStart.y + 80 < touchEnd.y - 80)
 		{
 			if (!m_player.m_isJumping)
 			{
@@ -64,14 +71,14 @@ bool GameScene::Update(float dt)
 			}
 		}
 
-		if (touchStart.x + 50 > touchEnd.x - 50)
+		if (touchStart.x + 90 > touchEnd.x - 90)
 		{
 			if (m_player.CheckIfGoingRight())
 			{
 				m_player.ChangeDirection();
 			}
 		}
-		else if (touchStart.x - 50 < touchEnd.x + 50)
+		else if (touchStart.x - 90 < touchEnd.x + 90)
 		{
 			if (!m_player.CheckIfGoingRight())
 			{

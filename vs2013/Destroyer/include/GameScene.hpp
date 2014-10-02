@@ -8,8 +8,6 @@
 #include <BackgroundManager.hpp>
 #include <Heli.hpp>
 
-
-
 class GameScene : public uth::Scene
 {
 private: // Just place everything else as private.
@@ -20,7 +18,7 @@ private: // Just place everything else as private.
 	Player m_player;
 	Health m_health;
 	Heli* m_heli;
-
+	uth::Sound* m_music;
 
 public: // Every one of these public functions are required.
 	GameScene();
