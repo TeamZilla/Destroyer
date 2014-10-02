@@ -37,6 +37,7 @@ private:
 	pmath::Vec2f prevPos;
 	float m_angle;
 	float sliding; // sliding modifier (use 1 +- "small value")
+	bool isOrientated;
 
 };
 
