@@ -22,7 +22,7 @@ Missile::Missile(pmath::Vec2f start, pmath::Vec2f targ, float dt)
 	waveFreq = 10;
 	m_angle = 0;
 	sliding = 0.7;
-
+	isOrientated = 0;
 }
 
 
@@ -81,4 +81,12 @@ void Missile::rotation()
 	}
 	transform.SetRotation(m_angle);
 	prevPos = transform.GetPosition();
+
+	if (!isOrientated)
+	{
+		if (mainDir.x > 0)
+		{
+			transform.SetScale(-1);
+		}
+	}
 }

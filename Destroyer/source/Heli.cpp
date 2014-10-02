@@ -28,7 +28,7 @@ Heli::Heli(pmath::Vec2f givenPos)
 	burstTimer = 0;
 	m_missileClip = 6;
 	m_missileCount = m_missileClip;
-	m_shootingTarget = pmath::Vec2f(0,0);
+	m_shootingTarget = pmath::Vec2f(650,350);
 
 	m_missileRegenTimer = 0;
 	m_missileRegenTime = 1;
