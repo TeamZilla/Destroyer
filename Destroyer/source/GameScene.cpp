@@ -40,7 +40,9 @@ bool GameScene::Update(float dt)
 	}
 	if (uthInput.Keyboard.IsKeyDown(Keyboard::Down))
 	{
-
+		m_player.Crouch();
+		//              amount , delay
+		m_bgManager.Shake(5,0.4f);
 	}
 
 	return true; // Update succeeded.
