@@ -32,6 +32,12 @@ private:
 	float pathAlteration;
 	float curveDepth;
 	float m_dt;
+
+	void rotation();
+	pmath::Vec2f prevPos;
+	float m_angle;
+	float sliding; // sliding modifier (use 1 +- "small value")
+
 };
 
 #endif
