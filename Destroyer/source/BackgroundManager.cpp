@@ -166,14 +166,12 @@ void BackgroundManager::DrawBack()
 }
 void BackgroundManager::ChangeDirection()
 {
-	if (!m_isShaking)
-	{
-		m_isTurned = !m_isTurned;
-	}
+	m_isTurned = !m_isTurned;
 }
-void BackgroundManager::CheckSpeed(float speed)
+void BackgroundManager::CheckSpeed(float speed, bool isDirRight)
 {
 	m_playerSpeed = speed;
+	m_isTurned = isDirRight;
 }
 void BackgroundManager::SetCameraStartPos(pmath::Vec2 pos)
 {

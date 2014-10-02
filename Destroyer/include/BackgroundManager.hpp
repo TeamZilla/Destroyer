@@ -45,7 +45,7 @@ public:
 	void DrawFront();
 	void DrawBack();
 	void ChangeDirection();
-	void CheckSpeed(float);
+	void CheckSpeed(float, bool isDirRight);
 	void CameraMovement(float dt);
 	void SetCameraStartPos(pmath::Vec2);
 	void Shake(float amount, float delay = 0.1f);

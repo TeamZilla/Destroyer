@@ -15,6 +15,9 @@ Player::Player()
 		uthEngine.GetWindow().GetSize().x / 2,
 		uthEngine.GetWindow().GetSize().y / 2 + transform.GetSize().y/2);
 	m_speed = 0;
+	m_maxSpeed = 10;
+	m_minSpeed = -5;
+	m_acceleration = 2;
 	m_jumpSpeed = 0;
 	m_jumpHeight = 8;
 	m_isGoingRight = true;
@@ -36,7 +39,12 @@ void Player::Update(float dt)
 }
 void Player::ChangeDirection()
 {
+	//Flip player sprite to create illusion that player turns
 	transform.SetScale(transform.GetScale().x*-1, transform.GetScale().y);
+	//Speed reduced to minspeed
+	m_speed = m_minSpeed;
+	//Change bool value to check is player going right or not
+	m_isGoingRight = !m_isGoingRight;
 }
 void Player::Draw()
 {
@@ -44,7 +52,7 @@ void Player::Draw()
 }
 //Player jump
 void Player::Jump()
-{
+{   //This is called once, changes variables to be ready to jump
 	if (!m_isJumping && !m_isCrouching)
 	{
 		m_tempPos = transform.GetPosition();
@@ -54,7 +62,7 @@ void Player::Jump()
 	}
 }
 void Player::Jumping()
-{
+{   //After 
 	m_jumpSpeed -= m_dt*15;
 	transform.Move(0, -m_jumpSpeed);
 	if (transform.GetPosition().y >= m_tempPos.y)
@@ -90,6 +98,17 @@ void Player::Crouching()
 		m_isCrouching = false;
 	}
 
+}
+void Player::Acceleration()
+{
+	if (m_maxSpeed > m_speed)
+	{
+		m_speed += m_dt*m_acceleration;
+	}
+	else
+	{
+		m_speed = m_maxSpeed;
+	}
 }
 // Get player speed
 float Player::getSpeed()

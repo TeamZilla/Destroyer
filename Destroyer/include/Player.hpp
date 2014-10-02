@@ -9,8 +9,10 @@ class Player : public uth::GameObject
 private:
 
 	float m_speed, m_jumpSpeed, m_jumpHeight, m_crouchTimer, m_dt;
+	float m_maxSpeed, m_minSpeed, m_acceleration;
 	bool m_isGoingRight, m_isJumping, m_isCrouching;
 	pmath::Vec2 m_tempPos;
+	void Acceleration();
 
 public:
 	Player();
