@@ -33,31 +33,31 @@ bool GameScene::Update(float dt)
 	{
 		m_health.TakeDamage(1);
 	}
-	if (uthInput.Keyboard.IsKeyDown(Keyboard::Up))
+	if (uthInput.Keyboard.IsKeyDown(Keyboard::Up) || uthInput.Common.Event() == uth::InputEvent::ZOOM_OUT)
 	{
 		m_player.Jump();
 	}
-	if (uthInput.Keyboard.IsKeyDown(Keyboard::Down))
+	if (uthInput.Keyboard.IsKeyDown(Keyboard::Down) || uthInput.Common.Event() == uth::InputEvent::ZOOM_IN)
 	{
 		m_player.Crouch();
 		//              amount , delay
 		m_bgManager.Shake(5,0.4f);
 	}
-	if (uthInput.Keyboard.IsKeyDown(Keyboard::Left))
+	if (uthInput.Keyboard.IsKeyDown(Keyboard::Left) || uthInput.Common.Event() == uth::InputEvent::DRAG)
 	{
 		if (m_player.CheckIfGoingRight())
 		{
 			m_player.ChangeDirection();
 		}
 	}
-	if (uthInput.Keyboard.IsKeyDown(Keyboard::Right))
+	if (uthInput.Keyboard.IsKeyDown(Keyboard::Right) || uthInput.Common.Event() == uth::InputEvent::DRAG)
 	{
 		if (!m_player.CheckIfGoingRight())
 		{
 			m_player.ChangeDirection();
 		}
 	}
-
+	
 	return true; // Update succeeded.
 }
 

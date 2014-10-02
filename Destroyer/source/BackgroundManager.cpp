@@ -14,7 +14,7 @@ BackgroundManager::BackgroundManager(float bY, float fY, float mY)
 	m_isTurned = true;
 	m_isTurning = false;
 	m_xBound = 0;
-	m_cameraPan = 0;
+	m_cameraPan = m_cameraStartPos.x + 350;
 	m_cameraPanSpd = 5;
 	m_cameraPanMax = 25;
 	m_isCameraTurning = false;
@@ -66,22 +66,22 @@ void BackgroundManager::CameraMovement(float dt)
 	if (m_isTurned)
 	{
 		m_cameraPan += dt*m_cameraPanSpd * ((m_cameraStartPos.x + 150) - m_camera->GetPosition().x);
-		if (m_camera->GetPosition().x >= (m_cameraStartPos.x + 150))
-		{
-			m_camera->SetPosition(m_cameraStartPos.x + 150, m_cameraStartPos.y);
-			m_isCameraTurning = false;
-			m_cameraPan = 0;
-		}
+		//if (m_camera->GetPosition().x >= (m_cameraStartPos.x + 150))
+		//{
+		//	m_camera->SetPosition(m_cameraStartPos.x + 150, m_cameraStartPos.y);
+		//	m_isCameraTurning = false;
+		//	m_cameraPan = 0;
+		//}
 	}
 	else
 	{
 		m_cameraPan += dt*m_cameraPanSpd * ((m_cameraStartPos.x - 150) - m_camera->GetPosition().x);
-		if (m_camera->GetPosition().x <= (m_cameraStartPos.x - 150))
-		{
-			m_camera->SetPosition(m_cameraStartPos.x - 150, m_cameraStartPos.y);
-			m_isCameraTurning = false;
-			m_cameraPan = 0;
-		}
+		//if (m_camera->GetPosition().x <= (m_cameraStartPos.x - 150))
+		//{
+		//	m_camera->SetPosition(m_cameraStartPos.x - 150, m_cameraStartPos.y);
+		//	m_isCameraTurning = false;
+		//	m_cameraPan = 0;
+		//}
 	}
 }
 void BackgroundManager::Movement(float dt)
