@@ -23,15 +23,14 @@ bool GameScene::Init()
 bool GameScene::Update(float dt)
 {
 	//TODO: Update functions
+	m_bgManager.CheckSpeed(m_player.getSpeed(), m_player.CheckIfGoingRight());
 	m_bgManager.Update(dt);
 	m_player.Update(dt);
 	m_health.Update(dt);
 	m_heli->Update(dt);
 
-	if (uthInput.Keyboard.IsKeyDown(Keyboard::Space) || uthInput.Common.Event() == uth::InputEvent::TAP)
+	if (uthInput.Common.Event() == uth::InputEvent::TAP)
 	{
-		m_bgManager.ChangeDirection();
-		m_player.ChangeDirection();
 		m_health.TakeDamage(1);
 	}
 	if (uthInput.Keyboard.IsKeyDown(Keyboard::Up))
@@ -43,6 +42,20 @@ bool GameScene::Update(float dt)
 		m_player.Crouch();
 		//              amount , delay
 		m_bgManager.Shake(5,0.4f);
+	}
+	if (uthInput.Keyboard.IsKeyDown(Keyboard::Left))
+	{
+		if (m_player.CheckIfGoingRight())
+		{
+			m_player.ChangeDirection();
+		}
+	}
+	if (uthInput.Keyboard.IsKeyDown(Keyboard::Right))
+	{
+		if (!m_player.CheckIfGoingRight())
+		{
+			m_player.ChangeDirection();
+		}
 	}
 
 	return true; // Update succeeded.
