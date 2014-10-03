@@ -88,6 +88,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="source\Aeroplane.cpp" />
     <ClCompile Include="source\Background.cpp" />
     <ClCompile Include="source\BackgroundManager.cpp" />
     <ClCompile Include="source\GameScene.cpp" />
@@ -99,6 +100,7 @@
     <ClCompile Include="source\Shock.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\Aeroplane.hpp" />
     <ClInclude Include="include\Background.hpp" />
     <ClInclude Include="include\BackgroundManager.hpp" />
     <ClInclude Include="include\GameScene.hpp" />

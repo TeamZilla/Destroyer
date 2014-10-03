@@ -7,6 +7,7 @@
 #include <Health.hpp>
 #include <BackgroundManager.hpp>
 #include <Heli.hpp>
+#include <Aeroplane.hpp>
 
 
 
@@ -20,6 +21,7 @@ private: // Just place everything else as private.
 	Player m_player;
 	Health m_health;
 	Heli* m_heli;
+	Aeroplane* m_aeroplane;
 
 
 public: // Every one of these public functions are required.

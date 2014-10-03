@@ -11,9 +11,11 @@ Player::Player()
 	playerAnimation->ChangeAnimation(0, 4);
 	transform.SetOrigin(uth::Origin::BottomCenter);
 	transform.SetScale(0.75f);
-	transform.SetPosition(
-		uthEngine.GetWindow().GetSize().x / 2,
-		uthEngine.GetWindow().GetSize().y / 2 + transform.GetSize().y/2);
+	//transform.SetPosition(
+	//	uthEngine.GetWindow().GetSize().x / 2,
+	//	uthEngine.GetWindow().GetSize().y / 2 + transform.GetSize().y/2);
+
+	transform.SetPosition(pmath::Vec2f(0, uthEngine.GetWindow().GetSize().y / 2 + transform.GetSize().y / 2));
 	m_speed = 0;
 	m_maxSpeed = 10;
 	m_minSpeed = -5;
