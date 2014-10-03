@@ -8,7 +8,7 @@ Aeroplane::Aeroplane(float spawnX)
 	this->AddComponent(new Sprite(aeroplaneTex));
 	m_time = 0;
 	m_minY = 320;
-	m_speed = 400;
+	m_speed = 600;
 	m_startX = spawnX;
 
 	if (m_startX < 0)

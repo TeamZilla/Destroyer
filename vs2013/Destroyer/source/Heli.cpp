@@ -28,8 +28,8 @@ Heli::Heli(pmath::Vec2f givenPos)
 	burstTimer = 0;
 	m_missileClip = 6;
 	m_missileCount = m_missileClip;
-	m_shootingTarget = pmath::Vec2f(650,350);
-
+	m_shootingTarget = pmath::Vec2f(0,350);
+	bonVoyageTimer = 0;
 	m_missileRegenTimer = 0;
 	m_missileRegenTime = 1;
 }
@@ -102,6 +102,19 @@ void Heli::LinearMove()
 
 void Heli::Pilot()
 {
+	if (bonVoyageTimer > 4)
+	{
+		auto voyage = pmath::Vec2f(Randomizer::GetFloat(-600, 600), Randomizer::GetFloat(20, 400));
+		SetNextPos(voyage);
+
+		bonVoyageTimer = 0;
+
+		std::cout << voyage << std::endl;
+	}
+
+	bonVoyageTimer += m_dt;
+
+
 	if (!isMoving)
 	{
 		Navigate(m_nextPos);

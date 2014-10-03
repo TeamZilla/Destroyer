@@ -21,7 +21,7 @@ bool GameScene::Init()
 
 	aeroplaneTimer = 0;
 	aeroMinSpawnTime = 0.5;
-	aeroMaxSpawnTime = 20;
+	aeroMaxSpawnTime = 10;
 	isCool = 1;
 
 
@@ -186,7 +186,6 @@ void GameScene::m_enemyManger(float m_dt)
 		{
 			m_aeroplane.push_back(new Aeroplane(-1800));
 			aeroplaneTimer = 0;
-			std::cout << "New aeroplane added left" << std::endl;
 			isCool = true;
 		}
 
@@ -195,7 +194,6 @@ void GameScene::m_enemyManger(float m_dt)
 		{
 			m_aeroplane.push_back(new Aeroplane(1800));
 			aeroplaneTimer = 0;
-			std::cout << "New aeroplane added right" << std::endl;
 			isCool = true;
 		}
 	}
