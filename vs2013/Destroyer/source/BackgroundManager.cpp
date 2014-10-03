@@ -14,7 +14,8 @@ BackgroundManager::BackgroundManager(float bY, float fY, float mY)
 	m_isTurned = true;
 	m_isTurning = false;
 	m_xBound = 0;
-	m_cameraPan =0;
+	m_cameraPan = 0;
+	m_cameraPanMax = 300;
 	m_cameraPanSpd = 5;
 	m_isCameraTurning = false;
 	m_isShaking = false;
@@ -64,7 +65,7 @@ void BackgroundManager::CameraMovement(float dt)
 	//Change direction depending where player is looking
 	if (m_isTurned)
 	{
-		m_cameraPan += dt*m_cameraPanSpd * ((m_cameraStartPos.x + 150) - m_camera->GetPosition().x);
+		m_cameraPan += dt*m_cameraPanSpd * ((m_cameraStartPos.x + m_cameraPanMax) - m_camera->GetPosition().x);
 		//if (m_camera->GetPosition().x >= (m_cameraStartPos.x + 150))
 		//{
 		//	m_camera->SetPosition(m_cameraStartPos.x + 150, m_cameraStartPos.y);
@@ -74,7 +75,7 @@ void BackgroundManager::CameraMovement(float dt)
 	}
 	else
 	{
-		m_cameraPan += dt*m_cameraPanSpd * ((m_cameraStartPos.x - 150) - m_camera->GetPosition().x);
+		m_cameraPan += dt*m_cameraPanSpd * ((m_cameraStartPos.x - m_cameraPanMax) - m_camera->GetPosition().x);
 		//if (m_camera->GetPosition().x <= (m_cameraStartPos.x - 150))
 		//{
 		//	m_camera->SetPosition(m_cameraStartPos.x - 150, m_cameraStartPos.y);
