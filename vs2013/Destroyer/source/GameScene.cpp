@@ -21,7 +21,7 @@ bool GameScene::Init()
 
 	aeroplaneTimer = 0;
 	aeroMinSpawnTime = 0.5;
-	aeroMaxSpawnTime = 10;
+	aeroMaxSpawnTime = 6;
 	isCool = 1;
 
 

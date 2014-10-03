@@ -8,13 +8,18 @@ Aeroplane::Aeroplane(float spawnX)
 	this->AddComponent(new Sprite(aeroplaneTex));
 	m_time = 0;
 	m_minY = 320;
-	m_speed = 600;
+	m_speed = 800;
 	m_startX = spawnX;
+	mainScale = 0.25;
+	verticalScaler = 1;
+	transform.SetScale(mainScale);
+	accelerate = 0;
+
 
 	if (m_startX < 0)
 	{
 		m_direction = 1;
-		transform.SetScale(-1);
+		transform.SetScale(verticalScaler * pmath::Vec2f(-0.35, 0.35));
 	}
 	else
 	{
@@ -28,6 +33,7 @@ Aeroplane::Aeroplane(float spawnX)
 
 void Aeroplane::pathFunc()
 {
+
 	m_pos.x = m_direction * m_speed * m_time + m_startX;
 	m_pos.y = -pow((m_pos.x) / pathFlatnes, 2) + m_minY;
 	transform.SetPosition(m_pos);
@@ -42,6 +48,9 @@ Aeroplane::~Aeroplane()
 
 void Aeroplane::Update(float dt)
 {
+	verticalScaler = (abs(transform.GetPosition().y)+300)/450;
+	transform.SetScale(verticalScaler * pmath::Vec2f(-m_direction * 0.35, 0.35));
+
 	m_dt = dt;
 	pathFunc();
 	rotation();
@@ -64,7 +73,7 @@ void Aeroplane::rotation()
 
 	if (m_direction * transform.GetPosition().x > 0)
 	{
-		sliding = 2.2;
+		sliding = 1.8;
 	}
 	else
 	{

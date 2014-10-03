@@ -29,9 +29,11 @@ private:
 	void explodeCheck();
 	float m_dt;
 	pmath::Vec2f prevPos;
-
+	float accelerate;
 	float angle;
 	float sliding;
+	float verticalScaler;
+	float mainScale;
 };
 
 #endif

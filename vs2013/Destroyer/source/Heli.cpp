@@ -15,7 +15,7 @@ Heli::Heli(pmath::Vec2f givenPos)
 	m_hoverScale = 20;
 	m_hoverScale_x = 1;
 	m_hoverScale_y = 1;
-	m_hoverRatio = 100;
+	m_hoverRatio = 10000;
 	isMoving = 0;
 	m_linearSpeed = 50;
 	m_missileCD_max = 0.7;
@@ -106,10 +106,10 @@ void Heli::Pilot()
 	{
 		auto voyage = pmath::Vec2f(Randomizer::GetFloat(-600, 600), Randomizer::GetFloat(20, 400));
 		SetNextPos(voyage);
-
-		bonVoyageTimer = 0;
-
-		std::cout << voyage << std::endl;
+		if ((transform.GetPosition() - voyage).length() > 130)
+		{
+			bonVoyageTimer = 0;
+		}
 	}
 
 	bonVoyageTimer += m_dt;
