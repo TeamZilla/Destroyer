@@ -8,7 +8,10 @@ class Tank : public uth::GameObject
 {
 private:
 	pmath::Vec2 spawnPos;
-
+	float m_dt;
+	float m_playerSpeed, m_tankSpeed;
+	bool m_isTankOnRight;
+	uth::Window* m_window;
 
 public:
 	Tank(pmath::Vec2 pos);
@@ -16,6 +19,8 @@ public:
 
 	void Update(float);
 	void Draw();
+	void Movement();
+	void WhichSideOfPlayer();
 
 };
 
