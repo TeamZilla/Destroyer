@@ -18,12 +18,15 @@ private: // Just place everything else as private.
 	uth::GameObject* m_startButton;
 
 	BackgroundManager m_bgManager;
+	void m_enemyManger(float dt);
 	Player m_player;
 	Health m_health;
 	Heli* m_heli;
+	std::vector <Aeroplane*> m_aeroplane;
 	Tank* m_tank;
-	Aeroplane* m_aeroplane;
 	uth::Sound* m_music;
+
+	float aeroplaneTimer;
 
 public: // Every one of these public functions are required.
 	GameScene();
@@ -34,6 +37,14 @@ public: // Every one of these public functions are required.
 
 	virtual bool Update(float dt);
 	virtual bool Draw();
+
+	float aeroMinSpawnTime;
+	float aeroMaxSpawnTime;
+	float shootTime;
+
+	bool isCool;
+	int rand;
+	int rand2;
 };
 
 #endif //GameScene_HPP
