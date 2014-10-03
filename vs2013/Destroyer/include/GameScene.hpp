@@ -7,6 +7,7 @@
 #include <Health.hpp>
 #include <BackgroundManager.hpp>
 #include <Heli.hpp>
+#include <Aeroplane.hpp>
 
 #include <Tank.hpp>
 
@@ -21,6 +22,7 @@ private: // Just place everything else as private.
 	Health m_health;
 	Heli* m_heli;
 	Tank* m_tank;
+	Aeroplane* m_aeroplane;
 	uth::Sound* m_music;
 
 public: // Every one of these public functions are required.

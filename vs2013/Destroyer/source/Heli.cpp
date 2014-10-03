@@ -182,13 +182,10 @@ void Heli::m_shooter()
 
 void Heli::m_reload()
 {
-	std::cout << m_missileCount << std::endl;
 	if (!isShooting)
 	{
-		std::cout << "asdasd" << std::endl;
 		if (m_missileRegenTimer >= m_missileRegenTime)
 		{
-			std::cout << "Missiles: +1" << std::endl;
 			++m_missileCount;
 			m_missileRegenTimer = 0;
 		}

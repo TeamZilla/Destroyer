@@ -18,7 +18,9 @@ bool GameScene::Init()
 
 	m_heli = new Heli(pmath::Vec2f(0, 0));
 	m_tank = new Tank(pmath::Vec2(0, 0));
-	m_bgManager.SetCameraStartPos(uthEngine.GetWindow().GetSize() / 2);
+	m_aeroplane = new Aeroplane();
+
+	m_bgManager.SetCameraStartPos(pmath::Vec2f(0, uthEngine.GetWindow().GetSize().y/2));
 	//TODO: Initialisation functions
 	
 
@@ -41,6 +43,7 @@ bool GameScene::Update(float dt)
 	m_player.Update(dt);
 	m_health.Update(dt);
 	m_heli->Update(dt);
+	m_aeroplane->Update(dt);
 	
 
 #ifdef UTH_SYSTEM_ANDROID
@@ -137,6 +140,7 @@ bool GameScene::Draw()
 	m_player.Draw();
 	m_heli->Draw();
 	m_tank->Draw();
+	m_aeroplane->Draw();
 	m_bgManager.DrawFront();
 	m_health.Draw();
 	return true; // Drawing succeeded.
