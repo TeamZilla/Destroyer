@@ -14,9 +14,8 @@ BackgroundManager::BackgroundManager(float bY, float fY, float mY)
 	m_isTurned = true;
 	m_isTurning = false;
 	m_xBound = 0;
-	m_cameraPan = m_cameraStartPos.x + 350;
+	m_cameraPan =0;
 	m_cameraPanSpd = 5;
-	m_cameraPanMax = 25;
 	m_isCameraTurning = false;
 	m_isShaking = false;
 
