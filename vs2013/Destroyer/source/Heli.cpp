@@ -7,7 +7,7 @@ Heli::Heli(pmath::Vec2f givenPos)
 	m_curPos = givenPos;
 	m_nextPos = m_curPos;
 	m_prevPos = m_curPos;
-	auto heliTex = uthRS.LoadTexture("heli.tga");
+	auto heliTex = uthRS.LoadTexture("Enemies/copteri.png");
 	heliTex->SetSmooth(true);
 	this->AddComponent(new Sprite(heliTex));
 	m_hoverTime = 0;

@@ -4,9 +4,9 @@ using namespace uth;
 
 Player::Player()
 {
-	auto playerTexture = uthRS.LoadTexture("modzilla/modzilla_sheet.png");
+	auto playerTexture = uthRS.LoadTexture("modzilla/modzilla_sprites02.png");
 	playerTexture->SetSmooth(true);
-	AddComponent(new AnimatedSprite(playerTexture,16,4,4));
+	AddComponent(new AnimatedSprite(playerTexture,24,6,4));
 	playerAnimation = GetComponent<AnimatedSprite>("AnimatedSprite");
 	playerAnimation->ChangeAnimation(0, 4);
 	transform.SetOrigin(uth::Origin::BottomCenter);
@@ -15,9 +15,9 @@ Player::Player()
 		uthEngine.GetWindow().GetSize().x / 2,
 		uthEngine.GetWindow().GetSize().y / 2 + transform.GetSize().y/2);
 	m_speed = 0;
-	m_maxSpeed = 10;
-	m_minSpeed = -5;
-	m_acceleration = 2;
+	m_maxSpeed = 400;
+	m_minSpeed = -400;
+	m_acceleration = 750;
 	m_jumpSpeed = 0;
 	m_jumpHeight = 8;
 	m_isGoingRight = true;
@@ -28,6 +28,7 @@ void Player::Update(float dt)
 {
 	GameObject::Update(dt);
 	m_dt = dt;
+	Acceleration();
 	if (m_isJumping)
 	{
 		Jumping();
@@ -58,7 +59,7 @@ void Player::Jump()
 		m_tempPos = transform.GetPosition();
 		m_isJumping = true;
 		m_jumpSpeed = m_jumpHeight;
-		playerAnimation->ChangeAnimation(5, 4, 5, 3); //jumpanim
+		playerAnimation->ChangeAnimation(17, 6, 17, 8); //jumpanim
 	}
 }
 void Player::Jumping()
@@ -80,7 +81,7 @@ void Player::Crouch()
 		m_isCrouching = true;
 		m_jumpSpeed = 4;
 		m_crouchTimer = 0;
-		playerAnimation->ChangeAnimation(9, 4, 9, 4); //crouchanim
+		playerAnimation->ChangeAnimation(6, 4, 6, 4); //crouchanim
 	}
 }
 void Player::Crouching()

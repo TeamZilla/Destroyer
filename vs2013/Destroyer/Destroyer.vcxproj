@@ -97,6 +97,7 @@
     <ClCompile Include="source\Missile.cpp" />
     <ClCompile Include="source\Player.cpp" />
     <ClCompile Include="source\Shock.cpp" />
+    <ClCompile Include="source\Tank.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Background.hpp" />
@@ -108,6 +109,7 @@
     <ClInclude Include="include\Player.hpp" />
     <ClInclude Include="include\Scenes.hpp" />
     <ClInclude Include="include\Shock.hpp" />
+    <ClInclude Include="include\Tank.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

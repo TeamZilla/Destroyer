@@ -17,6 +17,7 @@ bool GameScene::Init()
 	
 
 	m_heli = new Heli(pmath::Vec2f(0, 0));
+	m_tank = new Tank(pmath::Vec2(0, 0));
 	m_bgManager.SetCameraStartPos(uthEngine.GetWindow().GetSize() / 2);
 	//TODO: Initialisation functions
 	
@@ -93,12 +94,12 @@ bool GameScene::Update(float dt)
 	{
 		m_health.TakeDamage(1);
 	}
-	if (uthInput.Keyboard.IsKeyDown(Keyboard::Up) || uthInput.Common.Event() == uth::InputEvent::ZOOM_OUT)
+	if (uthInput.Keyboard.IsKeyDown(Keyboard::Up))
 	{
 		if (!m_player.m_isCrouching)
 			m_player.Jump();
 	}
-	if (uthInput.Keyboard.IsKeyDown(Keyboard::Down) || uthInput.Common.Event() == uth::InputEvent::ZOOM_IN)
+	if (uthInput.Keyboard.IsKeyDown(Keyboard::Down))
 	{
 		if (!m_player.m_isJumping)
 		{
@@ -107,7 +108,7 @@ bool GameScene::Update(float dt)
 			m_bgManager.Shake(5, 0.4f);
 		}
 	}
-	if (uthInput.Keyboard.IsKeyDown(Keyboard::Left) || uthInput.Common.Event() == uth::InputEvent::DRAG)
+	if (uthInput.Keyboard.IsKeyDown(Keyboard::Left))
 	{
 		if (m_player.CheckIfGoingRight())
 		{
@@ -115,7 +116,7 @@ bool GameScene::Update(float dt)
 		}
 	}
 	
-	if (uthInput.Keyboard.IsKeyDown(Keyboard::Right) || uthInput.Common.Event() == uth::InputEvent::DRAG)
+	if (uthInput.Keyboard.IsKeyDown(Keyboard::Right))
 	{
 		if (!m_player.CheckIfGoingRight())
 		{
@@ -135,6 +136,7 @@ bool GameScene::Draw()
 
 	m_player.Draw();
 	m_heli->Draw();
+	m_tank->Draw();
 	m_bgManager.DrawFront();
 	m_health.Draw();
 	return true; // Drawing succeeded.

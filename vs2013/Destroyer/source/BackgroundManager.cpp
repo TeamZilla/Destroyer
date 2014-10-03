@@ -89,14 +89,14 @@ void BackgroundManager::Movement(float dt)
 	// Set speed relevant to direction where we are going 
 	if (m_isTurned)
 	{
-		m_mountainSpeed = -(c_mountainSpeedM + m_playerSpeed)*dt;
-		m_backSpeed = -(c_backSpeedM + m_playerSpeed)*dt;
+		m_mountainSpeed = -(c_mountainSpeedM + m_playerSpeed/10)*dt;
+		m_backSpeed = -(c_backSpeedM + m_playerSpeed/3)*dt;
 		m_frontSpeed = -(c_frontSpeedM + m_playerSpeed)*dt;
 	}
 	else
 	{
-		m_mountainSpeed = (c_mountainSpeedM + m_playerSpeed)*dt;
-		m_backSpeed = (c_backSpeedM + m_playerSpeed)*dt;
+		m_mountainSpeed = (c_mountainSpeedM + m_playerSpeed/10)*dt;
+		m_backSpeed = (c_backSpeedM + m_playerSpeed/3)*dt;
 		m_frontSpeed = (c_frontSpeedM + m_playerSpeed)*dt;
 	}
 	// Make backgrounds move with given speed
