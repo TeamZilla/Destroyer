@@ -9,8 +9,6 @@
 #include <Heli.hpp>
 #include <Aeroplane.hpp>
 
-
-
 class GameScene : public uth::Scene
 {
 private: // Just place everything else as private.
@@ -22,7 +20,7 @@ private: // Just place everything else as private.
 	Health m_health;
 	Heli* m_heli;
 	Aeroplane* m_aeroplane;
-
+	uth::Sound* m_music;
 
 public: // Every one of these public functions are required.
 	GameScene();
