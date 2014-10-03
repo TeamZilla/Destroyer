@@ -30,6 +30,7 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE    := uthengine
 LOCAL_SRC_FILES := main.cpp \
+../../vs2013/Destroyer/source/Aeroplane.cpp \
 ../../vs2013/Destroyer/source/Background.cpp \
 ../../vs2013/Destroyer/source/BackgroundManager.cpp \
 ../../vs2013/Destroyer/source/GameScene.cpp \
@@ -37,7 +38,8 @@ LOCAL_SRC_FILES := main.cpp \
 ../../vs2013/Destroyer/source/Heli.cpp \
 ../../vs2013/Destroyer/source/Missile.cpp \
 ../../vs2013/Destroyer/source/Player.cpp \
-../../vs2013/Destroyer/source/Shock.cpp 
+../../vs2013/Destroyer/source/Shock.cpp \
+../../vs2013/Destroyer/source/Tank.cpp 
 LOCAL_LDLIBS    := -llog -landroid -lEGL -lGLESv2 -lOpenSLES
 LOCAL_STATIC_LIBRARIES := android_native_app_glue engine
 LOCAL_SHARED_LIBRARIES :=

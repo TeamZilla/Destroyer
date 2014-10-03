@@ -61,7 +61,7 @@ void Player::Jump()
 		m_tempPos = transform.GetPosition();
 		m_isJumping = true;
 		m_jumpSpeed = m_jumpHeight;
-		playerAnimation->ChangeAnimation(17, 6, 17, 8); //jumpanim
+		playerAnimation->ChangeAnimation(18, 6, 18, 6); //jumpanim
 	}
 }
 void Player::Jumping()
@@ -83,7 +83,7 @@ void Player::Crouch()
 		m_isCrouching = true;
 		m_jumpSpeed = 4;
 		m_crouchTimer = 0;
-		playerAnimation->ChangeAnimation(6, 4, 6, 4); //crouchanim
+		playerAnimation->ChangeAnimation(6, 4, 6, 3); //crouchanim
 	}
 }
 void Player::Crouching()
