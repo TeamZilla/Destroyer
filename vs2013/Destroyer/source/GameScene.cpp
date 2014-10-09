@@ -204,7 +204,10 @@ void GameScene::m_enemyManger(float m_dt)
 
 //Default constructor for initialising constant variables.
 GameScene::GameScene()
-	: m_bgManager(250,500,150)
+	//: m_bgManager(250,500,150)
+	: m_bgManager(	uthEngine.GetWindow().GetSize().y - 470,
+					uthEngine.GetWindow().GetSize().y - 220,
+					uthEngine.GetWindow().GetSize().y - 570)
 {
 
 }

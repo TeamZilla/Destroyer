@@ -30,6 +30,7 @@ void Tank::Movement()
 {
 
 }
+
 void Tank::WhichSideOfPlayer()
 {
 	if (m_window->GetSize().x / 2 <= transform.GetPosition().x)
@@ -42,6 +43,7 @@ void Tank::WhichSideOfPlayer()
 		transform.SetScale(-1, 1);
 	}
 }
+
 void Tank::Draw()
 {
 	GameObject::Draw(uthEngine.GetWindow());
