@@ -15,7 +15,7 @@ Heli::Heli(pmath::Vec2f givenPos)
 	m_hoverScale = 20;
 	m_hoverScale_x = 1;
 	m_hoverScale_y = 1;
-	m_hoverRatio = 100;
+	m_hoverRatio = 10000;
 	isMoving = 0;
 	m_linearSpeed = 50;
 	m_missileCD_max = 0.7;
@@ -28,8 +28,8 @@ Heli::Heli(pmath::Vec2f givenPos)
 	burstTimer = 0;
 	m_missileClip = 6;
 	m_missileCount = m_missileClip;
-	m_shootingTarget = pmath::Vec2f(650,350);
-
+	m_shootingTarget = pmath::Vec2f(0,350);
+	bonVoyageTimer = 0;
 	m_missileRegenTimer = 0;
 	m_missileRegenTime = 1;
 }
@@ -102,6 +102,19 @@ void Heli::LinearMove()
 
 void Heli::Pilot()
 {
+	if (bonVoyageTimer > 4)
+	{
+		auto voyage = pmath::Vec2f(Randomizer::GetFloat(-600, 600), Randomizer::GetFloat(20, 400));
+		SetNextPos(voyage);
+		if ((transform.GetPosition() - voyage).length() > 130)
+		{
+			bonVoyageTimer = 0;
+		}
+	}
+
+	bonVoyageTimer += m_dt;
+
+
 	if (!isMoving)
 	{
 		Navigate(m_nextPos);

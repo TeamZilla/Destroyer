@@ -18,7 +18,12 @@ bool GameScene::Init()
 
 	m_heli = new Heli(pmath::Vec2f(0, 0));
 	m_tank = new Tank(pmath::Vec2(0, 0));
-	m_aeroplane = new Aeroplane();
+
+	aeroplaneTimer = 0;
+	aeroMinSpawnTime = 0.5;
+	aeroMaxSpawnTime = 6;
+	isCool = 1;
+
 
 	m_bgManager.SetCameraStartPos(pmath::Vec2f(0, uthEngine.GetWindow().GetSize().y/2));
 	//TODO: Initialisation functions
@@ -42,8 +47,14 @@ bool GameScene::Update(float dt)
 	m_bgManager.Update(dt);
 	m_player.Update(dt);
 	m_health.Update(dt);
-	m_heli->Update(dt);
-	m_aeroplane->Update(dt);
+	m_enemyManger(dt);
+
+
+
+	for (int i = 0; i < m_aeroplane.size(); i++)
+	{
+		m_aeroplane[i]->Update(dt);
+	}
 	
 
 #ifdef UTH_SYSTEM_ANDROID
@@ -140,10 +151,55 @@ bool GameScene::Draw()
 	m_player.Draw();
 	m_heli->Draw();
 	m_tank->Draw();
-	m_aeroplane->Draw();
+
+
+	for (int i = 0; i < m_aeroplane.size(); i++)
+	{
+		m_aeroplane[i]->Draw();
+	}
+
+
 	m_bgManager.DrawFront();
 	m_health.Draw();
 	return true; // Drawing succeeded.
+}
+
+
+void GameScene::m_enemyManger(float m_dt)
+{
+	m_heli->Update(m_dt);
+
+
+	if (isCool)
+	{
+		shootTime = Randomizer::GetFloat(aeroMinSpawnTime, aeroMaxSpawnTime);
+		isCool = false;
+	}
+
+	if (aeroplaneTimer > shootTime )
+	{
+
+		rand = Randomizer::GetInt(0, 2);
+
+
+		if (rand == 0)
+		{
+			m_aeroplane.push_back(new Aeroplane(-1800));
+			aeroplaneTimer = 0;
+			isCool = true;
+		}
+
+		else
+		
+		{
+			m_aeroplane.push_back(new Aeroplane(1800));
+			aeroplaneTimer = 0;
+			isCool = true;
+		}
+	}
+
+	aeroplaneTimer += m_dt;
+
 }
 
 //Default constructor for initialising constant variables.

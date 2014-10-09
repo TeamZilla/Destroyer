@@ -7,7 +7,7 @@
 class Aeroplane: public uth::GameObject
 {
 public:
-	Aeroplane();
+	Aeroplane(float);
 	~Aeroplane();
 
 	void Update(float);
@@ -28,7 +28,12 @@ private:
 	void pathFunc();
 	void explodeCheck();
 	float m_dt;
-
+	pmath::Vec2f prevPos;
+	float accelerate;
+	float angle;
+	float sliding;
+	float verticalScaler;
+	float mainScale;
 };
 
 #endif

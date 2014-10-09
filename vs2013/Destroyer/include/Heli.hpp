@@ -76,6 +76,7 @@ private:
 	float burstTimer;
 	Missile *m_missile;
 	pmath::Vec2f m_shootingTarget;
+	float bonVoyageTimer;
 
 
 };
