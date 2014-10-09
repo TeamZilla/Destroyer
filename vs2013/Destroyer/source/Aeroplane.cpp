@@ -3,7 +3,7 @@ using namespace uth;
 
 Aeroplane::Aeroplane(float spawnX)
 {
-	auto aeroplaneTex = uthRS.LoadTexture("aeroplane.png");
+	auto aeroplaneTex = uthRS.LoadTexture("Enemies/aeroplane.png");
 	aeroplaneTex->SetSmooth(true);
 	this->AddComponent(new Sprite(aeroplaneTex));
 	m_time = 0;

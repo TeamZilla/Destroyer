@@ -4,18 +4,18 @@ using namespace uth;
 
 Player::Player()
 {
-	auto playerTexture = uthRS.LoadTexture("modzilla/modzilla_sprites02.png");
+	auto playerTexture = uthRS.LoadTexture("modzilla/modzilla_sprites03.png");
 	playerTexture->SetSmooth(true);
 	AddComponent(new AnimatedSprite(playerTexture,24,6,4));
 	playerAnimation = GetComponent<AnimatedSprite>("AnimatedSprite");
 	playerAnimation->ChangeAnimation(0, 4);
 	transform.SetOrigin(uth::Origin::BottomCenter);
-	transform.SetScale(0.75f);
+	transform.SetScale(1.25f);
 	//transform.SetPosition(
 	//	uthEngine.GetWindow().GetSize().x / 2,
 	//	uthEngine.GetWindow().GetSize().y / 2 + transform.GetSize().y/2);
 
-	transform.SetPosition(pmath::Vec2f(0, uthEngine.GetWindow().GetSize().y / 2 + transform.GetSize().y / 2));
+	transform.SetPosition(pmath::Vec2f(0, uthEngine.GetWindow().GetSize().y / 2 + transform.GetSize().y/1.15f));
 	m_speed = 0;
 	m_maxSpeed = 400;
 	m_minSpeed = -400;
