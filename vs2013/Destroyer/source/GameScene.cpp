@@ -11,13 +11,13 @@ bool GameScene::Init()
  	m_shader.LoadShader("Shaders/Default.vert", "Shaders/Default.frag");
 	m_shader.Use();
 	uthEngine.GetWindow().SetShader(&m_shader);
-
+	Randomizer::SetSeed();
 	Camera& camera = uthEngine.GetWindow().GetCamera();
 	camera.SetSize(1280, 720);
 	
 
 	m_heli = new Heli(pmath::Vec2f(0, 0));
-	m_tank = new Tank(pmath::Vec2(0, 0));
+	m_tank = new Tank(pmath::Vec2(1200, 600));
 
 	aeroplaneTimer = 0;
 	aeroMinSpawnTime = 0.5;
@@ -48,7 +48,6 @@ bool GameScene::Update(float dt)
 	m_player.Update(dt);
 	m_health.Update(dt);
 	m_enemyManger(dt);
-
 
 
 	for (int i = 0; i < m_aeroplane.size(); i++)
@@ -168,7 +167,7 @@ bool GameScene::Draw()
 void GameScene::m_enemyManger(float m_dt)
 {
 	m_heli->Update(m_dt);
-
+	m_tank->Update(m_dt);
 
 	if (isCool)
 	{

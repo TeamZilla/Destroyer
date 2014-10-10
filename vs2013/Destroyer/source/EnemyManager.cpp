@@ -42,6 +42,14 @@ void EnemyManager::Update(float dt)
 	{
 		m_enemies[i]->Update(dt);
 	}
+	if (m_player != nullptr)
+	{
+
+	}
+	else
+	{
+		WriteLog("EnemyManager: Player not detected!");
+	}
 }
 void EnemyManager::Draw()
 {
