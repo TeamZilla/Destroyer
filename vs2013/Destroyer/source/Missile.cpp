@@ -6,7 +6,6 @@ Missile::Missile(pmath::Vec2f start, pmath::Vec2f targ, float dt)
 	auto missileTex = uthRS.LoadTexture("Enemies/Projectiles/copter_missile.png");
 	missileTex->SetSmooth(true);
 	AddComponent(new Sprite(missileTex));
-	transform.SetScale(0.5f);
 
 	startPos = start;
 	targPos = targ;
@@ -24,6 +23,9 @@ Missile::Missile(pmath::Vec2f start, pmath::Vec2f targ, float dt)
 	m_angle = 0;
 	sliding = 0.7;
 	isOrientated = 0;
+	m_scale = 0.5f;
+
+	transform.SetScale(m_scale);
 }
 
 
@@ -87,7 +89,7 @@ void Missile::rotation()
 	{
 		if (mainDir.x > 0)
 		{
-			transform.SetScale(-1);
+			transform.SetScale(-m_scale);
 		}
 	}
 }

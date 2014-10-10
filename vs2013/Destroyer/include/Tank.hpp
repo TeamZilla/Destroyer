@@ -18,16 +18,22 @@ private:
 		  m_range;	          // How close will tank go to player for real
 	bool m_isSideChecked;     // Check if side has been checked
 	bool m_isTankOnRight;     // Where tank spawns, changes move direction
+	bool m_isTankDestroyed;   // Is tank destroyed
+	bool m_isTankHit;         // Is tank been hit
 	uth::Window* m_window;    // Get reference of window
+	uth::PhysicsWorld* m_physWorld; // Make this for getting physics
+	uth::Rigidbody* m_rigidBody;
 
 public:
-	Tank(pmath::Vec2 pos);    // Constructor for spawning tank
+	Tank(pmath::Vec2 pos, uth::PhysicsWorld*);    // Constructor for spawning tank
 	~Tank();
 
 	void Update(float);
 	void Draw();
 	void Movement(float);     // Move tank left or right
 	void WhichSideOfPlayer(); // Check which side of player tank is
+	void Fly(float);
+	void Hit();
 
 };
 

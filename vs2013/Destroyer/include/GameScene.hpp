@@ -6,6 +6,7 @@
 #include <Player.hpp>
 #include <Health.hpp>
 #include <BackgroundManager.hpp>
+#include <EnemyManager.hpp>
 #include <Heli.hpp>
 #include <Aeroplane.hpp>
 
@@ -16,8 +17,11 @@ class GameScene : public uth::Scene
 private: // Just place everything else as private.
 	uth::Shader m_shader;
 	uth::GameObject* m_startButton;
+	uth::PhysicsWorld m_physWorld;
+	uth::GameObject m_gameFloor;
 
 	BackgroundManager m_bgManager;
+	EnemyManager m_enemyManager;
 	void m_enemyManger(float dt);
 	Player m_player;
 	Health m_health;

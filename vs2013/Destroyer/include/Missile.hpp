@@ -32,6 +32,7 @@ private:
 	float pathAlteration;
 	float curveDepth;
 	float m_dt;
+	float m_scale;
 
 	void rotation();
 	pmath::Vec2f prevPos;

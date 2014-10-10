@@ -20,6 +20,11 @@ private:
 	pmath::Vec2 m_spawnPointLeft;
 	pmath::Vec2 m_spawnPointRight;
 	float enemyCount;
+	float m_tankST;                           //Tank spawn time
+	pmath::Vec2 m_tankSPLeft;                 //Tank spawn left pos
+	pmath::Vec2 m_tankSPRight;                //Tank spawn left pos
+	uth::PhysicsWorld* m_physWorld;
+	uth::Sprite* m_gameFloor;
 
 public:
 
@@ -30,6 +35,9 @@ public:
 	void Update(float dt);
 	void Draw();
 	void CheckPlayer(Player* player);
+	void SetPhysWorld(uth::PhysicsWorld* pworld);
+	void SpawnTanks(float dt);
+	void DestroyTanks();
 
 };
 

@@ -4,9 +4,16 @@ using namespace uth;
 
 EnemyManager::EnemyManager()
 {
-	m_spawnPointLeft = pmath::Vec2(-100,0);
-	m_spawnPointRight = pmath::Vec2(uthEngine.GetWindow().GetSize().x + 100);
+	m_spawnPointLeft = pmath::Vec2(-(uthEngine.GetWindow().GetSize().x),
+									 uthEngine.GetWindow().GetSize().y / 2);
+	m_spawnPointRight = pmath::Vec2( uthEngine.GetWindow().GetSize().x,
+									 uthEngine.GetWindow().GetSize().y / 2);
+
+	m_tankSPRight = pmath::Vec2(m_spawnPointRight.x - 400, m_spawnPointRight.y + 240);
+	m_tankSPLeft = pmath::Vec2(m_spawnPointLeft.x + 400, m_spawnPointLeft.y + 240);
+
 	enemyCount = 0;
+	m_tankST = 4;
 }
 EnemyManager::~EnemyManager()
 {
@@ -42,6 +49,10 @@ void EnemyManager::Update(float dt)
 	{
 		m_enemies[i]->Update(dt);
 	}
+	for (int i = 0; m_tanks.size() > i; ++i)
+	{
+		m_tanks[i]->Update(dt);
+	}
 	if (m_player != nullptr)
 	{
 
@@ -50,6 +61,8 @@ void EnemyManager::Update(float dt)
 	{
 		WriteLog("EnemyManager: Player not detected!");
 	}
+
+	SpawnTanks(dt);
 }
 void EnemyManager::Draw()
 {
@@ -58,9 +71,41 @@ void EnemyManager::Draw()
 	{
 		m_enemies[i]->Draw(uthEngine.GetWindow());
 	}
+	for (int i = 0; m_tanks.size() > i; ++i)
+	{
+		m_tanks[i]->Draw();
+	}
 }
 void EnemyManager::CheckPlayer(Player* player)
 {
 	//Get player reference
 	m_player = player;
+}
+void EnemyManager::SetPhysWorld(PhysicsWorld* pworld)
+{
+	m_physWorld = pworld;
+}
+void EnemyManager::SpawnTanks(float dt)
+{
+	m_tankST -= dt;
+	if (m_tankST <= 0 && m_tanks.size() < 5)
+	{
+		if (Randomizer::GetInt(0, 10) < 5)
+		{
+			m_tanks.push_back(new Tank(pmath::Vec2(m_tankSPLeft), m_physWorld));
+		}
+		else
+		{
+			m_tanks.push_back(new Tank(pmath::Vec2(m_tankSPRight), m_physWorld));
+		}
+		m_tankST = 4;
+	}
+
+}
+void EnemyManager::DestroyTanks()
+{
+	for (int i = 0; m_tanks.size() > i; ++i)
+	{
+		m_tanks[i]->Hit();
+	}
 }

@@ -15,9 +15,13 @@ bool GameScene::Init()
 	Camera& camera = uthEngine.GetWindow().GetCamera();
 	camera.SetSize(1280, 720);
 	
+	m_enemyManager.SetPhysWorld(&m_physWorld);
+	m_gameFloor.AddComponent(new Sprite(pmath::Vec4(1, 0, 0, 1), pmath::Vec2(25000, 10)));
+	m_gameFloor.transform.SetPosition(0, uthEngine.GetWindow().GetSize().y);
+	m_gameFloor.AddComponent(new Rigidbody(m_physWorld));
+	m_gameFloor.GetComponent<Rigidbody>("Rigidbody")->SetKinematic(true);
 
 	m_heli = new Heli(pmath::Vec2f(0, 0));
-	m_tank = new Tank(pmath::Vec2(1200, 600));
 
 	aeroplaneTimer = 0;
 	aeroMinSpawnTime = 0.5;
@@ -31,7 +35,7 @@ bool GameScene::Init()
 
 	//SOUNDTEST START
 
-	m_music = uth::Sound::Load("Audio/Music/city_theme.wav");
+	m_music = uth::Sound::Load("Audio/Music/city_theme2.wav");
 	m_music->Play();
 	m_music->Loop(true);
 
@@ -43,12 +47,15 @@ bool GameScene::Init()
 bool GameScene::Update(float dt)
 {
 	//TODO: Update functions
+	m_physWorld.Update();
 	m_bgManager.CheckSpeed(m_player.getSpeed(), m_player.CheckIfGoingRight());
 	m_bgManager.Update(dt);
+	m_enemyManager.Update(dt);
+	m_enemyManager.CheckPlayer(&m_player);
 	m_player.Update(dt);
 	m_health.Update(dt);
 	m_enemyManger(dt);
-
+	m_enemyManager.SpawnTanks(dt);
 
 	for (int i = 0; i < m_aeroplane.size(); i++)
 	{
@@ -119,6 +126,7 @@ bool GameScene::Update(float dt)
 			m_player.Crouch();
 			//              amount , delay
 			m_bgManager.Shake(5, 0.4f);
+			m_enemyManager.DestroyTanks();
 		}
 	}
 	if (uthInput.Keyboard.IsKeyDown(Keyboard::Left))
@@ -149,8 +157,7 @@ bool GameScene::Draw()
 
 	m_player.Draw();
 	m_heli->Draw();
-	m_tank->Draw();
-
+	m_enemyManager.Draw();
 
 	for (int i = 0; i < m_aeroplane.size(); i++)
 	{
@@ -167,7 +174,6 @@ bool GameScene::Draw()
 void GameScene::m_enemyManger(float m_dt)
 {
 	m_heli->Update(m_dt);
-	m_tank->Update(m_dt);
 
 	if (isCool)
 	{
@@ -206,7 +212,9 @@ GameScene::GameScene()
 	//: m_bgManager(250,500,150)
 	: m_bgManager(	uthEngine.GetWindow().GetSize().y - 470,
 					uthEngine.GetWindow().GetSize().y - 220,
-					uthEngine.GetWindow().GetSize().y - 570)
+					uthEngine.GetWindow().GetSize().y - 570),
+					m_physWorld(0, 10)
+
 {
 
 }
