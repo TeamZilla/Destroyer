@@ -24,6 +24,7 @@ Missile::Missile(pmath::Vec2f start, pmath::Vec2f targ, float dt)
 	sliding = 0.7;
 	isOrientated = 0;
 	m_scale = 0.5f;
+	m_isDestroyed = false;
 
 	transform.SetScale(m_scale);
 }
@@ -58,10 +59,21 @@ void Missile::Update(float dt)
 	pathFunc();
 	rotation();
 	explodeCheck();
+	outOfBoundsCheck();
 }
 
 void Missile::explodeCheck()
 {
+}
+void Missile::outOfBoundsCheck()
+{
+	if (uthEngine.GetWindow().GetSize().x  > transform.GetPosition().x &&
+		uthEngine.GetWindow().GetSize().y  < transform.GetPosition().y ||
+		-uthEngine.GetWindow().GetSize().x  < transform.GetPosition().x &&
+		-uthEngine.GetWindow().GetSize().y  > transform.GetPosition().y)
+	{
+		m_isDestroyed = true;
+	}
 }
 
 void Missile::Draw()
@@ -92,4 +104,9 @@ void Missile::rotation()
 			transform.SetScale(-m_scale);
 		}
 	}
+}
+
+bool Missile::isOutOfBounds()
+{
+	return m_isDestroyed;
 }

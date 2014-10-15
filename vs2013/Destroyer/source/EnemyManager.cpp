@@ -51,7 +51,15 @@ void EnemyManager::Update(float dt)
 	}
 	for (int i = 0; m_tanks.size() > i; ++i)
 	{
-		m_tanks[i]->Update(dt);
+		if (m_tanks[i] != nullptr)
+		{
+			m_tanks[i]->Update(dt);
+		}
+		if (m_tanks[i]->isDestroyed() == true)
+		{
+			delete m_tanks[i];
+			m_tanks.erase(m_tanks.begin() + i);
+		}
 	}
 	if (m_player != nullptr)
 	{
@@ -73,7 +81,10 @@ void EnemyManager::Draw()
 	}
 	for (int i = 0; m_tanks.size() > i; ++i)
 	{
-		m_tanks[i]->Draw();
+		if (m_tanks[i] != nullptr)
+		{
+			m_tanks[i]->Draw();
+		}
 	}
 }
 void EnemyManager::CheckPlayer(Player* player)
@@ -85,6 +96,7 @@ void EnemyManager::SetPhysWorld(PhysicsWorld* pworld)
 {
 	m_physWorld = pworld;
 }
+//_____TANKS_____//
 void EnemyManager::SpawnTanks(float dt)
 {
 	m_tankST -= dt;

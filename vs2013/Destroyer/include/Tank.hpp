@@ -20,6 +20,7 @@ private:
 	bool m_isTankOnRight;     // Where tank spawns, changes move direction
 	bool m_isTankDestroyed;   // Is tank destroyed
 	bool m_isTankHit;         // Is tank been hit
+	float m_tankTime;
 	uth::Window* m_window;    // Get reference of window
 	uth::PhysicsWorld* m_physWorld; // Make this for getting physics
 	uth::Rigidbody* m_rigidBody;
@@ -33,6 +34,7 @@ public:
 	void Movement(float);     // Move tank left or right
 	void WhichSideOfPlayer(); // Check which side of player tank is
 	void Fly(float);
+	bool isDestroyed();       // Check if tank is destroyed
 	void Hit();
 
 };
