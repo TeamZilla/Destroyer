@@ -36,10 +36,10 @@ void EnemyManager::Destroy(std::string name)
 	//Erase enemy with name
 	for (int i = 0; m_enemies.size() > i; ++i)
 	{
-		if (m_enemies[i]->GetName() == name) 
-		{
-			//TODO: REMOVE THE OBJECT
-		}
+		//if (m_enemies[i]->GetName() == name) 
+		//{
+		//	//TODO: REMOVE THE OBJECT
+		//}
 	}
 }
 void EnemyManager::Update(float dt)
@@ -83,7 +83,7 @@ void EnemyManager::Draw()
 	{
 		if (m_tanks[i] != nullptr)
 		{
-			m_tanks[i]->Draw();
+			//m_tanks[i]->Draw();
 		}
 	}
 }

@@ -17,10 +17,10 @@ private:
 
 
 public:
-	void Update(float);
-	void Draw();
+	void update(float) override;
+	//void Draw();
 
-	Road(const int, uth::SpriteBatch*);
+	Road(const int);
 	~Road();
 };
 

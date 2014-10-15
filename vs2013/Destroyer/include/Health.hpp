@@ -21,8 +21,8 @@ public:
 	Health();
 	~Health();
 
-	void Update(float);
-	void Draw();
+	void update(float) override;
+	//void Draw();
 	//damage calculation
 	void TakeDamage(float amount);
 

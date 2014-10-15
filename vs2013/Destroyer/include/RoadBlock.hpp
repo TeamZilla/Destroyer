@@ -13,8 +13,6 @@ private:
 
 
 public:
-	void Update(float);
-	void Draw();
 
 	RoadBlock(uth::SpriteBatch*);
 	~RoadBlock();

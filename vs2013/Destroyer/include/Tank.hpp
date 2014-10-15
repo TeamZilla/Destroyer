@@ -29,8 +29,8 @@ public:
 	Tank(pmath::Vec2 pos, uth::PhysicsWorld*);    // Constructor for spawning tank
 	~Tank();
 
-	void Update(float);
-	void Draw();
+	void update(float) override;
+	//void Draw();
 	void Movement(float);     // Move tank left or right
 	void WhichSideOfPlayer(); // Check which side of player tank is
 	void Fly(float);

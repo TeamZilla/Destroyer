@@ -11,8 +11,8 @@ public:
 	Missile(pmath::Vec2f, pmath::Vec2f, float dt);
 	~Missile();
 
-	void Update(float);
-	void Draw();
+	void update(float) override;
+	//void Draw();
 	void Init();
 	bool isOutOfBounds();
 

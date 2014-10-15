@@ -32,9 +32,8 @@ Tank::~Tank()
 {
 
 }
-void Tank::Update(float dt)
+void Tank::update(float dt)
 {
-	GameObject::Update(dt);
 	if (!m_isTankHit)
 	{
 		Movement(dt);
@@ -97,7 +96,7 @@ void Tank::WhichSideOfPlayer()
 
 }
 
-void Tank::Draw()
-{
-	GameObject::Draw(uthEngine.GetWindow());
-}
+//void Tank::Draw()
+//{
+//	GameObject::Draw(uthEngine.GetWindow());
+//}

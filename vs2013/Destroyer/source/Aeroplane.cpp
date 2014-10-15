@@ -46,7 +46,7 @@ Aeroplane::~Aeroplane()
 {
 }
 
-void Aeroplane::Update(float dt)
+void Aeroplane::update(float dt)
 {
 	verticalScaler = (abs(transform.GetPosition().y)+300)/450;
 	transform.SetScale(verticalScaler * pmath::Vec2f(-m_direction * 0.35, 0.35));
@@ -62,10 +62,10 @@ void Aeroplane::explodeCheck()
 {
 }
 
-void Aeroplane::Draw()
-{
-	GameObject::Draw(uthEngine.GetWindow());
-}
+//void Aeroplane::Draw()
+//{
+//	GameObject::Draw(uthEngine.GetWindow());
+//}
 
 void Aeroplane::rotation()
 {

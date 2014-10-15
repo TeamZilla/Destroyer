@@ -41,6 +41,8 @@ public:
 	BackgroundManager(float bY, float fY, float mY);
 	~BackgroundManager();
 
+	bool Init(uth::Object* background, uth::Object* frontground);
+
 	void Update(float);
 	void DrawFront();
 	void DrawBack();

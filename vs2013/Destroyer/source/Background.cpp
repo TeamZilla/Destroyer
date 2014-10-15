@@ -12,12 +12,7 @@ Background::Background(uth::Texture* tex)
 Background::~Background()
 {
 }
-
-void Background::Update(float dt)
-{
-	GameObject::Update(dt);
-}
-void Background::Draw()
-{
-	GameObject::Draw(uthEngine.GetWindow());
-}
+//void Background::Draw()
+//{
+//	GameObject::Draw(uthEngine.GetWindow());
+//}

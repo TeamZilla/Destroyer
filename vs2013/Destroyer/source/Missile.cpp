@@ -54,7 +54,7 @@ Missile::~Missile()
 {
 }
 
-void Missile::Update(float dt)
+void Missile::update(float dt)
 {
 	pathFunc();
 	rotation();
@@ -73,13 +73,16 @@ void Missile::outOfBoundsCheck()
 		-uthEngine.GetWindow().GetSize().y  > transform.GetPosition().y)
 	{
 		m_isDestroyed = true;
+		//TODO: remove by RemoveChild(this); when implemented
+		//AddTag("destroyed");
+		//Parent()->RemoveChildren("destroyed");
 	}
 }
 
-void Missile::Draw()
-{
-	GameObject::Draw(uthEngine.GetWindow());
-}
+//void Missile::Draw()
+//{
+//	GameObject::Draw(uthEngine.GetWindow());
+//}
 
 void Missile::rotation()
 {

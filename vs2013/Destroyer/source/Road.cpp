@@ -1,9 +1,10 @@
 #include <Road.hpp>
 using namespace uth;
 
-Road::Road(const int blocks, uth::SpriteBatch* batch)
+Road::Road(const int blocks)
 {
-	m_spriteBatch = batch;
+	m_spriteBatch = AddChild<SpriteBatch>().get();
+
 	blockWidth = 16;
 	leftMostX = -uthEngine.GetWindow().GetSize().x;
 
@@ -25,12 +26,12 @@ Road::~Road()
 {
 }
 
-void Road::Update(float dt)
+void Road::update(float dt)
 {
 }
 
-
-void Road::Draw()
-{
-	//GameObject::Draw(uthEngine.GetWindow());
-}
+//
+//void Road::Draw()
+//{
+//	//GameObject::Draw(uthEngine.GetWindow());
+//}

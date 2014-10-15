@@ -11,12 +11,3 @@ RoadBlock::RoadBlock(uth::SpriteBatch* batch)
 RoadBlock::~RoadBlock()
 {
 }
-
-void RoadBlock::Update(float dt)
-{
-}
-
-
-void RoadBlock::Draw()
-{
-}

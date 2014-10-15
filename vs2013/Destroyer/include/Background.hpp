@@ -13,8 +13,7 @@ public:
 	Background(uth::Texture* tex);
 	~Background();
 
-	void Update(float);
-	void Draw();
+	//void Draw();
 };
 
 #endif //Background_HPP

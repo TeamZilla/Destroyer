@@ -10,7 +10,7 @@ public:
 	Aeroplane(float);
 	~Aeroplane();
 
-	void Update(float);
+	void update(float) override;
 	void Draw();
 	void Init();
 

@@ -16,22 +16,23 @@
 class GameScene : public uth::Scene
 {
 private: // Just place everything else as private.
-	uth::Shader m_shader;
-	uth::GameObject* m_startButton;
+	//uth::GameObject* m_startButton;
 	uth::PhysicsWorld m_physWorld;
 	uth::GameObject m_gameFloor;
+
+	Object *BgLayer, *GameLayer, *FgLayer, *UILayer;
 
 	BackgroundManager m_bgManager;
 	EnemyManager m_enemyManager;
 	void m_enemyManger(float dt);
-	Player m_player;
-	Health m_health;
+	Player* m_player;
+	Health* m_health;
 	Heli* m_heli;
 	std::vector <Aeroplane*> m_aeroplane;
-	Tank* m_tank;
+	//Tank* m_tank;
 	uth::Sound* m_music;
-	uth::SpriteBatch m_spriteBatch;
-	Road m_road;
+	//uth::SpriteBatch* m_spriteBatch;
+	Road* m_road;
 
 
 	float aeroplaneTimer;
@@ -43,8 +44,8 @@ public: // Every one of these public functions are required.
 	virtual bool Init();
 	virtual bool DeInit();
 
-	virtual bool Update(float dt);
-	virtual bool Draw();
+	virtual void Update(float dt) override;
+	//virtual void Draw(uth::RenderTarget& target, uth::RenderAttributes attributes = uth::RenderAttributes()) override;
 
 	float aeroMinSpawnTime;
 	float aeroMaxSpawnTime;

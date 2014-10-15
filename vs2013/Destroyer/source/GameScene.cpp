@@ -7,13 +7,8 @@ using namespace uth;
 // Automatically called inside SceneManager.
 bool GameScene::Init()
 {
-	// Some shader must be loaded and set window to use it
- 	m_shader.LoadShader("Shaders/Default.vert", "Shaders/Default.frag");
-	m_shader.Use();
-	uthEngine.GetWindow().SetShader(&m_shader);
 	Randomizer::SetSeed();
-	Camera& camera = uthEngine.GetWindow().GetCamera();
-	camera.SetSize(1280, 720);
+	uthEngine.GetWindow().GetCamera().SetSize(1280, 720);
 	
 	m_enemyManager.SetPhysWorld(&m_physWorld);
 	m_gameFloor.AddComponent(new Sprite(pmath::Vec4(1, 0, 0, 1), pmath::Vec2(25000, 10)));
@@ -21,7 +16,19 @@ bool GameScene::Init()
 	m_gameFloor.AddComponent(new Rigidbody(m_physWorld));
 	m_gameFloor.GetComponent<Rigidbody>("Rigidbody")->SetKinematic(true);
 
-	m_heli = new Heli(pmath::Vec2f(0, 0));
+	BgLayer = AddChild<Object>().get();
+	GameLayer = AddChild<Object>().get();
+	FgLayer = AddChild<Object>().get();
+	UILayer = AddChild<Object>().get();
+
+	m_bgManager.Init(BgLayer, FgLayer);
+
+	//m_heli = new Heli(pmath::Vec2f(0, 0));
+	m_road = GameLayer->AddChild(new Road(80)).get();
+	m_player = GameLayer->AddChild<Player>().get();
+	m_heli = GameLayer->AddChild(new Heli(pmath::Vec2f(0, 0))).get();
+	m_health = UILayer->AddChild<Health>().get();
+
 
 	aeroplaneTimer = 0;
 	aeroMinSpawnTime = 0.5;
@@ -35,7 +42,7 @@ bool GameScene::Init()
 
 	//SOUNDTEST START
 
-	m_music = uth::Sound::Load("Audio/Music/city_theme2.wav");
+	m_music = uthRS.LoadSound("Audio/Music/city_theme2.wav");
 	m_music->Play();
 	m_music->Loop(true);
 
@@ -44,16 +51,17 @@ bool GameScene::Init()
 
 
 // Update loop. Gone trought once per frame.
-bool GameScene::Update(float dt)
+void GameScene::Update(float dt)
 {
+	Scene::Update(dt);
 	//TODO: Update functions
 	m_physWorld.Update();
-	m_bgManager.CheckSpeed(m_player.getSpeed(), m_player.CheckIfGoingRight());
+	m_bgManager.CheckSpeed(m_player->getSpeed(), m_player->CheckIfGoingRight());
 	m_bgManager.Update(dt);
 	m_enemyManager.Update(dt);
-	m_enemyManager.CheckPlayer(&m_player);
-	m_player.Update(dt);
-	m_health.Update(dt);
+	m_enemyManager.CheckPlayer(m_player);
+	m_player->Update(dt);
+	m_health->Update(dt);
 	m_enemyManger(dt);
 	m_enemyManager.SpawnTanks(dt);
 
@@ -112,18 +120,18 @@ bool GameScene::Update(float dt)
 #else
 	if (uthInput.Common.Event() == uth::InputEvent::TAP)
 	{
-		m_health.TakeDamage(1);
+		m_health->TakeDamage(1);
 	}
 	if (uthInput.Keyboard.IsKeyDown(Keyboard::Up))
 	{
-		if (!m_player.m_isCrouching)
-			m_player.Jump();
+		if (!m_player->m_isCrouching)
+			m_player->Jump();
 	}
 	if (uthInput.Keyboard.IsKeyDown(Keyboard::Down))
 	{
-		if (!m_player.m_isJumping)
+		if (!m_player->m_isJumping)
 		{
-			m_player.Crouch();
+			m_player->Crouch();
 			//              amount , delay
 			m_bgManager.Shake(5, 0.4f);
 			m_enemyManager.DestroyTanks();
@@ -131,46 +139,46 @@ bool GameScene::Update(float dt)
 	}
 	if (uthInput.Keyboard.IsKeyDown(Keyboard::Left))
 	{
-		if (m_player.CheckIfGoingRight())
+		if (m_player->CheckIfGoingRight())
 		{
-			m_player.ChangeDirection();
+			m_player->ChangeDirection();
 		}
 	}
 	
 	if (uthInput.Keyboard.IsKeyDown(Keyboard::Right))
 	{
-		if (!m_player.CheckIfGoingRight())
+		if (!m_player->CheckIfGoingRight())
 		{
-			m_player.ChangeDirection();
+			m_player->ChangeDirection();
 		}
 	}
 #endif
-	return true; // Update succeeded.
+	//return true; // Update succeeded.
 }
 
 // Draw loop. All graphics are drawn during this loop.
-bool GameScene::Draw()
-{
-	//TODO: Draw functions
-
-	m_spriteBatch.Draw(uthEngine.GetWindow());
-	m_bgManager.DrawBack();
-
-	m_player.Draw();
-	m_heli->Draw();
-	m_enemyManager.Draw();
-
-	for (int i = 0; i < m_aeroplane.size(); i++)
-	{
-		m_aeroplane[i]->Draw();
-	}
-
-
-
-	m_bgManager.DrawFront();
-	m_health.Draw();
-	return true; // Drawing succeeded.
-}
+//bool GameScene::Draw()
+//{
+//	//TODO: Draw functions
+//
+//	m_spriteBatch.Draw(uthEngine.GetWindow());
+//	m_bgManager.DrawBack();
+//
+//	m_player.Draw();
+//	m_heli->Draw();
+//	m_enemyManager.Draw();
+//
+//	for (int i = 0; i < m_aeroplane.size(); i++)
+//	{
+//		m_aeroplane[i]->Draw();
+//	}
+//
+//
+//
+//	m_bgManager.DrawFront();
+//	m_health.Draw();
+//	return true; // Drawing succeeded.
+//}
 
 
 void GameScene::m_enemyManger(float m_dt)
@@ -215,9 +223,7 @@ GameScene::GameScene()
 	: m_bgManager(	uthEngine.GetWindow().GetSize().y - 470,
 					uthEngine.GetWindow().GetSize().y - 220,
 					uthEngine.GetWindow().GetSize().y - 570),
-	m_physWorld(0, 10),
-	m_spriteBatch(),
-	m_road(80, &m_spriteBatch)
+	m_physWorld(0, 10)
 {
 }
 //Default deconstrutor.

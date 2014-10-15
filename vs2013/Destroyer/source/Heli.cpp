@@ -42,9 +42,8 @@ Heli::~Heli()
 {
 }
 
-void Heli::Update(float dt)
+void Heli::update(float dt)
 {
-	GameObject::Update(dt);
 	m_dt = dt;
 	Pilot();
 #ifdef UTH_SYSTEM_ANDROID
@@ -54,15 +53,15 @@ void Heli::Update(float dt)
 	}
 #endif
 
-	for (int i = 0; i < m_missiles.size(); i++)
-	{
-		m_missiles[i]->Update(m_dt);
-		if (m_missiles[i]->isOutOfBounds() == true)
-		{
-			delete m_missiles[i];
-			m_missiles.erase(m_missiles.begin() + i);
-		}
-	}
+	//for (int i = 0; i < m_missiles.size(); i++)
+	//{
+	//	m_missiles[i]->Update(m_dt);
+		//if (m_missiles[i]->isOutOfBounds() == true)
+		//{
+		//	delete m_missiles[i];
+		//	m_missiles.erase(m_missiles.begin() + i);
+		//}
+	//}
 
 }
 
@@ -146,15 +145,15 @@ void Heli::Pilot()
 
 }
 
-void Heli::Draw()
-{
-	GameObject::Draw(uthEngine.GetWindow());
-
-	for (int i = 0; i < m_missiles.size(); i++)
-	{
-		m_missiles[i]->Draw();
-	}
-}
+//void Heli::Draw()
+//{
+//	GameObject::Draw(uthEngine.GetWindow());
+//
+//	for (int i = 0; i < m_missiles.size(); i++)
+//	{
+//		m_missiles[i]->Draw();
+//	}
+//}
 
 
 void Heli::SetNextPos(pmath::Vec2f targ)
@@ -219,7 +218,8 @@ void Heli::m_reload()
 
 void Heli::m_launch()
 {
-	m_missiles.push_back(new Missile(transform.GetPosition(), m_shootingTarget, m_dt));
+	//TODO: remove comments //Parent()->AddChild(new Missile(transform.GetPosition(), m_shootingTarget, m_dt));
+	//m_missiles.push_back(new Missile(transform.GetPosition(), m_shootingTarget, m_dt));
 }
 
 

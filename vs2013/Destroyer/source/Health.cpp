@@ -22,9 +22,8 @@ void Health::TakeDamage(float amount)
 	m_Chealth -= amount/100;
 }
 
-void Health::Update(float dt)
+void Health::update(float dt)
 {
-	GameObject::Update(dt);
 	transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition().x - uthEngine.GetWindow().GetSize().x/2,
 		uthEngine.GetWindow().GetCamera().GetPosition().y - uthEngine.GetWindow().GetSize().y / 2);
 	if (m_Chealth == m_Mhealth)
@@ -45,10 +44,10 @@ void Health::Update(float dt)
 	}
 }
 
-void Health::Draw()
-{
-	GameObject::Draw(uthEngine.GetWindow());
-}
+//void Health::Draw()
+//{
+//	GameObject::Draw(uthEngine.GetWindow());
+//}
 Health::~Health()
 {
 }

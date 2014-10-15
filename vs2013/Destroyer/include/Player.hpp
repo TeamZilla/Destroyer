@@ -18,8 +18,8 @@ public:
 	Player();
 	~Player();
 
-	void Update(float);
-	void Draw();
+	void update(float) override;
+	//void Draw();
 	void ChangeDirection();
 	void Jump();
 	void Jumping();

@@ -14,8 +14,8 @@ public:
 	Heli(float);
 	~Heli();
 
-	void Update(float);
-	void Draw();
+	void update(float) override;
+	//void Draw();
 	void SetNextPos(pmath::Vec2f);
 	void SetShootTarget(pmath::Vec2f);
 	void SetMisCD_min(float);
@@ -63,7 +63,7 @@ private:
 	float m_missileCD_min;
 	float m_missileCD_max;
 
-	std::vector <Missile*> m_missiles;
+	//std::vector <Missile*> m_missiles;
 	void m_shooter();
 	void m_launch();
 	void burst();

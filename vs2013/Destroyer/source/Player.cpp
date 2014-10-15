@@ -26,9 +26,8 @@ Player::Player()
 	m_isJumping = false;
 	m_isCrouching = false;
 }
-void Player::Update(float dt)
+void Player::update(float dt)
 {
-	GameObject::Update(dt);
 	m_dt = dt;
 	Acceleration();
 	if (m_isJumping)
@@ -49,10 +48,10 @@ void Player::ChangeDirection()
 	//Change bool value to check is player going right or not
 	m_isGoingRight = !m_isGoingRight;
 }
-void Player::Draw()
-{
-	GameObject::Draw(uthEngine.GetWindow());
-}
+//void Player::Draw()
+//{
+//	GameObject::Draw(uthEngine.GetWindow());
+//}
 //Player jump
 void Player::Jump()
 {   //This is called once, changes variables to be ready to jump

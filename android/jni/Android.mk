@@ -30,20 +30,11 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE    := uthengine
 LOCAL_SRC_FILES := main.cpp \
-../../vs2013/Destroyer/source/Aeroplane.cpp \
-../../vs2013/Destroyer/source/Background.cpp \
-../../vs2013/Destroyer/source/BackgroundManager.cpp \
-../../vs2013/Destroyer/source/GameScene.cpp \
-../../vs2013/Destroyer/source/Health.cpp \
-../../vs2013/Destroyer/source/Heli.cpp \
-../../vs2013/Destroyer/source/Missile.cpp \
-../../vs2013/Destroyer/source/Player.cpp \
-../../vs2013/Destroyer/source/Shock.cpp \
-../../vs2013/Destroyer/source/Tank.cpp 
+../../vs2013/TestProject/source/TestScene.cpp
 LOCAL_LDLIBS    := -llog -landroid -lEGL -lGLESv2 -lOpenSLES
 LOCAL_STATIC_LIBRARIES := android_native_app_glue engine
 LOCAL_SHARED_LIBRARIES :=
-LOCAL_C_INCLUDES += $(LOCAL_PATH)/../../vs2013/Destroyer/include/
+LOCAL_C_INCLUDES += $(LOCAL_PATH)/../../vs2013/TestProject/include/
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/../../include/
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/../../ext/include/
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/../../ext/include/freetype_include/
