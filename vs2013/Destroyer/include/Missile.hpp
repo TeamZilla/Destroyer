@@ -14,12 +14,13 @@ public:
 	void Update(float);
 	void Draw();
 	void Init();
-
+	bool isOutOfBounds();
 
 
 private:
 	void pathFunc();
 	void explodeCheck();
+	void outOfBoundsCheck();
 	float time;
 	float m_lenght;
 	float speed;
@@ -39,6 +40,7 @@ private:
 	float m_angle;
 	float sliding; // sliding modifier (use 1 +- "small value")
 	bool isOrientated;
+	bool m_isDestroyed;
 
 };
 

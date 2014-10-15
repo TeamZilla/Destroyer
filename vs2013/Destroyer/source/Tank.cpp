@@ -4,11 +4,13 @@ using namespace uth;
 
 Tank::Tank(pmath::Vec2 pos, PhysicsWorld* physworld)
 {
+	m_tankTime = 2;
 	m_tankScale = 0.5f;
 	m_tankSpeed = 200;
 	m_playerSpeed = 0;
 	m_isSideChecked = false;
 	m_isTankHit = false;
+	m_isTankDestroyed = false;
 	m_maxRange = 400;
 	m_minRange = 200;
 	m_physWorld = physworld;
@@ -63,7 +65,15 @@ void Tank::Movement(float dt)
 }
 void Tank::Fly(float dt)
 {
-
+	m_tankTime -= dt;
+	if(m_tankTime <= 0)
+	{
+		m_isTankDestroyed = true;
+	}
+}
+bool Tank::isDestroyed()
+{
+	return m_isTankDestroyed;
 }
 void Tank::Hit()
 {
