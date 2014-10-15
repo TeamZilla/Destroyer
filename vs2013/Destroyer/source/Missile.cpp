@@ -67,8 +67,8 @@ void Missile::explodeCheck()
 }
 void Missile::outOfBoundsCheck()
 {
-	if (uthEngine.GetWindow().GetSize().x  > transform.GetPosition().x &&
-		uthEngine.GetWindow().GetSize().y  < transform.GetPosition().y ||
+	if ( uthEngine.GetWindow().GetSize().x  > transform.GetPosition().x &&
+		 uthEngine.GetWindow().GetSize().y  < transform.GetPosition().y ||
 		-uthEngine.GetWindow().GetSize().x  < transform.GetPosition().x &&
 		-uthEngine.GetWindow().GetSize().y  > transform.GetPosition().y)
 	{
