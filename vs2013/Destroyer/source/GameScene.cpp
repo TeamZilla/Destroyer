@@ -153,6 +153,7 @@ bool GameScene::Draw()
 {
 	//TODO: Draw functions
 
+	m_spriteBatch.Draw(uthEngine.GetWindow());
 	m_bgManager.DrawBack();
 
 	m_player.Draw();
@@ -163,6 +164,7 @@ bool GameScene::Draw()
 	{
 		m_aeroplane[i]->Draw();
 	}
+
 
 
 	m_bgManager.DrawFront();
@@ -209,14 +211,14 @@ void GameScene::m_enemyManger(float m_dt)
 
 //Default constructor for initialising constant variables.
 GameScene::GameScene()
-	//: m_bgManager(250,500,150)
+//: m_bgManager(250,500,150)
 	: m_bgManager(	uthEngine.GetWindow().GetSize().y - 470,
 					uthEngine.GetWindow().GetSize().y - 220,
 					uthEngine.GetWindow().GetSize().y - 570),
-					m_physWorld(0, 10)
-
+	m_physWorld(0, 10),
+	m_spriteBatch(),
+	m_road(80, &m_spriteBatch)
 {
-
 }
 //Default deconstrutor.
 GameScene::~GameScene()
