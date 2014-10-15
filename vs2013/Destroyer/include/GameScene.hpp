@@ -9,6 +9,7 @@
 #include <EnemyManager.hpp>
 #include <Heli.hpp>
 #include <Aeroplane.hpp>
+#include <Road.hpp>
 
 #include <Tank.hpp>
 
@@ -29,6 +30,9 @@ private: // Just place everything else as private.
 	std::vector <Aeroplane*> m_aeroplane;
 	Tank* m_tank;
 	uth::Sound* m_music;
+	uth::SpriteBatch m_spriteBatch;
+	Road m_road;
+
 
 	float aeroplaneTimer;
 

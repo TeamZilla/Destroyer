@@ -98,6 +98,8 @@
     <ClCompile Include="source\main.cpp" />
     <ClCompile Include="source\Missile.cpp" />
     <ClCompile Include="source\Player.cpp" />
+    <ClCompile Include="source\Road.cpp" />
+    <ClCompile Include="source\RoadBlock.cpp" />
     <ClCompile Include="source\Shock.cpp" />
     <ClCompile Include="source\Tank.cpp" />
   </ItemGroup>
@@ -111,6 +113,8 @@
     <ClInclude Include="include\Heli.hpp" />
     <ClInclude Include="include\Missile.hpp" />
     <ClInclude Include="include\Player.hpp" />
+    <ClInclude Include="include\Road.hpp" />
+    <ClInclude Include="include\RoadBlock.hpp" />
     <ClInclude Include="include\Scenes.hpp" />
     <ClInclude Include="include\Shock.hpp" />
     <ClInclude Include="include\Tank.hpp" />
