@@ -16,18 +16,18 @@ bool GameScene::Init()
 	m_gameFloor.AddComponent(new Rigidbody(m_physWorld));
 	m_gameFloor.GetComponent<Rigidbody>("Rigidbody")->SetKinematic(true);
 
-	BgLayer = AddChild<Object>().get();
-	GameLayer = AddChild<Object>().get();
-	FgLayer = AddChild<Object>().get();
-	UILayer = AddChild<Object>().get();
+	AddChild(BgLayer);
+	AddChild(GameLayer);
+	AddChild(FgLayer);
+	AddChild(UILayer);
 
 	m_bgManager.Init(BgLayer, FgLayer);
 
 	//m_heli = new Heli(pmath::Vec2f(0, 0));
-	m_road = GameLayer->AddChild(new Road(80)).get();
-	m_player = GameLayer->AddChild<Player>().get();
-	m_heli = GameLayer->AddChild(new Heli(pmath::Vec2f(0, 0))).get();
-	m_health = UILayer->AddChild<Health>().get();
+	GameLayer->AddChild(m_road = new Road(80));
+	GameLayer->AddChild(m_player = new Player);
+	GameLayer->AddChild(m_heli = new Heli(pmath::Vec2f(0, 0)));
+	UILayer->AddChild(m_health = new Health);
 
 
 	aeroplaneTimer = 0;
@@ -55,20 +55,20 @@ void GameScene::Update(float dt)
 {
 	Scene::Update(dt);
 	//TODO: Update functions
-	m_physWorld.Update();
+	m_physWorld.Update(dt);
 	m_bgManager.CheckSpeed(m_player->getSpeed(), m_player->CheckIfGoingRight());
 	m_bgManager.Update(dt);
 	m_enemyManager.Update(dt);
 	m_enemyManager.CheckPlayer(m_player);
-	m_player->Update(dt);
-	m_health->Update(dt);
+	//m_player->Update(dt);
+	//m_health->Update(dt);
 	m_enemyManger(dt);
 	m_enemyManager.SpawnTanks(dt);
 
-	for (int i = 0; i < m_aeroplane.size(); i++)
-	{
-		m_aeroplane[i]->Update(dt);
-	}
+	//for (int i = 0; i < m_aeroplane.size(); i++)
+	//{
+	//	m_aeroplane[i]->Update(dt);
+	//}
 	
 
 #ifdef UTH_SYSTEM_ANDROID
@@ -223,7 +223,11 @@ GameScene::GameScene()
 	: m_bgManager(	uthEngine.GetWindow().GetSize().y - 470,
 					uthEngine.GetWindow().GetSize().y - 220,
 					uthEngine.GetWindow().GetSize().y - 570),
-	m_physWorld(0, 10)
+	m_physWorld(0, 10),
+	BgLayer(new Layer()), 
+	GameLayer(new Layer()),
+	FgLayer(new Layer()),
+	UILayer(new Layer())
 {
 }
 //Default deconstrutor.

@@ -12,6 +12,7 @@
 class EnemyManager
 {
 private:
+	uth::Layer* m_layer;
 	Player* m_player;
 	std::vector<uth::GameObject*> m_enemies;
 	std::vector<Tank*> m_tanks;
@@ -30,6 +31,7 @@ public:
 
 	EnemyManager();
 	~EnemyManager();
+	bool Init(uth::Layer* m_layer);
 	void Create(bool isRight, pmath::Vec2 spawnPos, std::string name);
 	void Destroy(std::string name);
 	void Update(float dt);

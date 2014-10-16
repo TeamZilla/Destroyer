@@ -3,10 +3,13 @@ using namespace uth;
 
 Road::Road(const int blocks)
 {
-	m_spriteBatch = AddChild<SpriteBatch>().get();
+	AddChild(m_spriteBatch = new SpriteBatch());
+	m_spriteBatch->SetTexture(uthRS.LoadTexture("backgrounds/asphalt_block.png"));
 
 	blockWidth = 16;
 	leftMostX = -uthEngine.GetWindow().GetSize().x;
+
+	AddTag("Road");
 
 	//roadBlocks.reserve(blocks);
 	for (int i = 0; i < blocks; i++)
@@ -14,10 +17,10 @@ Road::Road(const int blocks)
 		//auto temp = new GameObject()
 		m_blocks.push_back(new RoadBlock(m_spriteBatch));
 		//m_blocks[i]->transform.SetOrigin(2);
-		m_blocks[i]->transform.SetPosition(
+		m_blocks[i]->SetPosition(
 			pmath::Vec2(leftMostX + i * blockWidth + 0.5*blockWidth,
-			uthEngine.GetWindow().GetSize().y - m_blocks[i]->transform.GetSize().y));
-		m_spriteBatch->AddSprite(&m_blocks[i]->transform);
+			uthEngine.GetWindow().GetSize().y - m_blocks[i]->GetSize().y));
+		m_spriteBatch->AddSprite(m_blocks[i]);
 	}
 }
 

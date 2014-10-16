@@ -20,7 +20,7 @@ private: // Just place everything else as private.
 	uth::PhysicsWorld m_physWorld;
 	uth::GameObject m_gameFloor;
 
-	Object *BgLayer, *GameLayer, *FgLayer, *UILayer;
+	uth::Layer *BgLayer, *GameLayer, *FgLayer, *UILayer;
 
 	BackgroundManager m_bgManager;
 	EnemyManager m_enemyManager;

@@ -19,6 +19,12 @@ EnemyManager::~EnemyManager()
 {
 
 }
+bool EnemyManager::Init(uth::Layer* layer)
+{
+	m_layer = layer;
+
+	return true;
+}
 void EnemyManager::Create(bool isRight, pmath::Vec2 spawnPos, std::string name)
 {	
 	//Put enemy in vector list with unique name for easier handling

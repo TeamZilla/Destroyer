@@ -3,10 +3,10 @@
 #define RoadBlock_HPP
 #include <UtH/UtHEngine.hpp>
 
-class RoadBlock : public uth::GameObject
+class RoadBlock : public uth::Transform
 {
 private:
-	uth::SpriteBatch* m_spriteBatch;
+	//uth::SpriteBatch* m_spriteBatch;
 	float blockWidth;
 	float leftMostX;
 

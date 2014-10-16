@@ -1,6 +1,7 @@
 #include <UtH/Engine/Object.hpp>
 #include <UtH/Renderer/RenderTarget.hpp>
 #include <cassert>
+#include <UtH/Platform/Debug.hpp>
 
 namespace uth
 {
@@ -47,11 +48,9 @@ namespace uth
 	{
 		if (m_active)
 		{
-			for (auto& i : m_children)
-			{
-				if (i->m_active)
-					i->Update(dt);
-			}
+			for (int i = 0; i < m_children.size(); ++i)
+				if (m_children[i]->m_active)
+					m_children[i]->Update(dt);
 		}
 	}
 	void Object::Draw(RenderTarget& target, RenderAttributes attributes)
@@ -77,8 +76,24 @@ namespace uth
 		(*o)->setParent(nullptr);
 		m_children.erase(o);
 	}
+	void Object::RemoveChild(Object* object)
+	{
+		for (auto it = m_children.begin(); it != m_children.end(); it++)
+		{
+			if ((*it).get() == object)
+			{
+				RemoveChild(*it);
+			}
+		}
+	}
 	void Object::RemoveChildren()
 	{
+		assert(
+			this != nullptr ?
+			true :
+			[]() -> bool { WriteError("This = nullptr, object deleted multiple times"); return false; }()
+		);
+
 		for (auto& child : m_children)
 			child->setParent(nullptr);
 		m_children.clear();
@@ -86,16 +101,6 @@ namespace uth
 	void Object::RemoveChildren(const std::string& tag)
 	{
 		RemoveChildren(Children(tag));
-
-		//m_children.erase(
-		//	std::remove_if( m_children.begin(), m_children.end(),
-		//	[tag](std::shared_ptr<Object> const& o)
-		//{
-		//	return o->HasTag(tag); 
-		//}
-		//	),
-		//	m_children.end()
-		//);
 	}
 	void Object::RemoveChildren(const std::vector<std::shared_ptr<Object>>& objects)
 	{
@@ -117,15 +122,6 @@ namespace uth
 			}
 		}
 		return retVal;
-
-		//const auto it = std::remove_if(m_children.begin(), m_children.end(),
-		//	[tag](std::shared_ptr<Object> const& o)
-		//{
-		//	return o->HasTag(tag);
-		//});
-		//std::vector<std::shared_ptr<Object>> retVal(it, m_children.end());
-		//m_children.erase(it, m_children.end());
-		//return retVal;
 	}
 
 	std::vector<std::shared_ptr<Object>> Object::Children() const
@@ -143,16 +139,6 @@ namespace uth
 			}
 		}
 		return retVal;
-
-		//if (m_children.size() == 0)
-		//	return m_children;
-		//const auto it = std::remove_if(m_children.begin(), m_children.end(),
-		//	[tag](std::shared_ptr<Object> const& o)
-		//{
-		//	return o->HasTag(tag); 
-		//});
-		//std::vector<std::shared_ptr<Object>> retVal(it, m_children.end());
-		//return retVal;
 	}
 
 	std::vector<std::shared_ptr<Object>> Object::FindAll(const std::string& tag, const size_t reserveSize)

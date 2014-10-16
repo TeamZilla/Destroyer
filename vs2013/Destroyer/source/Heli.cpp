@@ -218,7 +218,8 @@ void Heli::m_reload()
 
 void Heli::m_launch()
 {
-	//TODO: remove comments //Parent()->AddChild(new Missile(transform.GetPosition(), m_shootingTarget, m_dt));
+	//TODO: remove comments 
+	Parent()->AddChild(new Missile(transform.GetPosition(), m_shootingTarget, m_dt));
 	//m_missiles.push_back(new Missile(transform.GetPosition(), m_shootingTarget, m_dt));
 }
 
