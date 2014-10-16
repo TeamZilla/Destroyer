@@ -25,10 +25,12 @@ bool GameScene::Init()
 	m_enemyManager.Init(GameLayer);
 
 	//m_heli = new Heli(pmath::Vec2f(0, 0));
-	GameLayer->AddChild(m_road = new Road(80));
+	GameLayer->AddChild(m_road = new Road(160));
 	GameLayer->AddChild(m_player = new Player);
 	GameLayer->AddChild(m_heli = new Heli(pmath::Vec2f(0, 0)));
 	UILayer->AddChild(m_health = new Health);
+
+	m_road->Init(m_player);
 
 
 	aeroplaneTimer = 0;
@@ -153,6 +155,14 @@ void GameScene::Update(float dt)
 			m_player->ChangeDirection();
 		}
 	}
+
+
+	if (uthInput.Keyboard.IsKeyDown(uth::Keyboard::R))
+	{
+		m_road->Shock();
+	}
+
+
 #endif
 	//return true; // Update succeeded.
 }
