@@ -22,6 +22,7 @@ bool GameScene::Init()
 	AddChild(UILayer);
 
 	m_bgManager.Init(BgLayer, FgLayer);
+	m_enemyManager.Init(GameLayer);
 
 	//m_heli = new Heli(pmath::Vec2f(0, 0));
 	GameLayer->AddChild(m_road = new Road(80));

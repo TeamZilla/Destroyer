@@ -11,12 +11,9 @@ Road::Road(const int blocks)
 
 	AddTag("Road");
 
-	//roadBlocks.reserve(blocks);
 	for (int i = 0; i < blocks; i++)
 	{
-		//auto temp = new GameObject()
 		m_blocks.push_back(new RoadBlock(m_spriteBatch));
-		//m_blocks[i]->transform.SetOrigin(2);
 		m_blocks[i]->SetPosition(
 			pmath::Vec2(leftMostX + i * blockWidth + 0.5*blockWidth,
 			uthEngine.GetWindow().GetSize().y - m_blocks[i]->GetSize().y));
@@ -32,9 +29,3 @@ Road::~Road()
 void Road::update(float dt)
 {
 }
-
-//
-//void Road::Draw()
-//{
-//	//GameObject::Draw(uthEngine.GetWindow());
-//}

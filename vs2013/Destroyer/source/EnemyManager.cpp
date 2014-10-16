@@ -42,10 +42,7 @@ void EnemyManager::Destroy(std::string name)
 	//Erase enemy with name
 	for (int i = 0; m_enemies.size() > i; ++i)
 	{
-		//if (m_enemies[i]->GetName() == name) 
-		//{
 		//	//TODO: REMOVE THE OBJECT
-		//}
 	}
 }
 void EnemyManager::Update(float dt)
@@ -53,17 +50,18 @@ void EnemyManager::Update(float dt)
 	//Update every enemy in the update loop
 	for (int i = 0; m_enemies.size() > i; ++i)
 	{
-		m_enemies[i]->Update(dt);
+		//m_enemies[i]->Update(dt);
 	}
 	for (int i = 0; m_tanks.size() > i; ++i)
 	{
 		if (m_tanks[i] != nullptr)
 		{
-			m_tanks[i]->Update(dt);
+			//m_tanks[i]->Update(dt);
 		}
 		if (m_tanks[i]->isDestroyed() == true)
 		{
-			delete m_tanks[i];
+			m_layer->RemoveChild(m_tanks[i]);
+			//delete m_tanks[i];
 			m_tanks.erase(m_tanks.begin() + i);
 		}
 	}
@@ -110,11 +108,15 @@ void EnemyManager::SpawnTanks(float dt)
 	{
 		if (Randomizer::GetInt(0, 10) < 5)
 		{
-			m_tanks.push_back(new Tank(pmath::Vec2(m_tankSPLeft), m_physWorld));
+			Tank* tempTank = new Tank(pmath::Vec2(m_tankSPLeft), m_physWorld);
+			m_layer->AddChild(tempTank);
+			m_tanks.push_back(tempTank);
 		}
 		else
 		{
-			m_tanks.push_back(new Tank(pmath::Vec2(m_tankSPRight), m_physWorld));
+			Tank* tempTank = new Tank(pmath::Vec2(m_tankSPRight), m_physWorld);
+			m_layer->AddChild(tempTank);
+			m_tanks.push_back(tempTank);
 		}
 		m_tankST = 4;
 	}

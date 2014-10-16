@@ -76,7 +76,8 @@ bool Tank::isDestroyed()
 }
 void Tank::Hit()
 {
-	GetComponent<Rigidbody>("Rigidbody")->ApplyImpulse(pmath::Vec2(Randomizer::GetFloat(-50,50),-100));
+	GetComponent<Rigidbody>("Rigidbody")->ApplyImpulse(pmath::Vec2(Randomizer::GetFloat(-50, 50), -Randomizer::GetFloat(20, 10)));
+	GetComponent<Rigidbody>("Rigidbody")->SetAngularVelocity(Randomizer::GetFloat(-50, 50));
 	m_isTankHit = true;
 }
 void Tank::WhichSideOfPlayer()
