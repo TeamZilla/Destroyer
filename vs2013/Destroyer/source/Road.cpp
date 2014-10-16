@@ -25,7 +25,7 @@ Road::Road(const int blocks)
 		m_shockTime = 0;
 		m_shockStartX = 0;
 		m_shockHeight = 100;
-		m_roadY = m_blocks[0]->transform.GetPosition().y;
+		m_roadY = m_blocks[0]->GetPosition().y;
 		m_shockRange = 1200;
 		isShock = false;
 		m_shockHeightMatcher = 250;
@@ -74,19 +74,19 @@ void Road::Shock()
 	{
 
 
-		if (m_shockLenght < std::abs(m_shockSpeed*m_shockTime - m_shockStartX - m_blocks[i]->transform.GetPosition().x))
+		if (m_shockLenght < std::abs(m_shockSpeed*m_shockTime - m_shockStartX - m_blocks[i]->GetPosition().x))
 		{
-			m_blocks[i]->transform.SetPosition(m_blocks[i]->transform.GetPosition().x, m_roadY);
+			m_blocks[i]->SetPosition(m_blocks[i]->GetPosition().x, m_roadY);
 		}
 		else
 		{
 
-				m_blocks[i]->transform.SetPosition(
+				m_blocks[i]->SetPosition(
 					
-				m_blocks[i]->transform.GetPosition().x, 
+				m_blocks[i]->GetPosition().x, 
 				
 				m_roadY -
-				m_shockHeight + std::pow((m_shockSpeed * m_shockTime - m_shockStartX) - m_blocks[i]->transform.GetPosition().x, 2) / 300 *m_shockDir * m_shockTime - m_shockHeightMatcher
+				m_shockHeight + std::pow((m_shockSpeed * m_shockTime - m_shockStartX) - m_blocks[i]->GetPosition().x, 2) / 300 *m_shockDir * m_shockTime - m_shockHeightMatcher
 				
 				);
 		}
