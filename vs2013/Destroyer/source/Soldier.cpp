@@ -1,25 +1,26 @@
-#include <Tank.hpp>
+#include <Soldier.hpp>
 #include <time.h>
 using namespace uth;
 
-Tank::Tank(pmath::Vec2 pos, PhysicsWorld* physworld)
+Soldier::Soldier(pmath::Vec2 pos, PhysicsWorld* physworld)
 {
-	m_tankTime = 2;
-	m_tankScale = 0.5f;
-	m_tankSpeed = 200;
+	m_soldierTime = 2;
+	m_soldierScale = 0.5f;
+	m_soldierSpeed = 200;
 	m_playerSpeed = 0;
 	m_isSideChecked = false;
-	m_isTankHit = false;
-	m_isTankDestroyed = false;
+	m_isSoldierHit = false;
+	m_isSoldierDestroyed = false;
 	m_maxRange = 400;
 	m_minRange = 200;
 	m_physWorld = physworld;
 
 	m_window = &uthEngine.GetWindow();
-	auto tankTexture = uthRS.LoadTexture("Enemies/tank.png");
+	auto tankTexture = uthRS.LoadTexture("Enemies/soldier_running.png");
 	tankTexture->SetSmooth(true);
-	AddComponent(new Sprite(tankTexture));
+	AddComponent(new AnimatedSprite(tankTexture,6,6,1,10));
 	transform.SetPosition(pos.x, pos.y);
+	transform.SetScale(0.4f);
 	AddComponent(new Rigidbody(*m_physWorld));
 	m_rigidBody = GetComponent<Rigidbody>("Rigidbody");
 	m_rigidBody->SetPosition(pmath::Vec2(pos.x, pos.y));
@@ -30,13 +31,13 @@ Tank::Tank(pmath::Vec2 pos, PhysicsWorld* physworld)
 
 	WhichSideOfPlayer();
 }
-Tank::~Tank()
+Soldier::~Soldier()
 {
 
 }
-void Tank::update(float dt)
+void Soldier::update(float dt)
 {
-	if (!m_isTankHit)
+	if (!m_isSoldierHit)
 	{
 		Movement(dt);
 	}
@@ -47,7 +48,7 @@ void Tank::update(float dt)
 	m_dt = dt;
 }
 
-void Tank::Movement(float dt)
+void Soldier::Movement(float dt)
 {
 	if (!m_isSideChecked)
 	{
@@ -58,44 +59,44 @@ void Tank::Movement(float dt)
 	if (m_playerPos.x + m_range <= m_rigidBody->GetPosition().x || m_playerPos.x - m_range >= m_rigidBody->GetPosition().x)
 	{
 		auto pos = pmath::Vec2(m_rigidBody->GetPosition());
-		m_rigidBody->SetPosition(pmath::Vec2(pos.x+(dt*m_tankSpeed)+1, pos.y));
+		m_rigidBody->SetPosition(pmath::Vec2(pos.x + (dt*m_soldierSpeed) + 1, pos.y));
 		//m_rigidBody->ApplyImpulse(pmath::Vec2(m_tankSpeed, 10));
 	}
 
 	//transform.SetScale(Randomizer::GetFloat(m_tankScale - 0.02f, m_tankScale + 0.01f));
 }
-void Tank::Fly(float dt)
+void Soldier::Fly(float dt)
 {
-	m_tankTime -= dt;
-	if(m_tankTime <= 0)
+	m_soldierTime -= dt;
+	if (m_soldierTime <= 0)
 	{
-		m_isTankDestroyed = true;
+		m_isSoldierDestroyed = true;
 	}
 }
-bool Tank::isDestroyed()
+bool Soldier::isDestroyed()
 {
-	return m_isTankDestroyed;
+	return m_isSoldierDestroyed;
 }
-void Tank::Hit()
+void Soldier::Hit()
 {
-	m_rigidBody->ApplyImpulse(pmath::Vec2(Randomizer::GetFloat(-20, 20),      //X direction
-							 -Randomizer::GetFloat(35, 50)),			      //Y direction
-							  pmath::Vec2(Randomizer::GetFloat(-25, 25), 0)); //offset
+	m_rigidBody->ApplyImpulse(pmath::Vec2(Randomizer::GetFloat(-10, 10),      //X direction
+							  -Randomizer::GetFloat(15, 30)),			      //Y direction
+							  pmath::Vec2(Randomizer::GetFloat(-15, 15), 0)); //offset
 	//m_rigidBody->SetPhysicsGroup(3); //Set collision group to positive so it can collide to tanks
-	m_isTankHit = true;
+	m_isSoldierHit = true;
 }
-void Tank::WhichSideOfPlayer()
+void Soldier::WhichSideOfPlayer()
 {
 	m_playerPos = pmath::Vec2(m_window->GetSize().x / 2 <= m_rigidBody->GetPosition().x, 0);
 
 	if (m_playerPos.x <= m_rigidBody->GetPosition().x)
 	{
-		m_isTankOnRight = true;
-		m_tankSpeed *= -1;
+		m_isSoldierOnRight = true;
+		m_soldierSpeed *= -1;
 	}
 	else
 	{
-		m_isTankOnRight = false;
+		m_isSoldierOnRight = false;
 		transform.SetScale(transform.GetScale().x * -1, transform.GetScale().y);
 	}
 

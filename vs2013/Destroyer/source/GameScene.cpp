@@ -11,7 +11,7 @@ bool GameScene::Init()
 	uthEngine.GetWindow().GetCamera().SetSize(1280, 720);
 	
 	m_enemyManager.SetPhysWorld(&m_physWorld);
-	m_gameFloor.AddComponent(new Sprite(pmath::Vec4(1, 0, 0, 1), pmath::Vec2(25000, 10)));
+	m_gameFloor.AddComponent(new Sprite(pmath::Vec4(1, 0, 0, 1), pmath::Vec2(3000, 80)));
 	m_gameFloor.transform.SetPosition(0, uthEngine.GetWindow().GetSize().y);
 	m_gameFloor.AddComponent(new Rigidbody(m_physWorld));
 	m_gameFloor.GetComponent<Rigidbody>("Rigidbody")->SetKinematic(true);
@@ -82,7 +82,7 @@ void GameScene::Update(float dt)
 
 	if (uthInput.Touch.Motion() == TouchMotion::TAP)
 	{
-		m_health.TakeDamage(1);
+		m_health->TakeDamage(1);
 	}
 
 	if(uthInput.Touch.Motion() == TouchMotion::DRAG)
@@ -91,30 +91,30 @@ void GameScene::Update(float dt)
 		{
 			if (!m_player.m_isCrouching)
 			{
-				m_player.Jump();
+				m_player->Jump();
 			}
 		}
 		else if (touchStart.y + 80 < touchEnd.y - 80)
 		{
 			if (!m_player.m_isJumping)
 			{
-				m_player.Crouch();
+				m_player->Crouch();
 				m_bgManager.Shake(5, 0.4f); // Amount, Delay
 			}
 		}
 
 		if (touchStart.x + 90 > touchEnd.x - 90)
 		{
-			if (m_player.CheckIfGoingRight())
+			if (m_player->CheckIfGoingRight())
 			{
-				m_player.ChangeDirection();
+				m_player->ChangeDirection();
 			}
 		}
 		else if (touchStart.x - 90 < touchEnd.x + 90)
 		{
-			if (!m_player.CheckIfGoingRight())
+			if (!m_player->CheckIfGoingRight())
 			{
-				m_player.ChangeDirection();
+				m_player->ChangeDirection();
 			}
 		}
 	}
@@ -127,17 +127,18 @@ void GameScene::Update(float dt)
 	}
 	if (uthInput.Keyboard.IsKeyDown(Keyboard::Up))
 	{
-		if (!m_player->m_isCrouching)
+		if (!m_player->m_isCrouching && !m_player->m_isJumping)
 			m_player->Jump();
 	}
 	if (uthInput.Keyboard.IsKeyDown(Keyboard::Down))
 	{
-		if (!m_player->m_isJumping)
+		if (!m_player->m_isJumping && !m_player->m_isCrouching)
 		{
 			m_player->Crouch();
 			//              amount , delay
 			m_bgManager.Shake(5, 0.4f);
 			m_enemyManager.DestroyTanks();
+			m_enemyManager.DestroySoldiers();
 		}
 	}
 	if (uthInput.Keyboard.IsKeyDown(Keyboard::Left))

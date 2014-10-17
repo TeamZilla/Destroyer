@@ -23,9 +23,9 @@ private:
 	float m_backSpeed, m_frontSpeed, m_mountainSpeed, m_playerSpeed;
 	float m_cameraPan, m_cameraPanMax, m_cameraPanSpd, m_isCameraTurning;
 	float m_shakeTimer, m_shakeAmount, m_shakeDelay;
-	const float c_backSpeedM = 100;
-	const float c_frontSpeedM = 175;
-	const float c_mountainSpeedM = 0.05;
+	const float c_backSpeedM = 50;
+	const float c_frontSpeedM = 100;
+	const float c_mountainSpeedM = 0.02;
 	bool  m_isTurned, m_isTurning, m_isSet, m_isShaking;
 	void Movement(float dt);
 	//void GoRight(float dt);

@@ -213,11 +213,11 @@ void BackgroundManager::ParallerShake(float dt)
 		for (int i = 0; i < m_bgs.size(); ++i)
 		{
 			if (i < 2)
-				m_bgs[i]->transform.SetPosition(m_bgs[i]->transform.GetPosition().x, m_bgPos[i]->y + am);
-			else if (i >= 2 && i < 4)
-				m_bgs[i]->transform.SetPosition(m_bgs[i]->transform.GetPosition().x, m_bgPos[i]->y + am * 5);
-			else
 				m_bgs[i]->transform.SetPosition(m_bgs[i]->transform.GetPosition().x, m_bgPos[i]->y + am / 5);
+			else if (i >= 2 && i < 4)
+				m_bgs[i]->transform.SetPosition(m_bgs[i]->transform.GetPosition().x, m_bgPos[i]->y + am);
+			else
+				m_bgs[i]->transform.SetPosition(m_bgs[i]->transform.GetPosition().x, m_bgPos[i]->y + am * 5);
 		}
 	}
 	else

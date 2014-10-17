@@ -69,7 +69,6 @@ void Road::Shock()
 
 	std::cout << m_shockHeightMatcher << std::endl;
 
-	//	std::cout << "shock" << std::endl;
 	for (int i = 0; i < m_blocks.size(); i++)
 	{
 
@@ -83,12 +82,15 @@ void Road::Shock()
 
 				m_blocks[i]->SetPosition(
 					
-				m_blocks[i]->GetPosition().x, 
+					m_blocks[i]->GetPosition().x, 
 				
-				m_roadY -
-				m_shockHeight + std::pow((m_shockSpeed * m_shockTime - m_shockStartX) - m_blocks[i]->GetPosition().x, 2) / 300 *m_shockDir * m_shockTime - m_shockHeightMatcher
+					m_roadY -
+					m_shockHeight + 
+					std::pow((m_shockSpeed * m_shockTime - m_shockStartX) -
+					m_blocks[i]->GetPosition().x, 2) / 300 *m_shockDir * m_shockTime -
+					m_shockHeightMatcher
 				
-				);
+					);
 		}
 	}
 

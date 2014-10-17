@@ -9,11 +9,12 @@ EnemyManager::EnemyManager()
 	m_spawnPointRight = pmath::Vec2( uthEngine.GetWindow().GetSize().x,
 									 uthEngine.GetWindow().GetSize().y / 2);
 
-	m_tankSPRight = pmath::Vec2(m_spawnPointRight.x - 400, m_spawnPointRight.y + 240);
-	m_tankSPLeft = pmath::Vec2(m_spawnPointLeft.x + 400, m_spawnPointLeft.y + 240);
+	m_tankSPRight = pmath::Vec2(m_spawnPointRight.x - 400, m_spawnPointRight.y + 140);
+	m_tankSPLeft = pmath::Vec2(m_spawnPointLeft.x + 400, m_spawnPointLeft.y + 140);
 
 	enemyCount = 0;
-	m_tankST = 4;
+	m_soldierS = 1;
+	m_tankS    = 3;
 }
 EnemyManager::~EnemyManager()
 {
@@ -65,6 +66,17 @@ void EnemyManager::Update(float dt)
 			m_tanks.erase(m_tanks.begin() + i);
 		}
 	}
+	for (int i = 0; m_soldiers.size() > i; ++i)
+	{
+		if (m_soldiers[i] != nullptr)
+		{
+		}
+		if (m_soldiers[i]->isDestroyed() == true)
+		{
+			m_layer->RemoveChild(m_soldiers[i]);
+			m_soldiers.erase(m_soldiers.begin() + i);
+		}
+	}
 	if (m_player != nullptr)
 	{
 
@@ -75,22 +87,23 @@ void EnemyManager::Update(float dt)
 	}
 
 	SpawnTanks(dt);
+	SpawnSoldiers(dt);
 }
-void EnemyManager::Draw()
-{
-	//Draw every enemy in the draw loop
-	for (int i = 0; m_enemies.size() > i; ++i)
-	{
-		m_enemies[i]->Draw(uthEngine.GetWindow());
-	}
-	for (int i = 0; m_tanks.size() > i; ++i)
-	{
-		if (m_tanks[i] != nullptr)
-		{
-			//m_tanks[i]->Draw();
-		}
-	}
-}
+//void EnemyManager::Draw()
+//{
+//	//Draw every enemy in the draw loop
+//	for (int i = 0; m_enemies.size() > i; ++i)
+//	{
+//		//m_enemies[i]->Draw(uthEngine.GetWindow());
+//	}
+//	for (int i = 0; m_tanks.size() > i; ++i)
+//	{
+//		if (m_tanks[i] != nullptr)
+//		{
+//			//m_tanks[i]->Draw();
+//		}
+//	}
+//}
 void EnemyManager::CheckPlayer(Player* player)
 {
 	//Get player reference
@@ -104,7 +117,7 @@ void EnemyManager::SetPhysWorld(PhysicsWorld* pworld)
 void EnemyManager::SpawnTanks(float dt)
 {
 	m_tankST -= dt;
-	if (m_tankST <= 0 && m_tanks.size() < 5)
+	if (m_tankST <= 0 && m_tanks.size() < 150)
 	{
 		if (Randomizer::GetInt(0, 10) < 5)
 		{
@@ -118,7 +131,28 @@ void EnemyManager::SpawnTanks(float dt)
 			m_layer->AddChild(tempTank);
 			m_tanks.push_back(tempTank);
 		}
-		m_tankST = 4;
+		m_tankST = m_tankS;
+	}
+
+}
+void EnemyManager::SpawnSoldiers(float dt)
+{
+	m_soldierST -= dt;
+	if (m_soldierST <= 0 && m_soldiers.size() < 150)
+	{
+		if (Randomizer::GetInt(0, 10) < 5)
+		{
+			Soldier* tempSoldier = new Soldier(pmath::Vec2(m_tankSPLeft), m_physWorld);
+			m_layer->AddChild(tempSoldier);
+			m_soldiers.push_back(tempSoldier);
+		}
+		else
+		{
+			Soldier* tempSoldier = new Soldier(pmath::Vec2(m_tankSPRight), m_physWorld);
+			m_layer->AddChild(tempSoldier);
+			m_soldiers.push_back(tempSoldier);
+		}
+		m_soldierST = m_soldierS;
 	}
 
 }
@@ -127,5 +161,12 @@ void EnemyManager::DestroyTanks()
 	for (int i = 0; m_tanks.size() > i; ++i)
 	{
 		m_tanks[i]->Hit();
+	}
+}
+void EnemyManager::DestroySoldiers()
+{
+	for (int i = 0; m_soldiers.size() > i; ++i)
+	{
+		m_soldiers[i]->Hit();
 	}
 }

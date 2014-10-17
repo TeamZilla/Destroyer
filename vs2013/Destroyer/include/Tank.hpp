@@ -30,12 +30,12 @@ public:
 	~Tank();
 
 	void update(float) override;
-	//void Draw();
 	void Movement(float);     // Move tank left or right
-	void WhichSideOfPlayer(); // Check which side of player tank is
 	void Fly(float);
 	bool isDestroyed();       // Check if tank is destroyed
 	void Hit();
+	void setPhysGroup();
+	void WhichSideOfPlayer(); // Check which side of player tank is
 
 };
 
