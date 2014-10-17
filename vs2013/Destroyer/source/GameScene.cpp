@@ -1,4 +1,5 @@
 #include <GameScene.hpp>
+#include <ExplosionEmitter.hpp>
 //When you want debug, use WriteLog(...), works like printf.
 
 using namespace uth;
@@ -48,6 +49,10 @@ bool GameScene::Init()
 	m_music = uthRS.LoadSound("Audio/Music/city_theme2.wav");
 	m_music->Play();
 	m_music->Loop(true);
+
+	//ParticleInit();
+	ExplosionEmitter::Init(FgLayer);
+	ExplosionEmitter::Emit(pmath::Vec2(500,500));
 
 	return true;
 }
@@ -241,11 +246,12 @@ GameScene::GameScene()
 	FgLayer(new Layer()),
 	UILayer(new Layer())
 {
+
 }
 //Default deconstrutor.
 GameScene::~GameScene()
 {
-
+	ExplosionEmitter::DeInit();
 }
 
 // Main deinitialisation.

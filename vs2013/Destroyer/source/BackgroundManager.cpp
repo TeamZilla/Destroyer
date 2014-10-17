@@ -26,14 +26,16 @@ bool BackgroundManager::Init(Object* bg, Object* fg)
 	m_isShaking = false;
 
 	//Set textures
-	auto backTex  = uthRS.LoadTexture("backgrounds/buildings.png");
-	auto frontTex = uthRS.LoadTexture("backgrounds/lamps.png");
-	auto mountTex = uthRS.LoadTexture("backgrounds/mountain.png");
+	auto backTex1  = uthRS.LoadTexture("backgrounds/buildings01.png");
+	auto backTex2  = uthRS.LoadTexture("backgrounds/buildings02.png");
+	auto frontTex = uthRS.LoadTexture("backgrounds/lanterns.png");
+	auto mountTex1 = uthRS.LoadTexture("backgrounds/mountains01.png");
+	auto mountTex2 = uthRS.LoadTexture("backgrounds/mountains02.png");
 	//Push backgrounds to m_bgs vector
-	m_bgs.push_back(bg->AddChild(new Background(mountTex)).get());
-	m_bgs.push_back(bg->AddChild(new Background(mountTex)).get());
-	m_bgs.push_back(bg->AddChild(new Background(backTex)).get());
-	m_bgs.push_back(bg->AddChild(new Background(backTex)).get());
+	m_bgs.push_back(bg->AddChild(new Background(mountTex1)).get());
+	m_bgs.push_back(bg->AddChild(new Background(mountTex2)).get());
+	m_bgs.push_back(bg->AddChild(new Background(backTex2)).get());
+	m_bgs.push_back(bg->AddChild(new Background(backTex2)).get());
 	m_bgs.push_back(fg->AddChild(new Background(frontTex)).get());
 	m_bgs.push_back(fg->AddChild(new Background(frontTex)).get());
 	//Start positions

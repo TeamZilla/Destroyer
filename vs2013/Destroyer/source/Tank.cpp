@@ -67,7 +67,9 @@ void Tank::Movement(float dt)
 void Tank::Fly(float dt)
 {
 	m_tankTime -= dt;
-	if(m_tankTime <= 0)
+	if(m_tankTime <= 0 &&
+		m_rigidBody->GetVelocity().y < 0.2f &&
+		m_rigidBody->GetAngularVelocity() < 0.2f)
 	{
 		m_isTankDestroyed = true;
 	}

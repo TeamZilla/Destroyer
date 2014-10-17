@@ -92,6 +92,7 @@
     <ClCompile Include="source\Background.cpp" />
     <ClCompile Include="source\BackgroundManager.cpp" />
     <ClCompile Include="source\EnemyManager.cpp" />
+    <ClCompile Include="source\ExplosionEmitter.cpp" />
     <ClCompile Include="source\GameScene.cpp" />
     <ClCompile Include="source\Health.cpp" />
     <ClCompile Include="source\Heli.cpp" />
@@ -108,6 +109,8 @@
     <ClInclude Include="include\Background.hpp" />
     <ClInclude Include="include\BackgroundManager.hpp" />
     <ClInclude Include="include\EnemyManager.hpp" />
+    <ClInclude Include="include\ExplosionEmitter.hpp" />
+    <ClInclude Include="include\ExpParAffector.hpp" />
     <ClInclude Include="include\GameScene.hpp" />
     <ClInclude Include="include\Health.hpp" />
     <ClInclude Include="include\Heli.hpp" />

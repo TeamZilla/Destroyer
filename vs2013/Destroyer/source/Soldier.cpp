@@ -68,7 +68,9 @@ void Soldier::Movement(float dt)
 void Soldier::Fly(float dt)
 {
 	m_soldierTime -= dt;
-	if (m_soldierTime <= 0)
+	if (m_soldierTime <= 0 &&
+		m_rigidBody->GetVelocity().y < 0.2f &&
+		m_rigidBody->GetAngularVelocity() < 0.2f)
 	{
 		m_isSoldierDestroyed = true;
 	}
@@ -80,7 +82,7 @@ bool Soldier::isDestroyed()
 void Soldier::Hit()
 {
 	m_rigidBody->ApplyImpulse(pmath::Vec2(Randomizer::GetFloat(-10, 10),      //X direction
-							  -Randomizer::GetFloat(15, 30)),			      //Y direction
+							  -Randomizer::GetFloat(5, 15)),			      //Y direction
 							  pmath::Vec2(Randomizer::GetFloat(-15, 15), 0)); //offset
 	//m_rigidBody->SetPhysicsGroup(3); //Set collision group to positive so it can collide to tanks
 	m_isSoldierHit = true;

@@ -10,6 +10,7 @@
 #include <Heli.hpp>
 #include <Aeroplane.hpp>
 #include <Road.hpp>
+#include <ExpParAffector.hpp>
 
 #include <Tank.hpp>
 
@@ -46,6 +47,10 @@ public: // Every one of these public functions are required.
 
 	virtual void Update(float dt) override;
 	//virtual void Draw(uth::RenderTarget& target, uth::RenderAttributes attributes = uth::RenderAttributes()) override;
+
+	bool ParticleInit();
+	uth::ParticleSystem* ps;
+	void ParticleEmit(pmath::Vec2 pos);
 
 	float aeroMinSpawnTime;
 	float aeroMaxSpawnTime;

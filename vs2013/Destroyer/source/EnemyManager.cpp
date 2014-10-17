@@ -1,4 +1,5 @@
 #include <EnemyManager.hpp>
+#include <ExplosionEmitter.hpp>
 
 using namespace uth;
 
@@ -55,12 +56,9 @@ void EnemyManager::Update(float dt)
 	}
 	for (int i = 0; m_tanks.size() > i; ++i)
 	{
-		if (m_tanks[i] != nullptr)
-		{
-			//m_tanks[i]->Update(dt);
-		}
 		if (m_tanks[i]->isDestroyed() == true)
 		{
+			ExplosionEmitter::Emit(m_tanks[i]->transform.GetPosition());
 			m_layer->RemoveChild(m_tanks[i]);
 			//delete m_tanks[i];
 			m_tanks.erase(m_tanks.begin() + i);
@@ -68,11 +66,9 @@ void EnemyManager::Update(float dt)
 	}
 	for (int i = 0; m_soldiers.size() > i; ++i)
 	{
-		if (m_soldiers[i] != nullptr)
-		{
-		}
 		if (m_soldiers[i]->isDestroyed() == true)
 		{
+			ExplosionEmitter::Emit(m_soldiers[i]->transform.GetPosition());
 			m_layer->RemoveChild(m_soldiers[i]);
 			m_soldiers.erase(m_soldiers.begin() + i);
 		}

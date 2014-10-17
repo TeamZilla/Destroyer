@@ -4,24 +4,33 @@ using namespace uth;
 
 Player::Player()
 {
-	auto playerTexture = uthRS.LoadTexture("modzilla/modzilla_sprites03.png");
+	auto playerTexture = uthRS.LoadTexture("modzilla/moz_sprites.png");
 	playerTexture->SetSmooth(true);
-	AddComponent(new AnimatedSprite(playerTexture,24,6,4));
+	AddComponent(new AnimatedSprite(playerTexture,24,8,3));
 	playerAnimation = GetComponent<AnimatedSprite>("AnimatedSprite");
-	playerAnimation->ChangeAnimation(0, 4);
+
+	m_walkAnim = pmath::Vec4(16,8,16,10);
+	m_stompAnim = pmath::Vec4(0,3,0,4);
+	m_jumpAnim = pmath::Vec4(8,6,8,5);
+
+	playerAnimation->ChangeAnimation(m_walkAnim.x,
+									 m_walkAnim.y,
+									 m_walkAnim.z,
+									 m_walkAnim.w);
 	transform.SetOrigin(uth::Origin::BottomCenter);
-	transform.SetScale(1.25f);
+	transform.SetScale(1.5f);
 	//transform.SetPosition(
 	//	uthEngine.GetWindow().GetSize().x / 2,
 	//	uthEngine.GetWindow().GetSize().y / 2 + transform.GetSize().y/2);
 
-	transform.SetPosition(pmath::Vec2f(0, uthEngine.GetWindow().GetSize().y / 2 + transform.GetSize().y/1.15f));
+	transform.SetPosition(pmath::Vec2f(0, uthEngine.GetWindow().GetSize().y - transform.GetSize().y/4));
 	m_speed = 0;
 	m_maxSpeed = 400;
 	m_minSpeed = -400;
 	m_acceleration = 750;
 	m_jumpSpeed = 0;
 	m_jumpHeight = 8;
+	m_jumpTimer = 0;
 	m_isGoingRight = true;
 	m_isJumping = false;
 	m_isCrouching = false;
@@ -60,18 +69,29 @@ void Player::Jump()
 		m_tempPos = transform.GetPosition();
 		m_isJumping = true;
 		m_jumpSpeed = m_jumpHeight;
-		playerAnimation->ChangeAnimation(18, 6, 18, 6); //jumpanim
+		m_jumpTimer = 0.4;
+		playerAnimation->ChangeAnimation(m_jumpAnim.x,
+										 m_jumpAnim.y,
+										 m_jumpAnim.z,
+										 m_jumpAnim.w);
 	}
 }
 void Player::Jumping()
 {   //After 
-	m_jumpSpeed -= m_dt*15;
-	transform.Move(0, -m_jumpSpeed);
-	if (transform.GetPosition().y >= m_tempPos.y)
+	m_jumpTimer -= m_dt;
+	if (m_jumpTimer <= 0)
 	{
-		transform.SetPosition(m_tempPos);
-		playerAnimation->ChangeAnimation(0, 4, 0, 5, true); //walkanim
-		m_isJumping = false;
+		m_jumpSpeed -= m_dt * 15;
+		transform.Move(0, -m_jumpSpeed);
+		if (transform.GetPosition().y >= m_tempPos.y)
+		{
+			transform.SetPosition(m_tempPos);
+			playerAnimation->ChangeAnimation(m_walkAnim.x,
+											 m_walkAnim.y,
+											 m_walkAnim.z,
+											 m_walkAnim.w);
+			m_isJumping = false;
+		}
 	}
 }
 void Player::Crouch()
@@ -82,7 +102,10 @@ void Player::Crouch()
 		m_isCrouching = true;
 		m_jumpSpeed = 4;
 		m_crouchTimer = 0;
-		playerAnimation->ChangeAnimation(6, 4, 6, 3); //crouchanim
+		playerAnimation->ChangeAnimation(m_stompAnim.x,
+										 m_stompAnim.y,
+										 m_stompAnim.z,
+										 m_stompAnim.w); //stompAnim
 	}
 }
 void Player::Crouching()
@@ -96,7 +119,10 @@ void Player::Crouching()
 	}
 	if (m_crouchTimer >= 1)
 	{
-		playerAnimation->ChangeAnimation(0, 4, 0, 5, true); //walkanim
+		playerAnimation->ChangeAnimation(m_walkAnim.x,
+									     m_walkAnim.y,
+									     m_walkAnim.z,
+										 m_walkAnim.w);
 		m_isCrouching = false;
 	}
 
