@@ -178,7 +178,7 @@ void GameScene::Update(float dt)
 
 	if (uthInput.Keyboard.IsKeyDown(uth::Keyboard::R))
 	{
-		m_road->Shock();
+		//m_road->Shock();
 	}
 
 
