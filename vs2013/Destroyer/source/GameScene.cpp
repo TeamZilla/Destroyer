@@ -142,6 +142,7 @@ void GameScene::Update(float dt)
 			m_player->Crouch();
 			//              amount , delay
 			m_bgManager.Shake(5, 0.4f);
+			m_road->InitShock();
 			m_enemyManager.DestroyTanks();
 			m_enemyManager.DestroySoldiers();
 		}
@@ -165,7 +166,6 @@ void GameScene::Update(float dt)
 
 	if (uthInput.Keyboard.IsKeyDown(uth::Keyboard::R))
 	{
-		m_road->Shock();
 	}
 
 
