@@ -67,22 +67,15 @@ void Missile::explodeCheck()
 }
 void Missile::outOfBoundsCheck()
 {
-	if ( uthEngine.GetWindow().GetSize().x  > transform.GetPosition().x &&
-		 uthEngine.GetWindow().GetSize().y  < transform.GetPosition().y ||
-		-uthEngine.GetWindow().GetSize().x  < transform.GetPosition().x &&
-		-uthEngine.GetWindow().GetSize().y  > transform.GetPosition().y)
+	if ((uthEngine.GetWindow().GetViewport()).intersects(transform.GetBounds() ))
 	{
 		m_isDestroyed = true;
+
 		//TODO: remove by RemoveChild(this); when implemented
-		//AddTag("destroyed");
-		//Parent()->RemoveChildren("destroyed");
+		//Parent()->RemoveChild(this);
 	}
 }
 
-//void Missile::Draw()
-//{
-//	GameObject::Draw(uthEngine.GetWindow());
-//}
 
 void Missile::rotation()
 {

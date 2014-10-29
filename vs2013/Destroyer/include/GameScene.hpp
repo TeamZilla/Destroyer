@@ -8,7 +8,7 @@
 #include <BackgroundManager.hpp>
 #include <EnemyManager.hpp>
 #include <Heli.hpp>
-#include <Aeroplane.hpp>
+//#include <Aeroplane.hpp>
 #include <Road.hpp>
 #include <ExpParAffector.hpp>
 
@@ -21,15 +21,25 @@ private: // Just place everything else as private.
 	uth::PhysicsWorld m_physWorld;
 	uth::GameObject m_gameFloor;
 
-	uth::Layer *BgLayer, *GameLayer, *FgLayer, *UILayer;
+	enum class LayerId : char
+	{
+		Background,
+		InGame,
+		Foreground,
+		Userinterface
+	};
+
+	std::map<const LayerId, uth::Layer*> m_layers;
+
+	uth::Layer& getLayer(LayerId id);
 
 	BackgroundManager m_bgManager;
-	EnemyManager m_enemyManager;
+	EnemyManager* m_enemyManager;
 	void m_enemyManger(float dt);
 	Player* m_player;
 	Health* m_health;
 	Heli* m_heli;
-	std::vector <Aeroplane*> m_aeroplane;
+	//std::vector <Aeroplane*> m_aeroplane;
 	//Tank* m_tank;
 	uth::Sound* m_music;
 	//uth::SpriteBatch* m_spriteBatch;

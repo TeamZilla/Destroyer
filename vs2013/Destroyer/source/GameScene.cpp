@@ -4,6 +4,11 @@
 
 using namespace uth;
 
+uth::Layer& GameScene::getLayer(LayerId id)
+{
+	return *m_layers[id];
+}
+
 // Main initialisation.
 // Automatically called inside SceneManager.
 bool GameScene::Init()
@@ -11,34 +16,28 @@ bool GameScene::Init()
 	Randomizer::SetSeed();
 	uthEngine.GetWindow().GetCamera().SetSize(1280, 720);
 	
-	m_enemyManager.SetPhysWorld(&m_physWorld);
+	m_enemyManager->SetPhysWorld(&m_physWorld);
 	m_gameFloor.AddComponent(new Sprite(pmath::Vec4(1, 0, 0, 1), pmath::Vec2(3000, 80)));
 	m_gameFloor.transform.SetPosition(0, uthEngine.GetWindow().GetSize().y);
 	m_gameFloor.AddComponent(new Rigidbody(m_physWorld));
 	m_gameFloor.GetComponent<Rigidbody>("Rigidbody")->SetKinematic(true);
 
-	AddChild(BgLayer);
-	AddChild(GameLayer);
-	AddChild(FgLayer);
-	AddChild(UILayer);
 
-	m_bgManager.Init(BgLayer, FgLayer);
-	m_enemyManager.Init(GameLayer);
+	m_bgManager.Init(getLayer(LayerId::Background), getLayer(LayerId::Foreground));
 
 	//m_heli = new Heli(pmath::Vec2f(0, 0));
-	GameLayer->AddChild(m_road = new Road(160));
-	GameLayer->AddChild(m_player = new Player);
-	GameLayer->AddChild(m_heli = new Heli(pmath::Vec2f(0, 0)));
-	UILayer->AddChild(m_health = new Health);
+	getLayer(LayerId::InGame).AddChild(m_road = new Road(160));
+	getLayer(LayerId::InGame).AddChild(m_player = new Player);
+	getLayer(LayerId::InGame).AddChild(m_heli = new Heli(pmath::Vec2f(0, 0)));
+
+	getLayer(LayerId::Userinterface).AddChild(m_health = new Health);
 
 	m_road->Init(m_player);
 
-
-	aeroplaneTimer = 0;
-	aeroMinSpawnTime = 0.5;
-	aeroMaxSpawnTime = 6;
-	isCool = 1;
-
+	//aeroplaneTimer = 0;
+	//aeroMinSpawnTime = 0.5;
+	//aeroMaxSpawnTime = 6;
+	//isCool = 1;
 
 	m_bgManager.SetCameraStartPos(pmath::Vec2f(0, uthEngine.GetWindow().GetSize().y/2));
 	//TODO: Initialisation functions
@@ -51,8 +50,7 @@ bool GameScene::Init()
 	m_music->Loop(true);
 
 	//ParticleInit();
-	ExplosionEmitter::Init(FgLayer);
-	ExplosionEmitter::Emit(pmath::Vec2(500,500));
+	ExplosionEmitter::Init(&getLayer(LayerId::Foreground));
 
 	return true;
 }
@@ -61,17 +59,32 @@ bool GameScene::Init()
 // Update loop. Gone trought once per frame.
 void GameScene::Update(float dt)
 {
-	Scene::Update(dt);
+	static int count;
+	static float time = 0;
+	time += dt;
+	count++;
+	if (time > 1)
+	{
+		time -= 1;
+		std::cout << count << "\t" << m_layers[LayerId::InGame]->m_children.size() << std::endl;
+		count = 0;
+	}
+
 	//TODO: Update functions
 	m_physWorld.Update(dt);
-	m_bgManager.CheckSpeed(m_player->getSpeed(), m_player->CheckIfGoingRight());
+	//m_bgManager.CheckSpeed(m_player->getSpeed(), m_player->CheckIfGoingRight());
 	m_bgManager.Update(dt);
-	m_enemyManager.Update(dt);
-	m_enemyManager.CheckPlayer(m_player);
+
+	Scene::Update(dt);
+	//dt *= 20;
+
+	m_enemyManager->Update(dt);
+	m_enemyManager->CheckPlayer(m_player);
+	//m_enemyManager->SpawnTanks(dt);
 	//m_player->Update(dt);
 	//m_health->Update(dt);
-	m_enemyManger(dt);
-	m_enemyManager.SpawnTanks(dt);
+	m_heli->Update(dt);
+	//m_enemyManger(dt);
 
 	//for (int i = 0; i < m_aeroplane.size(); i++)
 	//{
@@ -141,10 +154,9 @@ void GameScene::Update(float dt)
 		{
 			m_player->Crouch();
 			//              amount , delay
-			m_bgManager.Shake(5, 0.4f);
-			m_road->InitShock();
-			m_enemyManager.DestroyTanks();
-			m_enemyManager.DestroySoldiers();
+			//m_bgManager.Shake(5, 0.4f);
+			m_enemyManager->DestroyTanks();
+			m_enemyManager->DestroySoldiers();
 		}
 	}
 	if (uthInput.Keyboard.IsKeyDown(Keyboard::Left))
@@ -166,6 +178,7 @@ void GameScene::Update(float dt)
 
 	if (uthInput.Keyboard.IsKeyDown(uth::Keyboard::R))
 	{
+		m_road->Shock();
 	}
 
 
@@ -200,53 +213,64 @@ void GameScene::Update(float dt)
 
 void GameScene::m_enemyManger(float m_dt)
 {
-	m_heli->Update(m_dt);
+	//m_heli->Update(m_dt);
 
-	if (isCool)
-	{
-		shootTime = Randomizer::GetFloat(aeroMinSpawnTime, aeroMaxSpawnTime);
-		isCool = false;
-	}
+	//if (isCool)
+	//{
+	//	shootTime = Randomizer::GetFloat(aeroMinSpawnTime, aeroMaxSpawnTime);
+	//	isCool = false;
+	//}
 
-	if (aeroplaneTimer > shootTime )
-	{
+	//if (aeroplaneTimer > shootTime )
+	//{
 
-		rand = Randomizer::GetInt(0, 2);
+	//	rand = Randomizer::GetInt(0, 2);
 
 
-		if (rand == 0)
-		{
-			m_aeroplane.push_back(new Aeroplane(-1800));
-			aeroplaneTimer = 0;
-			isCool = true;
-		}
+	//	if (rand == 0)
+	//	{
+	//		m_aeroplane.push_back(new Aeroplane(-1800));
+	//		aeroplaneTimer = 0;
+	//		isCool = true;
+	//	}
 
-		else
-		
-		{
-			m_aeroplane.push_back(new Aeroplane(1800));
-			aeroplaneTimer = 0;
-			isCool = true;
-		}
-	}
+	//	else
+	//	
+	//	{
+	//		m_aeroplane.push_back(new Aeroplane(1800));
+	//		aeroplaneTimer = 0;
+	//		isCool = true;
+	//	}
+	//}
 
-	aeroplaneTimer += m_dt;
+	//aeroplaneTimer += m_dt;
 
 }
 
 //Default constructor for initialising constant variables.
 GameScene::GameScene()
 //: m_bgManager(250,500,150)
-	: m_bgManager(	uthEngine.GetWindow().GetSize().y - 470,
-					uthEngine.GetWindow().GetSize().y - 220,
-					uthEngine.GetWindow().GetSize().y - 570),
-	m_physWorld(0, 10),
-	BgLayer(new Layer()), 
-	GameLayer(new Layer()),
-	FgLayer(new Layer()),
-	UILayer(new Layer())
+	:
+	m_bgManager
+	(
+		uthEngine.GetWindow().GetSize().y - 470,
+		uthEngine.GetWindow().GetSize().y - 220,
+		uthEngine.GetWindow().GetSize().y - 570
+	),
+	m_physWorld(0, 10)
 {
+	getLayer(LayerId::Background);
+	getLayer(LayerId::InGame);
+	getLayer(LayerId::Foreground);
+	getLayer(LayerId::Userinterface);
 
+	for (auto& e : m_layers)
+	{
+		AddChild(e.second = new Layer());
+	}
+
+	auto & l = getLayer(LayerId::InGame);
+	m_enemyManager = new EnemyManager(l);
 }
 //Default deconstrutor.
 GameScene::~GameScene()

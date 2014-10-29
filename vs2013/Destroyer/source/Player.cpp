@@ -2,6 +2,8 @@
 
 using namespace uth;
 
+bool Player::isGoingRight = true;
+
 Player::Player()
 {
 	auto playerTexture = uthRS.LoadTexture("modzilla/moz_sprites.png");
@@ -31,7 +33,7 @@ Player::Player()
 	m_jumpSpeed = 0;
 	m_jumpHeight = 8;
 	m_jumpTimer = 0;
-	m_isGoingRight = true;
+	isGoingRight = true;
 	m_isJumping = false;
 	m_isCrouching = false;
 }
@@ -55,7 +57,7 @@ void Player::ChangeDirection()
 	//Speed reduced to minspeed
 	m_speed = m_minSpeed;
 	//Change bool value to check is player going right or not
-	m_isGoingRight = !m_isGoingRight;
+	isGoingRight = !isGoingRight;
 }
 //void Player::Draw()
 //{
@@ -146,7 +148,7 @@ float Player::getSpeed()
 // Get player direction
 bool  Player::CheckIfGoingRight()
 {
-	return m_isGoingRight;
+	return isGoingRight;
 }
 // Deconstructor
 Player::~Player()

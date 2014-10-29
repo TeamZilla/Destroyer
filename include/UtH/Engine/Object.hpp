@@ -76,6 +76,7 @@ namespace uth
 
 		Transform transform;
 
+		std::vector<std::shared_ptr<Object>> m_children;
 	protected:
 		Object* m_parent;
 		bool m_active;
@@ -86,7 +87,6 @@ namespace uth
 
 		void setParent(Object* p);
 		//bool m_inWorld;
-		std::vector<std::shared_ptr<Object>> m_children;
 		std::unordered_set<std::string> m_tagList;
 	};
 
