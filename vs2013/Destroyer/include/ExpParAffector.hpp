@@ -17,7 +17,8 @@ namespace uth
 		{
 			particle.Move(particle.direction * dt);
 			particle.Rotate(150 * dt);
-			particle.SetScale(particle.GetScale() - pmath::Vec2(dt)*2);
+			particle.SetScale(particle.GetScale() - pmath::Vec2(dt)/4);
+			particle.color.a -= dt;
 		}
 		void Update(float dt) override
 		{

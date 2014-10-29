@@ -14,8 +14,8 @@ EnemyManager::EnemyManager()
 	m_tankSPLeft = pmath::Vec2(m_spawnPointLeft.x + 400, m_spawnPointLeft.y + 140);
 
 	enemyCount = 0;
-	m_soldierS = 1;
-	m_tankS    = 3;
+	m_soldierS = 0.1;
+	m_tankS    = 0.3;
 }
 EnemyManager::~EnemyManager()
 {
@@ -113,7 +113,7 @@ void EnemyManager::SetPhysWorld(PhysicsWorld* pworld)
 void EnemyManager::SpawnTanks(float dt)
 {
 	m_tankST -= dt;
-	if (m_tankST <= 0 && m_tanks.size() < 150)
+	if (m_tankST <= 0 && m_tanks.size() < 1500)
 	{
 		if (Randomizer::GetInt(0, 10) < 5)
 		{
@@ -134,7 +134,7 @@ void EnemyManager::SpawnTanks(float dt)
 void EnemyManager::SpawnSoldiers(float dt)
 {
 	m_soldierST -= dt;
-	if (m_soldierST <= 0 && m_soldiers.size() < 150)
+	if (m_soldierST <= 0 && m_soldiers.size() < 1500)
 	{
 		if (Randomizer::GetInt(0, 10) < 5)
 		{

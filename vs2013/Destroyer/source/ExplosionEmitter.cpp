@@ -30,8 +30,8 @@ void ExplosionEmitter::Init(Layer* m_layer)
 
 	////SMOKE
 	ParticleTemplate st;
-	st.SetLifetime(1.0f);
-	st.SetSpeed(10.f, 20.f);
+	st.SetLifetime(3.f);
+	st.SetSpeed(50.f, 50.f);
 	st.SetTexture(uthRS.LoadTexture("Enemies/Projectiles/smoke.png"));
 
 	ss = new ParticleSystem(200);
@@ -52,8 +52,8 @@ void ExplosionEmitter::Init(Layer* m_layer)
 
 	////EXPLOSION
 	ParticleTemplate pt;
-	pt.SetLifetime(0.5f);
-	pt.SetSpeed(20.f, 30.f);
+	pt.SetLifetime(1.f);
+	pt.SetSpeed(40.f, 50.f);
 	pt.SetTexture(uthRS.LoadTexture("Enemies/Projectiles/explosion.png"));
 
 	ps = new ParticleSystem(200);
