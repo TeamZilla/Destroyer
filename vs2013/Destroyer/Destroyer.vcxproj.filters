@@ -110,5 +110,8 @@
     <ClInclude Include="include\ExplosionEmitter.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\SmokeParAffector.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

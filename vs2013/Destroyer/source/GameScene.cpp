@@ -34,10 +34,10 @@ bool GameScene::Init()
 	m_road->Init(m_player);
 
 
-	aeroplaneTimer = 0;
-	aeroMinSpawnTime = 0.5;
-	aeroMaxSpawnTime = 6;
-	isCool = 1;
+	//aeroplaneTimer = 0;
+	//aeroMinSpawnTime = 0.5;
+	//aeroMaxSpawnTime = 6;
+	//isCool = 1;
 
 
 	m_bgManager.SetCameraStartPos(pmath::Vec2f(0, uthEngine.GetWindow().GetSize().y/2));
@@ -52,7 +52,6 @@ bool GameScene::Init()
 
 	//ParticleInit();
 	ExplosionEmitter::Init(FgLayer);
-	ExplosionEmitter::Emit(pmath::Vec2(500,500));
 
 	return true;
 }
@@ -70,7 +69,8 @@ void GameScene::Update(float dt)
 	m_enemyManager.CheckPlayer(m_player);
 	//m_player->Update(dt);
 	//m_health->Update(dt);
-	m_enemyManger(dt);
+	m_heli->Update(dt);
+	//m_enemyManger(dt);
 	m_enemyManager.SpawnTanks(dt);
 
 	//for (int i = 0; i < m_aeroplane.size(); i++)
@@ -200,37 +200,37 @@ void GameScene::Update(float dt)
 
 void GameScene::m_enemyManger(float m_dt)
 {
-	m_heli->Update(m_dt);
+	//m_heli->Update(m_dt);
 
-	if (isCool)
-	{
-		shootTime = Randomizer::GetFloat(aeroMinSpawnTime, aeroMaxSpawnTime);
-		isCool = false;
-	}
+	//if (isCool)
+	//{
+	//	shootTime = Randomizer::GetFloat(aeroMinSpawnTime, aeroMaxSpawnTime);
+	//	isCool = false;
+	//}
 
-	if (aeroplaneTimer > shootTime )
-	{
+	//if (aeroplaneTimer > shootTime )
+	//{
 
-		rand = Randomizer::GetInt(0, 2);
+	//	rand = Randomizer::GetInt(0, 2);
 
 
-		if (rand == 0)
-		{
-			m_aeroplane.push_back(new Aeroplane(-1800));
-			aeroplaneTimer = 0;
-			isCool = true;
-		}
+	//	if (rand == 0)
+	//	{
+	//		m_aeroplane.push_back(new Aeroplane(-1800));
+	//		aeroplaneTimer = 0;
+	//		isCool = true;
+	//	}
 
-		else
-		
-		{
-			m_aeroplane.push_back(new Aeroplane(1800));
-			aeroplaneTimer = 0;
-			isCool = true;
-		}
-	}
+	//	else
+	//	
+	//	{
+	//		m_aeroplane.push_back(new Aeroplane(1800));
+	//		aeroplaneTimer = 0;
+	//		isCool = true;
+	//	}
+	//}
 
-	aeroplaneTimer += m_dt;
+	//aeroplaneTimer += m_dt;
 
 }
 

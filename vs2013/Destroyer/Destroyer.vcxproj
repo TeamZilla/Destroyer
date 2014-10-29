@@ -119,6 +119,7 @@
     <ClInclude Include="include\Road.hpp" />
     <ClInclude Include="include\RoadBlock.hpp" />
     <ClInclude Include="include\Scenes.hpp" />
+    <ClInclude Include="include\SmokeParAffector.hpp" />
     <ClInclude Include="include\Soldier.hpp" />
     <ClInclude Include="include\Tank.hpp" />
   </ItemGroup>

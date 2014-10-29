@@ -34,7 +34,7 @@ private:
 	std::vector<Background*> m_bgs;
 	uth::Camera* m_camera;
 	pmath::Vec2 m_cameraStartPos;
-	std::vector<pmath::Vec2*> m_bgPos;
+	std::vector<pmath::Vec2> m_bgPos;
 
 
 public:
@@ -42,7 +42,7 @@ public:
 	~BackgroundManager();
 
 	bool Init(uth::Object* background, uth::Object* frontground);
-
+	void DeInit();
 	void Update(float);
 	void DrawFront();
 	void DrawBack();

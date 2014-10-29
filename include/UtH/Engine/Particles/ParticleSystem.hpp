@@ -43,7 +43,7 @@ namespace uth
 
         size_t GetParticleLimit() const;
 
-        void RaiseUpdateFlag();
+		void RaiseUpdateFlag()const;
 
     private:
      
@@ -62,7 +62,7 @@ namespace uth
         mutable float m_emitTimeLimit;
         unsigned int m_currentParticle;
         bool m_autoEmit;
-        bool m_update;
+        mutable bool m_update;
 
     };
 

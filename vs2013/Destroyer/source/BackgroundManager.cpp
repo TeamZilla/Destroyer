@@ -200,7 +200,8 @@ void BackgroundManager::Shake(float amount, float delay)
 	//Put temp position of each bg in memory
 	for (int i = 0; i < m_bgs.size(); ++i)
 	{
-		m_bgPos.push_back(new pmath::Vec2(m_bgs[i]->transform.GetPosition()));
+		if (m_bgs[i] != nullptr)
+		m_bgPos.push_back(pmath::Vec2(m_bgs[i]->transform.GetPosition()));
 	}
 }
 void BackgroundManager::ParallerShake(float dt)
@@ -215,11 +216,11 @@ void BackgroundManager::ParallerShake(float dt)
 		for (int i = 0; i < m_bgs.size(); ++i)
 		{
 			if (i < 2)
-				m_bgs[i]->transform.SetPosition(m_bgs[i]->transform.GetPosition().x, m_bgPos[i]->y + am / 5);
+				m_bgs[i]->transform.SetPosition(m_bgs[i]->transform.GetPosition().x, m_bgPos[i].y + am / 5);
 			else if (i >= 2 && i < 4)
-				m_bgs[i]->transform.SetPosition(m_bgs[i]->transform.GetPosition().x, m_bgPos[i]->y + am);
+				m_bgs[i]->transform.SetPosition(m_bgs[i]->transform.GetPosition().x, m_bgPos[i].y + am);
 			else
-				m_bgs[i]->transform.SetPosition(m_bgs[i]->transform.GetPosition().x, m_bgPos[i]->y + am * 5);
+				m_bgs[i]->transform.SetPosition(m_bgs[i]->transform.GetPosition().x, m_bgPos[i].y + am * 5);
 		}
 	}
 	else
@@ -228,7 +229,7 @@ void BackgroundManager::ParallerShake(float dt)
 		m_isShaking = false;
 		for (int i = 0; i < m_bgs.size(); ++i)
 		{
-			m_bgs[i]->transform.SetPosition(m_bgs[i]->transform.GetPosition().x, m_bgPos[i]->y);
+			m_bgs[i]->transform.SetPosition(m_bgs[i]->transform.GetPosition().x, m_bgPos[i].y);
 		}
 		m_bgPos.clear();
 	}
@@ -237,4 +238,21 @@ void BackgroundManager::ParallerShake(float dt)
 // Deconstructor
 BackgroundManager::~BackgroundManager()
 {
+	DeInit();
+}
+
+void BackgroundManager::DeInit()
+{
+	for (auto& e : m_bgs)
+	{
+		//delete e;
+	}
+	m_bgs.clear();
+
+	//for (auto& e : m_bgPos)
+	//{
+	//	delete e;
+	//}
+	//m_bgPos.clear();
+
 }

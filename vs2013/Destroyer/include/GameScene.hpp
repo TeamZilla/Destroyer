@@ -29,7 +29,7 @@ private: // Just place everything else as private.
 	Player* m_player;
 	Health* m_health;
 	Heli* m_heli;
-	std::vector <Aeroplane*> m_aeroplane;
+	//std::vector <Aeroplane*> m_aeroplane;
 	//Tank* m_tank;
 	uth::Sound* m_music;
 	//uth::SpriteBatch* m_spriteBatch;

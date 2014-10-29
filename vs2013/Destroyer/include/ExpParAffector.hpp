@@ -15,10 +15,13 @@ namespace uth
 
 		void UpdateParticle(Particle& particle, const ParticleTemplate& ptemp, float dt) override
 		{
-			//particle.direction *= 0.95f;
 			particle.Move(particle.direction * dt);
 			particle.Rotate(150 * dt);
-			particle.SetScale(particle.GetScale() - pmath::Vec2(dt));
+			particle.SetScale(particle.GetScale() - pmath::Vec2(dt)*2);
+		}
+		void Update(float dt) override
+		{
+			GetSystem()->RaiseUpdateFlag();
 		}
 
 	};
