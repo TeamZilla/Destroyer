@@ -72,8 +72,6 @@ void EnemyManager::Update(float dt)
 		}
 	}
 
-
-
 	SpawnTanks(dt);
 	SpawnSoldiers(dt);
 }
@@ -121,18 +119,4 @@ void EnemyManager::SpawnSoldiers(float dt)
 		m_layer.AddChild(tempSoldier);
 		m_soldierST = m_soldierS;
 	}
-}
-void EnemyManager::DestroyTanks()
-{
-	//for (auto& e : m_layer.Children("Tank"))
-	//{
-	//	static_cast<Tank*>(e.get())->Hit();
-	//}
-}
-void EnemyManager::DestroySoldiers()
-{/*
-	for (auto& e : m_layer.Children("Soldier"))
-	{
-		static_cast<Soldier*>(e.get())->Hit();
-	}*/
 }
