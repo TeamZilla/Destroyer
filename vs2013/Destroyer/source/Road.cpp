@@ -34,9 +34,17 @@ Road::Road(const int blocks)
 	}
 }
 
-void Road::Init(Player* asd)
+void Road::Init(Player* asd, uth::PhysicsWorld* physworld)
 {
 	m_player = asd;
+	hitBox = new GameObject();
+	hitBox->AddComponent(new Sprite(pmath::Vec4(1, 0, 0, 0.5f), pmath::Vec2(100, 100)));
+	hitBox->transform.SetPosition(450, 600);
+	hitBox->AddComponent(new Rigidbody(*physworld));
+	hitBox->GetComponent<Rigidbody>("Rigidbody")->SetKinematic(true);
+	//hitBox->GetComponent<Rigidbody>("Rigidbody")->SetPhysicsGroup(-3);
+	hitBox->AddTag("RoadCollider");
+	AddChild(hitBox);
 }
 
 
@@ -105,7 +113,7 @@ void Road::m_shock()
 		m_shockTime += m_shockDir * m_dt;
 	}
 
-
+	hitBox->GetComponent<Rigidbody>("Rigidbody")->SetPosition(pmath::Vec2(m_shockTime*m_shockSpeed, m_roadY-50));
 
 	if (abs(m_shockTime*m_shockSpeed) >= m_shockRange)
 	{

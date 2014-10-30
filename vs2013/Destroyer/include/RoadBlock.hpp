@@ -11,7 +11,6 @@ private:
 	float leftMostX;
 
 
-
 public:
 
 	RoadBlock(uth::SpriteBatch*);

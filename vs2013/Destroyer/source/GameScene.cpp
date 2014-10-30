@@ -16,7 +16,6 @@ bool GameScene::Init()
 	Randomizer::SetSeed();
 	uthEngine.GetWindow().GetCamera().SetSize(1280, 720);
 	
-	m_enemyManager->SetPhysWorld(&m_physWorld);
 	m_gameFloor.AddComponent(new Sprite(pmath::Vec4(1, 0, 0, 1), pmath::Vec2(3000, 80)));
 	m_gameFloor.transform.SetPosition(0, uthEngine.GetWindow().GetSize().y);
 	m_gameFloor.AddComponent(new Rigidbody(m_physWorld));
@@ -32,8 +31,9 @@ bool GameScene::Init()
 
 	getLayer(LayerId::Userinterface).AddChild(m_health = new Health);
 
-	m_road->Init(m_player);
-
+	m_road->Init(m_player,&m_physWorld);
+	m_enemyManager->SetPhysWorld(&m_physWorld);
+	m_enemyManager->Init();
 	//aeroplaneTimer = 0;
 	//aeroMinSpawnTime = 0.5;
 	//aeroMaxSpawnTime = 6;
@@ -51,6 +51,7 @@ bool GameScene::Init()
 
 	//ParticleInit();
 	ExplosionEmitter::Init(&getLayer(LayerId::Foreground));
+	colliderChecks();
 
 	return true;
 }
@@ -155,6 +156,7 @@ void GameScene::Update(float dt)
 			m_player->Crouch();
 			//              amount , delay
 			//m_bgManager.Shake(5, 0.4f);
+			m_road->InitShock();
 			m_enemyManager->DestroyTanks();
 			m_enemyManager->DestroySoldiers();
 		}
@@ -178,7 +180,7 @@ void GameScene::Update(float dt)
 
 	if (uthInput.Keyboard.IsKeyDown(uth::Keyboard::R))
 	{
-		m_road->Shock();
+//		m_road->Shock();
 	}
 
 
@@ -186,30 +188,24 @@ void GameScene::Update(float dt)
 	//return true; // Update succeeded.
 }
 
-// Draw loop. All graphics are drawn during this loop.
-//bool GameScene::Draw()
-//{
-//	//TODO: Draw functions
-//
-//	m_spriteBatch.Draw(uthEngine.GetWindow());
-//	m_bgManager.DrawBack();
-//
-//	m_player.Draw();
-//	m_heli->Draw();
-//	m_enemyManager.Draw();
-//
-//	for (int i = 0; i < m_aeroplane.size(); i++)
-//	{
-//		m_aeroplane[i]->Draw();
-//	}
-//
-//
-//
-//	m_bgManager.DrawFront();
-//	m_health.Draw();
-//	return true; // Drawing succeeded.
-//}
+void GameScene::colliderChecks()
+{
+	contactListener.onBeginContact = [](b2Contact* contact, GameObject* A, GameObject* B)
+	{
+		if (A->HasTag("Tank") && B->HasTag("RoadCollider"))
+			static_cast<Tank*>(A)->Hit();
+		if (A->HasTag("RoadCollider") && B->HasTag("Tank"))
+			static_cast<Tank*>(B)->Hit();
 
+		if (A->HasTag("Soldier") && B->HasTag("RoadCollider"))
+			static_cast<Soldier*>(A)->Hit();
+		if (A->HasTag("RoadCollider") && B->HasTag("Soldier"))
+			static_cast<Soldier*>(B)->Hit();
+
+	};
+	m_physWorld.SetContactListener(&contactListener);
+
+}
 
 void GameScene::m_enemyManger(float m_dt)
 {

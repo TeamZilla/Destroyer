@@ -30,11 +30,12 @@ private:
 	bool isShock;
 	float m_shockSupression;
 	void m_shock();
+	uth::GameObject* hitBox;
 
 
 
 public:
-	void Init(Player*);
+	void Init(Player*, uth::PhysicsWorld* physworld);
 	void update(float) override;
 	void InitShock();
 	//void Draw();

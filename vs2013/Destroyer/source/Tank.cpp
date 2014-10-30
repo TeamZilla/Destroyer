@@ -80,7 +80,7 @@ bool Tank::isDestroyed()
 void Tank::Hit()
 {
 	m_rigidBody->ApplyImpulse(pmath::Vec2(Randomizer::GetFloat(-20, 20),      //X direction
-							 -Randomizer::GetFloat(35, 50)),			      //Y direction
+							 -Randomizer::GetFloat(50, 70)),			      //Y direction
 							  pmath::Vec2(Randomizer::GetFloat(-25, 25), 0)); //offset
 	//m_rigidBody->SetPhysicsGroup(3); //Set collision group to positive so it can collide to tanks
 	m_isTankHit = true;

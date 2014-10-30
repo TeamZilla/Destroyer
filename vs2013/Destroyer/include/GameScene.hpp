@@ -19,6 +19,7 @@ class GameScene : public uth::Scene
 private: // Just place everything else as private.
 	//uth::GameObject* m_startButton;
 	uth::PhysicsWorld m_physWorld;
+	uth::PhysicsContactListener contactListener;
 	uth::GameObject m_gameFloor;
 
 	enum class LayerId : char
@@ -32,6 +33,7 @@ private: // Just place everything else as private.
 	std::map<const LayerId, uth::Layer*> m_layers;
 
 	uth::Layer& getLayer(LayerId id);
+	void colliderChecks();
 
 	BackgroundManager m_bgManager;
 	EnemyManager* m_enemyManager;
