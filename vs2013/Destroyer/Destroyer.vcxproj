@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{B7C19CDD-107E-48F0-BF37-44A3EB83427F}</ProjectGuid>
+    <ProjectGuid>{19E3CD74-F135-43F6-83DF-AFFD909720AD}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Destroyer</RootNamespace>
   </PropertyGroup>
@@ -19,15 +19,15 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -42,10 +42,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(ProjectDir)$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(ProjectDir)$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -53,17 +55,17 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <SDLCheck>
-      </SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)..\ext\include\;$(SolutionDir)..\ext\freetype_include\;$(SolutionDir)..\include\;$(ProjectDir)\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)..\Build\Win32\Debug\;$(SolutionDir)..\Build\Win32\Release\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>UtHEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -73,9 +75,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <SDLCheck>
-      </SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)..\ext\include\;$(SolutionDir)..\ext\freetype_include\;$(SolutionDir)..\include\;$(ProjectDir)\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
@@ -83,26 +83,16 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(SolutionDir)..\Build\Win32\Debug\;$(SolutionDir)..\Build\Win32\Release\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>UtHEngine.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="source\Aeroplane.cpp" />
-    <ClCompile Include="source\Background.cpp" />
-    <ClCompile Include="source\BackgroundManager.cpp" />
-    <ClCompile Include="source\EnemyManager.cpp" />
-    <ClCompile Include="source\ExplosionEmitter.cpp" />
-    <ClCompile Include="source\GameScene.cpp" />
-    <ClCompile Include="source\Health.cpp" />
-    <ClCompile Include="source\Heli.cpp" />
-    <ClCompile Include="source\main.cpp" />
-    <ClCompile Include="source\Missile.cpp" />
-    <ClCompile Include="source\Player.cpp" />
-    <ClCompile Include="source\Road.cpp" />
-    <ClCompile Include="source\RoadBlock.cpp" />
-    <ClCompile Include="source\Soldier.cpp" />
-    <ClCompile Include="source\Tank.cpp" />
+    <ProjectReference Include="..\Engine\Engine.vcxproj">
+      <Project>{07326890-84b7-46ad-9ca3-2acbd1ee3b26}</Project>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Aeroplane.hpp" />
@@ -122,6 +112,23 @@
     <ClInclude Include="include\SmokeParAffector.hpp" />
     <ClInclude Include="include\Soldier.hpp" />
     <ClInclude Include="include\Tank.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="source\Aeroplane.cpp" />
+    <ClCompile Include="source\Background.cpp" />
+    <ClCompile Include="source\BackgroundManager.cpp" />
+    <ClCompile Include="source\EnemyManager.cpp" />
+    <ClCompile Include="source\ExplosionEmitter.cpp" />
+    <ClCompile Include="source\GameScene.cpp" />
+    <ClCompile Include="source\Health.cpp" />
+    <ClCompile Include="source\Heli.cpp" />
+    <ClCompile Include="source\main.cpp" />
+    <ClCompile Include="source\Missile.cpp" />
+    <ClCompile Include="source\Player.cpp" />
+    <ClCompile Include="source\Road.cpp" />
+    <ClCompile Include="source\RoadBlock.cpp" />
+    <ClCompile Include="source\Soldier.cpp" />
+    <ClCompile Include="source\Tank.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

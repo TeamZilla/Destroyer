@@ -15,7 +15,6 @@ private:
 		m_jumpTimer,
 		m_dt;
 	float m_maxSpeed, m_minSpeed, m_acceleration;
-	bool m_isGoingRight;
 	pmath::Vec2 m_tempPos;
 	pmath::Vec4 m_walkAnim;
 	pmath::Vec4 m_stompAnim;
@@ -36,6 +35,7 @@ public:
 	float getSpeed();
 	bool CheckIfGoingRight();
 	bool m_isJumping, m_isCrouching;
+	static bool isGoingRight;
 
 	uth::AnimatedSprite* playerAnimation;
 };

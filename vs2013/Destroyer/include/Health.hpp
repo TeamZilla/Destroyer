@@ -13,6 +13,8 @@ private:
 	float m_Chealth=0;
 	
 	float n;
+	float m;
+	
 
 public:
 	

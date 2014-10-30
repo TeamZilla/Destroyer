@@ -47,10 +47,11 @@ Road::~Road()
 void Road::update(float dt)
 {
 	m_dt = dt;
+	m_shock();
 }
 
 
-void Road::Shock()
+void Road::InitShock()
 {
 	if (!isShock)
 	{
@@ -64,44 +65,55 @@ void Road::Shock()
 		}
 	}
 
+	isShock = true;
+	m_shock();
+}
+
+void Road::m_shock()
+{
 	m_shockHeightMatcher = 62 * abs(m_shockTime) - 100;
-	m_shockSpeed = abs(300 + 100 * m_shockTime);
+	m_shockSpeed = 300 * abs(m_shockTime);
 
 	std::cout << m_shockHeightMatcher << std::endl;
 
-	for (int i = 0; i < m_blocks.size(); i++)
+	if (isShock)
 	{
+		for (int i = 0; i < m_blocks.size(); i++)
+		{
 
 
-		if (m_shockLenght < std::abs(m_shockSpeed*m_shockTime - m_shockStartX - m_blocks[i]->GetPosition().x))
-		{
-			m_blocks[i]->SetPosition(m_blocks[i]->GetPosition().x, m_roadY);
-		}
-		else
-		{
+			if (m_shockLenght < std::abs(m_shockSpeed*m_shockTime - m_shockStartX - m_blocks[i]->GetPosition().x))
+			{
+				m_blocks[i]->SetPosition(m_blocks[i]->GetPosition().x, m_roadY);
+			}
+			else
+			{
 
 				m_blocks[i]->SetPosition(
-					
-					m_blocks[i]->GetPosition().x, 
-				
+
+					m_blocks[i]->GetPosition().x,
+
 					m_roadY -
-					m_shockHeight + 
+					m_shockHeight +
 					std::pow((m_shockSpeed * m_shockTime - m_shockStartX) -
-					m_blocks[i]->GetPosition().x, 2) / 300 *m_shockDir * m_shockTime -
+					m_blocks[i]->GetPosition().x, 2) / 300 * m_shockDir * m_shockTime -
 					m_shockHeightMatcher
-				
+
 					);
+			}
 		}
+		m_shockTime += m_shockDir * m_dt;
 	}
 
-	m_shockTime += m_shockDir * m_dt;
 
-	if (m_shockTime*m_shockSpeed >= m_shockRange)
+
+	if (abs(m_shockTime*m_shockSpeed) >= m_shockRange)
 	{
 		// stop shockwave
 		m_shockTime = 0;
 		isShock = false;
 		m_shockSupression = 1;
 		m_shockSpeed= 300;
+		m_shockTime = 0;
 	}
 }

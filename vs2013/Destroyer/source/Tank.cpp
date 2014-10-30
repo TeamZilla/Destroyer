@@ -20,10 +20,12 @@ Tank::Tank(pmath::Vec2 pos, PhysicsWorld* physworld)
 	tankTexture->SetSmooth(true);
 	AddComponent(new Sprite(tankTexture));
 	transform.SetPosition(pos.x, pos.y);
+	transform.SetScale(m_tankScale);
 	AddComponent(new Rigidbody(*m_physWorld));
 	m_rigidBody = GetComponent<Rigidbody>("Rigidbody");
 	m_rigidBody->SetPosition(pmath::Vec2(pos.x, pos.y));
 	m_rigidBody->SetPhysicsGroup(-3);
+	AddTag("Tank"); // Set name tag for object
 	//m_rigidBody->SetUnitSize(pmath::Vec2(m_rigidBody->GetSize().x / 2, m_rigidBody->GetSize().y / 2));
 	//m_rigidBody->SetSize(pmath::Vec2(m_rigidBody->GetSize().x, m_rigidBody->GetSize().y/4));
 	//TODO: scale functions
@@ -58,11 +60,8 @@ void Tank::Movement(float dt)
 	if (m_playerPos.x + m_range <= m_rigidBody->GetPosition().x || m_playerPos.x - m_range >= m_rigidBody->GetPosition().x)
 	{
 		auto pos = pmath::Vec2(m_rigidBody->GetPosition());
-		m_rigidBody->SetPosition(pmath::Vec2(pos.x+(dt*m_tankSpeed)+1, pos.y));
-		//m_rigidBody->ApplyImpulse(pmath::Vec2(m_tankSpeed, 10));
+		m_rigidBody->SetPosition(pmath::Vec2(pos.x + (dt*m_tankSpeed) + 1, pos.y));
 	}
-
-	//transform.SetScale(Randomizer::GetFloat(m_tankScale - 0.02f, m_tankScale + 0.01f));
 }
 void Tank::Fly(float dt)
 {
@@ -102,8 +101,3 @@ void Tank::WhichSideOfPlayer()
 	}
 
 }
-
-//void Tank::Draw()
-//{
-//	GameObject::Draw(uthEngine.GetWindow());
-//}

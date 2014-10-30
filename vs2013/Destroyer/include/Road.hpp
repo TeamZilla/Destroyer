@@ -29,13 +29,14 @@ private:
 	int m_shockDir;
 	bool isShock;
 	float m_shockSupression;
+	void m_shock();
 
 
 
 public:
 	void Init(Player*);
-	void Shock();
 	void update(float) override;
+	void InitShock();
 	//void Draw();
 
 	Road(const int);

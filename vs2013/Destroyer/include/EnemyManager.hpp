@@ -7,19 +7,23 @@
 #include <Tank.hpp>
 #include <Soldier.hpp>
 #include <Heli.hpp>
-#include <Aeroplane.hpp>
+//#include <Aeroplane.hpp>
 #include <vector>
+
+#include <map>
 
 class EnemyManager
 {
 private:
-	uth::Layer* m_layer;
+	uth::Layer& m_layer;
+	
+	//uth::Layer* m_layer;
 	Player* m_player;
 	std::vector<uth::GameObject*> m_enemies;
 	std::vector<Tank*> m_tanks;
 	std::vector<Soldier*> m_soldiers;
 	std::vector<Heli*> m_helis;
-	std::vector<Aeroplane*> m_planes;
+	//std::vector<Aeroplane*> m_planes;
 	pmath::Vec2 m_spawnPointLeft;
 	pmath::Vec2 m_spawnPointRight;
 	float enemyCount;
@@ -33,10 +37,9 @@ private:
 	uth::Sprite* m_gameFloor;
 
 public:
-
-	EnemyManager();
+	EnemyManager(uth::Layer& layer);
 	~EnemyManager();
-	bool Init(uth::Layer* m_layer);
+	bool Init();
 	void Create(bool isRight, pmath::Vec2 spawnPos, std::string name);
 	void Destroy(std::string name);
 	void Update(float dt);
