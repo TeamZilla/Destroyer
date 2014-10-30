@@ -14,12 +14,16 @@ private:
 	//float m_backSpeed, m_frontSpeed, m_mountainSpeed, m_playerSpeed;
 	float m_cameraPan, m_cameraPanMax, m_cameraPanSpd, m_isCameraTurning;
 	//float m_shakeTimer, m_shakeAmount, m_shakeDelay;
+	float m_shakeTimer;
+	bool m_isShaking;
 	const float c_backSpeedM = 50;
 	const float c_frontSpeedM = 100;
 	const float c_mountainSpeedM = 0.02;
 
 	uth::Camera* m_camera;
 	pmath::Vec2 m_cameraStartPos;
+	uth::Layer* backG;
+	uth::Layer* backF;
 	//bool  m_isTurned, m_isTurning, m_isSet, m_isShaking;
 	//void Movement(float dt);
 	//void GoRight(float dt);
@@ -41,7 +45,7 @@ public:
 	//void DrawBack();
 	//void ChangeDirection();
 	//void CheckSpeed(float, bool isDirRight);
-	//void Shake(float amount, float delay = 0.1f);
+	void Shake(float amount, float delay = 0.1f);
 };
 
 #endif //BackgroundManager_HPP

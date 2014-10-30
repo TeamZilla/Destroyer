@@ -71,9 +71,7 @@ void GameScene::Update(float dt)
 		count = 0;
 	}
 
-	//TODO: Update functions
 	m_physWorld.Update(dt);
-	//m_bgManager.CheckSpeed(m_player->getSpeed(), m_player->CheckIfGoingRight());
 	m_bgManager.Update(dt);
 
 	Scene::Update(dt);
@@ -81,16 +79,7 @@ void GameScene::Update(float dt)
 
 	m_enemyManager->Update(dt);
 	m_enemyManager->CheckPlayer(m_player);
-	//m_enemyManager->SpawnTanks(dt);
-	//m_player->Update(dt);
-	//m_health->Update(dt);
 	m_heli->Update(dt);
-	//m_enemyManger(dt);
-
-	//for (int i = 0; i < m_aeroplane.size(); i++)
-	//{
-	//	m_aeroplane[i]->Update(dt);
-	//}
 	
 
 #ifdef UTH_SYSTEM_ANDROID
@@ -155,13 +144,14 @@ void GameScene::Update(float dt)
 		{
 			m_player->Crouch();
 			//              amount , delay
-			//m_bgManager.Shake(5, 0.4f);
+			m_bgManager.Shake(5, 0.4f);
 			m_road->InitShock();
 			m_enemyManager->DestroyTanks();
 			m_enemyManager->DestroySoldiers();
 		}
 	}
-	if (uthInput.Keyboard.IsKeyDown(Keyboard::Left))
+	if (uthInput.Keyboard.IsKeyDown(Keyboard::Left) &&
+		!uthInput.Keyboard.IsKeyDown(Keyboard::Right))
 	{
 		if (m_player->CheckIfGoingRight())
 		{
@@ -169,7 +159,8 @@ void GameScene::Update(float dt)
 		}
 	}
 	
-	if (uthInput.Keyboard.IsKeyDown(Keyboard::Right))
+	if (uthInput.Keyboard.IsKeyDown(Keyboard::Right) &&
+		!uthInput.Keyboard.IsKeyDown(Keyboard::Left))
 	{
 		if (!m_player->CheckIfGoingRight())
 		{
@@ -206,7 +197,7 @@ void GameScene::colliderChecks()
 	m_physWorld.SetContactListener(&contactListener);
 
 }
-
+//TODO with this: Make this to enemymanager
 void GameScene::m_enemyManger(float m_dt)
 {
 	//m_heli->Update(m_dt);
