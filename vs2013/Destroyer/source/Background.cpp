@@ -48,7 +48,7 @@ void Background::Update(float dt)
 		auto amX = Randomizer::GetFloat(-shake, shake);
 		auto amY = Randomizer::GetFloat(-shake, shake);
 
-		parent->transform.SetOrigin({ -m_size.x / 2 + amX, -m_size.y / 2 + amY });
+		parent->transform.SetOrigin({ -m_size.x / 2 + amX, -m_size.y / 2 + amY });		
 	}
 	else
 	{
