@@ -20,31 +20,31 @@ bool BackgroundManager::Init(uth::Layer& bg, uth::Layer& fg)
 	GameObject* temp;
 	//Mountains
 	backG->AddChild(temp = new GameObject(std::vector<std::string>{ "bg", "mountain1" }));
-	temp->AddComponent(new Background(0.02,
+	temp->AddComponent(new Background(c_mountainSpeedM,
 		uthEngine.GetWindow().GetSize().y - 570, 0.5, true,
 		"backgrounds/mountains01.png"));
 	backG->AddChild(temp = new GameObject(std::vector<std::string>{ "bg", "mountain2" }));
-	temp->AddComponent(new Background(0.02,
+	temp->AddComponent(new Background(c_mountainSpeedM,
 		uthEngine.GetWindow().GetSize().y - 570, 0.5, false,
 		"backgrounds/mountains02.png"));
 
 	//Backcity
 	backG->AddChild(temp = new GameObject(std::vector<std::string>{ "bg", "building1" }));
-	temp->AddComponent(new Background(50,
+	temp->AddComponent(new Background(c_backSpeedM,
 		uthEngine.GetWindow().GetSize().y - 470, 2,true, 
 		"backgrounds/buildings02.png"));
 	backG->AddChild(temp = new GameObject(std::vector<std::string>{ "bg", "building2" }));
-	temp->AddComponent(new Background(50,
+	temp->AddComponent(new Background(c_backSpeedM,
 		uthEngine.GetWindow().GetSize().y - 470, 2, false,
 		"backgrounds/buildings02.png"));
 
 	//Frontcity
 	backF->AddChild(temp = new GameObject(std::vector<std::string>{ "bg", "lantern1" }));
-	temp->AddComponent(new Background(100,
+	temp->AddComponent(new Background(c_frontSpeedM,
 		uthEngine.GetWindow().GetSize().y - 220, 4, true,
 		"backgrounds/lanterns.png"));
 	backF->AddChild(temp = new GameObject(std::vector<std::string>{ "bg", "lantern2" }));
-	temp->AddComponent(new Background(100,
+	temp->AddComponent(new Background(c_frontSpeedM,
 		uthEngine.GetWindow().GetSize().y - 220, 4, false,
 		"backgrounds/lanterns.png"));
 
@@ -58,8 +58,20 @@ void BackgroundManager::Update(float dt)
 	
 }
 void BackgroundManager::CameraMovement(float dt)
-{
+{	
 	m_camera = &uthEngine.GetWindow().GetCamera();
+
+	if (m_camShakeAmount > 0)
+	{
+		m_camShakeAmount -= dt;
+		m_camera->transform.SetRotation(Randomizer::GetFloat(-m_camShakeAmount, m_camShakeAmount));
+	}
+	else
+	{
+		m_camera->transform.SetRotation(0);
+	}
+
+
 	m_camera->SetPosition(m_cameraPan, m_cameraStartPos.y);
 	if (!m_isCameraTurning)
 	{
@@ -98,6 +110,7 @@ void BackgroundManager::Shake(float amount, float delay)
 		auto bg = static_cast<GameObject*>(e.get());
 		bg->GetComponent<Background>()->Shake(amount);
 	}
+	m_camShakeAmount = amount*0.4f;
 }
 BackgroundManager::~BackgroundManager()
 {

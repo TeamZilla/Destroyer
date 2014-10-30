@@ -82,7 +82,6 @@ void Road::m_shock()
 	m_shockHeightMatcher = 62 * abs(m_shockTime) - 100;
 	m_shockSpeed = 300 * abs(m_shockTime);
 
-	std::cout << m_shockHeightMatcher << std::endl;
 
 	if (isShock)
 	{
