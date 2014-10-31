@@ -26,7 +26,7 @@ bool GameScene::Init()
 
 	//m_heli = new Heli(pmath::Vec2f(0, 0));
 	getLayer(LayerId::InGame).AddChild(m_road = new Road(225));
-	getLayer(LayerId::InGame).AddChild(m_player = new Player);
+	getLayer(LayerId::InGame).AddChild(m_player = new Player(&m_physWorld));
 	getLayer(LayerId::InGame).AddChild(m_heli = new Heli(pmath::Vec2f(0, 0)));
 
 	getLayer(LayerId::Userinterface).AddChild(m_health = new Health);

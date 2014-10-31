@@ -4,25 +4,8 @@ using namespace uth;
 
 bool Player::isGoingRight = true;
 
-Player::Player()
+Player::Player(uth::PhysicsWorld* physworld)
 {
-	auto playerTexture = uthRS.LoadTexture("modzilla/moz_sprites.png");
-	playerTexture->SetSmooth(true);
-	AddComponent(new AnimatedSprite(playerTexture,24,8,3));
-	playerAnimation = GetComponent<AnimatedSprite>("AnimatedSprite");
-
-	m_walkAnim = pmath::Vec4(16,8,16,10);
-	m_stompAnim = pmath::Vec4(0,3,0,4);
-	m_jumpAnim = pmath::Vec4(8,6,8,5);
-
-	playerAnimation->ChangeAnimation(m_walkAnim.x,
-									 m_walkAnim.y,
-									 m_walkAnim.z,
-									 m_walkAnim.w);
-	transform.SetOrigin(uth::Origin::BottomCenter);
-	transform.SetScale(1.5f);
-
-	transform.SetPosition(pmath::Vec2f(0, uthEngine.GetWindow().GetSize().y - transform.GetSize().y/4));
 	m_speed = 0;
 	m_maxSpeed = 400;
 	m_minSpeed = -400;
@@ -33,6 +16,35 @@ Player::Player()
 	isGoingRight = true;
 	m_isJumping = false;
 	m_isCrouching = false;
+
+	//Create, set position and scale player Sprite
+	auto playerTexture = uthRS.LoadTexture("modzilla/moz_sprites.png");
+	playerTexture->SetSmooth(true);
+	AddComponent(new AnimatedSprite(playerTexture,24,8,3));
+	transform.SetOrigin(uth::Origin::BottomCenter);
+	transform.SetScale(1.5f);
+	transform.SetPosition(pmath::Vec2f(0,
+		uthEngine.GetWindow().GetSize().y -
+		transform.GetSize().y/4));
+
+	//Set walking animation and other animations
+	m_walkAnim = pmath::Vec4(16,8,16,10);
+	m_stompAnim = pmath::Vec4(0,3,0,4);
+	m_jumpAnim = pmath::Vec4(8,6,8,5);
+	playerAnimation = GetComponent<AnimatedSprite>("AnimatedSprite");
+	playerAnimation->ChangeAnimation(m_walkAnim.x,
+									 m_walkAnim.y,
+									 m_walkAnim.z,
+									 m_walkAnim.w);
+
+	//Create body hitbox for player (player wont need own rigidbody)
+	m_bodyBox = new GameObject();
+	m_bodyBox->AddComponent(new Sprite(pmath::Vec4(0, 1, 0, 0.5f),transform.GetSize()));
+	m_bodyBox->transform.SetPosition(transform.GetPosition());
+	m_bodyBox->AddComponent(new Rigidbody(*physworld));
+	m_bodyBox->GetComponent<Rigidbody>()->SetKinematic(true);
+	m_bodyBox->AddTag("PlayerBodyCollider");
+	AddChild(m_bodyBox);
 }
 void Player::update(float dt)
 {
@@ -46,6 +58,8 @@ void Player::update(float dt)
 	{
 		Crouching();
 	}
+
+	m_bodyBox->GetComponent<Rigidbody>()->SetPosition(transform.GetPosition());
 }
 void Player::ChangeDirection()
 {
@@ -56,10 +70,7 @@ void Player::ChangeDirection()
 	//Change bool value to check is player going right or not
 	isGoingRight = !isGoingRight;
 }
-//void Player::Draw()
-//{
-//	GameObject::Draw(uthEngine.GetWindow());
-//}
+
 //Player jump
 void Player::Jump()
 {   //This is called once, changes variables to be ready to jump
