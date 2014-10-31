@@ -16,9 +16,12 @@ private:
 	float leftMostX;
 
 	// SHOCK
+	float m_shockDelay;
+	float m_shockDelayTimer;
 	float m_shockLenght;
 	float m_shockSpeed;
 	float m_shockStartSpeed;
+	float m_shockMinSpeed;
 	float m_shockFriction;
 	float m_shockTime;
 	float m_shockStartX;
