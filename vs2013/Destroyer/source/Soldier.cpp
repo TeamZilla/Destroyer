@@ -26,9 +26,6 @@ Soldier::Soldier(pmath::Vec2 pos, PhysicsWorld* physworld)
 	m_rigidBody->SetPosition(pmath::Vec2(pos.x, pos.y));
 	m_rigidBody->SetPhysicsGroup(-3);
 	AddTag("Soldier");
-	//m_rigidBody->SetUnitSize(pmath::Vec2(m_rigidBody->GetSize().x / 2, m_rigidBody->GetSize().y / 2));
-	//m_rigidBody->SetSize(pmath::Vec2(m_rigidBody->GetSize().x, m_rigidBody->GetSize().y/4));
-	//TODO: scale functions
 
 	WhichSideOfPlayer();
 }

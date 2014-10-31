@@ -21,9 +21,6 @@ Player::Player()
 									 m_walkAnim.w);
 	transform.SetOrigin(uth::Origin::BottomCenter);
 	transform.SetScale(1.5f);
-	//transform.SetPosition(
-	//	uthEngine.GetWindow().GetSize().x / 2,
-	//	uthEngine.GetWindow().GetSize().y / 2 + transform.GetSize().y/2);
 
 	transform.SetPosition(pmath::Vec2f(0, uthEngine.GetWindow().GetSize().y - transform.GetSize().y/4));
 	m_speed = 0;
