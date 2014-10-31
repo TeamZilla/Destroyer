@@ -18,6 +18,8 @@ private:
 	// SHOCK
 	float m_shockLenght;
 	float m_shockSpeed;
+	float m_shockStartSpeed;
+	float m_shockFriction;
 	float m_shockTime;
 	float m_shockStartX;
 	float m_shockHeight;

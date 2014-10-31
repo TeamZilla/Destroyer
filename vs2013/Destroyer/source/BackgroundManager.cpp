@@ -10,7 +10,7 @@ BackgroundManager::BackgroundManager(float bY, float fY, float mY)
 bool BackgroundManager::Init(uth::Layer& bg, uth::Layer& fg)
 {
 	m_cameraPan = 0;
-	m_cameraPanMax = 300;
+	m_cameraPanMax = 350;
 	m_cameraPanSpd = 5;
 	m_isCameraTurning = false;
 	backG = &bg;
@@ -31,11 +31,11 @@ bool BackgroundManager::Init(uth::Layer& bg, uth::Layer& fg)
 	//Backcity
 	backG->AddChild(temp = new GameObject(std::vector<std::string>{ "bg", "building1" }));
 	temp->AddComponent(new Background(c_backSpeedM,
-		uthEngine.GetWindow().GetSize().y - 470, 2,true, 
+		uthEngine.GetWindow().GetSize().y - 480, 2,true, 
 		"backgrounds/buildings02.png"));
 	backG->AddChild(temp = new GameObject(std::vector<std::string>{ "bg", "building2" }));
 	temp->AddComponent(new Background(c_backSpeedM,
-		uthEngine.GetWindow().GetSize().y - 470, 2, false,
+		uthEngine.GetWindow().GetSize().y - 480, 2, false,
 		"backgrounds/buildings02.png"));
 
 	//Frontcity

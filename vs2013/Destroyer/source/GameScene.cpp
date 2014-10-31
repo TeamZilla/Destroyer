@@ -25,7 +25,7 @@ bool GameScene::Init()
 	m_bgManager.Init(getLayer(LayerId::Background), getLayer(LayerId::Foreground));
 
 	//m_heli = new Heli(pmath::Vec2f(0, 0));
-	getLayer(LayerId::InGame).AddChild(m_road = new Road(160));
+	getLayer(LayerId::InGame).AddChild(m_road = new Road(225));
 	getLayer(LayerId::InGame).AddChild(m_player = new Player(&m_physWorld));
 	getLayer(LayerId::InGame).AddChild(m_heli = new Heli(pmath::Vec2f(0, 0)));
 

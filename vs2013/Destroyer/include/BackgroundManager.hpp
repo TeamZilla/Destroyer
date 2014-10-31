@@ -20,6 +20,7 @@ private:
 	const float c_frontSpeedM = 100;
 	const float c_mountainSpeedM = 10;
 
+
 	uth::Camera* m_camera;
 	pmath::Vec2 m_cameraStartPos;
 	uth::Layer* backG;

@@ -17,7 +17,7 @@ Heli::Heli(pmath::Vec2f givenPos)
 	m_hoverScale_y = 1;
 	m_hoverRatio = 10000;
 	isMoving = 0;
-	m_linearSpeed = 50;
+	m_linearSpeed = 10;
 	m_missileCD_max = 0.7;
 	m_missileCD_min = 0.2;
 	m_dt = 0;
