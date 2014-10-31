@@ -16,8 +16,8 @@ EnemyManager::EnemyManager(uth::Layer& layer)
 	m_tankSPLeft = pmath::Vec2(m_spawnPointLeft.x + 400, m_spawnPointLeft.y + 140);
 
 	enemyCount = 0;
-	m_soldierS = 0.1;
-	m_tankS    = 0.3;
+	m_soldierS = 2;
+	m_tankS    = 2;
 }
 EnemyManager::~EnemyManager()
 {
