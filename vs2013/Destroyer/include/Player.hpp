@@ -19,10 +19,12 @@ private:
 	pmath::Vec4 m_walkAnim;
 	pmath::Vec4 m_stompAnim;
 	pmath::Vec4 m_jumpAnim;
+	uth::Rigidbody* m_rigidbody;
+	uth::GameObject* m_bodyBox;
 	void Acceleration();
 
 public:
-	Player();
+	Player(uth::PhysicsWorld*);
 	~Player();
 
 	void update(float) override;

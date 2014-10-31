@@ -54,12 +54,12 @@ void Soldier::Movement(float dt)
 		m_isSideChecked = true;
 	}
 
-	if (m_playerPos.x + m_range <= m_rigidBody->GetPosition().x || m_playerPos.x - m_range >= m_rigidBody->GetPosition().x)
-	{
+	//if (m_playerPos.x + m_range <= m_rigidBody->GetPosition().x || m_playerPos.x - m_range >= m_rigidBody->GetPosition().x)
+	//{
 		auto pos = pmath::Vec2(m_rigidBody->GetPosition());
 		m_rigidBody->SetPosition(pmath::Vec2(pos.x + (dt*m_soldierSpeed) + 1, pos.y));
 		//m_rigidBody->ApplyImpulse(pmath::Vec2(m_tankSpeed, 10));
-	}
+	//}
 
 	//transform.SetScale(Randomizer::GetFloat(m_tankScale - 0.02f, m_tankScale + 0.01f));
 }
