@@ -1,6 +1,7 @@
 #include <GameScene.hpp>
 #include <ExplosionEmitter.hpp>
-//When you want debug, use WriteLog(...), works like printf.
+
+//#include <EnemyFactory.hpp>
 
 using namespace uth;
 
@@ -40,17 +41,17 @@ bool GameScene::Init()
 	//isCool = 1;
 
 	m_bgManager.SetCameraStartPos(pmath::Vec2f(0, uthEngine.GetWindow().GetSize().y/2));
-	//TODO: Initialisation functions
 	
-
-	//SOUNDTEST START
-
 	m_music = uthRS.LoadSound("Audio/Music/city_theme2.wav");
 	m_music->Play();
 	m_music->Loop(true);
 
 	//ParticleInit();
 	ExplosionEmitter::Init(&getLayer(LayerId::Foreground));
+
+	//EnemyFactory::Init(&getLayer(LayerId::InGame),&m_physWorld,m_player);
+	//EnemyFactory::CreateTank();
+
 	colliderChecks();
 
 	return true;

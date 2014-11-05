@@ -98,6 +98,7 @@
     <ClInclude Include="include\Aeroplane.hpp" />
     <ClInclude Include="include\Background.hpp" />
     <ClInclude Include="include\BackgroundManager.hpp" />
+    <ClInclude Include="include\EnemyFactory.hpp" />
     <ClInclude Include="include\EnemyManager.hpp" />
     <ClInclude Include="include\ExplosionEmitter.hpp" />
     <ClInclude Include="include\ExpParAffector.hpp" />
@@ -112,11 +113,13 @@
     <ClInclude Include="include\SmokeParAffector.hpp" />
     <ClInclude Include="include\Soldier.hpp" />
     <ClInclude Include="include\Tank.hpp" />
+    <ClInclude Include="include\TankBehavior.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\Aeroplane.cpp" />
     <ClCompile Include="source\Background.cpp" />
     <ClCompile Include="source\BackgroundManager.cpp" />
+    <ClCompile Include="source\EnemyFactory.cpp" />
     <ClCompile Include="source\EnemyManager.cpp" />
     <ClCompile Include="source\ExplosionEmitter.cpp" />
     <ClCompile Include="source\GameScene.cpp" />
@@ -129,6 +132,7 @@
     <ClCompile Include="source\RoadBlock.cpp" />
     <ClCompile Include="source\Soldier.cpp" />
     <ClCompile Include="source\Tank.cpp" />
+    <ClCompile Include="source\TankBehavior.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
