@@ -6,7 +6,7 @@
 #include <Player.hpp>
 #include <Health.hpp>
 #include <BackgroundManager.hpp>
-#include <EnemyManager.hpp>
+//#include <EnemyManager.hpp>
 #include <Heli.hpp>
 //#include <Aeroplane.hpp>
 #include <Road.hpp>
@@ -36,8 +36,8 @@ private: // Just place everything else as private.
 	void colliderChecks();
 
 	BackgroundManager m_bgManager;
-	EnemyManager* m_enemyManager;
-	void m_enemyManger(float dt);
+	//EnemyManager* m_enemyManager;
+	//void m_enemyManger(float dt);
 	Player* m_player;
 	Health* m_health;
 	Heli* m_heli;

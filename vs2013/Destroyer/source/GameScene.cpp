@@ -1,7 +1,8 @@
 #include <GameScene.hpp>
 #include <ExplosionEmitter.hpp>
 
-//#include <EnemyFactory.hpp>
+#include <EnemyFactory.hpp>
+#include <TankBehavior.hpp>
 
 using namespace uth;
 
@@ -33,8 +34,10 @@ bool GameScene::Init()
 	getLayer(LayerId::Userinterface).AddChild(m_health = new Health);
 
 	m_road->Init(m_player,&m_physWorld);
-	m_enemyManager->SetPhysWorld(&m_physWorld);
-	m_enemyManager->Init();
+
+	//m_enemyManager->SetPhysWorld(&m_physWorld);
+	//m_enemyManager->Init();
+
 	//aeroplaneTimer = 0;
 	//aeroMinSpawnTime = 0.5;
 	//aeroMaxSpawnTime = 6;
@@ -49,8 +52,8 @@ bool GameScene::Init()
 	//ParticleInit();
 	ExplosionEmitter::Init(&getLayer(LayerId::Foreground));
 
-	//EnemyFactory::Init(&getLayer(LayerId::InGame),&m_physWorld,m_player);
-	//EnemyFactory::CreateTank();
+	EnemyFactory::Init(&getLayer(LayerId::InGame),&m_physWorld,m_player);
+	EnemyFactory::CreateTank();
 
 	colliderChecks();
 
@@ -78,8 +81,8 @@ void GameScene::Update(float dt)
 	Scene::Update(dt);
 	//dt *= 20;
 
-	m_enemyManager->Update(dt);
-	m_enemyManager->CheckPlayer(m_player);
+	//m_enemyManager->Update(dt);
+	//m_enemyManager->CheckPlayer(m_player);
 	m_heli->Update(dt);
 	
 
@@ -175,23 +178,25 @@ void GameScene::colliderChecks()
 {
 	contactListener.onBeginContact = [](b2Contact* contact, GameObject* A, GameObject* B)
 	{
-		if (A->HasTag("Tank") && B->HasTag("RoadCollider"))
-			static_cast<Tank*>(A)->Hit();
-		if (A->HasTag("RoadCollider") && B->HasTag("Tank"))
-			static_cast<Tank*>(B)->Hit();
+		if (A->HasTag("Tank") && A->HasTag("Enemy") && B->HasTag("RoadCollider"))
+			static_cast<GameObject*>(A)->GetComponent<TankBehavior>()->Hit();
+			//static_cast<Tank*>(A)->Hit();
+		if (A->HasTag("RoadCollider") && B->HasTag("Tank") && B->HasTag("Enemy"))
+			static_cast<GameObject*>(B)->GetComponent<TankBehavior>()->Hit();
+			//static_cast<Tank*>(B)->Hit();
 
-		if (A->HasTag("Soldier") && B->HasTag("RoadCollider"))
-			static_cast<Soldier*>(A)->Hit();
-		if (A->HasTag("RoadCollider") && B->HasTag("Soldier"))
-			static_cast<Soldier*>(B)->Hit();
+		//if (A->HasTag("Soldier") && B->HasTag("RoadCollider"))
+		//	static_cast<Soldier*>(A)->Hit();
+		//if (A->HasTag("RoadCollider") && B->HasTag("Soldier"))
+		//	static_cast<Soldier*>(B)->Hit();
 
 	};
 	m_physWorld.SetContactListener(&contactListener);
 
 }
 //TODO with this: Make this to enemymanager
-void GameScene::m_enemyManger(float m_dt)
-{
+//void GameScene::m_enemyManger(float m_dt)
+//{
 	//m_heli->Update(m_dt);
 
 	//if (isCool)
@@ -224,7 +229,7 @@ void GameScene::m_enemyManger(float m_dt)
 
 	//aeroplaneTimer += m_dt;
 
-}
+//}
 
 //Default constructor for initialising constant variables.
 GameScene::GameScene()
@@ -248,8 +253,8 @@ GameScene::GameScene()
 		AddChild(e.second = new Layer());
 	}
 
-	auto & l = getLayer(LayerId::InGame);
-	m_enemyManager = new EnemyManager(l);
+	//auto & l = getLayer(LayerId::InGame);
+	//m_enemyManager = new EnemyManager(l);
 }
 //Default deconstrutor.
 GameScene::~GameScene()
