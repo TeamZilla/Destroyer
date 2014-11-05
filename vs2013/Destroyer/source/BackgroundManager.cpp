@@ -18,6 +18,18 @@ bool BackgroundManager::Init(uth::Layer& bg, uth::Layer& fg)
 
 	// Background
 	GameObject* temp;
+
+	//Sky
+	backG->AddChild(temp = new GameObject(std::vector<std::string>{ "bg", "sky1" }));
+	temp->AddComponent(new Background(c_mountainSpeedM/2,
+		uthEngine.GetWindow().GetSize().y - 740, 0, true,
+		"backgrounds/sky.png"));
+	backG->AddChild(temp = new GameObject(std::vector<std::string>{ "bg", "sky1" }));
+	temp->AddComponent(new Background(c_mountainSpeedM/2,
+		uthEngine.GetWindow().GetSize().y - 740, 0, false,
+		"backgrounds/sky.png"));
+
+
 	//Mountains
 	backG->AddChild(temp = new GameObject(std::vector<std::string>{ "bg", "mountain1" }));
 	temp->AddComponent(new Background(c_mountainSpeedM,
@@ -29,6 +41,15 @@ bool BackgroundManager::Init(uth::Layer& bg, uth::Layer& fg)
 		"backgrounds/mountains02.png"));
 
 	//Backcity
+	backG->AddChild(temp = new GameObject(std::vector<std::string>{ "bg", "building3" }));
+	temp->AddComponent(new Background(c_backSpeedM / 1.2f,
+		uthEngine.GetWindow().GetSize().y - 480, 2, true,
+		"backgrounds/buildings01.png"));
+	backG->AddChild(temp = new GameObject(std::vector<std::string>{ "bg", "building4" }));
+	temp->AddComponent(new Background(c_backSpeedM / 1.2f,
+		uthEngine.GetWindow().GetSize().y - 480, 2, false,
+		"backgrounds/buildings01.png"));
+
 	backG->AddChild(temp = new GameObject(std::vector<std::string>{ "bg", "building1" }));
 	temp->AddComponent(new Background(c_backSpeedM,
 		uthEngine.GetWindow().GetSize().y - 480, 2,true, 
