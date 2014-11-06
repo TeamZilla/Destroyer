@@ -13,12 +13,14 @@ Player::Player(uth::PhysicsWorld* physworld)
 	m_jumpSpeed = 0;
 	m_jumpHeight = 8;
 	m_jumpTimer = 0;
+	m_tailTimer = 0;
 	isGoingRight = true;
 	m_isJumping = false;
 	m_isCrouching = false;
+	m_isTurning = false;
 
 	//Create, set position and scale player Sprite
-	auto playerTexture = uthRS.LoadTexture("modzilla/moz_sprites.png");
+	auto playerTexture = uthRS.LoadTexture("modzilla/moz_animation.png");
 	playerTexture->SetSmooth(true);
 	AddComponent(new AnimatedSprite(playerTexture,24,8,3));
 	transform.SetOrigin(uth::Origin::BottomCenter);
@@ -28,9 +30,10 @@ Player::Player(uth::PhysicsWorld* physworld)
 		transform.GetSize().y/4));
 
 	//Set walking animation and other animations
-	m_walkAnim = pmath::Vec4(16,8,16,10);
-	m_stompAnim = pmath::Vec4(0,3,0,4);
-	m_jumpAnim = pmath::Vec4(8,6,8,5);
+	m_walkAnim  =  pmath::Vec4(16, 8, 16, 10);
+	m_stompAnim =  pmath::Vec4(0, 3, 0, 4);
+	m_jumpAnim  =  pmath::Vec4(8, 6, 8, 5);
+	m_tailAnim  =  pmath::Vec4(3, 3, 3, 6);
 	playerAnimation = GetComponent<AnimatedSprite>("AnimatedSprite");
 	playerAnimation->ChangeAnimation(m_walkAnim.x,
 									 m_walkAnim.y,
@@ -54,21 +57,46 @@ void Player::update(float dt)
 	{
 		Jumping();
 	}
-	if (m_isCrouching)
+	else if (m_isCrouching)
 	{
 		Crouching();
+	}
+	else if (m_isTurning)
+	{
+		Turning();
 	}
 
 	m_bodyBox->GetComponent<Rigidbody>()->SetPosition(transform.GetPosition());
 }
 void Player::ChangeDirection()
 {
-	//Flip player sprite to create illusion that player turns
-	transform.SetScale(transform.GetScale().x*-1, transform.GetScale().y);
-	//Speed reduced to minspeed
-	m_speed = m_minSpeed;
-	//Change bool value to check is player going right or not
-	isGoingRight = !isGoingRight;
+	m_isTurning = true;
+	m_tailTimer = 0.33f;
+	playerAnimation->ChangeAnimation(m_tailAnim.x,
+		m_tailAnim.y,
+		m_tailAnim.z,
+		m_tailAnim.w);
+	
+}
+
+void Player::Turning()
+{
+	m_tailTimer -= m_dt;
+
+	if (m_tailTimer < 0)
+	{
+		//Flip player sprite to create illusion that player turns
+		transform.SetScale(transform.GetScale().x*-1, transform.GetScale().y);
+		//Speed reduced to minspeed
+		m_speed = m_minSpeed;
+		//Change bool value to check is player going right or not
+		isGoingRight = !isGoingRight;
+		playerAnimation->ChangeAnimation(m_walkAnim.x,
+			m_walkAnim.y,
+			m_walkAnim.z,
+			m_walkAnim.w);
+		m_isTurning = false;
+	}
 }
 
 //Player jump

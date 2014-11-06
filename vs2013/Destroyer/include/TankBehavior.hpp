@@ -8,7 +8,10 @@
 class TankBehavior : public uth::Component
 {
 	float				m_speed;
+	float				m_explodeTimer = 3;
 	bool				m_isGoingLeft;
+	bool				m_isDead = false;
+	bool				m_isGoingToExp = false;
 	uth::GameObject*	m_player;
 	uth::Rigidbody*		m_rigidBody;
 	pmath::Vec2			m_direction;
@@ -31,76 +34,100 @@ public:
 	void Init() override
 	{
 		m_rigidBody = parent->GetComponent<uth::Rigidbody>();
-
-		//const auto& from = parent->transform.GetPosition();
-		//const auto& to = m_player->transform.GetPosition();
-
-		//m_direction = (to - from).normalize();
-
-		//m_direction.x < 0 ? m_isGoingLeft = true : m_isGoingLeft = false;
-
-		setTarget(m_player->transform.GetPosition());
+		m_rigidBody->SetPhysicsGroup(-3);
+		m_rigidBody->SetFriction(0);
 
 		m_maxDistance = pmath::Vec2(
 			uth::Randomizer::GetFloat(m_player->transform.GetPosition().x + 400,
-									  m_player->transform.GetPosition().x + 600));
+									  m_player->transform.GetPosition().x + 500), 300);
 		m_minDistance = pmath::Vec2(
 			uth::Randomizer::GetFloat(m_player->transform.GetPosition().x + 200,
-									  m_player->transform.GetPosition().x + 300));
+									  m_player->transform.GetPosition().x + 300), 300);
 
+		setTarget(m_player->transform.GetPosition());
 		m_target = m_maxDistance;
 
 	}
 	void Draw(uth::RenderTarget& target) override { }
 	void TankBehavior::Update(float dt)
 	{
-		//auto& rbody = *parent->GetComponent<uth::Rigidbody>();
-		//const auto& from = parent->transform.GetPosition();
-		//const auto& to = m_player->transform.GetPosition();
-
-		//auto& direction = (to - from).normalize();
-		//if (m_rigidBody->GetPosition().x < -m_maxDistance.x && !m_isGoingLeft ||
-		//	m_rigidBody->GetPosition().x > m_maxDistance.x && m_isGoingLeft)
-		//{
-		//	m_rigidBody->SetVelocity(
-		//		pmath::Vec2(m_direction.x * m_speed,
-		//		m_rigidBody->GetVelocity().y));
-		//}
-		if (m_rigidBody->GetPosition().x > m_maxDistance.x)
-			m_rigidBody->ApplyForce(pmath::Vec2(m_direction.x * m_speed,0));
+		if (m_isGoingToExp)
+			Exploding(dt);
 		else
-			m_rigidBody->ApplyForce(pmath::Vec2(40,0));
+			Movement();
+	}
 
-
-
-
-		//else if (m_rigidBody->GetPosition().x < m_maxDistance.x && m_isGoingLeft ||
-		//	m_rigidBody->GetPosition().x > -m_maxDistance.x && !m_isGoingLeft)
-		//{
-		//	m_rigidBody->SetVelocity(
-		//		pmath::Vec2(m_direction.x * m_speed,
-		//		m_rigidBody->GetVelocity().y));
-		//}
-
+	void TankBehavior::Movement()
+	{
+		if (m_isGoingLeft)
+		{
+			if (m_rigidBody->GetPosition().x > m_target.x)
+				m_rigidBody->ApplyForce(pmath::Vec2(m_direction.x * m_speed, 0));
+			else
+				m_rigidBody->ApplyForce(pmath::Vec2(-m_direction.x * 30, 0));
+		}
+		else
+		{
+			if (m_rigidBody->GetPosition().x < -m_target.x)
+				m_rigidBody->ApplyForce(pmath::Vec2(m_direction.x * m_speed, 0));
+			else
+				m_rigidBody->ApplyForce(pmath::Vec2(-m_direction.x * 30, 0));
+		}
 	}
 	
+	void TankBehavior::Exploding(float dt)
+	{
+		m_explodeTimer -= dt;
+		auto& col = parent->GetComponent<uth::Sprite>()->GetColor();
+		auto am = (dt * m_explodeTimer)/8;
+		
+		parent->GetComponent<uth::Sprite>()->SetColor(col.r + am, col.g - am, col.b - am, col.a);
+		
+		parent->transform.SetOrigin(pmath::Vec2(
+			uth::Randomizer::GetFloat(-5 / m_explodeTimer, 5 / m_explodeTimer),
+			uth::Randomizer::GetFloat(-5 / m_explodeTimer, 5 / m_explodeTimer)));
+
+		if (m_explodeTimer <= 0.5f)
+			m_isDead = true;
+	}
+
 	void TankBehavior::Hit()
 	{
 		m_rigidBody->ApplyImpulse(
-			pmath::Vec2(uth::Randomizer::GetFloat(-20, 20),     //X direction
-			-uth::Randomizer::GetFloat(50, 70)),				 //Y direction
+			pmath::Vec2(uth::Randomizer::GetFloat(-40, 40),      //X direction
+			-uth::Randomizer::GetFloat(60, 80)),				 //Y direction
 			pmath::Vec2(uth::Randomizer::GetFloat(-25, 25), 0)); //offset
+		m_isGoingToExp = true;
+	}
+	void TankBehavior::Destroy()
+	{
+		m_isDead = true;
 	}
 
 	void TankBehavior::setTarget(pmath::Vec2 to)
 	{
 		const auto& from = parent->transform.GetPosition();
+		const auto& sc = parent->transform.GetScale();
 
 		m_direction = (to - from).normalize();
 		m_direction.x < 0 ? m_isGoingLeft = true : m_isGoingLeft = false;
+		m_isGoingLeft ? parent->transform.SetScale(sc.x, sc.y) : parent->transform.SetScale(-sc.x, sc.y);
 
 	}
 
+	void TankBehavior::Shoot()
+	{
+
+	}
+
+	bool TankBehavior::isDestroyed()
+	{
+		return m_isDead;
+	}
+	bool TankBehavior::isExploding()
+	{
+		return m_isGoingToExp;
+	}
 };
 
 

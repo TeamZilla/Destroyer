@@ -19,14 +19,16 @@ bool GameScene::Init()
 	uthEngine.GetWindow().GetCamera().SetSize(1280, 720);
 	
 	m_gameFloor.AddComponent(new Sprite(pmath::Vec4(1, 0, 0, 1), pmath::Vec2(3000, 80)));
+	m_gameFloor.AddTag("Floor");
 	m_gameFloor.transform.SetPosition(0, uthEngine.GetWindow().GetSize().y);
 	m_gameFloor.AddComponent(new Rigidbody(m_physWorld));
-	m_gameFloor.GetComponent<Rigidbody>("Rigidbody")->SetKinematic(true);
+	m_gameFloor.GetComponent<Rigidbody>()->SetKinematic(true);
 
 
 	m_bgManager.Init(getLayer(LayerId::Background), getLayer(LayerId::Foreground));
 
 	//m_heli = new Heli(pmath::Vec2f(0, 0));
+	//getLayer(LayerId::InGame).AddChild(&m_gameFloor);
 	getLayer(LayerId::InGame).AddChild(m_road = new Road(225));
 	getLayer(LayerId::InGame).AddChild(m_player = new Player(&m_physWorld));
 	getLayer(LayerId::InGame).AddChild(m_heli = new Heli(pmath::Vec2f(0, 0)));
@@ -73,10 +75,12 @@ void GameScene::Update(float dt)
 		time -= 1;
 		std::cout << count << "\t" << m_layers[LayerId::InGame]->m_children.size() << std::endl;
 		count = 0;
+		EnemyFactory::CreateTank();
 	}
 
 	m_physWorld.Update(dt);
 	m_bgManager.Update(dt);
+	EnemyFactory::CheckEnemies();
 
 	Scene::Update(dt);
 	//dt *= 20;
@@ -183,6 +187,11 @@ void GameScene::colliderChecks()
 			//static_cast<Tank*>(A)->Hit();
 		if (A->HasTag("RoadCollider") && B->HasTag("Tank") && B->HasTag("Enemy"))
 			static_cast<GameObject*>(B)->GetComponent<TankBehavior>()->Hit();
+		if (A->HasTag("Floor") && B->HasTag("Tank") && B->HasTag("Enemy"))
+		{
+			if (static_cast<GameObject*>(B)->GetComponent<TankBehavior>()->isExploding())
+				static_cast<GameObject*>(B)->GetComponent<TankBehavior>()->Destroy();
+		}
 			//static_cast<Tank*>(B)->Hit();
 
 		//if (A->HasTag("Soldier") && B->HasTag("RoadCollider"))

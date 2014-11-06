@@ -1,5 +1,6 @@
 #include <EnemyFactory.hpp>
 #include <TankBehavior.hpp>
+#include <ExplosionEmitter.hpp>
 
 using namespace uth;
 
@@ -9,21 +10,45 @@ Player*				EnemyFactory::m_player;
 
 std::shared_ptr<GameObject> EnemyFactory::CreateTank()
 {
-	const static float speed(10.0f);
+	const static float speed(8.0f);
 	const static std::string textureId("Enemies/tank.png");
-	const static pmath::Vec2 CollisionSize(50, 50);
 
 	auto& obj = std::shared_ptr<GameObject>(new GameObject());
-
 	obj->AddTags({ "Tank", "Enemy" });
 	obj->AddComponent(new Sprite(textureId));
-	obj->transform.SetPosition(700, 500);
+
+	const static pmath::Vec2 CollisionSize(obj->transform.GetSize()/2);
+	obj->transform.SetPosition(SpawnPosition());
+
 	obj->transform.SetScale(0.5f);
 	obj->AddComponent(new Rigidbody(*m_physicsWorld, uth::COLLIDER_BOX, CollisionSize));
-	obj->GetComponent<Rigidbody>()->SetFriction(0);
-	obj->GetComponent<Rigidbody>()->SetPhysicsGroup(-3);
 	obj->AddComponent(new TankBehavior(speed, m_player));
 
 	return m_layer->AddChild(obj);
 
+}
+
+pmath::Vec2 EnemyFactory::SpawnPosition()
+{
+	const static pmath::Vec2 spawnPosition(m_player->transform.GetPosition().x + 800, 500);
+
+	if (uth::Randomizer::GetInt(0, 11) < 6)
+		return pmath::Vec2(spawnPosition.x, spawnPosition.y);
+	else
+		return pmath::Vec2(-spawnPosition.x, spawnPosition.y);
+}
+
+void EnemyFactory::CheckEnemies()
+{
+	for (auto& e : m_layer->Children("Tank"))
+	{
+		auto& obj = *static_cast<GameObject*>(e.get());
+		auto& tank = *static_cast<TankBehavior*>(obj.GetComponent<TankBehavior>());
+
+		if (tank.isDestroyed())
+		{
+			ExplosionEmitter::Emit(obj.transform.GetPosition());
+			m_layer->RemoveChild(&obj);
+		}
+	}
 }

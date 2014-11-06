@@ -10,6 +10,8 @@ class EnemyFactory
 	static uth::PhysicsWorld*	m_physicsWorld;
 	static Player*				m_player;
 
+	static pmath::Vec2 SpawnPosition();
+
 public:
 
 	static void Init(uth::Layer* layer, uth::PhysicsWorld* physWorld, Player* player)
@@ -20,6 +22,7 @@ public:
 	}
 
 	static std::shared_ptr<uth::GameObject> CreateTank();
+	static void CheckEnemies();
 
 };
 
