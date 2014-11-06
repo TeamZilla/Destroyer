@@ -32,7 +32,7 @@ Player::Player(uth::PhysicsWorld* physworld)
 	//Set walking animation and other animations
 	m_walkAnim  =  pmath::Vec4(16, 8, 16, 10);
 	m_stompAnim =  pmath::Vec4(0, 3, 0, 4);
-	m_jumpAnim  =  pmath::Vec4(8, 6, 8, 5);
+	m_jumpAnim  =  pmath::Vec4(8, 6, 8, 7);
 	m_tailAnim  =  pmath::Vec4(3, 3, 3, 6);
 	playerAnimation = GetComponent<AnimatedSprite>("AnimatedSprite");
 	playerAnimation->ChangeAnimation(m_walkAnim.x,
@@ -107,7 +107,7 @@ void Player::Jump()
 		m_tempPos = transform.GetPosition();
 		m_isJumping = true;
 		m_jumpSpeed = m_jumpHeight;
-		m_jumpTimer = 0.4;
+		m_jumpTimer = 0.2;
 		playerAnimation->ChangeAnimation(m_jumpAnim.x,
 										 m_jumpAnim.y,
 										 m_jumpAnim.z,
@@ -119,7 +119,7 @@ void Player::Jumping()
 	m_jumpTimer -= m_dt;
 	if (m_jumpTimer <= 0)
 	{
-		m_jumpSpeed -= m_dt * 15;
+		m_jumpSpeed -= m_dt * 30;
 		transform.Move(0, -m_jumpSpeed);
 		if (transform.GetPosition().y >= m_tempPos.y)
 		{
