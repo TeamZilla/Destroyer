@@ -112,6 +112,7 @@ void AnimatedSprite::ChangeAnimation(int loopStartFrame, int loopFrames,
 	m_firstFrame = loopStartFrame;
 	m_fps = fps;
 	m_loop = loop;
+	m_loopEnd = false;
 	m_frameCount = 0;
 	m_reversed = reversed;
 	generateBuffer(true);
@@ -129,7 +130,7 @@ void AnimatedSprite::Init()
 	const pmath::Vec2 size = pmath::Vec2(m_sizePx.x, m_sizePx.y);
 	parent->transform.setSize(size);
 
-	loopEnd = false;
+	m_loopEnd = false;
 }
 
 void AnimatedSprite::Update(float dt)
@@ -142,10 +143,10 @@ void AnimatedSprite::Update(float dt)
 	if (!m_loop)
 	{
 		if(m_frames == m_frameCount + 1)
-			loopEnd = true;
+			m_loopEnd = true;
 	}
 
-	if(m_delay > 1.0f / m_fps && !loopEnd)
+	if(m_delay > 1.0f / m_fps && !m_loopEnd)
 	{
 		m_delay = 0.0f;
 		m_frameCount++;

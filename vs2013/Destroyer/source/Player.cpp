@@ -125,7 +125,7 @@ void Player::Crouch()
 		m_isCrouching = true;
 		m_jumpSpeed = 4;
 		m_crouchTimer = 0;
-		SetAnimation(m_stompAnim);
+		SetAnimation(m_stompAnim,false);
 	}
 }
 void Player::Crouching()
