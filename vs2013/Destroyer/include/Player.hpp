@@ -44,7 +44,7 @@ public:
 	void  Crouch();
 	float getSpeed();
 	bool  CheckIfGoingRight();
-
+	void  SetAnimation(pmath::Vec4 anim, bool loop = true);
 
 	uth::AnimatedSprite* playerAnimation;
 };

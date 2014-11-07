@@ -35,10 +35,7 @@ Player::Player(uth::PhysicsWorld* physworld)
 	m_jumpAnim  =  pmath::Vec4(8, 6, 8, 5);
 	m_tailAnim  =  pmath::Vec4(3, 3, 3, 6);
 	playerAnimation = GetComponent<AnimatedSprite>("AnimatedSprite");
-	playerAnimation->ChangeAnimation(m_walkAnim.x,
-									 m_walkAnim.y,
-									 m_walkAnim.z,
-									 m_walkAnim.w);
+	SetAnimation(m_walkAnim);
 
 	//Create body hitbox for player (player wont need own rigidbody)
 	m_bodyBox = new GameObject();
@@ -72,10 +69,7 @@ void Player::ChangeDirection()
 {
 	m_isTurning = true;
 	m_tailTimer = 0.33f;
-	playerAnimation->ChangeAnimation(m_tailAnim.x,
-		m_tailAnim.y,
-		m_tailAnim.z,
-		m_tailAnim.w);
+	SetAnimation(m_tailAnim);
 	
 }
 
@@ -91,10 +85,7 @@ void Player::Turning()
 		m_speed = m_minSpeed;
 		//Change bool value to check is player going right or not
 		isGoingRight = !isGoingRight;
-		playerAnimation->ChangeAnimation(m_walkAnim.x,
-			m_walkAnim.y,
-			m_walkAnim.z,
-			m_walkAnim.w);
+		SetAnimation(m_walkAnim);
 		m_isTurning = false;
 	}
 }
@@ -108,10 +99,7 @@ void Player::Jump()
 		m_isJumping = true;
 		m_jumpSpeed = m_jumpHeight;
 		m_jumpTimer = 0.4;
-		playerAnimation->ChangeAnimation(m_jumpAnim.x,
-										 m_jumpAnim.y,
-										 m_jumpAnim.z,
-										 m_jumpAnim.w);
+		SetAnimation(m_jumpAnim);
 	}
 }
 void Player::Jumping()
@@ -124,10 +112,7 @@ void Player::Jumping()
 		if (transform.GetPosition().y >= m_tempPos.y)
 		{
 			transform.SetPosition(m_tempPos);
-			playerAnimation->ChangeAnimation(m_walkAnim.x,
-											 m_walkAnim.y,
-											 m_walkAnim.z,
-											 m_walkAnim.w);
+			SetAnimation(m_walkAnim);
 			m_isJumping = false;
 		}
 	}
@@ -140,10 +125,7 @@ void Player::Crouch()
 		m_isCrouching = true;
 		m_jumpSpeed = 4;
 		m_crouchTimer = 0;
-		playerAnimation->ChangeAnimation(m_stompAnim.x,
-										 m_stompAnim.y,
-										 m_stompAnim.z,
-										 m_stompAnim.w); //stompAnim
+		SetAnimation(m_stompAnim);
 	}
 }
 void Player::Crouching()
@@ -157,10 +139,7 @@ void Player::Crouching()
 	}
 	if (m_crouchTimer >= 1)
 	{
-		playerAnimation->ChangeAnimation(m_walkAnim.x,
-									     m_walkAnim.y,
-									     m_walkAnim.z,
-										 m_walkAnim.w);
+		SetAnimation(m_walkAnim);
 		m_isCrouching = false;
 	}
 
@@ -185,6 +164,10 @@ float Player::getSpeed()
 bool  Player::CheckIfGoingRight()
 {
 	return isGoingRight;
+}
+void Player::SetAnimation(pmath::Vec4 anim, bool loop)
+{
+	playerAnimation->ChangeAnimation(anim.x, anim.y, anim.z, anim.w, loop);
 }
 // Deconstructor
 Player::~Player()
