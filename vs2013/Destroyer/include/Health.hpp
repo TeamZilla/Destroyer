@@ -15,6 +15,7 @@ private:
 	float n;
 	float m;
 	uth::GameObject* m_Green;
+	uth::GameObject* m_Red;
 	
 
 public:

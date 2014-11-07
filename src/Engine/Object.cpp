@@ -93,7 +93,7 @@ namespace uth
 			this != nullptr ?
 			true :
 			[]() -> bool { WriteError("This = nullptr, object deleted multiple times"); return false; }()
-		);
+			);
 
 		for (auto& child : m_children)
 			child->setParent(nullptr);
