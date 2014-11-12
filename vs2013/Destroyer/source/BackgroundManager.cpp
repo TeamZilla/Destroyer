@@ -10,7 +10,7 @@ BackgroundManager::BackgroundManager(float bY, float fY, float mY)
 bool BackgroundManager::Init(uth::Layer& bg, uth::Layer& fg)
 {
 	m_cameraPan = 0;
-	m_cameraPanMax = 30;
+	m_cameraPanMax = 350;
 	m_cameraPanSpd = 2.5;
 	m_isCameraTurning = false;
 	backG = &bg;

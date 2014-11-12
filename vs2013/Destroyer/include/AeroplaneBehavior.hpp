@@ -9,17 +9,17 @@ class AeroplaneBehavior : public uth::Component
 {
 private: 
 	float pathFlatnes; // ++ for flatnes
-	float m_speed;
-	float m_time;
-	float m_minY;
+	float m_speed = 700;
+	float m_time = 0;
+	float m_minY = 320;
+	float verticalScaler = 1;
+	float mainScale = 0.35;
 	float m_startX = 1200;
 	int m_direction; // uses values 1 and -1 only.
 	float m_dt;
 	float accelerate;
 	float angle;
 	float sliding;
-	float verticalScaler;
-	float mainScale;
 
 	pmath::Vec2f m_pos;
 	pmath::Vec2f prevPos;
@@ -32,30 +32,21 @@ public:
 	{
 
 	}
-
-
-	void AeroplaneBehavior::pathFunc()
-	{
-		m_pos.x = m_direction * m_speed * m_time + m_startX;
-		m_pos.y = -pow((m_pos.x) / pathFlatnes, 2) + m_minY;
-		m_rigidBody->SetPosition(m_pos);
-		rotation();
-		m_time += m_dt;
-	}
 	void Init() override
 	{
 		m_rigidBody = parent->GetComponent<uth::Rigidbody>();
 		m_rigidBody->SetKinematic(true);
 		m_rigidBody->SetPhysicsGroup(-3);
-		m_direction = uth::Randomizer::GetInt(0, 1);
-		if (m_direction == 0)
+		m_direction = uth::Randomizer::GetInt(0, 10);
+		if (m_direction < 5)
 		{
-			m_direction = -1;
-			m_startX = m_direction * m_startX;
+			m_direction = 1;
+			m_startX *= -m_direction;
 		}
 		else
 		{
-			m_startX = m_startX * m_direction;
+			m_direction = -1;
+			m_startX *= -m_direction;
 		}
 
 
@@ -70,19 +61,27 @@ public:
 	void AeroplaneBehavior::Update(float dt)
 	{
 		verticalScaler = (abs(m_rigidBody->GetPosition().y) + 300) / 450;
-		parent->transform.SetScale(verticalScaler * pmath::Vec2f(-m_direction,1));
+		parent->transform.SetScale(verticalScaler * pmath::Vec2f(-m_direction * 0.35,0.35));
 
 		m_dt = dt;
 		pathFunc();
 		rotation();
-		//explodeCheck();
+		
 		prevPos = m_rigidBody->GetPosition();
 	}
 
+	void AeroplaneBehavior::pathFunc()
+	{
+		m_pos.x = m_direction * m_speed * m_time + m_startX;
+		m_pos.y = -pow((m_pos.x) / pathFlatnes, 2) + m_minY;
+		m_rigidBody->SetPosition(m_pos);
+		rotation();
+		m_time += m_dt;
+	}
 
 	void AeroplaneBehavior::rotation()
 	{
-		pmath::Vec2f angVec = parent->transform.GetPosition() - prevPos;
+		pmath::Vec2f angVec = m_rigidBody->GetPosition() - prevPos;
 
 		if (m_direction * m_rigidBody->GetPosition().x > 0)
 		{

@@ -96,6 +96,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Aeroplane.hpp" />
+    <ClInclude Include="include\AeroplaneBehavior.hpp" />
     <ClInclude Include="include\Background.hpp" />
     <ClInclude Include="include\BackgroundManager.hpp" />
     <ClInclude Include="include\EnemyFactory.hpp" />
