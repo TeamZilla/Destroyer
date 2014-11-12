@@ -36,15 +36,35 @@ Player::Player(uth::PhysicsWorld* physworld)
 	m_tailAnim  =  pmath::Vec4(3, 3, 3, 6);
 	playerAnimation = GetComponent<AnimatedSprite>("AnimatedSprite");
 	SetAnimation(m_walkAnim);
-
+	
 	//Create body hitbox for player (player wont need own rigidbody)
 	m_bodyBox = new GameObject();
-	m_bodyBox->AddComponent(new Sprite(pmath::Vec4(0, 1, 0, 0.5f),transform.GetSize()));
-	m_bodyBox->transform.SetPosition(transform.GetPosition());
+	m_bodyBox->AddComponent(new Sprite(pmath::Vec4(1, 0, 0, 0),
+		pmath::Vec2(transform.GetSize().x/2.2f, transform.GetSize().y / 1.5f)));
+	m_bodyBox->transform.SetPosition(0, 30);
 	m_bodyBox->AddComponent(new Rigidbody(*physworld));
 	m_bodyBox->GetComponent<Rigidbody>()->SetKinematic(true);
+	m_bodyBox->GetComponent<Rigidbody>()->SetPhysicsGroup(-2);
 	m_bodyBox->AddTag("PlayerBodyCollider");
 	AddChild(m_bodyBox);
+
+	//Create head hitbox for player
+	m_headBox = new GameObject();
+	m_headBox->AddComponent(new Sprite(pmath::Vec4(0, 1, 0, 0),
+		pmath::Vec2(transform.GetSize().x/2.4f, transform.GetSize().y/4)));
+	m_headBox->transform.SetPosition(transform.GetSize().x / 3.6f, -80);
+	m_headBox->AddComponent(new Rigidbody(*physworld));
+	m_headBox->GetComponent<Rigidbody>()->SetKinematic(true);
+	m_headBox->GetComponent<Rigidbody>()->SetPhysicsGroup(-2);
+	m_headBox->AddTag("PlayerHeadCollider");
+
+	AddChild(m_headBox);
+
+
+}
+
+void Player::init()
+{
 }
 void Player::update(float dt)
 {
@@ -62,8 +82,6 @@ void Player::update(float dt)
 	{
 		Turning();
 	}
-
-	m_bodyBox->GetComponent<Rigidbody>()->SetPosition(transform.GetPosition());
 }
 void Player::ChangeDirection()
 {

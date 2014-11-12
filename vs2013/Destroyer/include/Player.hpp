@@ -25,6 +25,7 @@ private:
 
 	uth::Rigidbody* m_rigidbody;
 	uth::GameObject* m_bodyBox;
+	uth::GameObject* m_headBox;
 	void Acceleration();
 	void Jumping();
 	void Crouching();
@@ -36,7 +37,7 @@ public:
 
 	bool m_isJumping, m_isCrouching, m_isTurning;
 	static bool isGoingRight;
-
+	void init();
 	void update(float) override;
 	//void Draw();
 	void  ChangeDirection();

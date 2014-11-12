@@ -45,7 +45,7 @@ void Road::Init(Player* asd, uth::PhysicsWorld* physworld)
 	hitBox->AddComponent(new Rigidbody(*physworld));
 	hitBox->GetComponent<Rigidbody>("Rigidbody")->SetAngle(45);
 	hitBox->GetComponent<Rigidbody>("Rigidbody")->SetKinematic(true);
-	//hitBox->GetComponent<Rigidbody>("Rigidbody")->SetPhysicsGroup(-3);
+	hitBox->GetComponent<Rigidbody>("Rigidbody")->SetPhysicsGroup(-2);
 	hitBox->AddTag("RoadCollider");
 	AddChild(hitBox);
 }

@@ -37,6 +37,7 @@ bool GameScene::Init()
 	getLayer(LayerId::Userinterface).AddChild(m_health = new Health);
 
 	m_road->Init(m_player,&m_physWorld);
+	m_player->init();
 
 	//m_enemyManager->SetPhysWorld(&m_physWorld);
 	//m_enemyManager->Init();
@@ -49,12 +50,12 @@ bool GameScene::Init()
 	m_bgManager.SetCameraStartPos(pmath::Vec2f(0, uthEngine.GetWindow().GetSize().y/2));
 	
 
-	m_music = uthRS.LoadSound("Audio/Music/city_theme2.wav");
+	m_music = uthRS.LoadSound("Audio/Music/city_theme3.wav");
 	m_music->Play();
 	m_music->Loop(true);
 
 	m_waveSound = uthRS.LoadSound("Audio/Effects/Explosion1.wav");
-	m_waveSound->SetVolume(10);
+	//m_waveSound->SetVolume(10);
 
 	//ParticleInit();
 	ExplosionEmitter::Init(&getLayer(LayerId::Foreground));

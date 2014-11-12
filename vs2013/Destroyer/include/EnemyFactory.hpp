@@ -21,7 +21,7 @@ public:
 		m_physicsWorld = physWorld;
 		m_player = player;
 		m_expSound = uthRS.LoadSound("Audio/Effects/Short_Explosion1.wav");
-		m_expSound->SetVolume(10);
+		//m_expSound->SetVolume(50);
 	}
 
 	static std::shared_ptr<uth::GameObject> CreateTank();
