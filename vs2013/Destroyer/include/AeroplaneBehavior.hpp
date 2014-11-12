@@ -3,12 +3,13 @@
 #define AeroplaneBehavior_HPP
 
 #include <UtH/UtHEngine.hpp>
+#include <ExplosionEmitter.hpp>
 
 
 class AeroplaneBehavior : public uth::Component
 {
 private: 
-	float pathFlatnes; // ++ for flatnes
+	float pathFlatnes = 55; // ++ for flatnes
 	float m_speed = 700;
 	float m_time = 0;
 	float m_minY = 320;
@@ -17,9 +18,9 @@ private:
 	float m_startX = 1200;
 	int m_direction; // uses values 1 and -1 only.
 	float m_dt;
-	float accelerate;
 	float angle;
-	float sliding;
+	float m_sliding = 1;
+	bool m_isDestroyed = false;
 
 	pmath::Vec2f m_pos;
 	pmath::Vec2f prevPos;
@@ -28,30 +29,33 @@ private:
 	//void explodeCheck();
 
 public:
-	AeroplaneBehavior::AeroplaneBehavior()
-	{
 
+	bool isDestroyed()
+	{
+	return m_isDestroyed;
 	}
+
+
+	AeroplaneBehavior::AeroplaneBehavior(){}
+	
+	
 	void Init() override
 	{
 		m_rigidBody = parent->GetComponent<uth::Rigidbody>();
 		m_rigidBody->SetKinematic(true);
 		m_rigidBody->SetPhysicsGroup(-3);
 		m_direction = uth::Randomizer::GetInt(0, 10);
-		if (m_direction < 5)
+
+		if (m_direction < 6)
 		{
 			m_direction = 1;
-			m_startX *= -m_direction;
+			m_startX = -m_startX;
 		}
 		else
 		{
 			m_direction = -1;
-			m_startX *= -m_direction;
 		}
 
-
-		pathFlatnes = 55;
-		sliding = 1;
 	}
 
 	AeroplaneBehavior::~AeroplaneBehavior()
@@ -75,6 +79,7 @@ public:
 		m_pos.x = m_direction * m_speed * m_time + m_startX;
 		m_pos.y = -pow((m_pos.x) / pathFlatnes, 2) + m_minY;
 		m_rigidBody->SetPosition(m_pos);
+
 		rotation();
 		m_time += m_dt;
 	}
@@ -85,17 +90,22 @@ public:
 
 		if (m_direction * m_rigidBody->GetPosition().x > 0)
 		{
-			sliding = 1.8;
+			m_sliding = 1.8;
 		}
 		else
 		{
-			sliding = 1;
+			m_sliding = 1;
 		}
 
-		angle = sliding * atanf(angVec.y / angVec.x);
+		angle = m_sliding * atanf(angVec.y / angVec.x);
 		parent->transform.SetRotation(pmath::radiansToDegrees(angle));
 	}
 	
+	void AeroplaneBehavior::Hit()
+	{
+		m_isDestroyed = true;
+	}
+
 };
 
 

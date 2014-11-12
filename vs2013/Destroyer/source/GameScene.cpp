@@ -4,6 +4,7 @@
 #include <EnemyFactory.hpp>
 #include <TankBehavior.hpp>
 #include <SoldierBehavior.hpp>
+#include <AeroplaneBehavior.hpp>
 
 using namespace uth;
 
@@ -81,14 +82,12 @@ void GameScene::Update(float dt)
 		time -= 6;
 //		std::cout << count << "\t" << m_layers[LayerId::InGame]->m_children.size() << std::endl;
 		count = 0;
-		EnemyFactory::CreateSoldier();
-		EnemyFactory::CreateTank();
-		EnemyFactory::CreateAeroplane();
 	}
 
 	m_physWorld.Update(dt);
 	m_bgManager.Update(dt);
-	EnemyFactory::CheckEnemies();
+	//EnemyFactory::CheckEnemies();
+	EnemyFactory::Update(dt);
 
 	Scene::Update(dt);
 	//dt *= 20;
@@ -231,7 +230,14 @@ void GameScene::colliderChecks()
 					static_cast<GameObject*>(B)->GetComponent<SoldierBehavior>()->Destroy();
 				}
 			}
+
+			if (B->HasTag("Aeroplane") && A->HasTag("PlayewrHeadCollider"))
+			{
+				static_cast<GameObject*>(B)->GetComponent<AeroplaneBehavior>()->Hit();
+			}
 		}
+
+
 
 
 			//static_cast<Tank*>(B)->Hit();
