@@ -62,11 +62,11 @@ bool BackgroundManager::Init(uth::Layer& bg, uth::Layer& fg)
 	//Frontcity
 	backF->AddChild(temp = new GameObject(std::vector<std::string>{ "bg", "lantern1" }));
 	temp->AddComponent(new Background(c_frontSpeedM,
-		uthEngine.GetWindow().GetSize().y - 220, 4, true,
+		uthEngine.GetWindow().GetSize().y - 120, 4, true,
 		"backgrounds/lanterns.png"));
 	backF->AddChild(temp = new GameObject(std::vector<std::string>{ "bg", "lantern2" }));
 	temp->AddComponent(new Background(c_frontSpeedM,
-		uthEngine.GetWindow().GetSize().y - 220, 4, false,
+		uthEngine.GetWindow().GetSize().y - 120, 4, false,
 		"backgrounds/lanterns.png"));
 
 	
