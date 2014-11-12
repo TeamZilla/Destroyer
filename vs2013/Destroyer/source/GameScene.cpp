@@ -3,6 +3,7 @@
 
 #include <EnemyFactory.hpp>
 #include <TankBehavior.hpp>
+#include <SoldierBehavior.hpp>
 
 using namespace uth;
 
@@ -183,16 +184,45 @@ void GameScene::colliderChecks()
 {
 	contactListener.onBeginContact = [](b2Contact* contact, GameObject* A, GameObject* B)
 	{
-		if (A->HasTag("Tank") && A->HasTag("Enemy") && B->HasTag("RoadCollider"))
-			static_cast<GameObject*>(A)->GetComponent<TankBehavior>()->Hit();
-			//static_cast<Tank*>(A)->Hit();
-		if (A->HasTag("RoadCollider") && B->HasTag("Tank") && B->HasTag("Enemy"))
-			static_cast<GameObject*>(B)->GetComponent<TankBehavior>()->Hit();
-		if (A->HasTag("Floor") && B->HasTag("Tank") && B->HasTag("Enemy"))
+		//if (A->HasTag("Tank") && A->HasTag("Enemy") && B->HasTag("RoadCollider"))
+		//	static_cast<GameObject*>(A)->GetComponent<TankBehavior>()->Hit();
+		//	//static_cast<Tank*>(A)->Hit();
+		//if (A->HasTag("RoadCollider") && B->HasTag("Tank") && B->HasTag("Enemy"))
+		//	static_cast<GameObject*>(B)->GetComponent<TankBehavior>()->Hit();
+		//if (A->HasTag("Floor") && B->HasTag("Tank") && B->HasTag("Enemy"))
+		//{
+		//	if (static_cast<GameObject*>(B)->GetComponent<TankBehavior>()->isExploding())
+		//		static_cast<GameObject*>(B)->GetComponent<TankBehavior>()->Destroy();
+		//}
+
+		if (B->HasTag("Enemy") && A->HasTag("RoadCollider"))
 		{
-			if (static_cast<GameObject*>(B)->GetComponent<TankBehavior>()->isExploding())
-				static_cast<GameObject*>(B)->GetComponent<TankBehavior>()->Destroy();
+			//Put Tag for every enemytype here
+			if (B->HasTag("Tank"))
+			{
+				static_cast<GameObject*>(B)->GetComponent<TankBehavior>()->Hit();
+			}
+			else if (B->HasTag("Soldier"))
+			{
+				static_cast<GameObject*>(B)->GetComponent<SoldierBehavior>()->Hit();
+			}
 		}
+		if (B->HasTag("Enemy") && A->HasTag("Floor"))
+		{
+			//Put Tag for every enemytype here
+			if (B->HasTag("Tank"))
+			{
+				if (static_cast<GameObject*>(B)->GetComponent<TankBehavior>()->isExploding())
+					static_cast<GameObject*>(B)->GetComponent<TankBehavior>()->Destroy();
+			}
+			else if (B->HasTag("Soldier"))
+			{
+				if (static_cast<GameObject*>(B)->GetComponent<SoldierBehavior>()->isExploding())
+					static_cast<GameObject*>(B)->GetComponent<SoldierBehavior>()->Destroy();
+			}
+		}
+
+
 			//static_cast<Tank*>(B)->Hit();
 
 		//if (A->HasTag("Soldier") && B->HasTag("RoadCollider"))

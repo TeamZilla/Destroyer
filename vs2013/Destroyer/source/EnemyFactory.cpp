@@ -1,5 +1,6 @@
 #include <EnemyFactory.hpp>
 #include <TankBehavior.hpp>
+#include <SoldierBehavior.hpp>
 #include <ExplosionEmitter.hpp>
 
 using namespace uth;
@@ -42,7 +43,7 @@ std::shared_ptr<GameObject> EnemyFactory::CreateSoldier()
 
 	obj->transform.SetScale(0.5f);
 	obj->AddComponent(new Rigidbody(*m_physicsWorld, uth::COLLIDER_BOX, CollisionSize));
-	obj->AddComponent(new TankBehavior(speed, m_player));
+	obj->AddComponent(new SoldierBehavior(speed, m_player));
 
 	return m_layer->AddChild(obj);
 
@@ -66,6 +67,17 @@ void EnemyFactory::CheckEnemies()
 	{
 		auto& obj = *static_cast<GameObject*>(e.get());
 		auto& tank = *static_cast<TankBehavior*>(obj.GetComponent<TankBehavior>());
+
+		if (tank.isDestroyed())
+		{
+			ExplosionEmitter::Emit(obj.transform.GetPosition());
+			m_layer->RemoveChild(&obj);
+		}
+	}
+	for (auto& e : m_layer->Children("Soldier"))
+	{
+		auto& obj = *static_cast<GameObject*>(e.get());
+		auto& tank = *static_cast<SoldierBehavior*>(obj.GetComponent<SoldierBehavior>());
 
 		if (tank.isDestroyed())
 		{
