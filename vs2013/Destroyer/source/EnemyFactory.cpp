@@ -1,6 +1,7 @@
 #include <EnemyFactory.hpp>
 #include <TankBehavior.hpp>
 #include <SoldierBehavior.hpp>
+#include <AeroplaneBehavior.hpp>
 #include <ExplosionEmitter.hpp>
 
 using namespace uth;
@@ -49,6 +50,25 @@ std::shared_ptr<GameObject> EnemyFactory::CreateSoldier()
 
 }
 
+
+std::shared_ptr<GameObject> EnemyFactory::CreateAeroplane()
+{
+	const static std::string textureId("Enemies/aeroplane.png");
+
+	auto& obj = std::shared_ptr<GameObject>(new GameObject());
+	obj->AddTags({ "Aeroplane", "Enemy" });
+	obj->AddComponent(new Sprite(textureId));
+	const static pmath::Vec2 CollisionSize(obj->transform.GetSize() / 2);
+
+	obj->transform.SetPosition(10,500);
+
+	obj->transform.SetScale(0.5f);
+	obj->AddComponent(new Rigidbody(*m_physicsWorld, uth::COLLIDER_BOX, CollisionSize));
+	obj->AddComponent(new AeroplaneBehavior());
+
+	return m_layer->AddChild(obj);
+
+}
 
 
 pmath::Vec2 EnemyFactory::SpawnPosition()

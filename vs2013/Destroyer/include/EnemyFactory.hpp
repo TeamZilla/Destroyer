@@ -23,6 +23,7 @@ public:
 
 	static std::shared_ptr<uth::GameObject> CreateTank();
 	static std::shared_ptr<uth::GameObject> CreateSoldier();
+	static std::shared_ptr<uth::GameObject> CreateAeroplane();
 	static void CheckEnemies();
 
 };

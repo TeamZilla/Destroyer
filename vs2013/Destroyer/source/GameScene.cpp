@@ -78,6 +78,7 @@ void GameScene::Update(float dt)
 		count = 0;
 		EnemyFactory::CreateSoldier();
 		EnemyFactory::CreateTank();
+		EnemyFactory::CreateAeroplane();
 	}
 
 	m_physWorld.Update(dt);

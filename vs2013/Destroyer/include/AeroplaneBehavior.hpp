@@ -1,6 +1,6 @@
 #pragma once
-#ifndef TankBehavior_HPP
-#define TankBehavior_HPP
+#ifndef AeroplaneBehavior_HPP
+#define AeroplaneBehavior_HPP
 
 #include <UtH/UtHEngine.hpp>
 
@@ -10,77 +10,81 @@ class AeroplaneBehavior : public uth::Component
 private: 
 	float pathFlatnes; // ++ for flatnes
 	float m_speed;
-	void rotation();
 	float m_time;
 	float m_minY;
-	float m_startX;
+	float m_startX = 1200;
 	int m_direction; // uses values 1 and -1 only.
-	pmath::Vec2f m_pos;
-	void pathFunc();
-	void explodeCheck();
 	float m_dt;
-	pmath::Vec2f prevPos;
 	float accelerate;
 	float angle;
 	float sliding;
 	float verticalScaler;
 	float mainScale;
 
-public:
-	AeroplaneBehavior::AeroplaneBehavior(float spawnX)
-	{
-		if (m_startX < 0)
-		{
-			m_direction = 1;
-			parent->GetComponent<uth::Transform>.SetScale(verticalScaler * pmath::Vec2f(-0.35, 0.35));
-		}
-		else
-		{
-			m_direction = -1;
-		}
+	pmath::Vec2f m_pos;
+	pmath::Vec2f prevPos;
+	uth::Rigidbody*	m_rigidBody;
 
-		pathFlatnes = 55;
-		sliding = 1;
+	//void explodeCheck();
+
+public:
+	AeroplaneBehavior::AeroplaneBehavior()
+	{
+
 	}
 
 
 	void AeroplaneBehavior::pathFunc()
 	{
-
 		m_pos.x = m_direction * m_speed * m_time + m_startX;
 		m_pos.y = -pow((m_pos.x) / pathFlatnes, 2) + m_minY;
-		transform.SetPosition(m_pos);
+		m_rigidBody->SetPosition(m_pos);
 		rotation();
 		m_time += m_dt;
 	}
+	void Init() override
+	{
+		m_rigidBody = parent->GetComponent<uth::Rigidbody>();
+		m_rigidBody->SetKinematic(true);
+		m_rigidBody->SetPhysicsGroup(-3);
+		m_direction = uth::Randomizer::GetInt(0, 1);
+		if (m_direction == 0)
+		{
+			m_direction = -1;
+			m_startX = m_direction * m_startX;
+		}
+		else
+		{
+			m_startX = m_startX * m_direction;
+		}
 
+
+		pathFlatnes = 55;
+		sliding = 1;
+	}
 
 	AeroplaneBehavior::~AeroplaneBehavior()
 	{
 	}
 
-	void AeroplaneBehavior::update(float dt, float startx)
+	void AeroplaneBehavior::Update(float dt)
 	{
-		m_startX = startx;
-		verticalScaler = (abs(parent->GetComponent<uth::Transform>.GetPosition().y) + 300) / 450;
-		parent->GetComponent<uth::Transform>.SetScale(verticalScaler * pmath::Vec2f(-m_direction * 0.35, 0.35));
+		verticalScaler = (abs(m_rigidBody->GetPosition().y) + 300) / 450;
+		parent->transform.SetScale(verticalScaler * pmath::Vec2f(-m_direction,1));
 
 		m_dt = dt;
 		pathFunc();
 		rotation();
-		explodeCheck();
-		prevPos = parent->GetComponent<uth::Transform>.GetPosition();
+		//explodeCheck();
+		prevPos = m_rigidBody->GetPosition();
 	}
 
-	void AeroplaneBehavior::explodeCheck()
-	{
-	}
 
 	void AeroplaneBehavior::rotation()
 	{
-		pmath::Vec2f angVec = transform.GetPosition() - prevPos;
+		pmath::Vec2f angVec = parent->transform.GetPosition() - prevPos;
 
-		if (m_direction * transform.GetPosition().x > 0)
+		if (m_direction * m_rigidBody->GetPosition().x > 0)
 		{
 			sliding = 1.8;
 		}
@@ -90,7 +94,7 @@ public:
 		}
 
 		angle = sliding * atanf(angVec.y / angVec.x);
-		transform.SetRotation(pmath::radiansToDegrees(angle));
+		parent->transform.SetRotation(pmath::radiansToDegrees(angle));
 	}
 	
 };
