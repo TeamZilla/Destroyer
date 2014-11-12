@@ -32,7 +32,7 @@ Player::Player(uth::PhysicsWorld* physworld)
 	//Set walking animation and other animations
 	m_walkAnim  =  pmath::Vec4(16, 8, 16, 10);
 	m_stompAnim =  pmath::Vec4(0, 3, 0, 4);
-	m_jumpAnim  =  pmath::Vec4(8, 6, 8, 5);
+	m_jumpAnim  =  pmath::Vec4(8, 6, 8, 7);
 	m_tailAnim  =  pmath::Vec4(3, 3, 3, 6);
 	playerAnimation = GetComponent<AnimatedSprite>("AnimatedSprite");
 	SetAnimation(m_walkAnim);
@@ -67,10 +67,12 @@ void Player::update(float dt)
 }
 void Player::ChangeDirection()
 {
-	m_isTurning = true;
-	m_tailTimer = 0.33f;
-	SetAnimation(m_tailAnim);
-	
+	if (!m_isJumping && !m_isCrouching && !m_isTurning)
+	{
+		m_isTurning = true;
+		m_tailTimer = 0.33f;
+		SetAnimation(m_tailAnim);
+	}
 }
 
 void Player::Turning()
@@ -93,12 +95,12 @@ void Player::Turning()
 //Player jump
 void Player::Jump()
 {   //This is called once, changes variables to be ready to jump
-	if (!m_isJumping && !m_isCrouching)
+	if (!m_isJumping && !m_isCrouching && !m_isTurning)
 	{
 		m_tempPos = transform.GetPosition();
 		m_isJumping = true;
 		m_jumpSpeed = m_jumpHeight;
-		m_jumpTimer = 0.4;
+		m_jumpTimer = 0.2;
 		SetAnimation(m_jumpAnim);
 	}
 }
@@ -107,7 +109,7 @@ void Player::Jumping()
 	m_jumpTimer -= m_dt;
 	if (m_jumpTimer <= 0)
 	{
-		m_jumpSpeed -= m_dt * 15;
+		m_jumpSpeed -= m_dt * 30;
 		transform.Move(0, -m_jumpSpeed);
 		if (transform.GetPosition().y >= m_tempPos.y)
 		{
@@ -119,7 +121,7 @@ void Player::Jumping()
 }
 void Player::Crouch()
 {
-	if (!m_isCrouching && !m_isJumping)
+	if (!m_isJumping && !m_isCrouching && !m_isTurning)
 	{
 		m_tempPos = transform.GetPosition();
 		m_isCrouching = true;

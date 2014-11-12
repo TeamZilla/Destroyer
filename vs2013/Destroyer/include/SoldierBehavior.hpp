@@ -1,11 +1,11 @@
 #pragma once
-#ifndef TankBehavior_HPP
-#define TankBehavior_HPP
+#ifndef SoldierBehavior_HPP
+#define SoldierBehavior_HPP
 
 #include <UtH/UtHEngine.hpp>
 
 
-class TankBehavior : public uth::Component
+class SoldierBehavior : public uth::Component
 {
 	float				m_speed;
 	float				m_explodeTimer = 3;
@@ -21,13 +21,13 @@ class TankBehavior : public uth::Component
 
 public:
 
-	TankBehavior::TankBehavior(float speed, uth::GameObject* player) :
+	SoldierBehavior::SoldierBehavior(float speed, uth::GameObject* player) :
 		m_speed(speed),
 		m_player(player)
 	{
 		
 	}
-	TankBehavior::~TankBehavior()
+	SoldierBehavior::~SoldierBehavior()
 	{
 
 	}
@@ -50,7 +50,7 @@ public:
 	}
 	//void Draw(uth::RenderTarget& target) override { }
 
-	void TankBehavior::Update(float dt)
+	void SoldierBehavior::Update(float dt)
 	{
 		if (m_isGoingToExp)
 			Exploding(dt);
@@ -58,7 +58,7 @@ public:
 			Movement();
 	}
 
-	void TankBehavior::Movement()
+	void SoldierBehavior::Movement()
 	{
 		if (m_isGoingLeft)
 		{
@@ -76,7 +76,7 @@ public:
 		}
 	}
 	
-	void TankBehavior::Exploding(float dt)
+	void SoldierBehavior::Exploding(float dt)
 	{
 		m_explodeTimer -= dt;
 		auto& col = parent->GetComponent<uth::Sprite>()->GetColor();
@@ -92,7 +92,7 @@ public:
 			m_isDead = true;
 	}
 
-	void TankBehavior::Hit()
+	void SoldierBehavior::Hit()
 	{
 		m_rigidBody->ApplyImpulse(
 			pmath::Vec2(uth::Randomizer::GetFloat(-40, 40),      //X direction
@@ -100,12 +100,12 @@ public:
 			pmath::Vec2(uth::Randomizer::GetFloat(-25, 25), 0)); //offset
 		m_isGoingToExp = true;
 	}
-	void TankBehavior::Destroy()
+	void SoldierBehavior::Destroy()
 	{
 		m_isDead = true;
 	}
 
-	void TankBehavior::setTarget(pmath::Vec2 to)
+	void SoldierBehavior::setTarget(pmath::Vec2 to)
 	{
 		const auto& from = parent->transform.GetPosition();
 		const auto& sc = parent->transform.GetScale();
@@ -116,16 +116,16 @@ public:
 
 	}
 
-	void TankBehavior::Shoot()
+	void SoldierBehavior::Shoot()
 	{
 
 	}
 
-	bool TankBehavior::isDestroyed()
+	bool SoldierBehavior::isDestroyed()
 	{
 		return m_isDead;
 	}
-	bool TankBehavior::isExploding()
+	bool SoldierBehavior::isExploding()
 	{
 		return m_isGoingToExp;
 	}
