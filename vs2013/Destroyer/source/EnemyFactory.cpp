@@ -9,6 +9,7 @@ using namespace uth;
 uth::Layer*			EnemyFactory::m_layer;
 uth::PhysicsWorld*	EnemyFactory::m_physicsWorld;
 Player*				EnemyFactory::m_player;
+uth::Sound*			EnemyFactory::m_expSound;
 
 std::shared_ptr<GameObject> EnemyFactory::CreateTank()
 {
@@ -85,23 +86,25 @@ void EnemyFactory::CheckEnemies()
 {
 	for (auto& e : m_layer->Children("Tank"))
 	{
-		auto& obj = *static_cast<GameObject*>(e.get());
+		auto& obj  = *static_cast<GameObject*>(e.get());
 		auto& tank = *static_cast<TankBehavior*>(obj.GetComponent<TankBehavior>());
 
 		if (tank.isDestroyed())
 		{
 			ExplosionEmitter::Emit(obj.transform.GetPosition());
+			m_expSound->Play();
 			m_layer->RemoveChild(&obj);
 		}
 	}
 	for (auto& e : m_layer->Children("Soldier"))
 	{
-		auto& obj = *static_cast<GameObject*>(e.get());
+		auto& obj  = *static_cast<GameObject*>(e.get());
 		auto& tank = *static_cast<SoldierBehavior*>(obj.GetComponent<SoldierBehavior>());
 
 		if (tank.isDestroyed())
 		{
 			ExplosionEmitter::Emit(obj.transform.GetPosition());
+			m_expSound->Play();
 			m_layer->RemoveChild(&obj);
 		}
 	}

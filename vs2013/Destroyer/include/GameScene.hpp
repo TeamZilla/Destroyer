@@ -44,6 +44,7 @@ private: // Just place everything else as private.
 	//std::vector <Aeroplane*> m_aeroplane;
 	//Tank* m_tank;
 	uth::Sound* m_music;
+	uth::Sound* m_waveSound;
 	//uth::SpriteBatch* m_spriteBatch;
 	Road* m_road;
 
