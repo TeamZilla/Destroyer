@@ -4,6 +4,7 @@
 #include <EnemyFactory.hpp>
 #include <TankBehavior.hpp>
 #include <SoldierBehavior.hpp>
+#include <AeroplaneBehavior.hpp>
 
 using namespace uth;
 
@@ -221,7 +222,14 @@ void GameScene::colliderChecks()
 				if (static_cast<GameObject*>(B)->GetComponent<SoldierBehavior>()->isExploding())
 					static_cast<GameObject*>(B)->GetComponent<SoldierBehavior>()->Destroy();
 			}
+
+			if (B->HasTag("Aeroplane") && A->HasTag("PlayewrHeadCollider"))
+			{
+				static_cast<GameObject*>(B)->GetComponent<AeroplaneBehavior>()->Hit();
+			}
 		}
+
+
 
 
 			//static_cast<Tank*>(B)->Hit();

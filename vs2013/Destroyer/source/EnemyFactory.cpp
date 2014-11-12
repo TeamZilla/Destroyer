@@ -103,4 +103,16 @@ void EnemyFactory::CheckEnemies()
 			m_layer->RemoveChild(&obj);
 		}
 	}
+
+	for (auto& e : m_layer->Children("Aeroplane"))
+	{
+		auto& obj = *static_cast<GameObject*>(e.get());
+		auto& aeroplane = *static_cast<AeroplaneBehavior*>(obj.GetComponent<AeroplaneBehavior>());
+
+		if (aeroplane.isDestroyed())
+		{
+			ExplosionEmitter::Emit(obj.transform.GetPosition());
+			m_layer->RemoveChild(&obj);
+		}
+	}
 }

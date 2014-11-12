@@ -3,6 +3,7 @@
 #define AeroplaneBehavior_HPP
 
 #include <UtH/UtHEngine.hpp>
+#include <ExplosionEmitter.hpp>
 
 
 class AeroplaneBehavior : public uth::Component
@@ -19,6 +20,7 @@ private:
 	float m_dt;
 	float angle;
 	float m_sliding = 1;
+	bool m_isDestroyed = false;
 
 	pmath::Vec2f m_pos;
 	pmath::Vec2f prevPos;
@@ -27,6 +29,13 @@ private:
 	//void explodeCheck();
 
 public:
+
+	bool isDestroyed()
+	{
+	return m_isDestroyed;
+	}
+
+
 	AeroplaneBehavior::AeroplaneBehavior(){}
 	
 	
@@ -92,6 +101,11 @@ public:
 		parent->transform.SetRotation(pmath::radiansToDegrees(angle));
 	}
 	
+	void AeroplaneBehavior::Hit()
+	{
+		m_isDestroyed = true;
+	}
+
 };
 
 
