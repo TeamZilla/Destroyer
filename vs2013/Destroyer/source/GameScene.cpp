@@ -73,8 +73,9 @@ void GameScene::Update(float dt)
 	if (time > 1)
 	{
 		time -= 1;
-		std::cout << count << "\t" << m_layers[LayerId::InGame]->m_children.size() << std::endl;
+//		std::cout << count << "\t" << m_layers[LayerId::InGame]->m_children.size() << std::endl;
 		count = 0;
+		EnemyFactory::CreateSoldier();
 		EnemyFactory::CreateTank();
 	}
 

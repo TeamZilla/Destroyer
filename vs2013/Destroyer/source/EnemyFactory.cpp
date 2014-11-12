@@ -28,6 +28,28 @@ std::shared_ptr<GameObject> EnemyFactory::CreateTank()
 
 }
 
+std::shared_ptr<GameObject> EnemyFactory::CreateSoldier()
+{
+	const static float speed(8.0f);
+	const static std::string textureId("Enemies/soldier.png");
+
+	auto& obj = std::shared_ptr<GameObject>(new GameObject());
+	obj->AddTags({ "Soldier", "Enemy" });
+	obj->AddComponent(new Sprite(textureId));
+
+	const static pmath::Vec2 CollisionSize(obj->transform.GetSize() / 2);
+	obj->transform.SetPosition(SpawnPosition());
+
+	obj->transform.SetScale(0.5f);
+	obj->AddComponent(new Rigidbody(*m_physicsWorld, uth::COLLIDER_BOX, CollisionSize));
+	obj->AddComponent(new TankBehavior(speed, m_player));
+
+	return m_layer->AddChild(obj);
+
+}
+
+
+
 pmath::Vec2 EnemyFactory::SpawnPosition()
 {
 	const static pmath::Vec2 spawnPosition(m_player->transform.GetPosition().x + 800, 500);
