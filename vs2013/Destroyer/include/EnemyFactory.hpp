@@ -9,6 +9,7 @@ class EnemyFactory
 	static uth::Layer*			m_layer;
 	static uth::PhysicsWorld*	m_physicsWorld;
 	static Player*				m_player;
+    static uth::Sound*			m_expSound;
 
 	static pmath::Vec2 SpawnPosition();
 
@@ -19,6 +20,8 @@ public:
 		m_layer = layer;
 		m_physicsWorld = physWorld;
 		m_player = player;
+		m_expSound = uthRS.LoadSound("Audio/Effects/Short_Explosion1.wav");
+		m_expSound->SetVolume(10);
 	}
 
 	static std::shared_ptr<uth::GameObject> CreateTank();

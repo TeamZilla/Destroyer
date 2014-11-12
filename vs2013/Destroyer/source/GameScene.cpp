@@ -49,9 +49,13 @@ bool GameScene::Init()
 
 	m_bgManager.SetCameraStartPos(pmath::Vec2f(0, uthEngine.GetWindow().GetSize().y/2));
 	
+
 	m_music = uthRS.LoadSound("Audio/Music/city_theme2.wav");
 	m_music->Play();
 	m_music->Loop(true);
+
+	m_waveSound = uthRS.LoadSound("Audio/Effects/Explosion1.wav");
+	m_waveSound->SetVolume(10);
 
 	//ParticleInit();
 	ExplosionEmitter::Init(&getLayer(LayerId::Foreground));
@@ -72,9 +76,9 @@ void GameScene::Update(float dt)
 	static float time = 0;
 	time += dt;
 	count++;
-	if (time > 1)
+	if (time > 6)
 	{
-		time -= 1;
+		time -= 6;
 //		std::cout << count << "\t" << m_layers[LayerId::InGame]->m_children.size() << std::endl;
 		count = 0;
 		EnemyFactory::CreateSoldier();
@@ -152,12 +156,13 @@ void GameScene::Update(float dt)
 	}
 	if (uthInput.Keyboard.IsKeyDown(Keyboard::Down))
 	{
-		if (!m_player->m_isJumping && !m_player->m_isCrouching)
+		if (!m_player->m_isJumping && !m_player->m_isCrouching && !m_player->m_isTurning)
 		{
 			m_player->Crouch();
 			//              amount , delay
 			m_bgManager.Shake(3, 0.4f);
 			m_road->InitShock();
+			m_waveSound->Play();
 		}
 	}
 	if (uthInput.Keyboard.IsKeyDown(Keyboard::Left) &&
@@ -215,12 +220,16 @@ void GameScene::colliderChecks()
 			if (B->HasTag("Tank"))
 			{
 				if (static_cast<GameObject*>(B)->GetComponent<TankBehavior>()->isExploding())
+				{
 					static_cast<GameObject*>(B)->GetComponent<TankBehavior>()->Destroy();
+				}
 			}
 			else if (B->HasTag("Soldier"))
 			{
 				if (static_cast<GameObject*>(B)->GetComponent<SoldierBehavior>()->isExploding())
+				{
 					static_cast<GameObject*>(B)->GetComponent<SoldierBehavior>()->Destroy();
+				}
 			}
 
 			if (B->HasTag("Aeroplane") && A->HasTag("PlayewrHeadCollider"))
