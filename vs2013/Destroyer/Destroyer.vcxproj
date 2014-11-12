@@ -112,6 +112,7 @@
     <ClInclude Include="include\Scenes.hpp" />
     <ClInclude Include="include\SmokeParAffector.hpp" />
     <ClInclude Include="include\Soldier.hpp" />
+    <ClInclude Include="include\SoldierBehavior.hpp" />
     <ClInclude Include="include\Tank.hpp" />
     <ClInclude Include="include\TankBehavior.hpp" />
   </ItemGroup>

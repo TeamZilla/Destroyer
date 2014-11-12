@@ -48,6 +48,7 @@ public:
 		m_target = m_maxDistance;
 
 	}
+	//void Draw(uth::RenderTarget& target) override { }
 
 	void TankBehavior::Update(float dt)
 	{

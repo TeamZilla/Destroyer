@@ -75,6 +75,9 @@
     <ClInclude Include="include\EnemyFactory.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\SoldierBehavior.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\Aeroplane.cpp">
