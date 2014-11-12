@@ -31,10 +31,10 @@ std::shared_ptr<GameObject> EnemyFactory::CreateTank()
 std::shared_ptr<GameObject> EnemyFactory::CreateSoldier()
 {
 	const static float speed(8.0f);
-	const static std::string textureId("Enemies/tank.png");
+	const static std::string textureId("Enemies/soldier.png");
 
 	auto& obj = std::shared_ptr<GameObject>(new GameObject());
-	obj->AddTags({ "Tank", "Enemy" });
+	obj->AddTags({ "Soldier", "Enemy" });
 	obj->AddComponent(new Sprite(textureId));
 
 	const static pmath::Vec2 CollisionSize(obj->transform.GetSize() / 2);
