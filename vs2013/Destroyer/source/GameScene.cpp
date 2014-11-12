@@ -81,14 +81,12 @@ void GameScene::Update(float dt)
 		time -= 6;
 //		std::cout << count << "\t" << m_layers[LayerId::InGame]->m_children.size() << std::endl;
 		count = 0;
-		EnemyFactory::CreateSoldier();
-		EnemyFactory::CreateTank();
-		EnemyFactory::CreateAeroplane();
 	}
 
 	m_physWorld.Update(dt);
 	m_bgManager.Update(dt);
-	EnemyFactory::CheckEnemies();
+	//EnemyFactory::CheckEnemies();
+	EnemyFactory::Update(dt);
 
 	Scene::Update(dt);
 	//dt *= 20;

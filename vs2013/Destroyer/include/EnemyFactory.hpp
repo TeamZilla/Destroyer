@@ -13,6 +13,18 @@ class EnemyFactory
 
 	static pmath::Vec2 SpawnPosition();
 
+	static void m_tankSpawn(float dt);
+	static void m_soldierSpawn(float dt);
+	static void m_aeroplaneSpawn(float dt);
+
+	static float m_aeroplaneSpawnCooldown;
+	static float m_aeroplaneSpawnTimer;
+	static float m_tankSpawnCooldown;
+	static float m_tankSpawnTimer;
+	static float m_soldierSpawnCooldown;
+	static float m_soldierSpawnTimer;
+
+
 public:
 
 	static void Init(uth::Layer* layer, uth::PhysicsWorld* physWorld, Player* player)
@@ -23,6 +35,7 @@ public:
 		m_expSound = uthRS.LoadSound("Audio/Effects/Short_Explosion1.wav");
 		m_expSound->SetVolume(10);
 	}
+	static void Update(float dt);
 
 	static std::shared_ptr<uth::GameObject> CreateTank();
 	static std::shared_ptr<uth::GameObject> CreateSoldier();

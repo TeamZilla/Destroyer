@@ -11,6 +11,14 @@ uth::PhysicsWorld*	EnemyFactory::m_physicsWorld;
 Player*				EnemyFactory::m_player;
 uth::Sound*			EnemyFactory::m_expSound;
 
+
+float EnemyFactory::m_aeroplaneSpawnCooldown = 5;
+float EnemyFactory::m_aeroplaneSpawnTimer = 0;
+float EnemyFactory::m_tankSpawnCooldown = 3;
+float EnemyFactory::m_tankSpawnTimer = 0;
+float EnemyFactory::m_soldierSpawnCooldown = 1;
+float EnemyFactory::m_soldierSpawnTimer = 0;
+
 std::shared_ptr<GameObject> EnemyFactory::CreateTank()
 {
 	const static float speed(8.0f);
@@ -118,4 +126,43 @@ void EnemyFactory::CheckEnemies()
 			m_layer->RemoveChild(&obj);
 		}
 	}
+}
+
+void EnemyFactory::Update(float dt)
+{
+	m_tankSpawn(dt);
+	m_soldierSpawn(dt);
+	m_aeroplaneSpawn(dt);
+	CheckEnemies();
+}
+
+void EnemyFactory::m_soldierSpawn(float dt)
+{
+	if (m_soldierSpawnTimer > m_soldierSpawnCooldown)
+	{
+		CreateSoldier();
+		m_soldierSpawnTimer = 0;
+	}
+	m_soldierSpawnTimer += dt;
+}
+
+
+void EnemyFactory::m_tankSpawn(float dt)
+{
+	if (m_tankSpawnTimer > m_tankSpawnCooldown)
+	{
+		CreateTank();
+		m_tankSpawnTimer = 0;
+	}
+	m_tankSpawnTimer += dt;
+}
+
+void EnemyFactory::m_aeroplaneSpawn(float dt)
+{
+	if (m_aeroplaneSpawnTimer > m_aeroplaneSpawnCooldown)
+	{
+		CreateAeroplane();
+		m_aeroplaneSpawnTimer = 0;
+	}
+	m_aeroplaneSpawnTimer += dt;
 }
