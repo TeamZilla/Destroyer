@@ -67,10 +67,12 @@ void Player::update(float dt)
 }
 void Player::ChangeDirection()
 {
-	m_isTurning = true;
-	m_tailTimer = 0.33f;
-	SetAnimation(m_tailAnim);
-	
+	if (!m_isJumping && !m_isCrouching && !m_isTurning)
+	{
+		m_isTurning = true;
+		m_tailTimer = 0.33f;
+		SetAnimation(m_tailAnim);
+	}
 }
 
 void Player::Turning()
@@ -93,7 +95,7 @@ void Player::Turning()
 //Player jump
 void Player::Jump()
 {   //This is called once, changes variables to be ready to jump
-	if (!m_isJumping && !m_isCrouching)
+	if (!m_isJumping && !m_isCrouching && !m_isTurning)
 	{
 		m_tempPos = transform.GetPosition();
 		m_isJumping = true;
@@ -119,7 +121,7 @@ void Player::Jumping()
 }
 void Player::Crouch()
 {
-	if (!m_isCrouching && !m_isJumping)
+	if (!m_isJumping && !m_isCrouching && !m_isTurning)
 	{
 		m_tempPos = transform.GetPosition();
 		m_isCrouching = true;
