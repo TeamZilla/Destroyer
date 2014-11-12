@@ -60,8 +60,6 @@ std::shared_ptr<GameObject> EnemyFactory::CreateAeroplane()
 	obj->AddComponent(new Sprite(textureId));
 	const static pmath::Vec2 CollisionSize(obj->transform.GetSize() / 2);
 
-	obj->transform.SetPosition(2000,5000);
-
 	obj->transform.SetScale(0.5f);
 	obj->AddComponent(new Rigidbody(*m_physicsWorld, uth::COLLIDER_BOX, CollisionSize));
 	obj->AddComponent(new AeroplaneBehavior());
