@@ -1,6 +1,4 @@
 #pragma once
-#ifndef AeroplaneBehavior_HPP
-#define AeroplaneBehavior_HPP
 
 #include <UtH/UtHEngine.hpp>
 #include <ExplosionEmitter.hpp>
@@ -107,6 +105,3 @@ public:
 	}
 
 };
-
-
-#endif

@@ -1,6 +1,4 @@
 #pragma once
-#ifndef Aeroplane_HPP
-#define Aeroplane_HPP
 
 #include <UtH/UtHEngine.hpp>
 
@@ -35,5 +33,3 @@ private:
 	float verticalScaler;
 	float mainScale;
 };
-
-#endif

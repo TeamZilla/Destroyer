@@ -1,6 +1,4 @@
 #pragma once
-#ifndef BackgroundManager_HPP
-#define BackgroundManager_HPP
 
 #include <UtH/UtHEngine.hpp>
 #include <Background.hpp>
@@ -48,5 +46,3 @@ public:
 	//void CheckSpeed(float, bool isDirRight);
 	void Shake(float amount, float delay = 0.1f);
 };
-
-#endif //BackgroundManager_HPP

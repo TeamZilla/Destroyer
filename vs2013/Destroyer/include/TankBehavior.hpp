@@ -1,6 +1,4 @@
 #pragma once
-#ifndef TankBehavior_HPP
-#define TankBehavior_HPP
 
 #include <UtH/UtHEngine.hpp>
 
@@ -129,6 +127,3 @@ public:
 		return m_isGoingToExp;
 	}
 };
-
-
-#endif

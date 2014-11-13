@@ -1,6 +1,4 @@
 #pragma once
-#ifndef Missile_HPP
-#define Missile_HPP
 
 #include <UtH/UtHEngine.hpp>
 
@@ -43,5 +41,3 @@ private:
 	bool m_isDestroyed;
 
 };
-
-#endif

@@ -1,6 +1,4 @@
 #pragma once
-#ifndef SoldierBehavior_HPP
-#define SoldierBehavior_HPP
 
 #include <UtH/UtHEngine.hpp>
 
@@ -112,6 +110,3 @@ public:
 		return m_isGoingToExp;
 	}
 };
-
-
-#endif

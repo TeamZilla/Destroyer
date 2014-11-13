@@ -1,6 +1,4 @@
 #pragma once
-#ifndef Player_HPP
-#define Player_HPP
 
 #include <UtH/UtHEngine.hpp>
 
@@ -49,5 +47,3 @@ public:
 
 	uth::AnimatedSprite* playerAnimation;
 };
-
-#endif //Player_HPP

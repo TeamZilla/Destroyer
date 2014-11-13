@@ -1,6 +1,4 @@
 #pragma once
-#ifndef Health_HPP
-#define Health_HPP
 
 #include <UtH/UtHEngine.hpp>
 
@@ -32,4 +30,3 @@ public:
 
 
 };
-#endif //Health_HPP

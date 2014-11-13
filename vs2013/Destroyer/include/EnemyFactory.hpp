@@ -1,6 +1,5 @@
 #pragma once
-#ifndef EnemyFactory_HPP
-#define EnemyFactory_HPP
+
 #include <UtH/UtHEngine.hpp>
 #include <Player.hpp>
 
@@ -43,5 +42,3 @@ public:
 	static void CheckEnemies();
 
 };
-
-#endif

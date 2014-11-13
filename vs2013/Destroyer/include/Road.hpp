@@ -1,6 +1,5 @@
 #pragma once
-#ifndef Road_HPP
-#define Road_HPP
+
 #include <vector>
 #include <Player.hpp>
 #include <RoadBlock.hpp>
@@ -48,5 +47,3 @@ public:
 	Road(const int);
 	~Road();
 };
-
-#endif //Tank_HPP

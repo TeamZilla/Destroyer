@@ -1,6 +1,4 @@
 #pragma once
-#ifndef RoadBlock_HPP
-#define RoadBlock_HPP
 #include <UtH/UtHEngine.hpp>
 
 class RoadBlock : public uth::Transform
@@ -16,5 +14,3 @@ public:
 	RoadBlock(uth::SpriteBatch*);
 	~RoadBlock();
 };
-
-#endif //Tank_HPP

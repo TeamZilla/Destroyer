@@ -1,6 +1,4 @@
 #pragma once
-#ifndef EnemyManager_HPP
-#define EnemyManager_HPP
 
 #include <UtH/UtHEngine.hpp>
 #include <Player.hpp>
@@ -52,6 +50,3 @@ public:
 	void DestroySoldiers();
 
 };
-
-
-#endif

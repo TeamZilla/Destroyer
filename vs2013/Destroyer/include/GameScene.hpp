@@ -1,6 +1,4 @@
 #pragma once
-#ifndef GameScene_HPP
-#define GameScene_HPP
 
 #include <UtH/UtHEngine.hpp>
 #include <Player.hpp>
@@ -73,5 +71,3 @@ public: // Every one of these public functions are required.
 	int rand;
 	int rand2;
 };
-
-#endif //GameScene_HPP

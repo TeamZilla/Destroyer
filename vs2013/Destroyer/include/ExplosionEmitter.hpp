@@ -1,6 +1,4 @@
 #pragma once
-#ifndef EXPLOSIONEMITTER_HPP
-#define EXPLOSIONEMITTER_HPP
 
 #include <pmath/Vector2.hpp>
 
@@ -20,6 +18,3 @@ private:
 	ExplosionEmitter()  = delete;
 	~ExplosionEmitter() = delete;
 };
-
-
-#endif

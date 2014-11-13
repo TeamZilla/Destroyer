@@ -1,6 +1,4 @@
 #pragma once
-#ifndef Tank_HPP
-#define Tank_HPP
 
 #include <UtH/UtHEngine.hpp>
 
@@ -38,5 +36,3 @@ public:
 	void WhichSideOfPlayer(); // Check which side of player tank is
 
 };
-
-#endif //Tank_HPP

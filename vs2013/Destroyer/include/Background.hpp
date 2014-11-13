@@ -1,6 +1,4 @@
 #pragma once
-#ifndef Background_HPP
-#define Background_HPP
 
 #include <UtH/UtHEngine.hpp>
 
@@ -23,5 +21,3 @@ public:
 	void Shake(float time);
 
 };
-
-#endif //Background_HPP
