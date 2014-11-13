@@ -11,27 +11,24 @@ Heli::Heli(pmath::Vec2f givenPos)
 	heliTex->SetSmooth(true);
 	this->AddComponent(new Sprite(heliTex));
 	m_hoverTime = 0;
-	m_hoverSpeed = 2;
-	m_hoverScale = 20;
-	m_hoverScale_x = 1;
-	m_hoverScale_y = 1;
-	m_hoverRatio = 10000;
+	m_hoverSpeed = 1;
+	m_hoverScale = pmath::Vec2f(80, 80);
 	isMoving = 0;
-	m_linearSpeed = 10;
+	m_linearSpeed = 5;
 	m_missileCD_max = 0.7;
 	m_missileCD_min = 0.2;
 	m_dt = 0;
-	m_acceleration = 0;
 	m_pathLenght = 0;
 	m_shootingTarget = pmath::Vec2f(500,0);
 	m_shootDelay = 0.16;
 	burstTimer = 0;
 	m_missileClip = 6;
-	m_missileCount = m_missileClip;
+	m_missileCount = 0;
 	m_shootingTarget = pmath::Vec2f(0,350);
 	bonVoyageTimer = 0;
 	m_missileRegenTimer = 0;
-	m_missileRegenTime = 1;
+	m_missileRegenTime = 3;
+	m_hoverMaxTime = 10;
 }
 
 Heli::Heli()
@@ -68,9 +65,8 @@ void Heli::update(float dt)
 void Heli::Hover()
 {
 	m_hoverTime += m_hoverSpeed * m_dt;
-	m_hoverRatio = std::abs(1 - m_acceleration);
-	m_hoverDisplacement = pmath::Vec2f(m_hoverRatio * m_hoverScale * m_hoverScale_x * sin(m_hoverTime), m_hoverRatio * m_hoverScale * m_hoverScale_y * cos(m_hoverTime / 2));
-	m_hoverTime += m_dt;}
+	m_hoverDisplacement = pmath::Vec2f(m_hoverScale.x * sin(m_hoverTime), m_hoverScale.y * cos(m_hoverTime / 2));
+}
 
 
 void Heli::Navigate(pmath::Vec2f targ)
@@ -91,14 +87,12 @@ void Heli::Navigate(pmath::Vec2f targ)
 void Heli::LinearMove()
 {
 
-	m_acceleration = std::pow(((m_nextPos - m_curPos).length() / m_pathLenght ), 2); // <<<< make better acceleration function!
-	m_curPos += m_acceleration * m_linearSpeed * m_moveDir;
+	m_curPos +=  m_linearSpeed * m_moveDir;
 
-	if (std::abs((m_curPos - m_nextPos).length()) < 2)
+	if (std::abs((m_curPos - m_nextPos).length()) < 5 )
 	{
 		m_curPos = m_nextPos;
 		isMoving = 0;
-		m_acceleration = 0;
 	}
 
 }
@@ -106,12 +100,12 @@ void Heli::LinearMove()
 
 void Heli::Pilot()
 {
-	if (bonVoyageTimer > 4)
+	if (bonVoyageTimer > m_hoverMaxTime)
 	{
-		auto voyage = pmath::Vec2f(Randomizer::GetFloat(-600, 600), Randomizer::GetFloat(20, 400));
-		SetNextPos(voyage);
-		if ((transform.GetPosition() - voyage).length() > 130)
+		auto voyage = pmath::Vec2f(Randomizer::GetFloat(-500, 500), Randomizer::GetFloat(150, 300));
+		if ((transform.GetPosition() - voyage).length() > 130 && abs(voyage.x) > 200)
 		{
+			SetNextPos(voyage);
 			bonVoyageTimer = 0;
 		}
 	}
@@ -234,7 +228,7 @@ void Heli::burst()
 
 	burstTimer -= m_dt;
 
-	if (isCool && isShooting)
+	if (isCool && isShooting && !isMoving)
 	{
 		m_launch();
 		--m_missileCount;
