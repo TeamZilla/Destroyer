@@ -1,13 +1,9 @@
 #pragma once
-#ifndef Player_HPP
-#define Player_HPP
 
 #include <UtH/UtHEngine.hpp>
 
 class Player : public uth::GameObject
 {
-private:
-
 	float m_speed,
 		m_jumpSpeed,
 		m_jumpHeight,
@@ -49,5 +45,3 @@ public:
 
 	uth::AnimatedSprite* playerAnimation;
 };
-
-#endif //Player_HPP

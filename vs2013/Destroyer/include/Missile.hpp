@@ -1,11 +1,33 @@
 #pragma once
-#ifndef Missile_HPP
-#define Missile_HPP
 
 #include <UtH/UtHEngine.hpp>
 
 class Missile : public uth::GameObject
 {
+	void pathFunc();
+	void explodeCheck();
+	void outOfBoundsCheck();
+	bool isOrientated;
+	bool m_isDestroyed;
+	float time,
+		m_lenght,
+		speed,
+		waveFreq,
+		pathAlteration,
+		curveDepth,
+		m_dt,
+		m_scale,
+		m_angle,
+		sliding; // sliding modifier (use 1 +- "small value")
+	pmath::Vec2f startPos;
+	pmath::Vec2f targPos;
+	pmath::Vec2f m_pos;
+	pmath::Vec2f mainDir;
+	pmath::Vec2f altDir;
+	pmath::Vec2f prevPos;
+
+	void rotation();
+
 public:
 	Missile();
 	Missile(pmath::Vec2f, pmath::Vec2f, float dt);
@@ -15,33 +37,4 @@ public:
 	//void Draw();
 	void Init();
 	bool isOutOfBounds();
-
-
-private:
-	void pathFunc();
-	void explodeCheck();
-	void outOfBoundsCheck();
-	float time;
-	float m_lenght;
-	float speed;
-	pmath::Vec2f startPos;
-	pmath::Vec2f targPos;
-	pmath::Vec2f m_pos;
-	pmath::Vec2f mainDir;
-	pmath::Vec2f altDir;
-	float waveFreq;
-	float pathAlteration;
-	float curveDepth;
-	float m_dt;
-	float m_scale;
-
-	void rotation();
-	pmath::Vec2f prevPos;
-	float m_angle;
-	float sliding; // sliding modifier (use 1 +- "small value")
-	bool isOrientated;
-	bool m_isDestroyed;
-
 };
-
-#endif

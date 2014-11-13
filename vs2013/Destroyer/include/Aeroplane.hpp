@@ -1,22 +1,9 @@
 #pragma once
-#ifndef Aeroplane_HPP
-#define Aeroplane_HPP
 
 #include <UtH/UtHEngine.hpp>
 
 class Aeroplane: public uth::GameObject
 {
-public:
-	Aeroplane(float);
-	~Aeroplane();
-
-	void update(float) override;
-	void Draw();
-	void Init();
-
-
-
-private:
 	float pathFlatnes; // ++ for flatnes
 	float m_speed;
 	void rotation();
@@ -34,6 +21,14 @@ private:
 	float sliding;
 	float verticalScaler;
 	float mainScale;
-};
 
-#endif
+public:
+	Aeroplane(float);
+	~Aeroplane();
+
+	void update(float) override;
+	void Draw();
+	void Init();
+
+
+};

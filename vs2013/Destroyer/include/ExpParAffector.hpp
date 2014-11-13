@@ -1,6 +1,4 @@
 #pragma once
-#ifndef EXPPARAFFECTOR_H_UTH
-#define EXPPARAFFECTOR_H_UTH
 
 #include <UtH/Engine/Particles/Affector.hpp>
 #include <UtH/Engine/Particles/Particle.hpp>
@@ -27,5 +25,3 @@ namespace uth
 
 	};
 }
-
-#endif

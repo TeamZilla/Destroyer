@@ -1,6 +1,4 @@
 #pragma once
-#ifndef AeroplaneBehavior_HPP
-#define AeroplaneBehavior_HPP
 
 #include <UtH/UtHEngine.hpp>
 #include <ExplosionEmitter.hpp>
@@ -8,7 +6,6 @@
 
 class AeroplaneBehavior : public uth::Component
 {
-private: 
 	float pathFlatnes = 55; // ++ for flatnes
 	float m_speed = 700;
 	float m_time = 0;
@@ -16,10 +13,10 @@ private:
 	float verticalScaler = 1;
 	float mainScale = 0.35;
 	float m_startX = 1200;
-	int m_direction; // uses values 1 and -1 only.
 	float m_dt;
 	float angle;
 	float m_sliding = 1;
+	int m_direction; // uses values 1 and -1 only.
 	bool m_isDestroyed = false;
 
 	pmath::Vec2f m_pos;
@@ -32,12 +29,10 @@ public:
 
 	bool isDestroyed()
 	{
-	return m_isDestroyed;
+		return m_isDestroyed;
 	}
 
-
 	AeroplaneBehavior::AeroplaneBehavior(){}
-	
 	
 	void Init() override
 	{
@@ -107,6 +102,3 @@ public:
 	}
 
 };
-
-
-#endif

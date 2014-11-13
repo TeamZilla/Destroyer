@@ -1,6 +1,4 @@
 #pragma once
-#ifndef Heli_HPP
-#define Heli_HPP
 
 #include <vector>
 #include <Missile.hpp>
@@ -78,5 +76,3 @@ private:
 
 
 };
-
-#endif

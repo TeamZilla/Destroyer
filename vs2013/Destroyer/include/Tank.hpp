@@ -1,12 +1,9 @@
 #pragma once
-#ifndef Tank_HPP
-#define Tank_HPP
 
 #include <UtH/UtHEngine.hpp>
 
 class Tank : public uth::GameObject
 {
-private:
 	pmath::Vec2 spawnPos;	  // Where tank is spawned
 	pmath::Vec2 m_playerPos;  // Where player is located
 	float m_dt;               // Deltatime
@@ -15,12 +12,12 @@ private:
 		  m_tankScale,	      // What are tank's scale
 		  m_minRange,	      // How close will tank go to player at minimum
 		  m_maxRange,         // How close will tank go to player at maximum
-		  m_range;	          // How close will tank go to player for real
+		  m_range,            // How close will tank go to player for real
+	      m_tankTime;
 	bool m_isSideChecked;     // Check if side has been checked
 	bool m_isTankOnRight;     // Where tank spawns, changes move direction
 	bool m_isTankDestroyed;   // Is tank destroyed
 	bool m_isTankHit;         // Is tank been hit
-	float m_tankTime;
 	uth::Window* m_window;    // Get reference of window
 	uth::PhysicsWorld* m_physWorld; // Make this for getting physics
 	uth::Rigidbody* m_rigidBody;
@@ -32,11 +29,9 @@ public:
 	void update(float) override;
 	void Movement(float);     // Move tank left or right
 	void Fly(float);
-	bool isDestroyed();       // Check if tank is destroyed
 	void Hit();
 	void setPhysGroup();
 	void WhichSideOfPlayer(); // Check which side of player tank is
+	bool isDestroyed();       // Check if tank is destroyed
 
 };
-
-#endif //Tank_HPP

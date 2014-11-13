@@ -11,7 +11,6 @@ uth::PhysicsWorld*	EnemyFactory::m_physicsWorld;
 Player*				EnemyFactory::m_player;
 uth::Sound*			EnemyFactory::m_expSound;
 
-
 float EnemyFactory::m_aeroplaneSpawnCooldown = 5;
 float EnemyFactory::m_aeroplaneSpawnTimer = 0;
 float EnemyFactory::m_tankSpawnCooldown = 3;
@@ -41,12 +40,12 @@ std::shared_ptr<GameObject> EnemyFactory::CreateTank()
 
 std::shared_ptr<GameObject> EnemyFactory::CreateSoldier()
 {
-	const static float speed(8.0f);
-	const static std::string textureId("Enemies/soldier.png");
+	const static float speed(uth::Randomizer::GetFloat(1.5f,4.5f));
+	static uth::Texture* textureId = uthRS.LoadTexture("Enemies/soldier.png");
 
 	auto& obj = std::shared_ptr<GameObject>(new GameObject());
 	obj->AddTags({ "Soldier", "Enemy" });
-	obj->AddComponent(new Sprite(textureId));
+	obj->AddComponent(new AnimatedSprite(textureId, 6, 6, 1, 12));
 
 	const static pmath::Vec2 CollisionSize(obj->transform.GetSize() / 2);
 	obj->transform.SetPosition(SpawnPosition());
