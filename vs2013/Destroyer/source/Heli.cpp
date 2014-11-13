@@ -50,15 +50,6 @@ void Heli::update(float dt)
 	}
 #endif
 
-	//for (int i = 0; i < m_missiles.size(); i++)
-	//{
-	//	m_missiles[i]->Update(m_dt);
-		//if (m_missiles[i]->isOutOfBounds() == true)
-		//{
-		//	delete m_missiles[i];
-		//	m_missiles.erase(m_missiles.begin() + i);
-		//}
-	//}
 
 }
 

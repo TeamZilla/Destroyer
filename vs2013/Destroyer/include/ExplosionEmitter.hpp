@@ -14,6 +14,7 @@ private:
 	~ExplosionEmitter() = delete;
 public:
 	static void Emit(pmath::Vec2);
+	static void ExplosionEmitter::Emit(pmath::Vec2 pos, float size);
 	static void Init(uth::Object*);
 	static void DeInit();
 };
