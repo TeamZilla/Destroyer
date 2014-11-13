@@ -12,16 +12,13 @@
 
 class EnemyManager
 {
-private:
 	uth::Layer& m_layer;
 	
-	//uth::Layer* m_layer;
 	Player* m_player;
 	std::vector<uth::GameObject*> m_enemies;
 	std::vector<Tank*> m_tanks;
 	std::vector<Soldier*> m_soldiers;
 	std::vector<Heli*> m_helis;
-	//std::vector<Aeroplane*> m_planes;
 	pmath::Vec2 m_spawnPointLeft;
 	pmath::Vec2 m_spawnPointRight;
 	float enemyCount;

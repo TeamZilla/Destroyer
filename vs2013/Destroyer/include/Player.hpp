@@ -4,8 +4,6 @@
 
 class Player : public uth::GameObject
 {
-private:
-
 	float m_speed,
 		m_jumpSpeed,
 		m_jumpHeight,

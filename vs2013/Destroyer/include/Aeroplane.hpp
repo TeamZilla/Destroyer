@@ -4,17 +4,6 @@
 
 class Aeroplane: public uth::GameObject
 {
-public:
-	Aeroplane(float);
-	~Aeroplane();
-
-	void update(float) override;
-	void Draw();
-	void Init();
-
-
-
-private:
 	float pathFlatnes; // ++ for flatnes
 	float m_speed;
 	void rotation();
@@ -32,4 +21,14 @@ private:
 	float sliding;
 	float verticalScaler;
 	float mainScale;
+
+public:
+	Aeroplane(float);
+	~Aeroplane();
+
+	void update(float) override;
+	void Draw();
+	void Init();
+
+
 };

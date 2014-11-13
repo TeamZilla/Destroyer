@@ -4,8 +4,6 @@
 
 class Background : public uth::Sprite
 {
-private:
-
 	float m_speed;
 	float m_spawnY; 
 	float m_shakeMultiplier;

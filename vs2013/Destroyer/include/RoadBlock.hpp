@@ -8,7 +8,6 @@ private:
 	float blockWidth;
 	float leftMostX;
 
-
 public:
 
 	RoadBlock(uth::SpriteBatch*);

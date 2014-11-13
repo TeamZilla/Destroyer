@@ -14,8 +14,7 @@
 
 class GameScene : public uth::Scene
 {
-private: // Just place everything else as private.
-	//uth::GameObject* m_startButton;
+    // Just place everything else as private.
 	uth::PhysicsWorld m_physWorld;
 	uth::PhysicsContactListener contactListener;
 	uth::GameObject m_gameFloor;
@@ -34,16 +33,11 @@ private: // Just place everything else as private.
 	void colliderChecks();
 
 	BackgroundManager m_bgManager;
-	//EnemyManager* m_enemyManager;
-	//void m_enemyManger(float dt);
 	Player* m_player;
 	Health* m_health;
 	Heli* m_heli;
-	//std::vector <Aeroplane*> m_aeroplane;
-	//Tank* m_tank;
 	uth::Sound* m_music;
 	uth::Sound* m_waveSound;
-	//uth::SpriteBatch* m_spriteBatch;
 	Road* m_road;
 
 
@@ -57,7 +51,6 @@ public: // Every one of these public functions are required.
 	virtual bool DeInit();
 
 	virtual void Update(float dt) override;
-	//virtual void Draw(uth::RenderTarget& target, uth::RenderAttributes attributes = uth::RenderAttributes()) override;
 
 	bool ParticleInit();
 	uth::ParticleSystem* ps;

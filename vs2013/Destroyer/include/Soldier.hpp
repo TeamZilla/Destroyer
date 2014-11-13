@@ -4,7 +4,6 @@
 
 class Soldier : public uth::GameObject
 {
-private:
 	pmath::Vec2 spawnPos;	  // Where Soldier is spawned
 	pmath::Vec2 m_playerPos;  // Where player is located
 	float m_dt;               // Deltatime
@@ -13,12 +12,12 @@ private:
 		  m_soldierScale,	  // What are Soldier's scale
 		  m_minRange,         // How close will Soldier go to player at minimum
 		  m_maxRange,         // How close will Soldier go to player at maximum
-		  m_range;	          // How close will Soldier go to player for real
+		  m_range,            // How close will Soldier go to player for real
+	      m_soldierTime;
 	bool m_isSideChecked;     // Check if side has been checked
 	bool m_isSoldierOnRight;     // Where Soldier spawns, changes move direction
 	bool m_isSoldierDestroyed;   // Is Soldier destroyed
 	bool m_isSoldierHit;         // Is Soldier been hit
-	float m_soldierTime;
 	uth::Window* m_window;    // Get reference of window
 	uth::PhysicsWorld* m_physWorld; // Make this for getting physics
 	uth::Rigidbody* m_rigidBody;

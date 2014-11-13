@@ -7,7 +7,6 @@
 
 class Road : public uth::GameObject
 {
-private:
 	int m_blockNum;
 	uth::SpriteBatch* m_spriteBatch;
 	std::vector < RoadBlock*> m_blocks;
@@ -15,28 +14,26 @@ private:
 	float leftMostX;
 
 	// SHOCK
-	float m_shockDelay;
-	float m_shockDelayTimer;
-	float m_shockLenght;
-	float m_shockSpeed;
-	float m_shockStartSpeed;
-	float m_shockMinSpeed;
-	float m_shockFriction;
-	float m_shockTime;
-	float m_shockStartX;
-	float m_shockHeight;
-	float m_roadY;
-	float m_shockRange;
-	float m_shockHeightMatcher;
+	float m_dt,
+		m_shockDelay,
+		m_shockDelayTimer,
+		m_shockLenght,
+		m_shockSpeed,
+		m_shockStartSpeed,
+		m_shockMinSpeed,
+		m_shockFriction,
+		m_shockTime,
+		m_shockStartX,
+		m_shockHeight,
+		m_roadY,
+		m_shockRange,
+		m_shockHeightMatcher,
+		m_shockSupression;
 	Player *m_player;
-	float m_dt;
 	int m_shockDir;
 	bool isShock;
-	float m_shockSupression;
 	void m_shock();
 	uth::GameObject* hitBox;
-
-
 
 public:
 	void Init(Player*, uth::PhysicsWorld* physworld);
