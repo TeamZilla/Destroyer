@@ -5,6 +5,7 @@
 #include <TankBehavior.hpp>
 #include <SoldierBehavior.hpp>
 #include <AeroplaneBehavior.hpp>
+#include <FireBreath.hpp>
 
 using namespace uth;
 
@@ -177,6 +178,12 @@ void GameScene::Update(float dt)
 			m_player->ChangeDirection();
 		}
 	}
+
+	if (uthInput.Mouse.IsButtonReleased(Mouse::LEFT))
+	{
+		getLayer(LayerId::InGame).AddChild(	new FireBreath(pmath::Vec2(0, 280), uthInput.Mouse.Position()));
+	}
+
 
 #endif
 	//return true; // Update succeeded.
