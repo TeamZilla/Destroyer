@@ -2,11 +2,11 @@
 
 #include <UtH/UtHEngine.hpp>
 
-
 class SoldierBehavior : public uth::Component
 {
 	float				m_speed;
 	bool				m_isGoingLeft;
+	bool				m_isStopped = false;
 	bool				m_isDead = false;
 	bool				m_isGoingToExp = false;
 	bool				m_isGoingToFlat = false;
@@ -35,22 +35,30 @@ public:
 		m_rigidBody->SetPhysicsGroup(-3);
 		m_rigidBody->SetFriction(0);
 
-		//m_maxDistance = pmath::Vec2(
-		//	uth::Randomizer::GetFloat(m_player->transform.GetPosition().x + 400,
-		//							  m_player->transform.GetPosition().x + 500), 300);
-		//m_minDistance = pmath::Vec2(
-		//	uth::Randomizer::GetFloat(m_player->transform.GetPosition().x + 200,
-		//							  m_player->transform.GetPosition().x + 300), 300);
+		m_maxDistance = pmath::Vec2(m_player->transform.GetPosition().x + 
+									uth::Randomizer::GetFloat(100,300));
 
 		setTarget(m_player->transform.GetPosition());
 		m_target = m_maxDistance;
 
 	}
-	//void Draw(uth::RenderTarget& target) override { }
 
 	void SoldierBehavior::Update(float dt)
 	{
-		Movement();
+		if (!m_isStopped && !m_isGoingToExp)
+		{
+			Movement();
+			parent->GetComponent<uth::Sprite>()->SetColor(1, 1, 1, 1);
+		}
+		else if (m_isStopped && !m_isGoingToExp)
+		{
+			m_rigidBody->SetVelocity(pmath::Vec2f(0));
+			parent->GetComponent<uth::Sprite>()->SetColor(1, 0, 0, 1);
+		}
+		else if (m_isGoingToExp)
+		{
+			parent->GetComponent<uth::Sprite>()->SetColor(1, 1, 1, 1);
+		}
 	}
 
 	void SoldierBehavior::Movement()
@@ -58,10 +66,14 @@ public:
 		if (m_isGoingLeft)
 		{
 			m_rigidBody->ApplyForce(pmath::Vec2(m_direction.x * m_speed, 0));
+			if (m_rigidBody->GetPosition().x <= m_maxDistance.x)
+				m_isStopped = true;
 		}
 		else
 		{
 			m_rigidBody->ApplyForce(pmath::Vec2(m_direction.x * m_speed, 0));
+			if (m_rigidBody->GetPosition().x >= m_maxDistance.x)
+				m_isStopped = true;
 		}
 	}
 	
@@ -71,6 +83,7 @@ public:
 			pmath::Vec2(uth::Randomizer::GetFloat(-10, 10),      //X direction
 			-uth::Randomizer::GetFloat(15, 25)),				 //Y direction
 			pmath::Vec2(uth::Randomizer::GetFloat(-25, 25), 0)); //offset
+		m_rigidBody->SetPhysicsGroup(-2);
 		m_isGoingToExp = true;
 	}
 	void SoldierBehavior::Squash()
@@ -93,6 +106,7 @@ public:
 		m_direction = (to - from).normalize();
 		m_direction.x < 0 ? m_isGoingLeft = true : m_isGoingLeft = false;
 		m_isGoingLeft ? parent->transform.SetScale(sc.x, sc.y) : parent->transform.SetScale(-sc.x, sc.y);
+		m_isGoingLeft ? m_maxDistance = m_maxDistance : m_maxDistance = -m_maxDistance;
 
 	}
 

@@ -33,9 +33,9 @@ public:
 
 	bool m_isJumping, m_isCrouching, m_isTurning;
 	static bool isGoingRight;
-	void init();
+	void init(uth::PhysicsWorld*);
 	void update(float) override;
-	//void Draw();
+	void Draw(uth::RenderTarget& target, uth::RenderAttributes attributes);
 	void  ChangeDirection();
 	void  Jump();
 	void  Crouch();

@@ -95,6 +95,7 @@ public:
 			pmath::Vec2(uth::Randomizer::GetFloat(-40, 40),      //X direction
 			-uth::Randomizer::GetFloat(60, 80)),				 //Y direction
 			pmath::Vec2(uth::Randomizer::GetFloat(-25, 25), 0)); //offset
+		m_rigidBody->SetPhysicsGroup(-2);
 		m_isGoingToExp = true;
 	}
 	void TankBehavior::Destroy()

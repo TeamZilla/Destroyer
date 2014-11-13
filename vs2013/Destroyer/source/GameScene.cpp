@@ -20,12 +20,11 @@ bool GameScene::Init()
 	Randomizer::SetSeed();
 	uthEngine.GetWindow().GetCamera().SetSize(1280, 720);
 	
-	m_gameFloor.AddComponent(new Sprite(pmath::Vec4(1, 0, 0, 1), pmath::Vec2(3000, 80)));
+	m_gameFloor.AddComponent(new Sprite(pmath::Vec4(1, 0, 0, 1), pmath::Vec2(3000, 100)));
 	m_gameFloor.AddTag("Floor");
-	m_gameFloor.transform.SetPosition(0, uthEngine.GetWindow().GetSize().y);
+	m_gameFloor.transform.SetPosition(0, uthEngine.GetWindow().GetSize().y - 100);
 	m_gameFloor.AddComponent(new Rigidbody(m_physWorld));
 	m_gameFloor.GetComponent<Rigidbody>()->SetKinematic(true);
-
 
 	m_bgManager.Init(getLayer(LayerId::Background), getLayer(LayerId::Foreground));
 
@@ -38,7 +37,7 @@ bool GameScene::Init()
 	getLayer(LayerId::Userinterface).AddChild(m_health = new Health);
 
 	m_road->Init(m_player,&m_physWorld);
-	m_player->init();
+	m_player->init(&m_physWorld);
 
 	//m_enemyManager->SetPhysWorld(&m_physWorld);
 	//m_enemyManager->Init();
@@ -86,14 +85,11 @@ void GameScene::Update(float dt)
 
 	m_physWorld.Update(dt);
 	m_bgManager.Update(dt);
-	//EnemyFactory::CheckEnemies();
 	EnemyFactory::Update(dt);
 
 	Scene::Update(dt);
 	//dt *= 20;
 
-	//m_enemyManager->Update(dt);
-	//m_enemyManager->CheckPlayer(m_player);
 	m_heli->Update(dt);
 	
 
@@ -190,50 +186,53 @@ void GameScene::colliderChecks()
 {
 	contactListener.onBeginContact = [](b2Contact* contact, GameObject* A, GameObject* B)
 	{
-		//if (A->HasTag("Tank") && A->HasTag("Enemy") && B->HasTag("RoadCollider"))
-		//	static_cast<GameObject*>(A)->GetComponent<TankBehavior>()->Hit();
-		//	//static_cast<Tank*>(A)->Hit();
-		//if (A->HasTag("RoadCollider") && B->HasTag("Tank") && B->HasTag("Enemy"))
-		//	static_cast<GameObject*>(B)->GetComponent<TankBehavior>()->Hit();
-		//if (A->HasTag("Floor") && B->HasTag("Tank") && B->HasTag("Enemy"))
-		//{
-		//	if (static_cast<GameObject*>(B)->GetComponent<TankBehavior>()->isExploding())
-		//		static_cast<GameObject*>(B)->GetComponent<TankBehavior>()->Destroy();
-		//}
-
+		//Enemies hit road collider
 		if (B->HasTag("Enemy") && A->HasTag("RoadCollider"))
 		{
 			//Put Tag for every enemytype here
 			if (B->HasTag("Tank"))
 			{
-				static_cast<GameObject*>(B)->GetComponent<TankBehavior>()->Hit();
+				B->GetComponent<TankBehavior>()->Hit();
 			}
 			else if (B->HasTag("Soldier"))
 			{
-				static_cast<GameObject*>(B)->GetComponent<SoldierBehavior>()->Hit();
+				B->GetComponent<SoldierBehavior>()->Hit();
 			}
 		}
+		//Some enemies touch player
+		if (B->HasTag("Enemy") && A->HasTag("PlayerBodyCollider"))
+		{
+			//Put Tag for every enemytype here
+			if (B->HasTag("Tank"))
+			{
+				B->GetComponent<TankBehavior>()->Hit();
+			}
+			else if (B->HasTag("Soldier"))
+			{
+				B->GetComponent<SoldierBehavior>()->Hit();
+			}
+		}
+		//When enemies are dying and are hitting floor
 		if (B->HasTag("Enemy") && A->HasTag("Floor"))
 		{
 			//Put Tag for every enemytype here
 			if (B->HasTag("Tank"))
 			{
-				if (static_cast<GameObject*>(B)->GetComponent<TankBehavior>()->isExploding())
+				if (B->GetComponent<TankBehavior>()->isExploding())
 				{
-					static_cast<GameObject*>(B)->GetComponent<TankBehavior>()->Destroy();
+					B->GetComponent<TankBehavior>()->Destroy();
 				}
 			}
 			else if (B->HasTag("Soldier"))
 			{
-				if (static_cast<GameObject*>(B)->GetComponent<SoldierBehavior>()->isExploding())
+				if (B->GetComponent<SoldierBehavior>()->isExploding())
 				{
-					static_cast<GameObject*>(B)->GetComponent<SoldierBehavior>()->Destroy();
+					B->GetComponent<SoldierBehavior>()->Destroy();
 				}
 			}
-
-			if (B->HasTag("Aeroplane") && A->HasTag("PlayewrHeadCollider"))
+			else if (B->HasTag("Aeroplane") && A->HasTag("PlayerHeadCollider"))
 			{
-				static_cast<GameObject*>(B)->GetComponent<AeroplaneBehavior>()->Hit();
+				B->GetComponent<AeroplaneBehavior>()->Hit();
 			}
 		}
 

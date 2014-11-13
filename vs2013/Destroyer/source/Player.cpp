@@ -19,6 +19,7 @@ Player::Player(uth::PhysicsWorld* physworld)
 	m_isCrouching = false;
 	m_isTurning = false;
 
+
 	//Create, set position and scale player Sprite
 	auto playerTexture = uthRS.LoadTexture("modzilla/moz_animation.png");
 	playerTexture->SetSmooth(true);
@@ -37,34 +38,58 @@ Player::Player(uth::PhysicsWorld* physworld)
 	playerAnimation = GetComponent<AnimatedSprite>("AnimatedSprite");
 	SetAnimation(m_walkAnim);
 	
-	//Create body hitbox for player (player wont need own rigidbody)
-	m_bodyBox = new GameObject();
-	m_bodyBox->AddComponent(new Sprite(pmath::Vec4(1, 0, 0, 0),
-		pmath::Vec2(transform.GetSize().x/2.2f, transform.GetSize().y / 1.5f)));
-	m_bodyBox->transform.SetPosition(0, 30);
-	m_bodyBox->AddComponent(new Rigidbody(*physworld));
-	m_bodyBox->GetComponent<Rigidbody>()->SetKinematic(true);
-	m_bodyBox->GetComponent<Rigidbody>()->SetPhysicsGroup(-2);
-	m_bodyBox->AddTag("PlayerBodyCollider");
-	AddChild(m_bodyBox);
+	////Create body hitbox for player (player wont need own rigidbody)
+	//m_bodyBox = new GameObject();
+	//m_bodyBox->AddComponent(new Sprite(pmath::Vec4(1, 0, 0, 0.2f),
+	//	pmath::Vec2(transform.GetSize().x/2.2f, transform.GetSize().y / 1.5f)));
+	//m_bodyBox->transform.SetPosition(0, 30);
+	//m_bodyBox->AddComponent(new Rigidbody(*physworld));
+	//m_bodyBox->GetComponent<Rigidbody>()->SetKinematic(true);
+	//m_bodyBox->AddTag("PlayerBodyCollider");
+	//AddChild(m_bodyBox);
 
-	//Create head hitbox for player
-	m_headBox = new GameObject();
-	m_headBox->AddComponent(new Sprite(pmath::Vec4(0, 1, 0, 0),
-		pmath::Vec2(transform.GetSize().x/2.4f, transform.GetSize().y/4)));
-	m_headBox->transform.SetPosition(transform.GetSize().x / 3.6f, -80);
-	m_headBox->AddComponent(new Rigidbody(*physworld));
-	m_headBox->GetComponent<Rigidbody>()->SetKinematic(true);
-	m_headBox->GetComponent<Rigidbody>()->SetPhysicsGroup(-2);
-	m_headBox->AddTag("PlayerHeadCollider");
-
-	AddChild(m_headBox);
+	////Create head hitbox for player
+	//m_headBox = new GameObject();
+	//m_headBox->AddComponent(new Sprite(pmath::Vec4(0, 1, 0, 0),
+	//	pmath::Vec2(transform.GetSize().x/2.4f, transform.GetSize().y/4)));
+	//m_headBox->transform.SetPosition(transform.GetSize().x / 3.6f, -80);
+	//m_headBox->AddComponent(new Rigidbody(*physworld));
+	//m_headBox->GetComponent<Rigidbody>()->SetKinematic(true);
+	//m_headBox->AddTag("PlayerHeadCollider");
+	//AddChild(m_headBox);
 
 
 }
 
-void Player::init()
-{
+void Player::init(uth::PhysicsWorld* physworld)
+{	
+	pmath::Vec4 color = pmath::Vec4(1, 0, 0, 0);
+
+	auto plPos = transform.GetPosition();
+	//Create body hitbox for player (player wont need own rigidbody)
+	m_bodyBox = new GameObject();
+	m_bodyBox->AddComponent(new Sprite(color,
+		pmath::Vec2(transform.GetSize().x / 2.2f, transform.GetSize().y / 1.5f)));
+	m_bodyBox->transform.SetPosition(plPos.x, plPos.y - 50);
+	m_bodyBox->AddComponent(new Rigidbody(*physworld));
+	m_bodyBox->GetComponent<Rigidbody>()->SetKinematic(true);
+	m_bodyBox->GetComponent<Rigidbody>()->SetPhysicsGroup(-2);
+	m_bodyBox->GetComponent<Rigidbody>()->SetPosition(pmath::Vec2(plPos.x, plPos.y - 50));
+	m_bodyBox->AddTag("PlayerBodyCollider");
+	//AddChild(m_bodyBox);
+
+	//Create head hitbox for player
+	m_headBox = new GameObject();
+	m_headBox->AddComponent(new Sprite(color,
+		pmath::Vec2(transform.GetSize().x / 1.5f, transform.GetSize().y / 2)));
+	m_headBox->transform.SetPosition(plPos.x + m_headBox->transform.GetSize().x/2, transform.GetSize().y + 150);
+	m_headBox->AddComponent(new Rigidbody(*physworld));
+	m_headBox->GetComponent<Rigidbody>()->SetKinematic(true);
+	m_headBox->GetComponent<Rigidbody>()->SetPhysicsGroup(-2);
+	m_headBox->GetComponent<Rigidbody>()->SetPosition(pmath::Vec2(plPos.x + m_headBox->transform.GetSize().x / 2, transform.GetSize().y + 150));
+	//m_headBox->GetComponent<Rigidbody>()->SetSize(m_headBox->transform.GetSize());
+	m_headBox->AddTag("PlayerHeadCollider");
+	//AddChild(m_headBox);
 }
 void Player::update(float dt)
 {
@@ -188,6 +213,12 @@ bool  Player::CheckIfGoingRight()
 void Player::SetAnimation(pmath::Vec4 anim, bool loop)
 {
 	playerAnimation->ChangeAnimation(anim.x, anim.y, anim.z, anim.w, loop);
+}
+void Player::Draw(RenderTarget& target, RenderAttributes attributes)
+{
+	GameObject::Draw(target, attributes);
+	m_bodyBox->Draw(target, attributes);
+	m_headBox->Draw(target, attributes);
 }
 // Deconstructor
 Player::~Player()
