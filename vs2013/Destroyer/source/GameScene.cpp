@@ -1,5 +1,6 @@
 #include <GameScene.hpp>
 #include <ExplosionEmitter.hpp>
+#include <FlameEmitter.hpp>
 
 #include <EnemyFactory.hpp>
 #include <TankBehavior.hpp>
@@ -23,7 +24,7 @@ bool GameScene::Init()
 	
 	m_gameFloor.AddComponent(new Sprite(pmath::Vec4(1, 0, 0, 1), pmath::Vec2(3000, 100)));
 	m_gameFloor.AddTag("Floor");
-	m_gameFloor.transform.SetPosition(0, uthEngine.GetWindow().GetSize().y - 100);
+	m_gameFloor.transform.SetPosition(0, uthEngine.GetWindow().GetSize().y);
 	m_gameFloor.AddComponent(new Rigidbody(m_physWorld));
 	m_gameFloor.GetComponent<Rigidbody>()->SetKinematic(true);
 
@@ -60,6 +61,7 @@ bool GameScene::Init()
 
 	//ParticleInit();
 	ExplosionEmitter::Init(&getLayer(LayerId::Foreground));
+	FlameEmitter::Init(&getLayer(LayerId::Foreground));
 
 	EnemyFactory::Init(&getLayer(LayerId::InGame),&m_physWorld,m_player);
 	EnemyFactory::CreateTank();
@@ -181,6 +183,7 @@ void GameScene::Update(float dt)
 
 	if (uthInput.Mouse.IsButtonReleased(Mouse::LEFT))
 	{
+		FlameEmitter::Emit(uthInput.Mouse.Position());
 		getLayer(LayerId::InGame).AddChild(	new FireBreath(pmath::Vec2(0, 280), uthInput.Mouse.Position()));
 	}
 

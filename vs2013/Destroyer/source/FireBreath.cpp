@@ -1,5 +1,5 @@
 #include <FireBreath.hpp>
-#include <ExplosionEmitter.hpp>
+#include <FlameEmitter.hpp>
 
 
 using namespace uth;
@@ -20,7 +20,7 @@ void FireBreath::Init(Layer* m_layer)
 
 void FireBreath::update(float dt)
 {
-	ExplosionEmitter::Emit(m_pathFunc(), m_sizeFunc());
+	FlameEmitter::Emit(m_pathFunc(), m_sizeFunc());
 	m_time += dt;
 }
 

@@ -16,7 +16,6 @@ private:
 
 public:
 	FireBreath(pmath::Vec2, pmath::Vec2);
-	//~FireBreath();
 	void Init(uth::Layer*);
 	void DeInit();
 	void update(float dt) override;
