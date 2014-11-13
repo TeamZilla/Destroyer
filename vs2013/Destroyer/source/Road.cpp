@@ -18,7 +18,6 @@ Road::Road(const int blocks)
 			m_roadY));
 		m_spriteBatch->AddSprite(m_blocks[i]);
 
-
 		m_shockLenght = 128;
 		m_shockSpeed = 200;
 		m_shockTime = 0;
@@ -31,7 +30,6 @@ Road::Road(const int blocks)
 		m_shockSupression = 1;
 		m_shockFriction = 220;
 		m_shockStartSpeed = 1100;
-
 	}
 }
 
@@ -45,7 +43,7 @@ void Road::Init(Player* asd, uth::PhysicsWorld* physworld)
 	hitBox->AddComponent(new Rigidbody(*physworld));
 	hitBox->GetComponent<Rigidbody>("Rigidbody")->SetAngle(45);
 	hitBox->GetComponent<Rigidbody>("Rigidbody")->SetKinematic(true);
-	hitBox->GetComponent<Rigidbody>("Rigidbody")->SetPhysicsGroup(-2);
+	hitBox->GetComponent<Rigidbody>("Rigidbody")->SetPhysicsGroup(-3);
 	hitBox->AddTag("RoadCollider");
 	AddChild(hitBox);
 }
@@ -59,6 +57,11 @@ void Road::update(float dt)
 {
 	m_dt = dt;
 	m_shock();
+
+	if (isShock)
+		hitBox->GetComponent<Rigidbody>("Rigidbody")->SetPhysicsGroup(-2);
+	else
+		hitBox->GetComponent<Rigidbody>("Rigidbody")->SetPhysicsGroup(-3);
 }
 
 
@@ -98,8 +101,6 @@ void Road::m_shock()
 	{
 		for (int i = 0; i < m_blocks.size(); i++)
 		{
-
-
 			if (m_shockLenght < std::abs(m_shockSpeed*m_shockTime - m_shockStartX - m_blocks[i]->GetPosition().x))
 			{
 				m_blocks[i]->SetPosition(m_blocks[i]->GetPosition().x, m_roadY);
@@ -123,7 +124,7 @@ void Road::m_shock()
 		m_shockTime += m_shockDir * m_dt;
 	}
 
-	hitBox->GetComponent<Rigidbody>("Rigidbody")->SetPosition(pmath::Vec2(m_shockTime*m_shockSpeed, m_roadY+50));
+	hitBox->GetComponent<Rigidbody>("Rigidbody")->SetPosition(pmath::Vec2(m_shockTime*m_shockSpeed, m_roadY + 50));
 
 	if (abs(m_shockTime*m_shockSpeed) >= m_shockRange)
 	{
