@@ -38,7 +38,7 @@ public:
 	{
 		m_rigidBody = parent->GetComponent<uth::Rigidbody>();
 		m_rigidBody->SetKinematic(true);
-		m_rigidBody->SetPhysicsGroup(-1);
+		m_rigidBody->SetPhysicsGroup(-4);
 		
 		m_direction = uth::Randomizer::GetInt(0, 10);
 
