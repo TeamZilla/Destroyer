@@ -66,6 +66,7 @@ std::shared_ptr<GameObject> EnemyFactory::CreateAeroplane()
 	auto& obj = std::shared_ptr<GameObject>(new GameObject());
 	obj->AddTags({ "Aeroplane", "Enemy" });
 	obj->AddComponent(new Sprite(textureId));
+
 	const static pmath::Vec2 CollisionSize(obj->transform.GetSize() / 2);
 
 	obj->transform.SetScale(0.5f);
@@ -122,6 +123,7 @@ void EnemyFactory::CheckEnemies()
 		if (aeroplane.isDestroyed())
 		{
 			ExplosionEmitter::Emit(obj.transform.GetPosition());
+			m_expSound->Play();
 			m_layer->RemoveChild(&obj);
 		}
 	}

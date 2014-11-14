@@ -61,20 +61,21 @@ Player::Player(uth::PhysicsWorld* physworld)
 
 }
 
-void Player::init(uth::PhysicsWorld* physworld)
+void Player::init(uth::PhysicsWorld* physworld, Health* hp)
 {	
-	pmath::Vec4 color = pmath::Vec4(1, 0, 0, 0);
+	pmath::Vec4 color = pmath::Vec4(1, 0, 0, 0.0f);
+	m_health = hp;
 
 	auto plPos = transform.GetPosition();
 	//Create body hitbox for player (player wont need own rigidbody)
 	m_bodyBox = new GameObject();
 	m_bodyBox->AddComponent(new Sprite(color,
 		pmath::Vec2(transform.GetSize().x / 2.2f, transform.GetSize().y / 1.5f)));
-	m_bodyBox->transform.SetPosition(plPos.x, plPos.y - 50);
+	m_bodyBox->transform.SetPosition(plPos.x, plPos.y - 75);
 	m_bodyBox->AddComponent(new Rigidbody(*physworld));
 	m_bodyBox->GetComponent<Rigidbody>()->SetKinematic(true);
-	m_bodyBox->GetComponent<Rigidbody>()->SetPhysicsGroup(-2);
-	m_bodyBox->GetComponent<Rigidbody>()->SetPosition(pmath::Vec2(plPos.x, plPos.y - 50));
+	m_bodyBox->GetComponent<Rigidbody>()->SetPhysicsGroup(-3);
+	m_bodyBox->GetComponent<Rigidbody>()->SetPosition(pmath::Vec2(plPos.x, plPos.y - 75));
 	m_bodyBox->AddTag("PlayerBodyCollider");
 	//AddChild(m_bodyBox);
 
@@ -85,7 +86,7 @@ void Player::init(uth::PhysicsWorld* physworld)
 	m_headBox->transform.SetPosition(plPos.x + m_headBox->transform.GetSize().x/2, transform.GetSize().y + 150);
 	m_headBox->AddComponent(new Rigidbody(*physworld));
 	m_headBox->GetComponent<Rigidbody>()->SetKinematic(true);
-	m_headBox->GetComponent<Rigidbody>()->SetPhysicsGroup(-2);
+	m_headBox->GetComponent<Rigidbody>()->SetPhysicsGroup(-3);
 	m_headBox->GetComponent<Rigidbody>()->SetPosition(pmath::Vec2(plPos.x + m_headBox->transform.GetSize().x / 2, transform.GetSize().y + 150));
 	//m_headBox->GetComponent<Rigidbody>()->SetSize(m_headBox->transform.GetSize());
 	m_headBox->AddTag("PlayerHeadCollider");
@@ -188,6 +189,10 @@ void Player::Crouching()
 		m_isCrouching = false;
 	}
 
+}
+void Player::Hit(float dmg)
+{
+	m_health->TakeDamage(dmg);
 }
 void Player::Acceleration()
 {

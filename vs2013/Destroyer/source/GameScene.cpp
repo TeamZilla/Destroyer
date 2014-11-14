@@ -39,7 +39,7 @@ bool GameScene::Init()
 	getLayer(LayerId::Userinterface).AddChild(m_health = new Health);
 
 	m_road->Init(m_player,&m_physWorld);
-	m_player->init(&m_physWorld);
+	m_player->init(&m_physWorld, m_health);
 
 	//m_enemyManager->SetPhysWorld(&m_physWorld);
 	//m_enemyManager->Init();
@@ -215,11 +215,36 @@ void GameScene::colliderChecks()
 			//Put Tag for every enemytype here
 			if (B->HasTag("Tank"))
 			{
-				B->GetComponent<TankBehavior>()->Hit();
+				B->GetComponent<TankBehavior>()->Destroy();
 			}
 			else if (B->HasTag("Soldier"))
 			{
-				B->GetComponent<SoldierBehavior>()->Hit();
+				B->GetComponent<SoldierBehavior>()->Destroy();
+			}
+		}
+		//Some enemies touch player's head
+		if (B->HasTag("Enemy") && A->HasTag("PlayerHeadCollider") ||
+			A->HasTag("Enemy") && B->HasTag("PlayerHeadCollider"))
+		{
+			auto* AA = A;
+			auto* BB = B;
+			if (B->HasTag("PlayerHeadCollider"))
+			{
+				BB = A;
+				AA = B;
+			}
+
+			if (BB->HasTag("Aeroplane"))
+			{
+				BB->GetComponent<AeroplaneBehavior>()->Hit();
+			}
+			else if (BB->HasTag("Tank"))
+			{
+				BB->GetComponent<TankBehavior>()->Destroy();
+			}
+			else if (BB->HasTag("Soldier"))
+			{
+				BB->GetComponent<SoldierBehavior>()->Destroy();
 			}
 		}
 		//When enemies are dying and are hitting floor
@@ -240,62 +265,40 @@ void GameScene::colliderChecks()
 					B->GetComponent<SoldierBehavior>()->Destroy();
 				}
 			}
-			else if (B->HasTag("Aeroplane") && A->HasTag("PlayerHeadCollider"))
+		}
+		//When enemies are dying and are hitting aeroplane
+		if (A->HasTag("Enemy") && B->HasTag("Aeroplane") ||
+			B->HasTag("Enemy") && A->HasTag("Aeroplane"))
+		{
+			auto* AA = A;
+			auto* BB = B;
+			if (B->HasTag("Enemy"))
 			{
-				B->GetComponent<AeroplaneBehavior>()->Hit();
+				BB = A;
+				AA = B;
+			}
+			//Put Tag for every enemytype here
+			if (A->HasTag("Tank"))
+			{
+				if (A->GetComponent<TankBehavior>()->isExploding())
+				{
+					A->GetComponent<TankBehavior>()->Destroy();
+					B->GetComponent<AeroplaneBehavior>()->Hit();
+				}
+			}
+			else if (A->HasTag("Soldier"))
+			{
+				if (A->GetComponent<SoldierBehavior>()->isExploding())
+				{
+					A->GetComponent<SoldierBehavior>()->Destroy();
+					B->GetComponent<AeroplaneBehavior>()->Hit();
+				}
 			}
 		}
-
-
-
-
-			//static_cast<Tank*>(B)->Hit();
-
-		//if (A->HasTag("Soldier") && B->HasTag("RoadCollider"))
-		//	static_cast<Soldier*>(A)->Hit();
-		//if (A->HasTag("RoadCollider") && B->HasTag("Soldier"))
-		//	static_cast<Soldier*>(B)->Hit();
-
 	};
 	m_physWorld.SetContactListener(&contactListener);
 
 }
-//TODO with this: Make this to enemymanager
-//void GameScene::m_enemyManger(float m_dt)
-//{
-	//m_heli->Update(m_dt);
-
-	//if (isCool)
-	//{
-	//	shootTime = Randomizer::GetFloat(aeroMinSpawnTime, aeroMaxSpawnTime);
-	//	isCool = false;
-	//}
-
-	//if (aeroplaneTimer > shootTime )
-	//{
-
-	//	rand = Randomizer::GetInt(0, 2);
-
-
-	//	if (rand == 0)
-	//	{
-	//		m_aeroplane.push_back(new Aeroplane(-1800));
-	//		aeroplaneTimer = 0;
-	//		isCool = true;
-	//	}
-
-	//	else
-	//	
-	//	{
-	//		m_aeroplane.push_back(new Aeroplane(1800));
-	//		aeroplaneTimer = 0;
-	//		isCool = true;
-	//	}
-	//}
-
-	//aeroplaneTimer += m_dt;
-
-//}
 
 //Default constructor for initialising constant variables.
 GameScene::GameScene()

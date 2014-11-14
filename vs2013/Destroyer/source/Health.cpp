@@ -23,7 +23,7 @@ Health::Health()
 	m_Mhealth = 1;
 	m_Chealth = m_Mhealth;
 
-
+	AddTag("Health");
 
 }
 

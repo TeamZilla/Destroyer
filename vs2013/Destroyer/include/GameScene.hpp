@@ -33,7 +33,6 @@ class GameScene : public uth::Scene
 	void colliderChecks();
 
 	BackgroundManager m_bgManager;
-	Player* m_player;
 	Health* m_health;
 	Heli* m_heli;
 	uth::Sound* m_music;
@@ -56,6 +55,7 @@ public: // Every one of these public functions are required.
 	uth::ParticleSystem* ps;
 	void ParticleEmit(pmath::Vec2 pos);
 
+	Player* m_player;
 	float aeroMinSpawnTime;
 	float aeroMaxSpawnTime;
 	float shootTime;
