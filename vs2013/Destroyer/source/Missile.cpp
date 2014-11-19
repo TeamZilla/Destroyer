@@ -67,12 +67,10 @@ void Missile::explodeCheck()
 }
 void Missile::outOfBoundsCheck()
 {
-	if ((uthEngine.GetWindow().GetViewport()).intersects(transform.GetBounds() ))
+	if ((uthEngine.GetWindow().GetViewport()).intersects(transform.GetGlobalBounds() ))
 	{
 		m_isDestroyed = true;
-
-		//TODO: remove by RemoveChild(this); when implemented
-		//Parent()->RemoveChild(this);
+		Parent()->RemoveChild(this);
 	}
 }
 

@@ -24,6 +24,8 @@ public:
 	static int game_SoldKills;
 	static int game_HeliKills;
 	static int game_AeroKills;
+	//Here you write stuff
+	static std::string save_data;
 
 
 };

@@ -11,6 +11,7 @@ int   Statistics::game_TankKills	= 0;
 int   Statistics::game_SoldKills	= 0;
 int   Statistics::game_HeliKills	= 0;
 int   Statistics::game_AeroKills	= 0;
+std::string Statistics::save_data	= "";
 
 void Statistics::Init()
 {
@@ -29,12 +30,18 @@ void Statistics::DeInit()
 }
 bool Statistics::SaveStats()
 {
-	//TODO: save stats to file
+	FileManager fs;
+	fs.OpenFile("testi.txt", FileManager::Location::ASSET, true);
+	fs.WriteString("Testi.");
+	fs.CloseFile();
 	return true;
 }
 bool Statistics::LoadStats()
 {
-	//TODO: load stats from a file
+	FileManager fs;
+	fs.OpenFile("testi.txt", FileManager::Location::ASSET, true);
+	save_data = fs.ReadText();
+	fs.CloseFile();
 	return true;
 }
 bool Statistics::ResetSaveFile()
