@@ -19,12 +19,11 @@ Heli::Heli(pmath::Vec2f givenPos)
 	m_missileCD_min = 0.2;
 	m_dt = 0;
 	m_pathLenght = 0;
-	m_shootingTarget = pmath::Vec2f(500,0);
 	m_shootDelay = 0.16;
 	burstTimer = 0;
 	m_missileClip = 6;
 	m_missileCount = 0;
-	m_shootingTarget = pmath::Vec2f(0,350);
+	m_shootingTarget = pmath::Vec2f(0,400);
 	bonVoyageTimer = 0;
 	m_missileRegenTimer = 0;
 	m_missileRegenTime = 3;
@@ -93,7 +92,7 @@ void Heli::Pilot()
 {
 	if (bonVoyageTimer > m_hoverMaxTime)
 	{
-		auto voyage = pmath::Vec2f(Randomizer::GetFloat(-500, 500), Randomizer::GetFloat(150, 300));
+		auto voyage = pmath::Vec2f(Randomizer::GetFloat(-700, 700), Randomizer::GetFloat(150, 300));
 		if ((transform.GetPosition() - voyage).length() > 130 && abs(voyage.x) > 200)
 		{
 			SetNextPos(voyage);
@@ -130,15 +129,6 @@ void Heli::Pilot()
 
 }
 
-//void Heli::Draw()
-//{
-//	GameObject::Draw(uthEngine.GetWindow());
-//
-//	for (int i = 0; i < m_missiles.size(); i++)
-//	{
-//		m_missiles[i]->Draw();
-//	}
-//}
 
 
 void Heli::SetNextPos(pmath::Vec2f targ)
@@ -203,9 +193,7 @@ void Heli::m_reload()
 
 void Heli::m_launch()
 {
-	//TODO: remove comments 
 	Parent()->AddChild(new Missile(transform.GetPosition(), m_shootingTarget, m_dt));
-	//m_missiles.push_back(new Missile(transform.GetPosition(), m_shootingTarget, m_dt));
 }
 
 

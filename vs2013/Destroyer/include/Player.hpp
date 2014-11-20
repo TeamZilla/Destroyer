@@ -1,6 +1,7 @@
 #pragma once
 
 #include <UtH/UtHEngine.hpp>
+#include <Health.hpp>
 
 class Player : public uth::GameObject
 {
@@ -22,6 +23,7 @@ class Player : public uth::GameObject
 	uth::Rigidbody* m_rigidbody;
 	uth::GameObject* m_bodyBox;
 	uth::GameObject* m_headBox;
+	Health* m_health;
 	void Acceleration();
 	void Jumping();
 	void Crouching();
@@ -33,12 +35,12 @@ public:
 
 	bool m_isJumping, m_isCrouching, m_isTurning;
 	static bool isGoingRight;
-	void init(uth::PhysicsWorld*);
+	void init(uth::PhysicsWorld*, Health* hp);
 	void update(float) override;
-	void Draw(uth::RenderTarget& target, uth::RenderAttributes attributes);
 	void  ChangeDirection();
 	void  Jump();
 	void  Crouch();
+	void  Hit(float dmg = 1);
 	float getSpeed();
 	bool  CheckIfGoingRight();
 	void  SetAnimation(pmath::Vec4 anim, bool loop = true);
