@@ -120,6 +120,7 @@
     <ClInclude Include="include\Statistics.hpp" />
     <ClInclude Include="include\Tank.hpp" />
     <ClInclude Include="include\TankBehavior.hpp" />
+    <ClInclude Include="include\TitleScene.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\Aeroplane.cpp" />
@@ -142,6 +143,7 @@
     <ClCompile Include="source\Statistics.cpp" />
     <ClCompile Include="source\Tank.cpp" />
     <ClCompile Include="source\TankBehavior.cpp" />
+    <ClCompile Include="source\TitleScene.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
