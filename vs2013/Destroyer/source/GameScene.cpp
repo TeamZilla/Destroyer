@@ -294,28 +294,28 @@ void GameScene::colliderChecks()
 				}
 			}
 		}
-		if (A->HasTag("Enemy") && B->HasTag("Enemy"))
-		{
-			if (A->HasTag("Tank") && B->HasTag("Tank"))
-			{
-				if (A->GetComponent<TankBehavior>()->isExploding() ||
-					B->GetComponent<TankBehavior>()->isExploding())
-				{
-					A->GetComponent<TankBehavior>()->Destroy();
-					B->GetComponent<TankBehavior>()->Destroy();
-				}
+		//if (A->HasTag("Enemy") && B->HasTag("Enemy"))
+		//{
+		//	if (A->HasTag("Tank") && B->HasTag("Tank"))
+		//	{
+		//		if (A->GetComponent<TankBehavior>()->isExploding() ||
+		//			B->GetComponent<TankBehavior>()->isExploding())
+		//		{
+		//			A->GetComponent<TankBehavior>()->Destroy();
+		//			B->GetComponent<TankBehavior>()->Destroy();
+		//		}
 
-			}
-			if (A->HasTag("Soldier") && B->HasTag("Soldier"))
-			{
-				if (A->GetComponent<SoldierBehavior>()->isExploding() ||
-					B->GetComponent<SoldierBehavior>()->isExploding())
-				{
-					A->GetComponent<SoldierBehavior>()->Destroy();
-					B->GetComponent<SoldierBehavior>()->Destroy();
-				}
-			}
-		}
+		//	}
+		//	if (A->HasTag("Soldier") && B->HasTag("Soldier"))
+		//	{
+		//		if (A->GetComponent<SoldierBehavior>()->isExploding() ||
+		//			B->GetComponent<SoldierBehavior>()->isExploding())
+		//		{
+		//			A->GetComponent<SoldierBehavior>()->Destroy();
+		//			B->GetComponent<SoldierBehavior>()->Destroy();
+		//		}
+		//	}
+		//}
 	};
 	m_physWorld.SetContactListener(&contactListener);
 

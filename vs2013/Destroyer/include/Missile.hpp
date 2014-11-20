@@ -1,6 +1,7 @@
 #pragma once
 
 #include <UtH/UtHEngine.hpp>
+#include <Player.hpp>
 
 class Missile : public uth::GameObject
 {
@@ -29,7 +30,7 @@ class Missile : public uth::GameObject
 
 public:
 	Missile();
-	Missile(pmath::Vec2f, pmath::Vec2f, float dt);
+	Missile(pmath::Vec2f, pmath::Vec2f,Player* player);
 	~Missile();
 
 	void update(float) override;
