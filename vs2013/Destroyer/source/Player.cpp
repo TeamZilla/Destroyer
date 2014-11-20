@@ -45,7 +45,6 @@ Player::Player(uth::PhysicsWorld* physworld)
 	m_tailAnim  =  pmath::Vec4(3, 3, 3, 6);
 	playerAnimation = GetComponent<AnimatedSprite>("AnimatedSprite");
 	SetAnimation(m_walkAnim);
-
 }
 
 void Player::init(uth::PhysicsWorld* physworld, Health* hp)

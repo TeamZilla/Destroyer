@@ -1,15 +1,17 @@
 #pragma once
 
 #include <UtH/UtHEngine.hpp>
-
+#include <TankBullet.hpp>
 
 class TankBehavior : public uth::Component
 {
 	float				m_speed;
 	float				m_explodeTimer = 3;
+	float				m_shootTimer = 3;
 	bool				m_isGoingLeft;
 	bool				m_isDead = false;
 	bool				m_isGoingToExp = false;
+	bool				m_isShooting = true;
 	uth::GameObject*	m_player;
 	uth::Rigidbody*		m_rigidBody;
 	pmath::Vec2			m_direction;
