@@ -40,15 +40,7 @@ bool GameScene::Init()
 
 	m_road->Init(m_player,&m_physWorld);
 	m_player->init(&m_physWorld, m_health);
-
-	//m_enemyManager->SetPhysWorld(&m_physWorld);
-	//m_enemyManager->Init();
-
-	//aeroplaneTimer = 0;
-	//aeroMinSpawnTime = 0.5;
-	//aeroMaxSpawnTime = 6;
-	//isCool = 1;
-
+	
 	m_bgManager.SetCameraStartPos(pmath::Vec2f(0, uthEngine.GetWindow().GetSize().y/2));
 	
 
@@ -67,6 +59,7 @@ bool GameScene::Init()
 	EnemyFactory::CreateTank();
 
 	colliderChecks();
+	isPaused = false;
 
 	return true;
 }
@@ -75,118 +68,131 @@ bool GameScene::Init()
 // Update loop. Gone trought once per frame.
 void GameScene::Update(float dt)
 {
-	static int count;
-	static float time = 0;
-	time += dt;
-	count++;
-	if (time > 6)
+	if (!isPaused)
 	{
-		time -= 6;
-//		std::cout << count << "\t" << m_layers[LayerId::InGame]->m_children.size() << std::endl;
-		count = 0;
-	}
+		static int count;
+		static float time = 0;
+		time += dt;
+		count++;
+		if (time > 6)
+		{
+			time -= 6;
+			count = 0;
+		}
 
-	m_physWorld.Update(dt);
-	m_bgManager.Update(dt);
-	EnemyFactory::Update(dt);
+		m_physWorld.Update(dt);
+		m_bgManager.Update(dt);
+		EnemyFactory::Update(dt);
 
-	Scene::Update(dt);
-	//dt *= 20;
+		Scene::Update(dt);
+		//dt *= 20;
 
-	m_heli->Update(dt);
-	
+		m_heli->Update(dt);
+
 
 #ifdef UTH_SYSTEM_ANDROID
 
-	const auto& wnd = uthEngine.GetWindow();
-	const pmath::Vec2& touchStart = wnd.PixelToCoords(uthInput.Touch[0].GetStartPosition());
-	const pmath::Vec2& touchEnd = wnd.PixelToCoords(uthInput.Touch[0].GetEndPosition());
+		const auto& wnd = uthEngine.GetWindow();
+		const pmath::Vec2& touchStart = wnd.PixelToCoords(uthInput.Touch[0].GetStartPosition());
+		const pmath::Vec2& touchEnd = wnd.PixelToCoords(uthInput.Touch[0].GetEndPosition());
 
-	if (uthInput.Touch.Motion() == TouchMotion::TAP)
-	{
-		m_health->TakeDamage(1);
-	}
-
-	if(uthInput.Touch.Motion() == TouchMotion::DRAG)
-	{
-		if (touchStart.y - 80 > touchEnd.y + 80)
+		if (uthInput.Touch.Motion() == TouchMotion::TAP)
 		{
-			if (!m_player.m_isCrouching)
+			m_health->TakeDamage(1);
+		}
+
+		if(uthInput.Touch.Motion() == TouchMotion::DRAG)
+		{
+			if (touchStart.y - 80 > touchEnd.y + 80)
 			{
-				m_player->Jump();
+				if (!m_player.m_isCrouching)
+				{
+					m_player->Jump();
+				}
+			}
+			else if (touchStart.y + 80 < touchEnd.y - 80)
+			{
+				if (!m_player.m_isJumping)
+				{
+					m_player->Crouch();
+					m_bgManager.Shake(5, 0.4f); // Amount, Delay
+				}
+			}
+
+			if (touchStart.x + 90 > touchEnd.x - 90)
+			{
+				if (m_player->CheckIfGoingRight())
+				{
+					m_player->ChangeDirection();
+				}
+			}
+			else if (touchStart.x - 90 < touchEnd.x + 90)
+			{
+				if (!m_player->CheckIfGoingRight())
+				{
+					m_player->ChangeDirection();
+				}
 			}
 		}
-		else if (touchStart.y + 80 < touchEnd.y - 80)
+
+
+#else
+		if (uthInput.Common.Event() == uth::InputEvent::TAP)
 		{
-			if (!m_player.m_isJumping)
+			m_health->TakeDamage(1);
+		}
+		if (uthInput.Keyboard.IsKeyDown(Keyboard::Up))
+		{
+			if (!m_player->m_isCrouching && !m_player->m_isJumping)
+				m_player->Jump();
+		}
+		if (uthInput.Keyboard.IsKeyDown(Keyboard::Down))
+		{
+			if (!m_player->m_isJumping && !m_player->m_isCrouching && !m_player->m_isTurning)
 			{
 				m_player->Crouch();
-				m_bgManager.Shake(5, 0.4f); // Amount, Delay
+				//              amount , delay
+				m_bgManager.Shake(3, 0.4f);
+				m_road->InitShock();
+				m_waveSound->Play();
 			}
 		}
-
-		if (touchStart.x + 90 > touchEnd.x - 90)
+		if (uthInput.Keyboard.IsKeyDown(Keyboard::Left) &&
+			!uthInput.Keyboard.IsKeyDown(Keyboard::Right))
 		{
 			if (m_player->CheckIfGoingRight())
 			{
 				m_player->ChangeDirection();
 			}
 		}
-		else if (touchStart.x - 90 < touchEnd.x + 90)
+
+		if (uthInput.Keyboard.IsKeyDown(Keyboard::Right) &&
+			!uthInput.Keyboard.IsKeyDown(Keyboard::Left))
 		{
 			if (!m_player->CheckIfGoingRight())
 			{
 				m_player->ChangeDirection();
 			}
 		}
-	}
 
-	
-#else
-	if (uthInput.Common.Event() == uth::InputEvent::TAP)
-	{
-		m_health->TakeDamage(1);
-	}
-	if (uthInput.Keyboard.IsKeyDown(Keyboard::Up))
-	{
-		if (!m_player->m_isCrouching && !m_player->m_isJumping)
-			m_player->Jump();
-	}
-	if (uthInput.Keyboard.IsKeyDown(Keyboard::Down))
-	{
-		if (!m_player->m_isJumping && !m_player->m_isCrouching && !m_player->m_isTurning)
+		if (uthInput.Mouse.IsButtonReleased(Mouse::LEFT))
 		{
-			m_player->Crouch();
-			//              amount , delay
-			m_bgManager.Shake(3, 0.4f);
-			m_road->InitShock();
-			m_waveSound->Play();
+			FlameEmitter::Emit(uthInput.Mouse.Position());
+			getLayer(LayerId::InGame).AddChild(new FireBreath(pmath::Vec2(0, 280), uthInput.Mouse.Position()));
+		}
+
+		if (uthInput.Keyboard.IsKeyDown(Keyboard::P))
+		{
+			isPaused = true;
 		}
 	}
-	if (uthInput.Keyboard.IsKeyDown(Keyboard::Left) &&
-		!uthInput.Keyboard.IsKeyDown(Keyboard::Right))
+	else //TODO:: Pause menu stuff here
 	{
-		if (m_player->CheckIfGoingRight())
+		if (uthInput.Keyboard.IsKeyDown(Keyboard::O))
 		{
-			m_player->ChangeDirection();
+			isPaused = false;
 		}
 	}
-	
-	if (uthInput.Keyboard.IsKeyDown(Keyboard::Right) &&
-		!uthInput.Keyboard.IsKeyDown(Keyboard::Left))
-	{
-		if (!m_player->CheckIfGoingRight())
-		{
-			m_player->ChangeDirection();
-		}
-	}
-
-	if (uthInput.Mouse.IsButtonReleased(Mouse::LEFT))
-	{
-		FlameEmitter::Emit(uthInput.Mouse.Position());
-		getLayer(LayerId::InGame).AddChild(	new FireBreath(pmath::Vec2(0, 280), uthInput.Mouse.Position()));
-	}
-
 
 #endif
 	//return true; // Update succeeded.
@@ -280,6 +286,28 @@ void GameScene::colliderChecks()
 				{
 					A->GetComponent<SoldierBehavior>()->Destroy();
 					B->GetComponent<AeroplaneBehavior>()->Hit();
+				}
+			}
+		}
+		if (A->HasTag("Enemy") && B->HasTag("Enemy"))
+		{
+			if (A->HasTag("Tank") && B->HasTag("Tank"))
+			{
+				if (A->GetComponent<TankBehavior>()->isExploding() ||
+					B->GetComponent<TankBehavior>()->isExploding())
+				{
+					A->GetComponent<TankBehavior>()->Destroy();
+					B->GetComponent<TankBehavior>()->Destroy();
+				}
+
+			}
+			if (A->HasTag("Soldier") && B->HasTag("Soldier"))
+			{
+				if (A->GetComponent<SoldierBehavior>()->isExploding() ||
+					B->GetComponent<SoldierBehavior>()->isExploding())
+				{
+					A->GetComponent<SoldierBehavior>()->Destroy();
+					B->GetComponent<SoldierBehavior>()->Destroy();
 				}
 			}
 		}

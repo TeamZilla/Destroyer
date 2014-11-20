@@ -60,7 +60,7 @@ public: // Every one of these public functions are required.
 	float aeroMaxSpawnTime;
 	float shootTime;
 
-	bool isCool;
+	bool isCool, isPaused;
 	int rand;
 	int rand2;
 };
