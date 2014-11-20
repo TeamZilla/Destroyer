@@ -6,7 +6,7 @@
 enum SceneName
 {
 	DEFAULT = UTHDefaultScene,
-	GAME,
+	GAME,TITLE,
 	COUNT // Keep this last, it tells how many scenes there are
 };
 
@@ -15,7 +15,8 @@ enum SceneName
 #ifdef NEWSCENEFUNC
 #undef NEWSCENEFUNC
 
-#include <GameScene.hpp>//Your scene header.
+#include <GameScene.hpp>//main game 
+#include <TitleScene.hpp>//titleScreen
 
 // Create function for a new scene, having a case for every user made scene
 uth::Scene* NewSceneFunc(int SceneID)
@@ -23,6 +24,7 @@ uth::Scene* NewSceneFunc(int SceneID)
 	switch (SceneID)
 	{
 	case GAME:		return new /*Game*/GameScene();
+	case TITLE:		return new /*Game*/TitleScene();
 	default:		return nullptr;
 	}
 }

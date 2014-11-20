@@ -19,12 +19,11 @@ class Missile : public uth::GameObject
 		m_scale,
 		m_angle,
 		sliding; // sliding modifier (use 1 +- "small value")
-	pmath::Vec2f startPos;
-	pmath::Vec2f targPos;
-	pmath::Vec2f m_pos;
-	pmath::Vec2f mainDir;
-	pmath::Vec2f altDir;
-	pmath::Vec2f prevPos;
+	pmath::Vec2 startPos;
+	pmath::Vec2 targPos;
+	pmath::Vec2 mainDir;
+	pmath::Vec2 altDir;
+	pmath::Vec2 prevPos;
 
 	void rotation();
 
