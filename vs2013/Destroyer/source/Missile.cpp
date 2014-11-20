@@ -1,4 +1,5 @@
 #include "Missile.hpp"
+#include <ExplosionEmitter.hpp>
 using namespace uth;
 
 Missile::Missile(pmath::Vec2f start, pmath::Vec2f targ, float dt)
@@ -67,10 +68,12 @@ void Missile::explodeCheck()
 }
 void Missile::outOfBoundsCheck()
 {
-	if ((uthEngine.GetWindow().GetViewport()).intersects(transform.GetGlobalBounds() ))
+
+	if ((targPos - transform.GetPosition()).length() < 45 )
 	{
 		m_isDestroyed = true;
 		Parent()->RemoveChild(this);
+		ExplosionEmitter::Emit(transform.GetPosition());
 	}
 }
 
