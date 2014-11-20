@@ -139,7 +139,8 @@ void GameScene::Update(float dt)
 #else
 		if (uthInput.Common.Event() == uth::InputEvent::TAP)
 		{
-			m_health->TakeDamage(1);
+			//m_health->TakeDamage(1);
+			m_player->Hit();
 		}
 		if (uthInput.Keyboard.IsKeyDown(Keyboard::Up))
 		{
@@ -202,6 +203,7 @@ void GameScene::colliderChecks()
 {
 	contactListener.onBeginContact = [](b2Contact* contact, GameObject* A, GameObject* B)
 	{
+		
 		//Enemies hit road collider
 		if (B->HasTag("Enemy") && A->HasTag("RoadCollider"))
 		{
@@ -231,14 +233,17 @@ void GameScene::colliderChecks()
 			if (B->HasTag("Tank"))
 			{
 				B->GetComponent<TankBehavior>()->Destroy();
+				static_cast<Player*>(A)->Hit();
 			}
 			else if (B->HasTag("Soldier"))
 			{
 				B->GetComponent<SoldierBehavior>()->Destroy();
+				static_cast<Player*>(A)->Hit();
 			}
 			else if (B->HasTag("Aeroplane"))
 			{
 				B->GetComponent<AeroplaneBehavior>()->Hit();
+				static_cast<Player*>(A)->Hit();
 			}
 		}
 		//When enemies are dying and are hitting floor

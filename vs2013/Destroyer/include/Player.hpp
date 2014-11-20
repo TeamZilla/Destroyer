@@ -11,8 +11,10 @@ class Player : public uth::GameObject
 		m_crouchTimer,
 		m_jumpTimer,
 		m_tailTimer,
+		m_hurtTimer,
 		m_dt;
 	float m_maxSpeed, m_minSpeed, m_acceleration;
+	bool m_isHurting;
 
 	pmath::Vec2 m_tempPos;
 	pmath::Vec4 m_walkAnim;
@@ -28,6 +30,7 @@ class Player : public uth::GameObject
 	void Jumping();
 	void Crouching();
 	void Turning();
+	void Hurting();
 
 public:
 	Player(uth::PhysicsWorld*);

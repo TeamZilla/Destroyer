@@ -18,7 +18,7 @@ Player::Player(uth::PhysicsWorld* physworld)
 	m_isJumping = false;
 	m_isCrouching = false;
 	m_isTurning = false;
-
+	m_isHurting = false;
 
 	//Create, set position and scale player Sprite
 	auto playerTexture = uthRS.LoadTexture("modzilla/moz_animation.png");
@@ -68,6 +68,10 @@ void Player::update(float dt)
 	else if (m_isTurning)
 	{
 		Turning();
+	}
+	if (m_isHurting)
+	{
+		Hurting();
 	}
 }
 void Player::ChangeDirection()
@@ -151,9 +155,26 @@ void Player::Crouching()
 	}
 
 }
+void Player::Hurting()
+{
+	m_hurtTimer -= m_dt;
+
+	if (m_hurtTimer >= 0.5f)
+	{
+		playerAnimation->SetColor(2 * m_hurtTimer, 2 * m_hurtTimer, 2 * m_hurtTimer, 1);
+	}
+	else
+	{
+		playerAnimation->SetColor(1, 1, 1, 1);
+		m_isHurting = false;
+	}
+
+}
 void Player::Hit(float dmg)
 {
 	m_health->TakeDamage(dmg);
+	m_hurtTimer = dmg;
+	m_isHurting = true;
 }
 void Player::Acceleration()
 {
