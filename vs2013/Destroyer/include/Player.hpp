@@ -37,7 +37,6 @@ public:
 	static bool isGoingRight;
 	void init(uth::PhysicsWorld*, Health* hp);
 	void update(float) override;
-	void Draw(uth::RenderTarget& target, uth::RenderAttributes attributes);
 	void  ChangeDirection();
 	void  Jump();
 	void  Crouch();

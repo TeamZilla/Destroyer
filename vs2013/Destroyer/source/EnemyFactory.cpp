@@ -11,7 +11,7 @@ uth::PhysicsWorld*	EnemyFactory::m_physicsWorld;
 Player*				EnemyFactory::m_player;
 uth::Sound*			EnemyFactory::m_expSound;
 
-float EnemyFactory::m_aeroplaneSpawnCooldown = 5;
+float EnemyFactory::m_aeroplaneSpawnCooldown = 10;
 float EnemyFactory::m_aeroplaneSpawnTimer = 0;
 float EnemyFactory::m_tankSpawnCooldown = 3;
 float EnemyFactory::m_tankSpawnTimer = 0;

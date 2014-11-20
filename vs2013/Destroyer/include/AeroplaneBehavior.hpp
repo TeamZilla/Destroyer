@@ -3,7 +3,6 @@
 #include <UtH/UtHEngine.hpp>
 #include <ExplosionEmitter.hpp>
 
-
 class AeroplaneBehavior : public uth::Component
 {
 	float pathFlatnes = 55; // ++ for flatnes
@@ -37,8 +36,8 @@ public:
 	void Init() override
 	{
 		m_rigidBody = parent->GetComponent<uth::Rigidbody>();
-		m_rigidBody->SetKinematic(true);
-		m_rigidBody->SetPhysicsGroup(-4);
+		//m_rigidBody->SetKinematic(true);
+		m_rigidBody->SetPhysicsGroup(3);
 		
 		m_direction = uth::Randomizer::GetInt(0, 10);
 

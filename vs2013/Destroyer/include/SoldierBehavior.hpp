@@ -48,16 +48,14 @@ public:
 		if (!m_isStopped && !m_isGoingToExp)
 		{
 			Movement();
-			parent->GetComponent<uth::Sprite>()->SetColor(1, 1, 1, 1);
 		}
 		else if (m_isStopped && !m_isGoingToExp)
 		{
 			m_rigidBody->SetVelocity(pmath::Vec2f(0));
-			parent->GetComponent<uth::Sprite>()->SetColor(1, 0, 0, 1);
 		}
 		else if (m_isGoingToExp)
 		{
-			parent->GetComponent<uth::Sprite>()->SetColor(1, 1, 1, 1);
+			//TODO: add hurt animation frame here
 		}
 	}
 

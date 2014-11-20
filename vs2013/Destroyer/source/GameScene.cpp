@@ -210,8 +210,17 @@ void GameScene::colliderChecks()
 			}
 		}
 		//Some enemies touch player
-		if (B->HasTag("Enemy") && A->HasTag("Player"))
+		if (B->HasTag("Enemy") && A->HasTag("Player") ||
+			A->HasTag("Enemy") && B->HasTag("Player"))
 		{
+			auto* AA = A;
+			auto* BB = B;
+			if (A->HasTag("Enemy"))
+			{
+				BB = A;
+				AA = B;
+			}
+
 			//Put Tag for every enemytype here
 			if (B->HasTag("Tank"))
 			{
@@ -226,31 +235,6 @@ void GameScene::colliderChecks()
 				B->GetComponent<AeroplaneBehavior>()->Hit();
 			}
 		}
-		////Some enemies touch player's head
-		//if (B->HasTag("Enemy") && A->HasTag("Player") ||
-		//	A->HasTag("Enemy") && B->HasTag("Player"))
-		//{
-		//	auto* AA = A;
-		//	auto* BB = B;
-		//	if (B->HasTag("Player"))
-		//	{
-		//		BB = A;
-		//		AA = B;
-		//	}
-
-		//	if (BB->HasTag("Aeroplane"))
-		//	{
-		//		BB->GetComponent<AeroplaneBehavior>()->Hit();
-		//	}
-		//	else if (BB->HasTag("Tank"))
-		//	{
-		//		BB->GetComponent<TankBehavior>()->Destroy();
-		//	}
-		//	else if (BB->HasTag("Soldier"))
-		//	{
-		//		BB->GetComponent<SoldierBehavior>()->Destroy();
-		//	}
-		//}
 		//When enemies are dying and are hitting floor
 		if (B->HasTag("Enemy") && A->HasTag("Floor"))
 		{
