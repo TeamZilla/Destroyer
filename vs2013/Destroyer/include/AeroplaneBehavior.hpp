@@ -15,7 +15,7 @@ class AeroplaneBehavior : public uth::Component
 	float m_dt;
 	float angle;
 	float m_sliding = 1;
-	int m_direction; // uses values 1 and -1 only.
+	int   m_direction; // uses values 1 and -1 only.
 	bool m_isDestroyed = false;
 
 	pmath::Vec2f m_pos;
@@ -67,6 +67,10 @@ public:
 		rotation();
 		
 		prevPos = m_rigidBody->GetPosition();
+		if (prevPos.y <= -1000)
+		{
+			m_isDestroyed = true;
+		}
 	}
 
 	void AeroplaneBehavior::pathFunc()
