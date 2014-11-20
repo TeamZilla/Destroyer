@@ -1,7 +1,4 @@
 #include <FlameEmitter.hpp>
-#include <UtH/Engine/Particles/ParticleSystem.hpp>
-#include <UtH/Engine/Particles/ParticleTemplate.hpp>
-#include <UtH/Core/Randomizer.hpp>
 #include <FlameParAffector.hpp>
 
 using namespace uth;
