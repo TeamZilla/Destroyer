@@ -34,12 +34,12 @@ bool GameScene::Init()
 	//getLayer(LayerId::InGame).AddChild(&m_gameFloor);
 	getLayer(LayerId::InGame).AddChild(m_road = new Road(225));
 	getLayer(LayerId::InGame).AddChild(m_player = new Player(&m_physWorld));
-	getLayer(LayerId::InGame).AddChild(m_heli = new Heli(pmath::Vec2f(0, 0)));
-
 	getLayer(LayerId::Userinterface).AddChild(m_health = new Health);
+	m_player->init(&m_physWorld, m_health);
+	getLayer(LayerId::InGame).AddChild(m_heli = new Heli(pmath::Vec2f(0, 0),m_player));
+
 
 	m_road->Init(m_player,&m_physWorld);
-	m_player->init(&m_physWorld, m_health);
 	
 	m_bgManager.SetCameraStartPos(pmath::Vec2f(0, uthEngine.GetWindow().GetSize().y/2));
 	

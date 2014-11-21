@@ -2,13 +2,14 @@
 
 #include <vector>
 #include <Missile.hpp>
+#include <Player.hpp>
 #include <UtH/UtHEngine.hpp>
 
 class Heli : public uth::GameObject
 {
 public:
 	Heli();
-	Heli(pmath::Vec2f givenPos);
+	Heli(pmath::Vec2f givenPos, Player* player);
 	Heli(float);
 	~Heli();
 
@@ -31,7 +32,8 @@ private:
 	pmath::Vec2f m_hoverScale;
 	float m_hoverSpeed;
 	float m_hoverTime;					// howerDisplacement is a function of m_hoverTime
-	pmath::Vec2f m_hoverDisplacement;		// the difference of curPos and exact position
+	pmath::Vec2f m_hoverDisplacement;	// the difference of curPos and exact position
+	Player* m_player;
 	
 	
 	//linear move	

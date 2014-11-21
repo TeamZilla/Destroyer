@@ -2,20 +2,19 @@
 #include <ExplosionEmitter.hpp>
 using namespace uth;
 
-Missile::Missile(pmath::Vec2f start, pmath::Vec2f targ, float dt)
+Missile::Missile(pmath::Vec2f start, Player* player)
 {
 	auto missileTex = uthRS.LoadTexture("Enemies/Projectiles/copter_missile.png");
 	missileTex->SetSmooth(true);
 	AddComponent(new Sprite(missileTex));
 
 	startPos = start;
-	targPos = targ;
+	targPos = player->transform.GetPosition();
 	mainDir = (targPos - startPos);
 	altDir.x = mainDir.y;
 	altDir.y = -mainDir.x;
 	altDir.normalize();
 	pathAlteration = Randomizer::GetFloat(-13.5, 13.5);
-	m_dt = dt;
 	time = 0;
 	m_lenght = (targPos - startPos).length();
 	curveDepth = 40;
@@ -26,6 +25,7 @@ Missile::Missile(pmath::Vec2f start, pmath::Vec2f targ, float dt)
 	isOrientated = 0;
 	m_scale = 0.5f;
 	m_isDestroyed = false;
+	m_player = player;
 
 	transform.SetScale(m_scale);
 }
@@ -33,7 +33,6 @@ Missile::Missile(pmath::Vec2f start, pmath::Vec2f targ, float dt)
 
 void Missile::pathFunc()
 {
-
 	auto calc = pmath::Vec2f(
 		
 	startPos + 
@@ -57,6 +56,7 @@ Missile::~Missile()
 
 void Missile::update(float dt)
 {
+	m_dt = dt;
 	pathFunc();
 	rotation();
 	explodeCheck();
@@ -68,12 +68,13 @@ void Missile::explodeCheck()
 }
 void Missile::outOfBoundsCheck()
 {
-
 	if ((targPos - transform.GetPosition()).length() < 45 )
 	{
 		m_isDestroyed = true;
 		Parent()->RemoveChild(this);
 		ExplosionEmitter::Emit(transform.GetPosition());
+		//TODO: Remove comments so it work, problem with player somehow...
+		m_player->Hit();
 	}
 }
 

@@ -2,7 +2,7 @@
 #include "Missile.hpp"
 using namespace uth;
 
-Heli::Heli(pmath::Vec2f givenPos)
+Heli::Heli(pmath::Vec2f givenPos, Player* player)
 {
 	m_curPos = givenPos;
 	m_nextPos = m_curPos;
@@ -28,6 +28,9 @@ Heli::Heli(pmath::Vec2f givenPos)
 	m_missileRegenTimer = 0;
 	m_missileRegenTime = 3;
 	m_hoverMaxTime = 10;
+	burstTimer = 3;
+	isCool = 0;
+	m_player = player;
 }
 
 Heli::Heli()
@@ -193,7 +196,7 @@ void Heli::m_reload()
 
 void Heli::m_launch()
 {
-	Parent()->AddChild(new Missile(transform.GetPosition(), m_shootingTarget, m_dt));
+	Parent()->AddChild(new Missile(transform.GetPosition(),m_player));
 }
 
 

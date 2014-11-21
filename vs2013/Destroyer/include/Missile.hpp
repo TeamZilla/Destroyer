@@ -25,12 +25,13 @@ class Missile : public uth::GameObject
 	pmath::Vec2 mainDir;
 	pmath::Vec2 altDir;
 	pmath::Vec2 prevPos;
+	Player* m_player;
 
 	void rotation();
 
 public:
 	Missile();
-	Missile(pmath::Vec2f, pmath::Vec2f,Player* player);
+	Missile(pmath::Vec2f,Player* player);
 	~Missile();
 
 	void update(float) override;
