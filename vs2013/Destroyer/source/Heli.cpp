@@ -27,7 +27,7 @@ Heli::Heli(pmath::Vec2f givenPos, Player* player)
 	bonVoyageTimer = 0;
 	m_missileRegenTimer = 0;
 	m_missileRegenTime = 3;
-	m_hoverMaxTime = 10;
+	m_hoverMaxTime = 15;
 	burstTimer = 3;
 	isCool = 0;
 	m_player = player;
