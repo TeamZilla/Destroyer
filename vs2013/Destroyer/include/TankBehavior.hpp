@@ -12,18 +12,22 @@ class TankBehavior : public uth::Component
 	bool				m_isDead = false;
 	bool				m_isGoingToExp = false;
 	bool				m_isShooting = true;
-	uth::GameObject*	m_player;
+	Player*				m_player;
 	uth::Rigidbody*		m_rigidBody;
+	uth::Layer*			m_layer;
 	pmath::Vec2			m_direction;
 	pmath::Vec2			m_maxDistance;
 	pmath::Vec2			m_minDistance;
 	pmath::Vec2			m_target;
+	float				m_combatIntensity = 2;
+	float				m_combatTimer = 0;
 
 public:
 
-	TankBehavior::TankBehavior(float speed, uth::GameObject* player) :
+	TankBehavior::TankBehavior(float speed, Player* player, uth::Layer* layer) :
 		m_speed(speed),
-		m_player(player)
+		m_player(player),
+		m_layer(layer)
 	{
 		
 	}
@@ -36,7 +40,7 @@ public:
 		m_rigidBody = parent->GetComponent<uth::Rigidbody>();
 		m_rigidBody->SetPhysicsGroup(-3);
 		m_rigidBody->SetFriction(0);
-
+		
 		m_maxDistance = pmath::Vec2(
 			uth::Randomizer::GetFloat(m_player->transform.GetPosition().x + 400,
 									  m_player->transform.GetPosition().x + 500), 300);
@@ -55,6 +59,7 @@ public:
 			Exploding(dt);
 		else
 			Movement();
+			Combat(dt);
 	}
 
 	void TankBehavior::Movement()
@@ -100,6 +105,7 @@ public:
 		m_rigidBody->SetPhysicsGroup(-2);
 		m_isGoingToExp = true;
 	}
+
 	void TankBehavior::Destroy()
 	{
 		m_isDead = true;
@@ -116,9 +122,25 @@ public:
 
 	}
 
+	void TankBehavior::Combat(float dt)
+	{
+		if (m_combatIntensity <= m_combatTimer)
+		{
+			Shoot();
+			m_combatTimer = 0;
+		}
+		m_combatTimer += dt;
+	}
+
+
 	void TankBehavior::Shoot()
 	{
+		////TODO, make direction here and give it to tank
+		//auto ppos = parent->transform.GetPosition();
+		//auto popos = pmath::Vec2(0, 500);
+		//auto direction = (pmath::Vec2(m_target.x,m_target.y - 500) - ppos).normalize();
 
+		m_layer->AddChild(new TankBullet(m_player, parent->transform.GetPosition()));
 	}
 
 	bool TankBehavior::isDestroyed()
