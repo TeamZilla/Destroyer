@@ -21,11 +21,11 @@ float EnemyFactory::m_soldierSpawnTimer = 0;
 std::shared_ptr<GameObject> EnemyFactory::CreateTank()
 {
 	const static float speed(8.0f);
-	const static std::string textureId("Enemies/tank.png");
+	static uth::Texture* textureId = uthRS.LoadTexture("Enemies/tank_sheet.png");
 
 	auto& obj = std::shared_ptr<GameObject>(new GameObject());
 	obj->AddTags({ "Tank", "Enemy" });
-	obj->AddComponent(new Sprite(textureId));
+	obj->AddComponent(new AnimatedSprite(textureId,3,3,1,0));
 
 	const static pmath::Vec2 CollisionSize(obj->transform.GetSize()/2);
 	obj->transform.SetPosition(SpawnPosition());

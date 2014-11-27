@@ -321,9 +321,9 @@ void GameScene::colliderChecks()
 			}
 
 			if (A->HasTag("Soldier"))
-				A->GetComponent<SoldierBehavior>()->Hit();
+				A->GetComponent<SoldierBehavior>()->TailWhipHit();
 			else if (B->HasTag("Soldier"))
-				B->GetComponent<SoldierBehavior>()->Hit();
+				B->GetComponent<SoldierBehavior>()->TailWhipHit();
 
 		}
 		//if (A->HasTag("Enemy") && B->HasTag("Enemy"))
