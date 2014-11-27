@@ -145,7 +145,6 @@
     <ClCompile Include="source\Soldier.cpp" />
     <ClCompile Include="source\Statistics.cpp" />
     <ClCompile Include="source\Tank.cpp" />
-    <ClCompile Include="source\TankBehavior.cpp" />
     <ClCompile Include="source\TitleScene.cpp" />
     <ClCompile Include="source\TankBullet.cpp" />
   </ItemGroup>

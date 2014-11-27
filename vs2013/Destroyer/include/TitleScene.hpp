@@ -11,7 +11,7 @@ class TitleScene : public uth::Scene
 
 	enum class LayerId : char
 	{
-		TittleBackground,
+		TitleBackground,
 		Buttons
 	};
 

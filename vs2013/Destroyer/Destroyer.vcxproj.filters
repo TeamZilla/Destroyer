@@ -149,9 +149,6 @@
     <ClCompile Include="source\Background.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\TankBehavior.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="source\EnemyFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

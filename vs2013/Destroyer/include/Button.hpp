@@ -12,7 +12,7 @@ class Button : public uth::GameObject
 
 public:
 
-	Button(uth::Transform*, uth::AnimatedSprite*);
+	Button(uth::GameObject*);
 	~Button();
 
 	void update(float dt);
