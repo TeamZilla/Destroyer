@@ -31,12 +31,18 @@ void Button::update(float dt)
 	if (uthInput.Common.Event() == uth::InputEvent::TAP &&	bounds.intersects(touchBounds))
 	{
 		WriteLog("Hit button");
+		m_butAnim->ChangeAnimation(1, 1, 1, 0, false);
+
 	}
 	else if (uthInput.Common.Event() == uth::InputEvent::TAP)
 	{
 		WriteLog("%f     %f", touchBounds.position.x, touchBounds.position.y);
 		WriteLog("%f     %f", bounds.position.x, bounds.position.y);
 		WriteLog("%f     %f", m_butTransform->GetPosition().x, m_butTransform->GetPosition().y);
+	}
+	else
+	{
+		m_butAnim->ChangeAnimation(0,1,0,0,false);
 	}
 }
 
