@@ -99,6 +99,9 @@
     <ClInclude Include="include\TankBullet.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\Button.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\Aeroplane.cpp">
@@ -165,7 +168,10 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\TankBullet.cpp">
-    <Filter>Source Files</Filter>
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Button.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

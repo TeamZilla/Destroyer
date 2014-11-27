@@ -7,13 +7,16 @@ class Button : public uth::GameObject
 
 
 	bool m_isPressed();
+	uth::Transform* m_butTransform;
+	uth::AnimatedSprite* m_butAnim;
 
 public:
 
-	Button(uth::Texture, uth::AnimatedSprite);
+	Button(uth::Transform*, uth::AnimatedSprite*);
 	~Button();
 
-	bool IsPressed();
+	void update(float dt);
+	bool IsPressedS();
 
 
 };
