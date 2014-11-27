@@ -294,6 +294,25 @@ void GameScene::colliderChecks()
 				}
 			}
 		}
+
+
+		if (A->HasTag("Enemy") && B->HasTag("TailCollider") ||
+			B->HasTag("Enemy") && A->HasTag("TailCollider"))
+		{
+			auto* AA = A;
+			auto* BB = B;
+			if (B->HasTag("Enemy"))
+			{
+				BB = A;
+				AA = B;
+			}
+
+			if (A->HasTag("Soldier"))
+				A->GetComponent<SoldierBehavior>()->Hit();
+			else if (B->HasTag("Soldier"))
+				B->GetComponent<SoldierBehavior>()->Hit();
+
+		}
 		//if (A->HasTag("Enemy") && B->HasTag("Enemy"))
 		//{
 		//	if (A->HasTag("Tank") && B->HasTag("Tank"))

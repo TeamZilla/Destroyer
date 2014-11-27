@@ -33,6 +33,7 @@ public:
 	{
 		m_rigidBody = parent->GetComponent<uth::Rigidbody>();
 		m_rigidBody->SetPhysicsGroup(-3);
+		m_rigidBody->SetPhysicsCategory(uth::Physics::Category2);
 		m_rigidBody->SetFriction(0);
 
 		m_maxDistance = pmath::Vec2(m_player->transform.GetPosition().x + 
