@@ -32,7 +32,7 @@ std::shared_ptr<GameObject> EnemyFactory::CreateTank()
 
 	obj->transform.SetScale(0.5f);
 	obj->AddComponent(new Rigidbody(*m_physicsWorld, uth::COLLIDER_BOX, CollisionSize));
-	obj->AddComponent(new TankBehavior(speed, m_player));
+	obj->AddComponent(new TankBehavior(speed, m_player, m_layer));
 
 	return m_layer->AddChild(obj);
 
@@ -131,9 +131,12 @@ void EnemyFactory::CheckEnemies()
 
 void EnemyFactory::Update(float dt)
 {
-	m_tankSpawn(dt);
-	m_soldierSpawn(dt);
-	m_aeroplaneSpawn(dt);
+	if (m_layer->Children("Tank").size() < 6)
+		m_tankSpawn(dt);
+	if (m_layer->Children("Soldier").size() < 25)
+		m_soldierSpawn(dt);
+	if (m_layer->Children("Aeroplane").size() < 1)
+		m_aeroplaneSpawn(dt);
 	CheckEnemies();
 }
 

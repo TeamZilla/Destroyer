@@ -38,6 +38,7 @@ class GameScene : public uth::Scene
 	uth::Sound* m_music;
 	uth::Sound* m_waveSound;
 	Road* m_road;
+	float m_shakeDelayTimer;
 
 
 	float aeroplaneTimer;
@@ -61,6 +62,7 @@ public: // Every one of these public functions are required.
 	float shootTime;
 
 	bool isCool, isPaused;
+	bool isInitedShake = false;
 	int rand;
 	int rand2;
 };

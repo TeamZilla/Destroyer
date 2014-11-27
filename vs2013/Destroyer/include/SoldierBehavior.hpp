@@ -80,7 +80,7 @@ public:
 	{
 		m_rigidBody->ApplyImpulse(
 			pmath::Vec2(uth::Randomizer::GetFloat(-10, 10),      //X direction
-			-uth::Randomizer::GetFloat(15, 25)),				 //Y direction
+			-uth::Randomizer::GetFloat(20, 40)),				 //Y direction
 			pmath::Vec2(uth::Randomizer::GetFloat(-25, 25), 0)); //offset
 		m_rigidBody->SetPhysicsGroup(-2);
 		m_isGoingToExp = true;

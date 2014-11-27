@@ -39,7 +39,7 @@ void Road::Init(Player* asd, uth::PhysicsWorld* physworld)
 	hitBox = new GameObject();
 	hitBox->AddComponent(new Sprite(pmath::Vec4(1, 0, 0, 0), pmath::Vec2(100, 100)));
 	hitBox->transform.SetPosition(450, m_roadY + 250);
-	hitBox->transform.SetScale(pmath::Vec2(2.2,2.2));
+	hitBox->transform.SetScale(pmath::Vec2(2.2, 2.2));
 	hitBox->AddComponent(new Rigidbody(*physworld));
 	hitBox->GetComponent<Rigidbody>("Rigidbody")->SetAngle(45);
 	hitBox->GetComponent<Rigidbody>("Rigidbody")->SetKinematic(true);
@@ -82,60 +82,66 @@ void Road::InitShock()
 		}
 	}
 
+
 	isShock = true;
 	m_shock();
 }
 
 void Road::m_shock()
 {
-	m_shockHeightMatcher = 62 * abs(m_shockTime) - 100;
 
-	if (m_shockStartSpeed > m_shockFriction * m_shockTime)
-	{
-		m_shockSpeed = m_shockStartSpeed - m_shockFriction * abs(m_shockTime);
-	}
 
-	else
-	{
-		m_shockSpeed = 0;
-	}
-		
-	if (isShock)
-	{
-		for (int i = 0; i < m_blocks.size(); i++)
+		m_shockHeightMatcher = 62 * abs(m_shockTime) - 100;
+
+		if (m_shockStartSpeed > m_shockFriction * m_shockTime)
 		{
-			if (m_shockLenght < std::abs(m_shockSpeed*m_shockTime - m_shockStartX - m_blocks[i]->GetPosition().x))
-			{
-				m_blocks[i]->SetPosition(m_blocks[i]->GetPosition().x, m_roadY);
-			}
-			else
-			{
-
-				m_blocks[i]->SetPosition(
-
-					m_blocks[i]->GetPosition().x,
-
-					m_roadY -
-					m_shockHeight +
-					std::pow((m_shockSpeed * m_shockTime - m_shockStartX) -
-					m_blocks[i]->GetPosition().x, 2) / 300 * m_shockDir * m_shockTime -
-					m_shockHeightMatcher
-
-					);
-			}
+			m_shockSpeed = m_shockStartSpeed - m_shockFriction * abs(m_shockTime);
 		}
-		m_shockTime += m_shockDir * m_dt;
+
+		else
+		{
+			m_shockSpeed = 0;
+		}
+
+		if (isShock)
+		{
+			for (int i = 0; i < m_blocks.size(); i++)
+			{
+				if (m_shockLenght < std::abs(m_shockSpeed*m_shockTime - m_shockStartX - m_blocks[i]->GetPosition().x))
+				{
+					m_blocks[i]->SetPosition(m_blocks[i]->GetPosition().x, m_roadY);
+				}
+				else
+				{
+
+					m_blocks[i]->SetPosition(
+
+						m_blocks[i]->GetPosition().x,
+
+						m_roadY -
+						m_shockHeight +
+						std::pow((m_shockSpeed * m_shockTime - m_shockStartX) -
+						m_blocks[i]->GetPosition().x, 2) / 300 * m_shockDir * m_shockTime -
+						m_shockHeightMatcher
+
+						);
+				}
+			}
+
+			m_shockTime += m_shockDir * m_dt;
+		}
+
+		hitBox->GetComponent<Rigidbody>("Rigidbody")->SetPosition(pmath::Vec2(m_shockTime*m_shockSpeed, m_roadY + 50));
+
+		if (abs(m_shockTime*m_shockSpeed) >= m_shockRange)
+		{
+			// stop shockwave
+			m_shockTime = 0;
+			isShock = false;
+			m_shockSupression = 1;
+			m_shockSpeed = 300;
+			m_shockTime = 0;
+		}
 	}
 
-	hitBox->GetComponent<Rigidbody>("Rigidbody")->SetPosition(pmath::Vec2(m_shockTime*m_shockSpeed, m_roadY + 50));
 
-	if (abs(m_shockTime*m_shockSpeed) >= m_shockRange)
-	{
-		// stop shockwave
-		m_shockTime = 0;
-		isShock = false;
-		m_shockSupression = 1;
-		m_shockSpeed= 300;
-		m_shockTime = 0;
-	}
-}

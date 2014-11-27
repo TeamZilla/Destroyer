@@ -1,6 +1,9 @@
 #pragma once
 
 #include <UtH/UtHEngine.hpp>
+
+#include <Button.hpp>
+
 class TitleScene : public uth::Scene
 {
 	
@@ -14,7 +17,7 @@ class TitleScene : public uth::Scene
 	std::map<const LayerId, uth::Layer*> m_layers;
 
 	uth::Layer& getLayer(LayerId id);
-	
+	uth::GameObject* m_TitleBG;
 
 public: // Every one of these public functions are required.
 	TitleScene();
