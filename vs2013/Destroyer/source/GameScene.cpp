@@ -57,7 +57,7 @@ bool GameScene::Init()
 	FlameEmitter::Init(&getLayer(LayerId::Foreground));
 
 	EnemyFactory::Init(&getLayer(LayerId::InGame),&m_physWorld,m_player);
-	EnemyFactory::CreateTank();
+	//EnemyFactory::CreateTank();
 
 	colliderChecks();
 	isPaused = false;
