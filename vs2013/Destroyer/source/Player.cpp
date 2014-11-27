@@ -14,6 +14,7 @@ Player::Player(uth::PhysicsWorld* physworld)
 	m_jumpHeight = 8;
 	m_jumpTimer = 0;
 	m_tailTimer = 0;
+	m_tailSpeed = 0;
 	isGoingRight = true;
 	m_isJumping = false;
 	m_isCrouching = false;
@@ -52,6 +53,16 @@ void Player::init(uth::PhysicsWorld* physworld, Health* hp)
 	pmath::Vec4 color = pmath::Vec4(1, 0, 0, 0.0f);
 	m_health = hp;
 
+	m_tailBox = new GameObject();
+	m_tailBox->AddComponent(new Sprite(pmath::Vec4(1, 0, 0, 0), pmath::Vec2(75, 150)));
+	m_tailBox->transform.SetPosition(450, m_rigidbody->GetPosition().y + 90);
+	m_tailBox->transform.SetScale(pmath::Vec2(1, 1));
+	m_tailBox->AddComponent(new Rigidbody(*physworld));
+	m_tailBox->GetComponent<Rigidbody>()->SetPhysicsGroup(-2);
+	m_tailBox->GetComponent<Rigidbody>()->SetPhysicsMask(Physics::Category2);
+	m_tailBox->AddTag("TailCollider");
+	Parent()->AddChild(m_tailBox);
+
 }
 void Player::update(float dt)
 {
@@ -73,17 +84,28 @@ void Player::update(float dt)
 	{
 		Hurting();
 	}
+	
+	SwipeTail(dt);
+
+	//m_tailBox->transform.SetPosition(m_tailBox->transform.GetPosition().x,m_rigidbody->GetPosition().y + 400);
+	//WriteLog("X: %f  Y: %f", m_tailBox->transform.GetPosition().x, m_tailBox->transform.GetPosition().y);
 }
 void Player::ChangeDirection()
 {
 	if (!m_isJumping && !m_isCrouching && !m_isTurning)
 	{
 		m_isTurning = true;
+		m_isSwiping = true;
 		m_tailTimer = 0.33f;
 		SetAnimation(m_tailAnim);
+		//Give speed to tail box
+		m_tailSpeed = 1;
+		if (isGoingRight)
+			m_tailSpeed *= 1;
+		else
+			m_tailSpeed *= -1;
 	}
 }
-
 void Player::Turning()
 {
 	m_tailTimer -= m_dt;
@@ -100,7 +122,6 @@ void Player::Turning()
 		m_isTurning = false;
 	}
 }
-
 //Player jump
 void Player::Jump()
 {   //This is called once, changes variables to be ready to jump
@@ -154,6 +175,39 @@ void Player::Crouching()
 		m_isCrouching = false;
 	}
 
+}
+void Player::SwipeTail(float dt)
+{
+	//WriteLog("Speed: %f",m_tailSpeed);
+	if (m_isSwiping)
+	{
+		auto pLength = pmath::Vec2(m_tailBox->transform.GetPosition().x, transform.GetPosition().x).length();
+		if (pLength < 230)
+		{
+			auto pos = pmath::Vec2(m_tailBox->transform.GetPosition().x + m_tailSpeed*20, m_tailBox->transform.GetPosition().y);
+			m_tailBox->GetComponent<Rigidbody>()->SetPosition(pos);
+		}
+		else
+		{
+			m_isSwiping = false;
+		}
+	}
+	else
+	{
+		if (m_tailBox->transform.GetPosition().x < 1)
+		{
+			m_tailSpeed += dt;
+		}
+		else if (m_tailBox->transform.GetPosition().x > 1)
+		{
+			m_tailSpeed -= dt;
+		}
+		//m_tailBox->GetComponent<uth::Rigidbody>()->
+		auto pos = pmath::Vec2(m_tailBox->transform.GetPosition().x + m_tailSpeed);
+		m_tailBox->GetComponent<uth::Rigidbody>()->SetPosition(pmath::Vec2(m_tailSpeed * 100, m_tailBox->transform.GetPosition().y));
+	}
+	m_tailBox->GetComponent<uth::Rigidbody>()->SetAngle(0);
+	m_tailBox->GetComponent<uth::Rigidbody>()->SetVelocity(pmath::Vec2(0,0));
 }
 void Player::Hurting()
 {

@@ -57,7 +57,7 @@ bool GameScene::Init()
 	FlameEmitter::Init(&getLayer(LayerId::Foreground));
 
 	EnemyFactory::Init(&getLayer(LayerId::InGame),&m_physWorld,m_player);
-	EnemyFactory::CreateTank();
+	//EnemyFactory::CreateTank();
 
 	colliderChecks();
 	isPaused = false;
@@ -306,6 +306,25 @@ void GameScene::colliderChecks()
 					B->GetComponent<AeroplaneBehavior>()->Hit();
 				}
 			}
+		}
+
+
+		if (A->HasTag("Enemy") && B->HasTag("TailCollider") ||
+			B->HasTag("Enemy") && A->HasTag("TailCollider"))
+		{
+			auto* AA = A;
+			auto* BB = B;
+			if (B->HasTag("Enemy"))
+			{
+				BB = A;
+				AA = B;
+			}
+
+			if (A->HasTag("Soldier"))
+				A->GetComponent<SoldierBehavior>()->TailWhipHit();
+			else if (B->HasTag("Soldier"))
+				B->GetComponent<SoldierBehavior>()->TailWhipHit();
+
 		}
 		//if (A->HasTag("Enemy") && B->HasTag("Enemy"))
 		//{

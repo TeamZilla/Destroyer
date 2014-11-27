@@ -14,7 +14,8 @@ class Player : public uth::GameObject
 		m_hurtTimer,
 		m_dt;
 	float m_maxSpeed, m_minSpeed, m_acceleration;
-	bool m_isHurting;
+	float m_tailSpeed;
+	bool m_isHurting, m_isSwiping;
 
 	pmath::Vec2 m_tempPos;
 	pmath::Vec4 m_walkAnim;
@@ -23,7 +24,7 @@ class Player : public uth::GameObject
 	pmath::Vec4 m_tailAnim;
 
 	uth::Rigidbody* m_rigidbody;
-	uth::GameObject* m_bodyBox;
+	uth::GameObject* m_tailBox;
 	uth::GameObject* m_headBox;
 	Health* m_health;
 	void Acceleration();
@@ -43,6 +44,7 @@ public:
 	void  ChangeDirection();
 	void  Jump();
 	void  Crouch();
+	void  SwipeTail(float);
 	void  Hit(float dmg = 1);
 	float getSpeed();
 	bool  CheckIfGoingRight();

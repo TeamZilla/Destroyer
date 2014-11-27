@@ -27,6 +27,7 @@ private:
 	void Hover();						// the function that makes random-like movement
 	void Pilot();						// is the fuction that's called in each update loop.
 
+	//uth::Sound* m_heliSound;
 
 	// Hovering
 	pmath::Vec2f m_hoverScale;

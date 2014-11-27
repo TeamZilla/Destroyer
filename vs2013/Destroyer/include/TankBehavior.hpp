@@ -58,8 +58,10 @@ public:
 		if (m_isGoingToExp)
 			Exploding(dt);
 		else
+		{
 			Movement();
 			Combat(dt);
+		}
 	}
 
 	void TankBehavior::Movement()
@@ -83,17 +85,17 @@ public:
 	void TankBehavior::Exploding(float dt)
 	{
 		m_explodeTimer -= dt;
-		auto& col = parent->GetComponent<uth::Sprite>()->GetColor();
-		auto am = (dt * m_explodeTimer)/8;
+		//auto& col = parent->GetComponent<uth::Sprite>()->GetColor();
+		//auto am = (dt * m_explodeTimer)/8;
 		
-		parent->GetComponent<uth::Sprite>()->SetColor(col.r + am, col.g - am, col.b - am, col.a);
+		//parent->GetComponent<uth::Sprite>()->SetColor(col.r + am, col.g - am, col.b - am, col.a);
 		
-		parent->transform.SetOrigin(pmath::Vec2(
-			uth::Randomizer::GetFloat(-5 / m_explodeTimer, 5 / m_explodeTimer),
-			uth::Randomizer::GetFloat(-5 / m_explodeTimer, 5 / m_explodeTimer)));
+		//parent->transform.SetOrigin(pmath::Vec2(
+		//	uth::Randomizer::GetFloat(-5 / m_explodeTimer/2, 5 / m_explodeTimer/2),
+		//	uth::Randomizer::GetFloat(-5 / m_explodeTimer/2, 5 / m_explodeTimer/2)));
 
-		if (m_explodeTimer <= 0.5f)
-			m_isDead = true;
+		//if (m_explodeTimer <= 0.5f)
+		//	m_isDead = true;
 	}
 
 	void TankBehavior::Hit()
@@ -104,6 +106,7 @@ public:
 			pmath::Vec2(uth::Randomizer::GetFloat(-35, 35), 0)); //offset
 		m_rigidBody->SetPhysicsGroup(-2);
 		m_isGoingToExp = true;
+		parent->GetComponent<uth::AnimatedSprite>()->ChangeAnimation(2, 1, 2, 0, false);
 	}
 
 	void TankBehavior::Destroy()
@@ -124,22 +127,22 @@ public:
 
 	void TankBehavior::Combat(float dt)
 	{
+
 		if (m_combatIntensity <= m_combatTimer)
 		{
 			Shoot();
 			m_combatTimer = 0;
 		}
 		m_combatTimer += dt;
+
+		parent->GetComponent<uth::AnimatedSprite>()->ChangeAnimation(0, 1, 0, 0, false);
+		if (m_combatIntensity/1.12f <= m_combatTimer)
+			parent->GetComponent<uth::AnimatedSprite>()->ChangeAnimation(1, 1, 1, 0, false);
 	}
 
 
 	void TankBehavior::Shoot()
 	{
-		////TODO, make direction here and give it to tank
-		//auto ppos = parent->transform.GetPosition();
-		//auto popos = pmath::Vec2(0, 500);
-		//auto direction = (pmath::Vec2(m_target.x,m_target.y - 500) - ppos).normalize();
-
 		m_layer->AddChild(new TankBullet(m_player, parent->transform.GetPosition()));
 	}
 

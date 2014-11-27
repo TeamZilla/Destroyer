@@ -10,6 +10,7 @@ class SoldierBehavior : public uth::Component
 	bool				m_isDead = false;
 	bool				m_isGoingToExp = false;
 	bool				m_isGoingToFlat = false;
+	bool				m_tailWhipped = false;
 	uth::GameObject*	m_player;
 	uth::Rigidbody*		m_rigidBody;
 	pmath::Vec2			m_direction;
@@ -33,6 +34,7 @@ public:
 	{
 		m_rigidBody = parent->GetComponent<uth::Rigidbody>();
 		m_rigidBody->SetPhysicsGroup(-3);
+		m_rigidBody->SetPhysicsCategory(uth::Physics::Category2);
 		m_rigidBody->SetFriction(0);
 
 		m_maxDistance = pmath::Vec2(m_player->transform.GetPosition().x + 
@@ -45,13 +47,14 @@ public:
 
 	void SoldierBehavior::Update(float dt)
 	{
-		if (!m_isStopped && !m_isGoingToExp)
+		if (!m_isStopped && !m_isGoingToExp && !m_tailWhipped)
 		{
 			Movement();
 		}
-		else if (m_isStopped && !m_isGoingToExp)
+		else if (m_isStopped && !m_isGoingToExp && !m_tailWhipped)
 		{
-			m_rigidBody->SetVelocity(pmath::Vec2f(0));
+			m_rigidBody->SetVelocity(pmath::Vec2f(0, m_rigidBody->GetVelocity().y));
+			m_rigidBody->SetAngle(0);
 		}
 		else if (m_isGoingToExp)
 		{
@@ -63,19 +66,27 @@ public:
 	{
 		if (m_isGoingLeft)
 		{
-			m_rigidBody->ApplyForce(pmath::Vec2(m_direction.x * m_speed, 0));
+			m_rigidBody->ApplyForce(pmath::Vec2(m_direction.x * m_speed, -10));
 			if (m_rigidBody->GetPosition().x <= m_maxDistance.x)
 				m_isStopped = true;
 		}
 		else
 		{
-			m_rigidBody->ApplyForce(pmath::Vec2(m_direction.x * m_speed, 0));
+			m_rigidBody->ApplyForce(pmath::Vec2(m_direction.x * m_speed, -10));
 			if (m_rigidBody->GetPosition().x >= m_maxDistance.x)
 				m_isStopped = true;
 		}
+		m_rigidBody->SetAngle(0);
 	}
 	
 	void SoldierBehavior::Hit()
+	{
+		m_rigidBody->ApplyImpulse(
+			pmath::Vec2(uth::Randomizer::GetFloat(-1, 1),     //X direction
+			-uth::Randomizer::GetFloat(2, 4)),				  //Y direction
+			pmath::Vec2(0, 0));								  //offset
+	}
+	void SoldierBehavior::TailWhipHit()
 	{
 		m_rigidBody->ApplyImpulse(
 			pmath::Vec2(uth::Randomizer::GetFloat(-10, 10),      //X direction
@@ -83,13 +94,6 @@ public:
 			pmath::Vec2(uth::Randomizer::GetFloat(-25, 25), 0)); //offset
 		m_rigidBody->SetPhysicsGroup(-2);
 		m_isGoingToExp = true;
-	}
-	void SoldierBehavior::Squash()
-	{
-		if (m_rigidBody->GetSize().y >= 0)
-			m_rigidBody->SetSize(pmath::Vec2(m_rigidBody->GetSize().x, m_rigidBody->GetSize().y - 0.1f));
-		else
-			m_isDead = true;
 	}
 	void SoldierBehavior::Destroy()
 	{
