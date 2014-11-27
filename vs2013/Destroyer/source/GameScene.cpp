@@ -19,6 +19,7 @@ uth::Layer& GameScene::getLayer(LayerId id)
 // Automatically called inside SceneManager.
 bool GameScene::Init()
 {
+	m_shakeDelayTimer = 0;
 	Randomizer::SetSeed();
 	uthEngine.GetWindow().GetCamera().SetSize(1280, 720);
 	
@@ -82,6 +83,21 @@ void GameScene::Update(float dt)
 
 		m_physWorld.Update(dt);
 		m_bgManager.Update(dt);
+
+		if (isInitedShake)
+		{
+			m_shakeDelayTimer += dt;
+
+			if (m_shakeDelayTimer >= 0.6)
+			{
+				m_bgManager.Shake(3, 2.0f);
+				m_road->InitShock();
+				m_waveSound->Play();
+				isInitedShake = false;
+				m_shakeDelayTimer = 0;
+			}
+		}
+
 		EnemyFactory::Update(dt);
 
 		Scene::Update(dt);
@@ -152,10 +168,7 @@ void GameScene::Update(float dt)
 			if (!m_player->m_isJumping && !m_player->m_isCrouching && !m_player->m_isTurning)
 			{
 				m_player->Crouch();
-				//              amount , delay
-				m_bgManager.Shake(3, 0.4f);
-				m_road->InitShock();
-				m_waveSound->Play();
+				isInitedShake = true;
 			}
 		}
 		if (uthInput.Keyboard.IsKeyDown(Keyboard::Left) &&

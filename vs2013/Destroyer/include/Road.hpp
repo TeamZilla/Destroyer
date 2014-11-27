@@ -14,9 +14,8 @@ class Road : public uth::GameObject
 	float leftMostX;
 
 	// SHOCK
-	float m_dt,
-		m_shockDelay,
-		m_shockDelayTimer,
+		float m_delayTimer,
+		m_dt,
 		m_shockLenght,
 		m_shockSpeed,
 		m_shockStartSpeed,

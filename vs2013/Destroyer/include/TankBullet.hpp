@@ -5,16 +5,18 @@
 
 class TankBullet : public uth::GameObject
 {
+	pmath::Vec2		m_startPos;
 	pmath::Vec2		m_target;
-	pmath::Vec2		m_speed;
+	float			m_speed;
 	pmath::Vec2		m_direction;
 	Player*			m_player;
+	void			hitCheck();
 
 public:
 
-	TankBullet(Player* player);
+	TankBullet(Player* player, pmath::Vec2 m_startPos);
 	~TankBullet();
 	void Init();
-	void Update();
+	void update(float m_dt);
 
 };

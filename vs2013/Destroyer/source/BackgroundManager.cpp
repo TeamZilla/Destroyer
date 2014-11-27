@@ -119,19 +119,19 @@ void BackgroundManager::Shake(float amount, float delay)
 
 	auto childrenF = backF->Children("bg");
 	auto childrenG = backG->Children("bg");
-
-	//Set amount and delay to backgrounds
-	for (auto& e : childrenF)
 	{
-		auto fg = static_cast<GameObject*>(e.get());
-		fg->GetComponent<Background>()->Shake(amount);
+		for (auto& e : childrenF)
+		{
+			auto fg = static_cast<GameObject*>(e.get());
+			fg->GetComponent<Background>()->Shake(amount);
+		}
+		for (auto& e : childrenG)
+		{
+			auto bg = static_cast<GameObject*>(e.get());
+			bg->GetComponent<Background>()->Shake(amount);
+		}
+		m_camShakeAmount = amount*0.4f;
 	}
-	for (auto& e : childrenG)
-	{
-		auto bg = static_cast<GameObject*>(e.get());
-		bg->GetComponent<Background>()->Shake(amount);
-	}
-	m_camShakeAmount = amount*0.4f;
 }
 BackgroundManager::~BackgroundManager()
 {
