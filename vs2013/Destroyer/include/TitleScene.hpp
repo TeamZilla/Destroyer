@@ -7,7 +7,7 @@
 
 class TitleScene : public uth::Scene
 {
-	
+	uth::Sound* m_BGM;
 
 	enum class LayerId : char
 	{
@@ -17,11 +17,15 @@ class TitleScene : public uth::Scene
 
 	std::map<const LayerId, uth::Layer*> m_layers;
 
+
 	uth::Layer& getLayer(LayerId id);
 	uth::GameObject* m_TitleBG;
 	Button* button;
 	Button* button2;
 	Button* button3;
+	Button* button4;
+	Button* button5;
+	
 
 public: // Every one of these public functions are required.
 	TitleScene();
@@ -29,7 +33,10 @@ public: // Every one of these public functions are required.
 	uth::GameObject* m_PlayB;
 	uth::GameObject* m_CreditsB;
 	uth::GameObject* m_OptionsB;
+	uth::GameObject* m_EscB;
+	uth::GameObject* m_CBG;
 
+	bool Creditsu = false;
 	virtual bool Init();
 	virtual bool DeInit();
 

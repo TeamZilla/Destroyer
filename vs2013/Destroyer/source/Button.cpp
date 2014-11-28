@@ -1,11 +1,7 @@
 #include<Button.hpp>
+#include<TitleScene.hpp>
 using namespace uth;
 
-bool Button::m_isPressed()
-{
-	
-	return true;
-}
 
 Button::Button(uth::GameObject* gameObj)
 {
@@ -30,24 +26,29 @@ void Button::update(float dt)
 
 	if (uthInput.Common.Event() == uth::InputEvent::TAP &&	bounds.intersects(touchBounds))
 	{
-		WriteLog("Hit button");
+		/*WriteLog("Hit button");*/
 		m_butAnim->ChangeAnimation(1, 1, 1, 0, false);
+		m_isPressed = true;
 
 	}
 	else if (uthInput.Common.Event() == uth::InputEvent::TAP)
 	{
-		WriteLog("%f     %f", touchBounds.position.x, touchBounds.position.y);
+		/*WriteLog("%f     %f", touchBounds.position.x, touchBounds.position.y);
 		WriteLog("%f     %f", bounds.position.x, bounds.position.y);
-		WriteLog("%f     %f", m_butTransform->GetPosition().x, m_butTransform->GetPosition().y);
+		WriteLog("%f     %f", m_butTransform->GetPosition().x, m_butTransform->GetPosition().y);*/
 	}
 	else
 	{
 		m_butAnim->ChangeAnimation(0,1,0,0,false);
+		m_isPressed = false;
 	}
+	
+	
 }
 
 bool Button::IsPressedS()
 {
-	return true;
+
+	return m_isPressed;
 
 }

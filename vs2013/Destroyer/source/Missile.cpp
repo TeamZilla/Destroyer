@@ -26,6 +26,7 @@ Missile::Missile(pmath::Vec2f start, Player* player)
 	m_scale = 0.5f;
 	m_isDestroyed = false;
 	m_player = player;
+	m_dmg = 3;
 
 	transform.SetScale(m_scale);
 }
@@ -74,7 +75,7 @@ void Missile::outOfBoundsCheck()
 		Parent()->RemoveChild(this);
 		ExplosionEmitter::Emit(transform.GetPosition());
 		//TODO: Remove comments so it work, problem with player somehow...
-		m_player->Hit();
+		m_player->Hit(m_player->CheckIfGoingRight() == (mainDir.x < 0 ? true : false) ? m_dmg : m_dmg / 3);
 	}
 }
 

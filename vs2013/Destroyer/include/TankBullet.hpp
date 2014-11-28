@@ -11,6 +11,7 @@ class TankBullet : public uth::GameObject
 	pmath::Vec2		m_direction;
 	Player*			m_player;
 	void			hitCheck();
+	float			m_dmg;
 
 public:
 

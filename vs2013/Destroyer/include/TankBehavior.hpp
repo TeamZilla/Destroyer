@@ -80,6 +80,7 @@ public:
 			else
 				m_rigidBody->ApplyForce(pmath::Vec2(-m_direction.x * 30, 0));
 		}
+		m_rigidBody->SetAngle(0);
 	}
 	
 	void TankBehavior::Exploding(float dt)

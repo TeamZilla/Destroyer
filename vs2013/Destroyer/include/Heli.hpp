@@ -21,8 +21,10 @@ public:
 	void SetMisCD_max(float);
 	void SetLinearSpeed(float);
 	void SetHoverSpeed(float);
+	bool isDestroyed();
 
 private:
+	int m_health;
 
 	void Hover();						// the function that makes random-like movement
 	void Pilot();						// is the fuction that's called in each update loop.
