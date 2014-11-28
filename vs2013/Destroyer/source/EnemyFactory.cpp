@@ -81,7 +81,6 @@ std::shared_ptr<GameObject> EnemyFactory::CreateAeroplane()
 }
 
 
-///////////////////////////////
 
 std::shared_ptr<GameObject> EnemyFactory::CreateHeli()
 {
@@ -101,7 +100,6 @@ std::shared_ptr<GameObject> EnemyFactory::CreateHeli()
 
 }
 
-///////////////////////////////
 
 
 pmath::Vec2 EnemyFactory::SpawnPosition()
@@ -178,7 +176,7 @@ for (auto& e : m_layer->Children("Heli"))
 
 void EnemyFactory::Update(float dt)
 {
-	if (m_layer->Children("Tank").size() < 6)
+	if (m_layer->Children("Tank").size() < 4)
 		m_tankSpawn(dt);
 	if (m_layer->Children("Soldier").size() < 25)
 		m_soldierSpawn(dt);

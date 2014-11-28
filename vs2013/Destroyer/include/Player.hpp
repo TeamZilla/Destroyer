@@ -45,7 +45,7 @@ public:
 	void  Jump();
 	void  Crouch();
 	void  SwipeTail(float);
-	void  Hit(float dmg = 1);
+	void  Hit(float dmg);
 	float getSpeed();
 	bool  CheckIfGoingRight();
 	void  SetAnimation(pmath::Vec4 anim, bool loop = true);

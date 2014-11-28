@@ -49,7 +49,7 @@ Heli::~Heli()
 
 void Heli::update(float dt)
 {
-	m_dt = dt*2;
+	m_dt = dt*3;
 	if (GetComponent<Rigidbody>())
 		Pilot();
 #ifdef UTH_SYSTEM_ANDROID

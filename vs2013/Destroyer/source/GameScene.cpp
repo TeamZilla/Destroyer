@@ -156,7 +156,7 @@ void GameScene::Update(float dt)
 		if (uthInput.Common.Event() == uth::InputEvent::TAP)
 		{
 			//m_health->TakeDamage(1);
-			m_player->Hit();
+			m_player->Hit(3);
 		}
 		if (uthInput.Keyboard.IsKeyDown(Keyboard::Up))
 		{
@@ -246,12 +246,12 @@ void GameScene::colliderChecks()
 			if (B->HasTag("Tank"))
 			{
 				B->GetComponent<TankBehavior>()->Destroy();
-				static_cast<Player*>(A)->Hit();
+				static_cast<Player*>(A)->Hit(3);
 			}
 			else if (B->HasTag("Soldier"))
 			{
 				B->GetComponent<SoldierBehavior>()->Destroy();
-				static_cast<Player*>(A)->Hit();
+				static_cast<Player*>(A)->Hit(3);
 			}
 			else if (B->HasTag("Aeroplane"))
 			{

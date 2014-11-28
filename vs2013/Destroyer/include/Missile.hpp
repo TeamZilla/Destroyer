@@ -11,6 +11,7 @@ class Missile : public uth::GameObject
 	bool isOrientated;
 	bool m_isDestroyed;
 	float time,
+		m_dmg,
 		m_lenght,
 		speed,
 		waveFreq,
