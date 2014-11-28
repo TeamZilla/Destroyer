@@ -146,6 +146,7 @@ bool TitleScene::Init()
 }
 bool TitleScene::DeInit()
 {
+	m_BGM = nullptr;
 	return true;
 }
 
