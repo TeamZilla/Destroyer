@@ -32,7 +32,7 @@ TitleScene::TitleScene()
 	PlayTex->SetSmooth(true);
 	m_PlayB->AddComponent(new AnimatedSprite(PlayTex,2,2,1,0));
 	m_PlayB->transform.SetOrigin(uth::Origin::TopLeft);
-	m_PlayB->transform.SetPosition(window.GetCamera().GetPosition().x - window.GetSize().x / 2 + 200,
+	m_PlayB->transform.SetPosition(window.GetCamera().GetPosition().x - window.GetSize().x / 2 + 150,
 		window.GetCamera().GetPosition().y - window.GetSize().y / 2 + 400);
 	button = new Button(m_PlayB);
 	
@@ -43,12 +43,22 @@ TitleScene::TitleScene()
 	CredTex->SetSmooth(true);
 	m_CreditsB->AddComponent(new AnimatedSprite(CredTex, 2, 2, 1, 0));
 	m_CreditsB->transform.SetOrigin(uth::Origin::TopLeft);
-	m_CreditsB->transform.SetPosition(window.GetCamera().GetPosition().x - window.GetSize().x / 2 + 200,
+	m_CreditsB->transform.SetPosition(window.GetCamera().GetPosition().x - window.GetSize().x / 2 + 175,
 		window.GetCamera().GetPosition().y - window.GetSize().y / 2 + 550);
 	button2 = new Button(m_CreditsB);
 	
 
-	
+	//options (ball)
+	getLayer(LayerId::TitleBackground).AddChild(m_OptionsB = new GameObject());
+	uth::Texture* OptionsTex = uthRS.LoadTexture("Title/options.png");
+	OptionsTex->SetSmooth(true);
+	m_OptionsB->AddComponent(new AnimatedSprite(OptionsTex, 2, 2, 1, 0));
+	m_OptionsB->transform.SetOrigin(uth::Origin::TopLeft);
+	m_OptionsB->transform.SetPosition(window.GetCamera().GetPosition().x - window.GetSize().x / 2 + 1100,
+		window.GetCamera().GetPosition().y - window.GetSize().y / 2 + 600);
+	button3 = new Button(m_OptionsB);
+
+
 }
 TitleScene::~TitleScene()
 {}
@@ -56,6 +66,7 @@ void TitleScene::Update(float dt)
 {
 	button->update(dt);
 	button2->update(dt);
+	button3->update(dt);
 }
 bool TitleScene::Init()
 {

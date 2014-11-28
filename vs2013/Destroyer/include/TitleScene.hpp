@@ -21,12 +21,14 @@ class TitleScene : public uth::Scene
 	uth::GameObject* m_TitleBG;
 	Button* button;
 	Button* button2;
+	Button* button3;
 
 public: // Every one of these public functions are required.
 	TitleScene();
 	~TitleScene();
 	uth::GameObject* m_PlayB;
 	uth::GameObject* m_CreditsB;
+	uth::GameObject* m_OptionsB;
 
 	virtual bool Init();
 	virtual bool DeInit();
