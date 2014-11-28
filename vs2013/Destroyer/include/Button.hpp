@@ -6,9 +6,10 @@ class Button : public uth::GameObject
 {
 
 
-	bool m_isPressed();
+	bool m_isPressed = false;
 	uth::Transform* m_butTransform;
 	uth::AnimatedSprite* m_butAnim;
+	
 
 public:
 
@@ -17,6 +18,7 @@ public:
 
 	void update(float dt);
 	bool IsPressedS();
+
 
 
 };

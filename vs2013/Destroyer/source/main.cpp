@@ -15,8 +15,8 @@ int main()
 
 	uthEngine.Init();
 #if _DEBUG
-		  uthSceneM.GoToScene(0);
-		/*uthSceneM.GoToScene(1);*/
+		  
+		uthSceneM.GoToScene(1);
 #endif
 	while (uthEngine.Running())
 	{
