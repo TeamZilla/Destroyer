@@ -9,8 +9,11 @@ class Health : public uth::GameObject
 	float m_Chealth=0;  //cur HP
 	float n;
 	float m;
+
+	uth::GameObject* m_bottom;
 	uth::GameObject* m_Green;
 	uth::GameObject* m_Red;
+	uth::GameObject* m_cover;
 	
 
 public:
