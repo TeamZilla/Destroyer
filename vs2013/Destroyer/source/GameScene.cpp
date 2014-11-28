@@ -62,6 +62,16 @@ bool GameScene::Init()
 	colliderChecks();
 	isPaused = false;
 
+	uth::Texture* PlayTex = uthRS.LoadTexture("UI/pause.png");
+	PlayTex->SetSmooth(true);
+
+	getLayer(LayerId::Userinterface).AddChild(m_PauseButton = new GameObject());
+	m_PauseButton->AddComponent(new AnimatedSprite(PlayTex, 2, 2, 1, 0));
+	m_PauseButton->transform.SetOrigin(uth::Origin::TopLeft);
+	m_PauseButton->transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition().x - uthEngine.GetWindow().GetSize().x / 2 + 1500,
+		uthEngine.GetWindow().GetCamera().GetPosition().y - uthEngine.GetWindow().GetSize().y / 2 + 25);
+	m_pauseB = new Button(m_PauseButton);
+
 	return true;
 }
 
@@ -71,6 +81,7 @@ void GameScene::Update(float dt)
 {
 	if (!isPaused)
 	{
+		
 		static int count;
 		static float time = 0;
 		time += dt;
@@ -102,7 +113,7 @@ void GameScene::Update(float dt)
 
 		Scene::Update(dt);
 		//dt *= 20;
-
+		m_pauseB->update(dt);
 		m_heli->Update(dt);
 
 
