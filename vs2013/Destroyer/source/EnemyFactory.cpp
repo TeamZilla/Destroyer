@@ -3,6 +3,7 @@
 #include <SoldierBehavior.hpp>
 #include <AeroplaneBehavior.hpp>
 #include <ExplosionEmitter.hpp>
+#include <Heli.hpp>
 
 using namespace uth;
 
@@ -17,6 +18,8 @@ float EnemyFactory::m_tankSpawnCooldown = 3;
 float EnemyFactory::m_tankSpawnTimer = 0;
 float EnemyFactory::m_soldierSpawnCooldown = 1;
 float EnemyFactory::m_soldierSpawnTimer = 0;
+float EnemyFactory::m_heliSpawnCooldown = 1;
+float EnemyFactory::m_heliSpawnTimer = 0;
 
 std::shared_ptr<GameObject> EnemyFactory::CreateTank()
 {
@@ -78,6 +81,29 @@ std::shared_ptr<GameObject> EnemyFactory::CreateAeroplane()
 }
 
 
+///////////////////////////////
+
+std::shared_ptr<GameObject> EnemyFactory::CreateHeli()
+{
+	const static std::string textureId("Enemies/heli.png");
+
+	auto spawn = pmath::Vec2(SpawnPosition().x,SpawnPosition().y - 300);
+	auto obj = new Heli(spawn,m_player);
+	obj->AddTags({ "Heli", "Enemy" });
+
+	const static pmath::Vec2 CollisionSize(obj->transform.GetSize() / 2);
+
+	obj->transform.SetScale(0.5f);
+	obj->AddComponent(new Rigidbody(*m_physicsWorld, uth::COLLIDER_BOX, CollisionSize));
+
+
+	return m_layer->AddChild(obj);
+
+}
+
+///////////////////////////////
+
+
 pmath::Vec2 EnemyFactory::SpawnPosition()
 {
 	const static pmath::Vec2 spawnPosition(m_player->transform.GetPosition().x + 800, 500);
@@ -127,7 +153,28 @@ void EnemyFactory::CheckEnemies()
 			m_layer->RemoveChild(&obj);
 		}
 	}
+
+	///////////////////////////
+
+for (auto& e : m_layer->Children("Heli"))
+{
+	auto& obj = *static_cast<Heli*>(e.get());
+	//auto& heli = *static_cast<Heli*>(obj.GetComponent<Heli>());
+
+	if (obj.isDestroyed())
+	{
+		ExplosionEmitter::Emit(obj.transform.GetPosition());
+		m_expSound->Play();
+		m_layer->RemoveChild(&obj);
+	}
 }
+
+////////////////////////////////////
+}
+
+
+
+
 
 void EnemyFactory::Update(float dt)
 {
@@ -137,6 +184,11 @@ void EnemyFactory::Update(float dt)
 		m_soldierSpawn(dt);
 	if (m_layer->Children("Aeroplane").size() < 1)
 		m_aeroplaneSpawn(dt);
+	if (m_layer->Children("Heli").size() < 2)
+		m_heliSpawn(dt);
+
+
+
 	CheckEnemies();
 }
 
@@ -170,3 +222,17 @@ void EnemyFactory::m_aeroplaneSpawn(float dt)
 	}
 	m_aeroplaneSpawnTimer += dt;
 }
+
+////////////////////
+
+void EnemyFactory::m_heliSpawn(float dt)
+{
+	if (m_heliSpawnTimer > m_heliSpawnCooldown)
+	{
+		CreateHeli();
+		m_heliSpawnTimer = 0;
+	}
+	m_heliSpawnTimer += dt;
+}
+
+//////////////////////////

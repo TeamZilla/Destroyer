@@ -31,6 +31,8 @@ Heli::Heli(pmath::Vec2f givenPos, Player* player)
 	burstTimer = 3;
 	isCool = 0;
 	m_player = player;
+	m_health = 100;
+
 	//m_heliSound = uthRS.LoadSound("Audio/Effects/helicopter.wav");
 	//m_heliSound->Play();
 	//m_heliSound->SetVolume(70);
@@ -47,8 +49,9 @@ Heli::~Heli()
 
 void Heli::update(float dt)
 {
-	m_dt = dt;
-	Pilot();
+	m_dt = dt*2;
+	if (GetComponent<Rigidbody>())
+		Pilot();
 #ifdef UTH_SYSTEM_ANDROID
 	if (uthInput.Touch.Motion() == TouchMotion::TAP)
 	{
@@ -56,6 +59,18 @@ void Heli::update(float dt)
 	}
 #endif
 
+}
+
+bool Heli::isDestroyed()
+{
+	if (m_health < 1)
+	{
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
 
 }
 
@@ -125,8 +140,10 @@ void Heli::Pilot()
 	// direction change
 	transform.SetScale((-m_shootingTarget.x + transform.GetPosition().x) / std::abs(m_shootingTarget.x - transform.GetPosition().x), 1);
 
-
-	transform.SetPosition(m_curPos + m_hoverDisplacement); // sums up hover origin and hover displacement. Puts the object into the point.
+	GetComponent<Rigidbody>()->SetPosition(m_curPos + m_hoverDisplacement);
+	GetComponent<Rigidbody>()->SetAngle(0);
+	GetComponent<Rigidbody>()->SetPhysicsGroup(3);
+	//transform.SetPosition(m_curPos + m_hoverDisplacement); // sums up hover origin and hover displacement. Puts the object into the point.
 
 
 	// SHOOTING:
@@ -209,7 +226,8 @@ void Heli::m_reload()
 
 void Heli::m_launch()
 {
-	Parent()->AddChild(new Missile(transform.GetPosition(),m_player));
+	Parent()->Parent()->AddChild(new Missile(transform.GetPosition(), m_player));
+	//Parent()->AddChild(new Missile(transform.GetPosition(),m_player));
 }
 
 

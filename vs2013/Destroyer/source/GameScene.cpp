@@ -37,7 +37,7 @@ bool GameScene::Init()
 	getLayer(LayerId::InGame).AddChild(m_player = new Player(&m_physWorld));
 	getLayer(LayerId::Userinterface).AddChild(m_health = new Health);
 	m_player->init(&m_physWorld, m_health);
-	getLayer(LayerId::InGame).AddChild(m_heli = new Heli(pmath::Vec2f(0, 0),m_player));
+	//getLayer(LayerId::InGame).AddChild(m_heli = new Heli(pmath::Vec2f(0, 0),m_player));
 
 
 	m_road->Init(m_player,&m_physWorld);
@@ -103,7 +103,7 @@ void GameScene::Update(float dt)
 		Scene::Update(dt);
 		//dt *= 20;
 
-		m_heli->Update(dt);
+		//m_heli->Update(dt);
 
 
 #ifdef UTH_SYSTEM_ANDROID
@@ -255,8 +255,8 @@ void GameScene::colliderChecks()
 			}
 			else if (B->HasTag("Aeroplane"))
 			{
-				B->GetComponent<AeroplaneBehavior>()->Hit();
-				static_cast<Player*>(A)->Hit();
+				//B->GetComponent<AeroplaneBehavior>()->Hit();
+				//static_cast<Player*>(A)->Hit();
 			}
 		}
 		//When enemies are dying and are hitting floor

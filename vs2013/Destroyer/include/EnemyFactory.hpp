@@ -15,6 +15,7 @@ class EnemyFactory
 	static void m_tankSpawn(float dt);
 	static void m_soldierSpawn(float dt);
 	static void m_aeroplaneSpawn(float dt);
+	static void m_heliSpawn(float dt);
 
 	static float m_aeroplaneSpawnCooldown;
 	static float m_aeroplaneSpawnTimer;
@@ -22,6 +23,8 @@ class EnemyFactory
 	static float m_tankSpawnTimer;
 	static float m_soldierSpawnCooldown;
 	static float m_soldierSpawnTimer;
+	static float m_heliSpawnCooldown;
+	static float m_heliSpawnTimer;
 
 
 public:
@@ -39,6 +42,7 @@ public:
 	static std::shared_ptr<uth::GameObject> CreateTank();
 	static std::shared_ptr<uth::GameObject> CreateSoldier();
 	static std::shared_ptr<uth::GameObject> CreateAeroplane();
+	static std::shared_ptr<uth::GameObject> CreateHeli();
 	static void CheckEnemies();
 
 };
