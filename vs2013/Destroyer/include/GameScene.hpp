@@ -12,6 +12,7 @@
 
 #include <Tank.hpp>
 
+
 class GameScene : public uth::Scene
 {
     // Just place everything else as private.

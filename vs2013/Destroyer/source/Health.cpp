@@ -61,6 +61,11 @@ void Health::update(float dt)
 	m_cover->transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition().x - uthEngine.GetWindow().GetSize().x / 2 + 100,
 		uthEngine.GetWindow().GetCamera().GetPosition().y - uthEngine.GetWindow().GetSize().y / 2);
 	
+	m_Green->transform.SetRotation(uthEngine.GetWindow().GetCamera().GetRotation());
+	m_Red->transform.SetRotation(uthEngine.GetWindow().GetCamera().GetRotation());
+	m_bottom->transform.SetRotation(uthEngine.GetWindow().GetCamera().GetRotation());
+	m_cover->transform.SetRotation(uthEngine.GetWindow().GetCamera().GetRotation());
+
 	if (m_Chealth == m_Mhealth)
 	{
 		m_Red->GetComponent<Sprite>("Red")->SetColor(1, 0, 0, 1);
