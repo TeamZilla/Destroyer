@@ -52,8 +52,6 @@ private:
 	float m_hoverRatio;
 	float m_hoverMaxTime;
 
-
-
 	//shooting
 	bool isRight;
 	bool isShooting;

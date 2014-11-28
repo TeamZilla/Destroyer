@@ -11,6 +11,10 @@ int   Statistics::game_TankKills	= 0;
 int   Statistics::game_SoldKills	= 0;
 int   Statistics::game_HeliKills	= 0;
 int   Statistics::game_AeroKills	= 0;
+Sound* Statistics::music_maingame	= nullptr;
+Sound* Statistics::music_warning	= nullptr;
+Sound* Statistics::music_gameOver	= nullptr;
+Sound* Statistics::music_afterMath	= nullptr;
 std::string Statistics::save_data	= "";
 
 void Statistics::Init()
@@ -23,6 +27,10 @@ void Statistics::Init()
 	{
 		
 	}
+	music_maingame  = uthRS.LoadSound("Audio/Music/city_theme3.wav");
+	music_warning   = uthRS.LoadSound("Audio/Music/warning_theme.wav");
+	music_gameOver  = uthRS.LoadSound("Audio/Music/game_over.wav");
+	music_afterMath = uthRS.LoadSound("Audio/Music/aftermath_theme.wav");
 }
 void Statistics::DeInit()
 {
@@ -46,13 +54,32 @@ bool Statistics::LoadStats()
 }
 bool Statistics::ResetSaveFile()
 {
-	game_score = 0;
-	game_highscore = 0;
-	game_TankKills = 0;
-	game_SoldKills = 0;
-	game_HeliKills = 0;
-	game_AeroKills = 0;
+	game_score		= 0;
+	game_highscore	= 0;
+	game_TankKills	= 0;
+	game_SoldKills	= 0;
+	game_HeliKills	= 0;
+	game_AeroKills	= 0;
 	if (SaveStats())
 		return true;
 	return false;
+}
+void ChangeMusic(int music)
+{
+	switch (music)
+	{
+	case 1:
+		break;
+	case 2:
+		break;
+	case 3:
+		break;
+	case 4:
+		break;
+	case 5:
+		break;
+	default:
+		WriteLog("Invalid music chosen..");
+		break;
+	}
 }

@@ -8,6 +8,8 @@
 #include <AeroplaneBehavior.hpp>
 #include <FireBreath.hpp>
 
+#include <Statistics.hpp>
+
 using namespace uth;
 
 uth::Layer& GameScene::getLayer(LayerId id)
