@@ -212,6 +212,8 @@ void Player::SwipeTail(float dt)
 void Player::Hurting()
 {
 	m_hurtTimer -= m_dt;
+	if (m_hurtTimer >= 1.2f)
+		m_hurtTimer = 1.1f;
 
 	if (m_hurtTimer >= 0.5f)
 	{

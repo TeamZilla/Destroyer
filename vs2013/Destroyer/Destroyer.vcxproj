@@ -101,7 +101,6 @@
     <ClInclude Include="include\BackgroundManager.hpp" />
     <ClInclude Include="include\Button.hpp" />
     <ClInclude Include="include\EnemyFactory.hpp" />
-    <ClInclude Include="include\EnemyManager.hpp" />
     <ClInclude Include="include\ExplosionEmitter.hpp" />
     <ClInclude Include="include\ExpParAffector.hpp" />
     <ClInclude Include="include\Firebreath.hpp" />
@@ -130,7 +129,6 @@
     <ClCompile Include="source\BackgroundManager.cpp" />
     <ClCompile Include="source\Button.cpp" />
     <ClCompile Include="source\EnemyFactory.cpp" />
-    <ClCompile Include="source\EnemyManager.cpp" />
     <ClCompile Include="source\ExplosionEmitter.cpp" />
     <ClCompile Include="source\FireBreath.cpp" />
     <ClCompile Include="source\FlameEmitter.cpp" />

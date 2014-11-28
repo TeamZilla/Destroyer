@@ -8,6 +8,8 @@
 #include <AeroplaneBehavior.hpp>
 #include <FireBreath.hpp>
 
+#include <Statistics.hpp>
+
 using namespace uth;
 
 uth::Layer& GameScene::getLayer(LayerId id)
@@ -37,7 +39,7 @@ bool GameScene::Init()
 	getLayer(LayerId::InGame).AddChild(m_player = new Player(&m_physWorld));
 	getLayer(LayerId::Userinterface).AddChild(m_health = new Health);
 	m_player->init(&m_physWorld, m_health);
-	getLayer(LayerId::InGame).AddChild(m_heli = new Heli(pmath::Vec2f(0, 0),m_player));
+	//getLayer(LayerId::InGame).AddChild(m_heli = new Heli(pmath::Vec2f(0, 0),m_player));
 
 
 	m_road->Init(m_player,&m_physWorld);
@@ -114,7 +116,7 @@ void GameScene::Update(float dt)
 		Scene::Update(dt);
 		//dt *= 20;
 		m_pauseB->update(dt);
-		m_heli->Update(dt);
+		//m_heli->Update(dt);
 
 
 #ifdef UTH_SYSTEM_ANDROID
@@ -167,7 +169,7 @@ void GameScene::Update(float dt)
 		if (uthInput.Common.Event() == uth::InputEvent::TAP)
 		{
 			//m_health->TakeDamage(1);
-			m_player->Hit();
+			m_player->Hit(3);
 		}
 		if (uthInput.Keyboard.IsKeyDown(Keyboard::Up))
 		{
@@ -257,17 +259,17 @@ void GameScene::colliderChecks()
 			if (B->HasTag("Tank"))
 			{
 				B->GetComponent<TankBehavior>()->Destroy();
-				static_cast<Player*>(A)->Hit();
+				static_cast<Player*>(A)->Hit(3);
 			}
 			else if (B->HasTag("Soldier"))
 			{
 				B->GetComponent<SoldierBehavior>()->Destroy();
-				static_cast<Player*>(A)->Hit();
+				static_cast<Player*>(A)->Hit(3);
 			}
 			else if (B->HasTag("Aeroplane"))
 			{
-				B->GetComponent<AeroplaneBehavior>()->Hit();
-				static_cast<Player*>(A)->Hit();
+				//B->GetComponent<AeroplaneBehavior>()->Hit();
+				//static_cast<Player*>(A)->Hit();
 			}
 		}
 		//When enemies are dying and are hitting floor
