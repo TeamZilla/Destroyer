@@ -23,7 +23,7 @@ Road::Road(const int blocks)
 		m_shockTime = 0;
 		m_shockStartX = 0;
 		m_shockHeight = 100;
-		m_roadY = uthEngine.GetWindow().GetSize().y - 95;
+		m_roadY = uthEngine.GetWindow().GetCamera().GetSize().y - 95;
 		m_shockRange = 1200;
 		isShock = false;
 		m_shockHeightMatcher = 250;

@@ -29,7 +29,7 @@ Player::Player(uth::PhysicsWorld* physworld)
 	//transform.SetOrigin(uth::Origin::BottomCenter);
 	transform.SetScale(1.5f);
 	transform.SetPosition(pmath::Vec2f(0,
-		uthEngine.GetWindow().GetSize().y));
+		uthEngine.GetWindow().GetCamera().GetSize().y));
 	AddComponent(new Rigidbody(*physworld, uth::COLLIDER_BOX,
 		pmath::Vec2(transform.GetSize().x / 2.75f, transform.GetSize().y)));
 	m_rigidbody = GetComponent<Rigidbody>();

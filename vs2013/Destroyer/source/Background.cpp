@@ -31,12 +31,12 @@ void Background::Update(float dt)
 	parent->transform.Move(m_speed *2* (Player::isGoingRight ? -1 : 1) * dt, 0);
 
 	if (parent->transform.GetPosition().x + m_size.x <
-		uthEngine.GetWindow().GetCamera().GetPosition().x - uthEngine.GetWindow().GetSize().x / 2)
+		uthEngine.GetWindow().GetCamera().GetPosition().x - uthEngine.GetWindow().GetCamera().GetSize().x / 2)
 	{
 		parent->transform.Move(m_size.x * 2,0);
 	}
 	else if (parent->transform.GetPosition().x >
-		uthEngine.GetWindow().GetCamera().GetPosition().x + uthEngine.GetWindow().GetSize().x / 2)
+		uthEngine.GetWindow().GetCamera().GetPosition().x + uthEngine.GetWindow().GetCamera().GetSize().x / 2)
 	{
 		parent->transform.Move(-m_size.x * 2, 0);
 	}

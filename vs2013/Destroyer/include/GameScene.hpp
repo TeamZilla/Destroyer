@@ -34,6 +34,12 @@ class GameScene : public uth::Scene
 	std::map<const LayerId, uth::Layer*> m_layers;
 
 	uth::Layer& getLayer(LayerId id);
+
+	void Control_up();
+	void Control_down();
+	void Control_left();
+	void Control_right();
+
 	void colliderChecks();
 
 	BackgroundManager m_bgManager;

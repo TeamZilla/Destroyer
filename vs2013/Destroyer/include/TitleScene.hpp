@@ -36,7 +36,7 @@ public: // Every one of these public functions are required.
 	uth::GameObject* m_EscB;
 	uth::GameObject* m_CBG;
 
-	bool Creditsu = false;
+	bool Creditsu;
 	virtual bool Init();
 	virtual bool DeInit();
 

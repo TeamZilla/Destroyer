@@ -20,13 +20,13 @@ class SoldierBehavior : public uth::Component
 
 public:
 
-	SoldierBehavior::SoldierBehavior(float speed, uth::GameObject* player) :
+	SoldierBehavior(float speed, uth::GameObject* player) :
 		m_speed(speed),
 		m_player(player)
 	{
 		
 	}
-	SoldierBehavior::~SoldierBehavior()
+	~SoldierBehavior()
 	{
 
 	}
@@ -45,7 +45,7 @@ public:
 
 	}
 
-	void SoldierBehavior::Update(float dt)
+	void Update(float dt)
 	{
 		if (!m_isStopped && !m_isGoingToExp && !m_tailWhipped)
 		{
@@ -62,7 +62,7 @@ public:
 		}
 	}
 
-	void SoldierBehavior::Movement()
+	void Movement()
 	{
 		if (m_isGoingLeft)
 		{
@@ -79,14 +79,14 @@ public:
 		m_rigidBody->SetAngle(0);
 	}
 	
-	void SoldierBehavior::Hit()
+	void Hit()
 	{
 		m_rigidBody->ApplyImpulse(
 			pmath::Vec2(uth::Randomizer::GetFloat(-1, 1),     //X direction
 			-uth::Randomizer::GetFloat(2, 4)),				  //Y direction
 			pmath::Vec2(0, 0));								  //offset
 	}
-	void SoldierBehavior::TailWhipHit()
+	void TailWhipHit()
 	{
 		m_rigidBody->ApplyImpulse(
 			pmath::Vec2(uth::Randomizer::GetFloat(-10, 10),      //X direction
@@ -95,12 +95,12 @@ public:
 		m_rigidBody->SetPhysicsGroup(-2);
 		m_isGoingToExp = true;
 	}
-	void SoldierBehavior::Destroy()
+	void Destroy()
 	{
 		m_isDead = true;
 	}
 
-	void SoldierBehavior::setTarget(pmath::Vec2 to)
+	void setTarget(pmath::Vec2 to)
 	{
 		const auto& from = parent->transform.GetPosition();
 		const auto& sc = parent->transform.GetScale();
@@ -112,16 +112,16 @@ public:
 
 	}
 
-	void SoldierBehavior::Shoot()
+	void Shoot()
 	{
 
 	}
 
-	bool SoldierBehavior::isDestroyed()
+	bool isDestroyed()
 	{
 		return m_isDead;
 	}
-	bool SoldierBehavior::isExploding()
+	bool isExploding()
 	{
 		return m_isGoingToExp;
 	}

@@ -31,7 +31,7 @@ public:
 		return m_isDestroyed;
 	}
 
-	AeroplaneBehavior::AeroplaneBehavior(){}
+	AeroplaneBehavior(){}
 	
 	void Init() override
 	{
@@ -53,11 +53,11 @@ public:
 
 	}
 
-	AeroplaneBehavior::~AeroplaneBehavior()
+	~AeroplaneBehavior()
 	{
 	}
 
-	void AeroplaneBehavior::Update(float dt)
+	void Update(float dt)
 	{
 		verticalScaler = (abs(m_rigidBody->GetPosition().y) + 300) / 450;
 		parent->transform.SetScale(verticalScaler * pmath::Vec2f(-m_direction * 0.35,0.35));
@@ -73,7 +73,7 @@ public:
 		}
 	}
 
-	void AeroplaneBehavior::pathFunc()
+	void pathFunc()
 	{
 		m_pos.x = m_direction * m_speed * m_time + m_startX;
 		m_pos.y = -pow((m_pos.x) / pathFlatnes, 2) + m_minY;
@@ -83,7 +83,7 @@ public:
 		m_time += m_dt;
 	}
 
-	void AeroplaneBehavior::rotation()
+	void rotation()
 	{
 		pmath::Vec2f angVec = m_rigidBody->GetPosition() - prevPos;
 
@@ -100,7 +100,7 @@ public:
 		parent->transform.SetRotation(pmath::radiansToDegrees(angle));
 	}
 	
-	void AeroplaneBehavior::Hit()
+	void Hit()
 	{
 		m_isDestroyed = true;
 	}
