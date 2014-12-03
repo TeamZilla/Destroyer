@@ -12,6 +12,7 @@ TitleScene::TitleScene()
 	uthEngine.GetWindow().GetCamera().SetSize(1280, 720);
 	m_BGM = uthRS.LoadSound("Audio/Music/menu_theme.wav");
 	m_BGM->Play();
+	m_BGM->Loop(true);
 
 	auto& window = uthEngine.GetWindow();
 
