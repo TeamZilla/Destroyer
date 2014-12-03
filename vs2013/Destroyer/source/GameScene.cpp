@@ -8,6 +8,7 @@
 #include <AeroplaneBehavior.hpp>
 #include <FireBreath.hpp>
 
+#include <Scenes.hpp>
 #include <Statistics.hpp>
 
 using namespace uth;
@@ -24,10 +25,11 @@ bool GameScene::Init()
 	m_shakeDelayTimer = 0;
 	Randomizer::SetSeed();
 	uthEngine.GetWindow().GetCamera().SetSize(1280, 720);
+	auto& camera = uthEngine.GetWindow().GetCamera();
 	
 	m_gameFloor.AddComponent(new Sprite(pmath::Vec4(1, 0, 0, 1), pmath::Vec2(3000, 100)));
 	m_gameFloor.AddTag("Floor");
-	m_gameFloor.transform.SetPosition(0, uthEngine.GetWindow().GetCamera().GetSize().y);
+	m_gameFloor.transform.SetPosition(0, camera.GetSize().y);
 	m_gameFloor.AddComponent(new Rigidbody(m_physWorld));
 	m_gameFloor.GetComponent<Rigidbody>()->SetKinematic(true);
 
@@ -44,7 +46,7 @@ bool GameScene::Init()
 
 	m_road->Init(m_player,&m_physWorld);
 	
-	m_bgManager.SetCameraStartPos(pmath::Vec2f(0, uthEngine.GetWindow().GetCamera().GetSize().y / 2));
+	m_bgManager.SetCameraStartPos(pmath::Vec2f(0, camera.GetSize().y / 2));
 	
 
 	m_music = uthRS.LoadSound("Audio/Music/city_theme3.wav");
@@ -64,22 +66,40 @@ bool GameScene::Init()
 	isPlayerDead = false;
 	m_soundSlowerTimer = 0;
 
-	uth::Texture* PlayTex = uthRS.LoadTexture("UI/pause.png");
-	PlayTex->SetSmooth(true);
+	auto playTex =		uthRS.LoadTexture("UI/pause.png");
+	auto gotext  =		uthRS.LoadTexture("UI/go_pholder.png");
+	auto restarttext =	uthRS.LoadTexture("UI/pause.png");
+	auto menutext =		uthRS.LoadTexture("UI/esc.png");
+	playTex->SetSmooth(true);
 	//UI
+	getLayer(LayerId::Userinterface).AddChild(m_gameOverScreenPicture = new GameObject());
+	m_gameOverScreenPicture->AddComponent(new Sprite(gotext));
+	m_gameOverScreenPicture->transform.SetOrigin(uth::Origin::TopLeft);
+	m_gameOverScreenPicture->transform.SetScale(0.90f, 0.90f);
+	m_gameOverScreenPicture->SetActive(false);
+
 	getLayer(LayerId::Userinterface).AddChild(m_PauseButton = new GameObject());
-	m_PauseButton->AddComponent(new AnimatedSprite(PlayTex, 2, 2, 1, 0));
+	m_PauseButton->AddComponent(new AnimatedSprite(playTex, 2, 2, 1, 0));
 	m_PauseButton->transform.SetOrigin(uth::Origin::TopLeft);
-	m_PauseButton->transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition().x - uthEngine.GetWindow().GetCamera().GetSize().x / 2 + 1500,
-		uthEngine.GetWindow().GetCamera().GetPosition().y - uthEngine.GetWindow().GetCamera().GetSize().y / 2 + 25);
+	m_PauseButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 2 + 1500,
+										 camera.GetPosition().y - camera.GetSize().y / 2 + 25);
 	m_pauseB = new Button(m_PauseButton);
 
-	//auto gotext = uthRS.LoadTexture("UI/go_pholder.png");
-	//m_gameOverScreenPicture.AddComponent(new Sprite(gotext));
-	//m_gameFloor.transform.SetPosition(uthEngine.GetWindow().GetCamera().GetSize().x,
-	//								  uthEngine.GetWindow().GetCamera().GetSize().y);
+	getLayer(LayerId::Userinterface).AddChild(m_MenuButton = new GameObject());
+	m_MenuButton->AddComponent(new AnimatedSprite(playTex, 2, 2, 1, 0));
+	m_MenuButton->transform.SetOrigin(uth::Origin::TopLeft);
+	m_MenuButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 2 + 300,
+									    camera.GetPosition().y - camera.GetSize().y / 2 + 25);
+	m_menuB = new Button(m_MenuButton);
+	m_MenuButton->SetActive(false);
 
-	//getLayer(LayerId::Userinterface).AddChild(&m_gameOverScreenPicture);
+	getLayer(LayerId::Userinterface).AddChild(m_RestartButton = new GameObject());
+	m_RestartButton->AddComponent(new AnimatedSprite(playTex, 2, 2, 1, 0));
+	m_RestartButton->transform.SetOrigin(uth::Origin::TopLeft);
+	m_RestartButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 2 + 500,
+										   camera.GetPosition().y - camera.GetSize().y / 2 + 25);
+	m_restartB = new Button(m_RestartButton);
+	m_RestartButton->SetActive(false);
 
 	return true;
 }
@@ -153,18 +173,35 @@ void GameScene::Update(float dt)
 		//PC only code here
 
 	#endif
-		//If user press m_mause button game resumes
+		//If user press m_pause button game resumes
 		m_pauseB->update(dt);
 		if (m_pauseB->IsPressedS())
 		{
 			isPaused = false;
 		}
 	}
-	//TODO::REMOVE COMMENTS SO PLAYER WILL DIE
-	//else if (!isPaused && isPlayerDead) //Game over functions here
-	//{
+	else if (!isPaused && isPlayerDead) //Game over functions here
+	{
+		m_gameOverScreenPicture->SetActive(true);
+		m_MenuButton->SetActive(true);
+		m_RestartButton->SetActive(true);
 
-	//}
+		m_menuB->update(dt);
+		m_restartB->update(dt);
+
+		auto& camera = uthEngine.GetWindow().GetCamera();
+
+		m_gameOverScreenPicture->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 50, camera.GetPosition().y - camera.GetSize().y / 2);
+		m_MenuButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 175, camera.GetPosition().y - camera.GetSize().y /2 + 200);
+		m_RestartButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 475, camera.GetPosition().y - camera.GetSize().y /2 + 200);
+
+		if (m_restartB->IsPressedS())
+			uthSceneM.GoToScene(GAME);
+		if (m_menuB->IsPressedS())
+			uthSceneM.GoToScene(TITLE);
+
+
+	}
 } //Update end
 
 

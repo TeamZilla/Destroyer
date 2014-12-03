@@ -21,8 +21,12 @@ class GameScene : public uth::Scene
 	uth::PhysicsContactListener contactListener;
 	uth::GameObject m_gameFloor;
 	Button* m_pauseB;
+	Button* m_menuB;
+	Button* m_restartB;
 	uth::GameObject* m_PauseButton;
-	uth::GameObject  m_gameOverScreenPicture;
+	uth::GameObject* m_MenuButton;
+	uth::GameObject* m_RestartButton;
+	uth::GameObject*  m_gameOverScreenPicture;
 
 	enum class LayerId : char
 	{
