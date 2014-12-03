@@ -122,6 +122,7 @@ void TitleScene::Update(float dt)
 	}
 	else
 	{
+		
 		m_CBG->SetActive(true);
 		m_EscB->SetActive(true);
 
@@ -130,6 +131,7 @@ void TitleScene::Update(float dt)
 		if (button4->IsPressedS())
 		{
 			Creditsu = false;
+			
 		}
 
 	}

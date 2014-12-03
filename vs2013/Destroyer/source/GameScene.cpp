@@ -68,8 +68,8 @@ bool GameScene::Init()
 
 	auto playTex =		uthRS.LoadTexture("UI/pause.png");
 	auto gotext  =		uthRS.LoadTexture("UI/go_pholder.png");
-	auto restarttext =	uthRS.LoadTexture("UI/pause.png");
-	auto menutext =		uthRS.LoadTexture("UI/esc.png");
+	auto restarttext =	uthRS.LoadTexture("UI/restart.png");
+	auto menutext =		uthRS.LoadTexture("UI/menu.png");
 	playTex->SetSmooth(true);
 	//UI
 	getLayer(LayerId::Userinterface).AddChild(m_gameOverScreenPicture = new GameObject());
@@ -148,6 +148,7 @@ void GameScene::Update(float dt)
 		if (m_pauseB->IsPressedS())
 		{
 			isPaused = true;
+			m_MenuButton->SetActive(true);
 		}
 
 		//Music gets normal
