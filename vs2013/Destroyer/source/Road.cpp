@@ -96,7 +96,7 @@ void Road::m_shock()
 
 			if (m_shockMinSpeed < m_shockSpeed)
 			{
-				std::cout << m_shockSpeed << std::endl;
+		
 				m_shockSpeed = m_shockStartSpeed - m_shockFriction * abs(m_shock_x);
 			}
 
