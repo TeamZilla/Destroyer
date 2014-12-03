@@ -90,7 +90,6 @@ bool GameScene::Init()
 	getLayer(LayerId::Userinterface).AddChild(m_PauseButton = new GameObject());
 	m_PauseButton->AddComponent(new AnimatedSprite(playTex, 2, 2, 1, 0));
 	m_PauseButton->transform.SetOrigin(uth::Origin::TopLeft);
-	
 	m_pauseB = new Button(m_PauseButton);
 
 	getLayer(LayerId::Userinterface).AddChild(m_MenuButton = new GameObject());
@@ -162,15 +161,18 @@ void GameScene::Update(float dt)
 
 		if (m_pauseB->IsPressedS())
 		{
-			isPaused = true;
-			m_pauseMenu->SetActive(true);
-			m_MenuButton->SetActive(true);
-			m_RestartButton->SetActive(true);
-			m_ExitButton->SetActive(true);
+			
+						
+			m_pauseMenu->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 540, camera.GetPosition().y - camera.GetSize().y / 2 +20 );
+			m_MenuButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 650, camera.GetPosition().y - camera.GetSize().y / 2 + 450);
+			m_RestartButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 650, camera.GetPosition().y - camera.GetSize().y / 2 + 325);
+
+			
 
 
 			
 		}
+		
 
 		//Music gets normal
 		if (m_soundSlowerTimer > 0)
@@ -179,7 +181,10 @@ void GameScene::Update(float dt)
 			m_music->SetPitch(100-m_soundSlowerTimer);
 		}
 	}
+	
+	
 	//If Paused
+
 	else if (isPaused && !isPlayerDead) //TODO:: Pause menu stuff here
 	{
 		//Music gets slower
@@ -201,7 +206,7 @@ void GameScene::Update(float dt)
 		if (m_pauseB->IsPressedS())
 		{
 			isPaused = false;
-			m_MenuButton->SetActive(false);
+			
 		}
 	}
 	else if (!isPaused && isPlayerDead) //Game over functions here
