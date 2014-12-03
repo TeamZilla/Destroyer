@@ -23,11 +23,13 @@ class GameScene : public uth::Scene
 	Button* m_pauseB;
 	Button* m_menuB;
 	Button* m_restartB;
+	Button* m_ExitB;
 	uth::GameObject* m_PauseButton;
 	uth::GameObject* m_MenuButton;
 	uth::GameObject* m_RestartButton;
 	uth::GameObject*  m_gameOverScreenPicture;
 	uth::GameObject* m_ExitButton;
+	uth::GameObject* m_pauseMenu;
 	
 
 

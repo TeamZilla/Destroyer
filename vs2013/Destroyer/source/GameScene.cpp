@@ -70,8 +70,17 @@ bool GameScene::Init()
 	auto gotext  =		uthRS.LoadTexture("UI/go_pholder.png");
 	auto restarttext =	uthRS.LoadTexture("UI/restart.png");
 	auto menutext =		uthRS.LoadTexture("UI/menu.png");
+	auto pauseBG =		uthRS.LoadTexture("UI/pause_BG.png");
+	auto ExitText =		uthRS.LoadTexture("UI/esc.png");
+	
 	playTex->SetSmooth(true);
 	//UI
+	getLayer(LayerId::Userinterface).AddChild(m_pauseMenu = new GameObject());
+	m_pauseMenu->AddComponent(new Sprite(pauseBG, "pauseBGsprite"));
+	m_pauseMenu->transform.SetOrigin(uth::Origin::TopLeft);
+	m_pauseMenu->SetActive(false);
+
+
 	getLayer(LayerId::Userinterface).AddChild(m_gameOverScreenPicture = new GameObject());
 	m_gameOverScreenPicture->AddComponent(new Sprite(gotext));
 	m_gameOverScreenPicture->transform.SetOrigin(uth::Origin::TopLeft);
@@ -85,16 +94,22 @@ bool GameScene::Init()
 	m_pauseB = new Button(m_PauseButton);
 
 	getLayer(LayerId::Userinterface).AddChild(m_MenuButton = new GameObject());
-	m_MenuButton->AddComponent(new AnimatedSprite(restarttext, 2, 2, 1, 0));
+	m_MenuButton->AddComponent(new AnimatedSprite(menutext, 2, 2, 1, 0));
 	m_MenuButton->transform.SetOrigin(uth::Origin::TopLeft);
 	m_menuB = new Button(m_MenuButton);
 	m_MenuButton->SetActive(false);
 
 	getLayer(LayerId::Userinterface).AddChild(m_RestartButton = new GameObject());
-	m_RestartButton->AddComponent(new AnimatedSprite(menutext, 2, 2, 1, 0));
+	m_RestartButton->AddComponent(new AnimatedSprite(restarttext, 2, 2, 1, 0));
 	m_RestartButton->transform.SetOrigin(uth::Origin::TopLeft);
 	m_restartB = new Button(m_RestartButton);
 	m_RestartButton->SetActive(false);
+
+	getLayer(LayerId::Userinterface).AddChild(m_ExitButton = new GameObject());
+	m_ExitButton->AddComponent(new AnimatedSprite(ExitText, 2, 2, 1, 0));
+	m_ExitButton->transform.SetOrigin(uth::Origin::TopLeft);
+	m_ExitB = new Button(m_ExitButton);
+	m_ExitButton->SetActive(false);
 
 	return true;
 }
@@ -148,7 +163,13 @@ void GameScene::Update(float dt)
 		if (m_pauseB->IsPressedS())
 		{
 			isPaused = true;
+			m_pauseMenu->SetActive(true);
 			m_MenuButton->SetActive(true);
+			m_RestartButton->SetActive(true);
+			m_ExitButton->SetActive(true);
+
+
+			
 		}
 
 		//Music gets normal
