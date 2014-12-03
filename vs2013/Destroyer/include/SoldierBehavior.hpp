@@ -1,6 +1,7 @@
 #pragma once
 
 #include <UtH/UtHEngine.hpp>
+#include <Player.hpp>
 
 class SoldierBehavior : public uth::Component
 {
@@ -11,7 +12,10 @@ class SoldierBehavior : public uth::Component
 	bool				m_isGoingToExp = false;
 	bool				m_isGoingToFlat = false;
 	bool				m_tailWhipped = false;
-	uth::GameObject*	m_player;
+	float				m_attackTime = 1;
+	float				m_attackCounter = 0;
+
+	Player*	m_player;
 	uth::Rigidbody*		m_rigidBody;
 	pmath::Vec2			m_direction;
 	pmath::Vec2			m_maxDistance;
@@ -20,7 +24,7 @@ class SoldierBehavior : public uth::Component
 
 public:
 
-	SoldierBehavior(float speed, uth::GameObject* player) :
+	SoldierBehavior(float speed, Player* player) :
 		m_speed(speed),
 		m_player(player)
 	{
@@ -56,6 +60,8 @@ public:
 		{
 			//TODO: add hurt animation frame here
 		}
+
+		Attack(dt);
 	}
 
 	void Movement()
@@ -69,6 +75,7 @@ public:
 			{
 				m_rigidBody->SetVelocity(pmath::Vec2f(0, m_rigidBody->GetVelocity().y));
 				m_rigidBody->SetAngle(0);
+				m_isStopped = true;
 			}
 			else
 			{
@@ -84,6 +91,7 @@ public:
 				
 				m_rigidBody->SetVelocity(pmath::Vec2f(0, m_rigidBody->GetVelocity().y));
 				m_rigidBody->SetAngle(0);
+				m_isStopped = true;
 
 			}
 			else
@@ -110,6 +118,7 @@ public:
 			pmath::Vec2(uth::Randomizer::GetFloat(-25, 25), 0)); //offset
 		m_rigidBody->SetPhysicsGroup(-2);
 		m_isGoingToExp = true;
+		m_isStopped = false;
 	}
 	void Destroy()
 	{
@@ -140,5 +149,18 @@ public:
 	bool isExploding()
 	{
 		return m_isGoingToExp;
+	}
+
+	void Attack(float dt)
+	{
+		if (m_isStopped)
+		{
+			if (m_attackTime <= m_attackCounter)
+			{
+				m_player->Hit(0.5);
+				m_attackCounter = 0;
+			}
+			m_attackCounter += dt;
+		}
 	}
 };

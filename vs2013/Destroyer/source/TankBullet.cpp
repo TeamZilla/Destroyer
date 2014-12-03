@@ -32,7 +32,7 @@ void TankBullet::Init()
 	}
 	transform.SetRotation(180*atan(m_direction.y / m_direction.x)/pmath::pi);
 
-	m_dmg = 4;
+	m_dmg = 3;
 
 }
 void TankBullet::update(float m_dt)

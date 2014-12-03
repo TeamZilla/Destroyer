@@ -195,6 +195,11 @@ void GameScene::Update(float dt)
 		{
 			isPaused = true;
 		}
+
+		if (uthInput.Keyboard.IsKeyDown(Keyboard::F))
+		{
+		}
+
 #endif
 
 	}
@@ -283,7 +288,6 @@ void GameScene::colliderChecks()
 			else if (B->HasTag("Soldier"))
 			{
 				B->GetComponent<SoldierBehavior>()->Destroy();
-				static_cast<Player*>(A)->Hit(3);
 			}
 			else if (B->HasTag("Aeroplane"))
 			{
