@@ -254,3 +254,8 @@ void Heli::burst()
 	}
 
 }
+
+void Heli::takeDamage(int amount)
+{
+	m_health -= amount;
+}

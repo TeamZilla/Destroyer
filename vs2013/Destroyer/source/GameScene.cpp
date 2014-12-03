@@ -325,19 +325,26 @@ void GameScene::colliderChecks()
 			}
 
 			//Put Tag for every enemytype here
-			if (B->HasTag("Tank"))
+			if (BB->HasTag("Tank"))
 			{
-				B->GetComponent<TankBehavior>()->Destroy();
-				static_cast<Player*>(A)->Hit(3);
+				BB->GetComponent<TankBehavior>()->Destroy();
+				static_cast<Player*>(AA)->Hit(3);
 			}
-			else if (B->HasTag("Soldier"))
+			else if (BB->HasTag("Soldier"))
 			{
-				B->GetComponent<SoldierBehavior>()->Destroy();
+				BB->GetComponent<SoldierBehavior>()->Destroy();
 			}
-			else if (B->HasTag("Aeroplane"))
+			else if (BB->HasTag("Aeroplane"))
 			{
 				//B->GetComponent<AeroplaneBehavior>()->Hit();
 				//static_cast<Player*>(A)->Hit();
+			}
+			else if (BB->HasTag("Heli"))
+			{
+				if (static_cast<Player*>(AA)->m_isJumping)
+				{
+					static_cast<Heli*>(BB)->takeDamage(100);
+				}
 			}
 		}
 		//When enemies are dying and are hitting floor
@@ -365,30 +372,88 @@ void GameScene::colliderChecks()
 		{
 			auto* AA = A;
 			auto* BB = B;
-			if (B->HasTag("Enemy"))
+			if (A->HasTag("Aeroplane"))
 			{
 				BB = A;
 				AA = B;
 			}
 			//Put Tag for every enemytype here
-			if (A->HasTag("Tank"))
+			if (AA->HasTag("Tank"))
 			{
-				if (A->GetComponent<TankBehavior>()->isExploding())
+				if (AA->GetComponent<TankBehavior>()->isExploding())
 				{
-					A->GetComponent<TankBehavior>()->Destroy();
-					B->GetComponent<AeroplaneBehavior>()->Hit();
+					AA->GetComponent<TankBehavior>()->Destroy();
+					BB->GetComponent<AeroplaneBehavior>()->Hit();
 				}
 			}
-			else if (A->HasTag("Soldier"))
+			else if (AA->HasTag("Soldier"))
 			{
-				if (A->GetComponent<SoldierBehavior>()->isExploding())
+				if (AA->GetComponent<SoldierBehavior>()->isExploding())
 				{
-					A->GetComponent<SoldierBehavior>()->Destroy();
-					B->GetComponent<AeroplaneBehavior>()->Hit();
+					AA->GetComponent<SoldierBehavior>()->Destroy();
+					BB->GetComponent<AeroplaneBehavior>()->Hit();
 				}
 			}
 		}
-
+		//When enemies are dying and are hitting Helicopter
+		if (A->HasTag("Enemy") && B->HasTag("Heli") ||
+			B->HasTag("Enemy") && A->HasTag("Heli"))
+		{
+			auto* AA = A;
+			auto* BB = B;
+			if (A->HasTag("Heli"))
+			{
+				BB = A;
+				AA = B;
+			}
+			//Put Tag for every enemytype here
+			if (AA->HasTag("Tank"))
+			{
+				if (AA->GetComponent<TankBehavior>()->isExploding())
+				{
+					AA->GetComponent<TankBehavior>()->Destroy();
+					static_cast<Heli*>(BB)->takeDamage(100);
+				}
+			}
+			else if (AA->HasTag("Soldier"))
+			{
+				if (AA->GetComponent<SoldierBehavior>()->isExploding())
+				{
+					AA->GetComponent<SoldierBehavior>()->Destroy();
+					static_cast<Heli*>(BB)->takeDamage(35);
+				}
+			}
+		}
+		//TODO: make smarter soldier collides soldier functions
+		//When enemies are dying and are hitting non dying enemies
+		//if (A->HasTag("Enemy") && B->HasTag("Heli") ||
+		//	B->HasTag("Enemy") && A->HasTag("Heli"))
+		//{
+		//	auto* AA = A;
+		//	auto* BB = B;
+		//	if (A->HasTag("Heli"))
+		//	{
+		//		BB = A;
+		//		AA = B;
+		//	}
+		//	//Put Tag for every enemytype here
+		//	if (AA->HasTag("Tank"))
+		//	{
+		//		if (AA->GetComponent<TankBehavior>()->isExploding())
+		//		{
+		//			AA->GetComponent<TankBehavior>()->Destroy();
+		//			static_cast<Heli*>(BB)->takeDamage(100);
+		//		}
+		//	}
+		//	else if (AA->HasTag("Soldier"))
+		//	{
+		//		if (AA->GetComponent<SoldierBehavior>()->isExploding())
+		//		{
+		//			AA->GetComponent<SoldierBehavior>()->Destroy();
+		//			static_cast<Heli*>(BB)->takeDamage(35);
+		//		}
+		//	}
+		//}
 
 		if (A->HasTag("Enemy") && B->HasTag("TailCollider") ||
 			B->HasTag("Enemy") && A->HasTag("TailCollider"))
@@ -401,34 +466,12 @@ void GameScene::colliderChecks()
 				AA = B;
 			}
 
-			if (A->HasTag("Soldier"))
-				A->GetComponent<SoldierBehavior>()->TailWhipHit();
-			else if (B->HasTag("Soldier"))
-				B->GetComponent<SoldierBehavior>()->TailWhipHit();
+			if (AA->HasTag("Soldier"))
+				AA->GetComponent<SoldierBehavior>()->TailWhipHit();
+			else if (BB->HasTag("Soldier"))
+				BB->GetComponent<SoldierBehavior>()->TailWhipHit();
 
 		}
-		//if (A->HasTag("Enemy") && B->HasTag("Enemy"))
-		//{
-		//	if (A->HasTag("Tank") && B->HasTag("Tank"))
-		//	{
-		//		if (A->GetComponent<TankBehavior>()->isExploding() ||
-		//			B->GetComponent<TankBehavior>()->isExploding())
-		//		{
-		//			A->GetComponent<TankBehavior>()->Destroy();
-		//			B->GetComponent<TankBehavior>()->Destroy();
-		//		}
-
-		//	}
-		//	if (A->HasTag("Soldier") && B->HasTag("Soldier"))
-		//	{
-		//		if (A->GetComponent<SoldierBehavior>()->isExploding() ||
-		//			B->GetComponent<SoldierBehavior>()->isExploding())
-		//		{
-		//			A->GetComponent<SoldierBehavior>()->Destroy();
-		//			B->GetComponent<SoldierBehavior>()->Destroy();
-		//		}
-		//	}
-		//}
 	};
 	m_physWorld.SetContactListener(&contactListener);
 
