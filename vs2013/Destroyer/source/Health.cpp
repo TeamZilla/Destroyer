@@ -49,20 +49,23 @@ void Health::TakeDamage(float amount)
 
 void Health::update(float dt)
 {
-	m_Green->transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition().x - uthEngine.GetWindow().GetCamera().GetSize().x / 2 + 168,
-		uthEngine.GetWindow().GetCamera().GetPosition().y - uthEngine.GetWindow().GetCamera().GetSize().y / 2 + 5);
-	m_Red->transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition().x - uthEngine.GetWindow().GetCamera().GetSize().x / 2 + 168,
-		uthEngine.GetWindow().GetCamera().GetPosition().y - uthEngine.GetWindow().GetCamera().GetSize().y / 2 + 5);
-	m_bottom->transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition().x - uthEngine.GetWindow().GetCamera().GetSize().x / 2 + 168,
-		uthEngine.GetWindow().GetCamera().GetPosition().y - uthEngine.GetWindow().GetCamera().GetSize().y / 2 + 5);
 
-	m_cover->transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition().x - uthEngine.GetWindow().GetCamera().GetSize().x / 2 + 100,
-		uthEngine.GetWindow().GetCamera().GetPosition().y - uthEngine.GetWindow().GetCamera().GetSize().y / 2);
+	auto& camera = uthEngine.GetWindow().GetCamera();
+
+	 m_Green->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 2 + 75,
+		camera.GetPosition().y - camera.GetSize().y / 2 + 20) ;
+	   m_Red->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 2 + 75,
+		camera.GetPosition().y - camera.GetSize().y / 2 + 20);
+	m_bottom->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 2 + 75,
+		camera.GetPosition().y - camera.GetSize().y / 2 + 20);
 	
-	m_Green->transform.SetRotation(uthEngine.GetWindow().GetCamera().GetRotation());
-	m_Red->transform.SetRotation(uthEngine.GetWindow().GetCamera().GetRotation());
-	m_bottom->transform.SetRotation(uthEngine.GetWindow().GetCamera().GetRotation());
-	m_cover->transform.SetRotation(uthEngine.GetWindow().GetCamera().GetRotation());
+	m_cover->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 2 + 17,
+		camera.GetPosition().y - camera.GetSize().y / 2 + 15);
+	
+	 m_Green->transform.SetRotation(camera.GetRotation());
+	   m_Red->transform.SetRotation(camera.GetRotation());
+	m_bottom->transform.SetRotation(camera.GetRotation());
+	 m_cover->transform.SetRotation(camera.GetRotation());
 
 	if (m_Chealth == m_Mhealth)
 	{
@@ -77,10 +80,10 @@ void Health::update(float dt)
 		if (m >= m_Chealth && m > 0)
 		{
 			m_Red->transform.SetScale(m, 1);
-			m = m - 0.001f;
+			m = m - 0.002f;
 		}
 
-		n = m_Mhealth - m_Chealth;
+		n = (m_Mhealth - m_Chealth)/2;
 		m_Green->GetComponent<Sprite>("Green")->SetColor(0+n, 1-n, 0, 1);
 		
 		if (m_Chealth > 0)
