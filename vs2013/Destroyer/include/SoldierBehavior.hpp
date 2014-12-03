@@ -47,15 +47,11 @@ public:
 
 	void SoldierBehavior::Update(float dt)
 	{
-		if (!m_isStopped && !m_isGoingToExp && !m_tailWhipped)
+		if (!m_isGoingToExp && !m_tailWhipped)
 		{
 			Movement();
 		}
-		else if (m_isStopped && !m_isGoingToExp && !m_tailWhipped)
-		{
-			m_rigidBody->SetVelocity(pmath::Vec2f(0, m_rigidBody->GetVelocity().y));
-			m_rigidBody->SetAngle(0);
-		}
+
 		else if (m_isGoingToExp)
 		{
 			//TODO: add hurt animation frame here
@@ -64,18 +60,38 @@ public:
 
 	void SoldierBehavior::Movement()
 	{
+
+
 		if (m_isGoingLeft)
 		{
 			m_rigidBody->ApplyForce(pmath::Vec2(m_direction.x * m_speed, -10));
 			if (m_rigidBody->GetPosition().x <= m_maxDistance.x)
-				m_isStopped = true;
+			{
+				m_rigidBody->SetVelocity(pmath::Vec2f(0, m_rigidBody->GetVelocity().y));
+				m_rigidBody->SetAngle(0);
+			}
+			else
+			{
+				m_isStopped = false;
+			}
 		}
+
 		else
 		{
 			m_rigidBody->ApplyForce(pmath::Vec2(m_direction.x * m_speed, -10));
 			if (m_rigidBody->GetPosition().x >= m_maxDistance.x)
-				m_isStopped = true;
+			{
+				
+				m_rigidBody->SetVelocity(pmath::Vec2f(0, m_rigidBody->GetVelocity().y));
+				m_rigidBody->SetAngle(0);
+
+			}
+			else
+			{
+				m_isStopped = false;
+			}
 		}
+
 		m_rigidBody->SetAngle(0);
 	}
 	
