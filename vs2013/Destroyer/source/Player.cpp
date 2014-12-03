@@ -20,6 +20,8 @@ Player::Player(uth::PhysicsWorld* physworld)
 	m_isCrouching = false;
 	m_isTurning = false;
 	m_isHurting = false;
+	m_isDoneDying = false;
+	m_isDied = false;
 
 	//Create, set position and scale player Sprite
 	auto playerTexture = uthRS.LoadTexture("modzilla/moz_animation.png");
@@ -79,6 +81,10 @@ void Player::update(float dt)
 	else if (m_isTurning)
 	{
 		Turning();
+	}
+	else if (m_isDied)
+	{
+		Dying();
 	}
 	if (m_isHurting)
 	{
@@ -226,6 +232,19 @@ void Player::Hurting()
 	}
 
 }
+void Player::Die()
+{
+	SetAnimation(m_stompAnim, false);
+	m_isDied = true;
+}
+void Player::Dying()
+{
+	m_rigidbody->Rotate(2.5f);
+	m_rigidbody->Move(pmath::Vec2(0,0.15f));
+	if (m_rigidbody->GetAngle() > 90)
+		m_isDoneDying = true;
+}
+
 void Player::Hit(float dmg)
 {
 	m_health->TakeDamage(dmg);

@@ -10,6 +10,7 @@ uth::Layer& TitleScene::getLayer(LayerId id)
 TitleScene::TitleScene()
 {
 	uthEngine.GetWindow().GetCamera().SetSize(1280, 720);
+	m_roar = uthRS.LoadSound("Audio/Effects/moz_howl.wav");
 	m_BGM = uthRS.LoadSound("Audio/Music/menu_theme.wav");
 	m_BGM->Play();
 	m_BGM->Loop(true);
@@ -17,6 +18,7 @@ TitleScene::TitleScene()
 	auto& window = uthEngine.GetWindow();
 
 	Creditsu = false;
+	isGameStarting = false;
 
 	getLayer(LayerId::TitleBackground);
 	getLayer(LayerId::Buttons);
@@ -78,8 +80,8 @@ TitleScene::TitleScene()
 	CBGTex->SetSmooth(true);
 	m_CBG->AddComponent(new Sprite(CBGTex, "CBG"));
 	m_CBG->transform.SetOrigin(uth::Origin::TopLeft);
-	m_CBG->transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition().x - uthEngine.GetWindow().GetCamera().GetSize().x / 2 + 780,
-		uthEngine.GetWindow().GetCamera().GetPosition().y - uthEngine.GetWindow().GetCamera().GetSize().y / 2 + 50);
+	m_CBG->transform.SetPosition(window.GetCamera().GetPosition().x - window.GetCamera().GetSize().x / 2 + 780,
+								 window.GetCamera().GetPosition().y - window.GetCamera().GetSize().y / 2 + 50);
 	m_CBG->SetActive(false);
 	
 	getLayer(LayerId::Buttons).AddChild(m_EscB = new GameObject());
@@ -87,11 +89,16 @@ TitleScene::TitleScene()
 	OptionsTex->SetSmooth(true);
 	m_EscB->AddComponent(new AnimatedSprite(EscTex, 2, 2, 1, 0));
 	m_EscB->transform.SetOrigin(uth::Origin::TopLeft);
-	m_EscB->transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition().x - uthEngine.GetWindow().GetCamera().GetSize().x / 2 + 1150,
-		uthEngine.GetWindow().GetCamera().GetPosition().y - uthEngine.GetWindow().GetCamera().GetSize().y / 2 + 75);
+	m_EscB->transform.SetPosition(window.GetCamera().GetPosition().x - window.GetCamera().GetSize().x / 2 + 1150,
+								  window.GetCamera().GetPosition().y - window.GetCamera().GetSize().y / 2 + 75);
 	button4 = new Button(m_EscB);
 	
 	m_EscB->SetActive(false);
+
+	getLayer(LayerId::Buttons).AddChild(m_blackOverlay = new GameObject());
+	m_blackOverlay->AddComponent(new Sprite(pmath::Vec4(0, 0, 0, 0),pmath::Vec2(3500, 3500)));
+	m_blackOverlay->transform.SetPosition(window.GetCamera().GetPosition().x / 2,
+										  window.GetCamera().GetPosition().y / 2 - window.GetCamera().GetSize().y / 2);
 
 }
 TitleScene::~TitleScene()
@@ -110,8 +117,10 @@ void TitleScene::Update(float dt)
 
 		if (button->IsPressedS() )
 		{
-			uthSceneM.GoToScene(GAME);
 			m_BGM->Stop();
+			m_roar->Play();
+			m_roar->SetVolume(50);
+			isGameStarting = true;
 		}
 
 		if (button2->IsPressedS() )
@@ -134,6 +143,13 @@ void TitleScene::Update(float dt)
 			
 		}
 
+	}
+
+	if (isGameStarting)
+	{
+		m_blackOverlay->GetComponent<Sprite>()->SetColor(pmath::Vec4(0, 0, 0, m_blackOverlay->GetComponent<Sprite>()->GetColor().a + 0.5f*dt));
+		if (m_blackOverlay->GetComponent<Sprite>()->GetColor().a > 1)
+			uthSceneM.GoToScene(GAME);
 	}
 }
 

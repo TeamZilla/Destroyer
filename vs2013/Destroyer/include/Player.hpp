@@ -15,7 +15,7 @@ class Player : public uth::GameObject
 		m_dt;
 	float m_maxSpeed, m_minSpeed, m_acceleration;
 	float m_tailSpeed;
-	bool m_isHurting, m_isSwiping;
+	bool m_isHurting, m_isSwiping, m_isDied;
 
 	pmath::Vec2 m_tempPos;
 	pmath::Vec4 m_walkAnim;
@@ -32,12 +32,13 @@ class Player : public uth::GameObject
 	void Crouching();
 	void Turning();
 	void Hurting();
+	void Dying();
 
 public:
 	Player(uth::PhysicsWorld*);
 	~Player();
 
-	bool m_isJumping, m_isCrouching, m_isTurning;
+	bool m_isJumping, m_isCrouching, m_isTurning, m_isDoneDying;
 	static bool isGoingRight;
 	void init(uth::PhysicsWorld*, Health* hp);
 	void update(float) override;
@@ -45,6 +46,7 @@ public:
 	void  Jump();
 	void  Crouch();
 	void  SwipeTail(float);
+	void  Die();
 	void  Hit(float dmg);
 	float getSpeed();
 	bool  CheckIfGoingRight();

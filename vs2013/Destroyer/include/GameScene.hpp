@@ -30,6 +30,7 @@ class GameScene : public uth::Scene
 	uth::GameObject*  m_gameOverScreenPicture;
 	uth::GameObject* m_ExitButton;
 	uth::GameObject* m_pauseMenu;
+	uth::GameObject* m_blackOverlay;
 	
 
 
@@ -45,6 +46,8 @@ class GameScene : public uth::Scene
 
 	uth::Layer& getLayer(LayerId id);
 
+
+
 	void ControlFunctions();
 	void Control_up();
 	void Control_down();
@@ -58,6 +61,8 @@ class GameScene : public uth::Scene
 	Heli* m_heli;
 	uth::Sound* m_music;
 	uth::Sound* m_waveSound;
+	uth::Sound* m_gameOverMusic;
+	uth::Sound* m_afterMathMusic;
 	Road* m_road;
 	float m_shakeDelayTimer;
 	float aeroplaneTimer;

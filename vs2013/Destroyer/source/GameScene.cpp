@@ -49,6 +49,8 @@ bool GameScene::Init()
 	m_bgManager.SetCameraStartPos(pmath::Vec2f(0, camera.GetSize().y / 2));
 	
 
+	m_gameOverMusic  = uthRS.LoadSound("Audio/Music/game_over.wav");
+	m_afterMathMusic = uthRS.LoadSound("Audio/Music/aftermath_theme.wav");
 	m_music = uthRS.LoadSound("Audio/Music/city_theme3.wav");
 	m_music->Play();
 	m_music->SetPitch(100);
@@ -111,6 +113,11 @@ bool GameScene::Init()
 	m_ExitB = new Button(m_ExitButton);
 	m_ExitButton->SetActive(false);
 
+	getLayer(LayerId::Userinterface).AddChild(m_blackOverlay = new GameObject());
+	m_blackOverlay->AddComponent(new Sprite(pmath::Vec4(0, 0, 0, 1), pmath::Vec2(3500, 3500)));
+	m_blackOverlay->transform.SetPosition(camera.GetPosition().x / 2,
+										  camera.GetPosition().y / 2 - camera.GetSize().y / 2);
+
 	return true;
 }
 
@@ -119,6 +126,18 @@ bool GameScene::Init()
 void GameScene::Update(float dt)
 {
 	auto& camera = uthEngine.GetWindow().GetCamera();
+
+	if (m_blackOverlay->GetComponent<Sprite>()->GetColor().a > 0)
+	{
+		m_blackOverlay->transform.SetPosition(camera.GetPosition().x,
+											  camera.GetPosition().y);
+		m_blackOverlay->GetComponent<Sprite>()->SetColor(pmath::Vec4(0, 0, 0, m_blackOverlay->GetComponent<Sprite>()->GetColor().a - 0.5f*dt));
+	}
+	else
+	{
+		m_blackOverlay->SetActive(false);
+	}
+	
 
 	if (!isPaused && !isPlayerDead)
 	{	
@@ -158,9 +177,16 @@ void GameScene::Update(float dt)
 		ControlFunctions();
 		if (Statistics::player_hp <= 0)
 		{
-			isPlayerDead = true;
 			m_music->Stop();
-
+			m_player->Die();
+			if (!m_gameOverMusic->IsPlaying())
+				m_gameOverMusic->Play();
+			if (m_player->m_isDoneDying)
+			{
+				m_afterMathMusic->Play();
+				m_afterMathMusic->Loop(true);
+				isPlayerDead = true;
+			}
 		}
 
 		m_pauseB->update(dt);
@@ -217,9 +243,15 @@ void GameScene::Update(float dt)
 			isPaused = false;
 		}
 		if (m_restartB->IsPressedS())
+		{
 			uthSceneM.GoToScene(GAME);
+			m_music->Stop();
+		}
 		if (m_menuB->IsPressedS())
+		{
 			uthSceneM.GoToScene(TITLE);
+			m_music->Stop();
+		}
 	}
 	else if (!isPaused && isPlayerDead) //Game over functions here
 	{
@@ -237,9 +269,15 @@ void GameScene::Update(float dt)
 		m_RestartButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 500, camera.GetPosition().y - camera.GetSize().y /2 + 630);
 
 		if (m_restartB->IsPressedS())
+		{
 			uthSceneM.GoToScene(GAME);
+			m_afterMathMusic->Stop();
+		}
 		if (m_menuB->IsPressedS())
+		{
 			uthSceneM.GoToScene(TITLE);
+			m_afterMathMusic->Stop();
+		}
 	}
 } //Update end
 

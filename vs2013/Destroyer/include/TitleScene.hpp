@@ -8,6 +8,7 @@
 class TitleScene : public uth::Scene
 {
 	uth::Sound* m_BGM;
+	uth::Sound* m_roar;
 
 	enum class LayerId : char
 	{
@@ -35,8 +36,9 @@ public: // Every one of these public functions are required.
 	uth::GameObject* m_OptionsB;
 	uth::GameObject* m_EscB;
 	uth::GameObject* m_CBG;
+	uth::GameObject* m_blackOverlay;
 
-	bool Creditsu;
+	bool Creditsu, isGameStarting;
 	virtual bool Init();
 	virtual bool DeInit();
 
