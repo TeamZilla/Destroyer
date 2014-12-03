@@ -1,6 +1,4 @@
 #include <Road.hpp>
-#include <UtH/Platform/JavaFunctions.hpp>
-
 using namespace uth;
 
 Road::Road(const int blocks)
@@ -22,16 +20,16 @@ Road::Road(const int blocks)
 
 		m_shockLenght = 128;
 		m_shockSpeed = 200;
-		m_shockTime = 0;
-		m_shockStartX = 0;
+		m_shockStartX = 40;
 		m_shockHeight = 100;
 		m_roadY = uthEngine.GetWindow().GetCamera().GetSize().y - 95;
-		m_shockRange = 1200;
+		m_shockRange = 1600;
 		isShock = false;
 		m_shockHeightMatcher = 250;
-		m_shockSupression = 1;
-		m_shockFriction = 220;
-		m_shockStartSpeed = 1100;
+		m_shockFriction = 0.5;
+		m_shockStartSpeed = 1200;
+		m_shockMinSpeed = 150;
+		m_shock_x = 0;
 	}
 }
 
@@ -65,7 +63,7 @@ void Road::update(float dt)
 	else
 	{
 		hitBox->GetComponent<Rigidbody>("Rigidbody")->SetPhysicsGroup(-3);
-		hitBox->GetComponent<Rigidbody>("Rigidbody")->SetPosition(pmath::Vec2(m_shockTime*m_shockSpeed, m_roadY + 500));
+		hitBox->GetComponent<Rigidbody>("Rigidbody")->SetPosition(pmath::Vec2(m_shock_x, m_roadY + 500));
 	}
 }
 
@@ -77,12 +75,12 @@ void Road::InitShock()
 		if (m_player->CheckIfGoingRight() == true)
 		{
 			m_shockDir = 1;
-			javaFunc::Vibrate(100);
+			m_shockSpeed = m_shockStartSpeed;
 		}
 		else
 		{
 			m_shockDir = -1;
-			javaFunc::Vibrate(100);
+			m_shockSpeed = m_shockStartSpeed;
 		}
 	}
 
@@ -93,25 +91,28 @@ void Road::InitShock()
 
 void Road::m_shock()
 {
-
-
-		m_shockHeightMatcher = 62 * abs(m_shockTime) - 100;
-
-		if (m_shockStartSpeed > m_shockFriction * m_shockTime)
-		{
-			m_shockSpeed = m_shockStartSpeed - m_shockFriction * abs(m_shockTime);
-		}
-
-		else
-		{
-			m_shockSpeed = 0;
-		}
-
 		if (isShock)
 		{
+
+			if (m_shockMinSpeed < m_shockSpeed)
+			{
+		
+				m_shockSpeed = m_shockStartSpeed - m_shockFriction * abs(m_shock_x);
+			}
+
+			else
+			{
+				m_shockSpeed = m_shockMinSpeed;
+			}
+
+			m_shock_x += m_shockDir * m_shockSpeed * m_dt;
+			m_shockLenghtMatcher = 130000 / m_shock_x;
+			m_shockHeightMatcher = std::abs(m_shock_x) / 8;
+
+
 			for (int i = 0; i < m_blocks.size(); i++)
 			{
-				if (m_shockLenght < std::abs(m_shockSpeed*m_shockTime - m_shockStartX - m_blocks[i]->GetPosition().x))
+				if (m_shockLenght < std::abs(m_shock_x - m_blocks[i]->GetPosition().x))
 				{
 					m_blocks[i]->SetPosition(m_blocks[i]->GetPosition().x, m_roadY);
 				}
@@ -121,30 +122,22 @@ void Road::m_shock()
 					m_blocks[i]->SetPosition(
 
 						m_blocks[i]->GetPosition().x,
-
-						m_roadY -
-						m_shockHeight +
-						std::pow((m_shockSpeed * m_shockTime - m_shockStartX) -
-						m_blocks[i]->GetPosition().x, 2) / 300 * m_shockDir * m_shockTime -
+						m_roadY +
+						std::pow(m_shock_x - m_blocks[i]->GetPosition().x, 2) / abs(m_shockLenghtMatcher) -
 						m_shockHeightMatcher
-
 						);
 				}
 			}
-
-			m_shockTime += m_shockDir * m_dt;
 		}
 
-		hitBox->GetComponent<Rigidbody>("Rigidbody")->SetPosition(pmath::Vec2(m_shockTime*m_shockSpeed, m_roadY + 50));
+		hitBox->GetComponent<Rigidbody>("Rigidbody")->SetPosition(pmath::Vec2(m_shock_x, m_roadY + 50));
 
-		if (abs(m_shockTime*m_shockSpeed) >= m_shockRange)
+		if (abs(m_shock_x) >= m_shockRange)
 		{
 			// stop shockwave
-			m_shockTime = 0;
 			isShock = false;
-			m_shockSupression = 1;
-			m_shockSpeed = 300;
-			m_shockTime = 0;
+			m_shockSpeed = m_shockStartSpeed;
+			m_shock_x = m_shockStartX;
 		}
 	}
 

@@ -21,13 +21,14 @@ class Road : public uth::GameObject
 		m_shockStartSpeed,
 		m_shockMinSpeed,
 		m_shockFriction,
-		m_shockTime,
 		m_shockStartX,
 		m_shockHeight,
 		m_roadY,
 		m_shockRange,
 		m_shockHeightMatcher,
-		m_shockSupression;
+		m_shockLenghtMatcher,
+		m_shock_x;
+		
 	Player *m_player;
 	int m_shockDir;
 	bool isShock;
