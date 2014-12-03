@@ -85,13 +85,13 @@ bool GameScene::Init()
 	m_pauseB = new Button(m_PauseButton);
 
 	getLayer(LayerId::Userinterface).AddChild(m_MenuButton = new GameObject());
-	m_MenuButton->AddComponent(new AnimatedSprite(restarttext, 2, 2, 1, 0));
+	m_MenuButton->AddComponent(new AnimatedSprite(menutext, 2, 2, 1, 0));
 	m_MenuButton->transform.SetOrigin(uth::Origin::TopLeft);
 	m_menuB = new Button(m_MenuButton);
 	m_MenuButton->SetActive(false);
 
 	getLayer(LayerId::Userinterface).AddChild(m_RestartButton = new GameObject());
-	m_RestartButton->AddComponent(new AnimatedSprite(menutext, 2, 2, 1, 0));
+	m_RestartButton->AddComponent(new AnimatedSprite(restarttext, 2, 2, 1, 0));
 	m_RestartButton->transform.SetOrigin(uth::Origin::TopLeft);
 	m_restartB = new Button(m_RestartButton);
 	m_RestartButton->SetActive(false);
@@ -165,7 +165,7 @@ void GameScene::Update(float dt)
 		if (m_soundSlowerTimer < 100)
 		{
 			m_soundSlowerTimer += dt * 90;
-			m_music->SetPitch(100-m_soundSlowerTimer);
+			m_music->SetPitch(100 - m_soundSlowerTimer);
 		}
 
 	#ifdef UTH_SYSTEM_ANDROID
@@ -180,6 +180,7 @@ void GameScene::Update(float dt)
 		if (m_pauseB->IsPressedS())
 		{
 			isPaused = false;
+			m_MenuButton->SetActive(false);
 		}
 	}
 	else if (!isPaused && isPlayerDead) //Game over functions here
