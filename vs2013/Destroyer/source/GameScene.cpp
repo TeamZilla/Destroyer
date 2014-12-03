@@ -27,7 +27,7 @@ bool GameScene::Init()
 	
 	m_gameFloor.AddComponent(new Sprite(pmath::Vec4(1, 0, 0, 1), pmath::Vec2(3000, 100)));
 	m_gameFloor.AddTag("Floor");
-	m_gameFloor.transform.SetPosition(0, uthEngine.GetWindow().GetSize().y);
+	m_gameFloor.transform.SetPosition(0, uthEngine.GetWindow().GetCamera().GetSize().y);
 	m_gameFloor.AddComponent(new Rigidbody(m_physWorld));
 	m_gameFloor.GetComponent<Rigidbody>()->SetKinematic(true);
 
@@ -44,7 +44,7 @@ bool GameScene::Init()
 
 	m_road->Init(m_player,&m_physWorld);
 	
-	m_bgManager.SetCameraStartPos(pmath::Vec2f(0, uthEngine.GetWindow().GetSize().y/2));
+	m_bgManager.SetCameraStartPos(pmath::Vec2f(0, uthEngine.GetWindow().GetCamera().GetSize().y / 2));
 	
 
 	m_music = uthRS.LoadSound("Audio/Music/city_theme3.wav");
@@ -64,6 +64,16 @@ bool GameScene::Init()
 	colliderChecks();
 	isPaused = false;
 
+	uth::Texture* PlayTex = uthRS.LoadTexture("UI/pause.png");
+	PlayTex->SetSmooth(true);
+
+	getLayer(LayerId::Userinterface).AddChild(m_PauseButton = new GameObject());
+	m_PauseButton->AddComponent(new AnimatedSprite(PlayTex, 2, 2, 1, 0));
+	m_PauseButton->transform.SetOrigin(uth::Origin::TopLeft);
+	m_PauseButton->transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition().x - uthEngine.GetWindow().GetCamera().GetSize().x / 2 + 1500,
+		uthEngine.GetWindow().GetCamera().GetPosition().y - uthEngine.GetWindow().GetCamera().GetSize().y / 2 + 25);
+	m_pauseB = new Button(m_PauseButton);
+
 	return true;
 }
 
@@ -73,6 +83,7 @@ void GameScene::Update(float dt)
 {
 	if (!isPaused)
 	{
+		
 		static int count;
 		static float time = 0;
 		time += dt;
@@ -104,7 +115,7 @@ void GameScene::Update(float dt)
 
 		Scene::Update(dt);
 		//dt *= 20;
-
+		m_pauseB->update(dt);
 		//m_heli->Update(dt);
 
 
@@ -114,104 +125,123 @@ void GameScene::Update(float dt)
 		const pmath::Vec2& touchStart = wnd.PixelToCoords(uthInput.Touch[0].GetStartPosition());
 		const pmath::Vec2& touchEnd = wnd.PixelToCoords(uthInput.Touch[0].GetEndPosition());
 
-		if (uthInput.Touch.Motion() == TouchMotion::TAP)
-		{
-			m_health->TakeDamage(1);
-		}
-
 		if(uthInput.Touch.Motion() == TouchMotion::DRAG)
-		{
-			if (touchStart.y - 80 > touchEnd.y + 80)
+		{	//Swipe up
+			if (touchStart.y > touchEnd.y + 160)
 			{
-				if (!m_player.m_isCrouching)
-				{
-					m_player->Jump();
-				}
+				Control_up();
 			}
-			else if (touchStart.y + 80 < touchEnd.y - 80)
+			//Swipe down
+			else if (touchStart.y < touchEnd.y - 160)
 			{
-				if (!m_player.m_isJumping)
-				{
-					m_player->Crouch();
-					m_bgManager.Shake(5, 0.4f); // Amount, Delay
-				}
+				Control_down();
 			}
-
-			if (touchStart.x + 90 > touchEnd.x - 90)
+			//Swipe left
+			else if (touchStart.x > touchEnd.x + 180)
 			{
-				if (m_player->CheckIfGoingRight())
-				{
-					m_player->ChangeDirection();
-				}
+				Control_left();
 			}
-			else if (touchStart.x - 90 < touchEnd.x + 90)
+			//Swipe right
+			else if (touchStart.x < touchEnd.x -180)
 			{
-				if (!m_player->CheckIfGoingRight())
-				{
-					m_player->ChangeDirection();
-				}
+				Control_right();
 			}
 		}
 
 
 #else
-		if (uthInput.Common.Event() == uth::InputEvent::TAP)
-		{
-			//m_health->TakeDamage(1);
-			m_player->Hit(3);
-		}
 		if (uthInput.Keyboard.IsKeyDown(Keyboard::Up))
 		{
-			if (!m_player->m_isCrouching && !m_player->m_isJumping)
-				m_player->Jump();
+			//if (!m_player->m_isCrouching && !m_player->m_isJumping)
+			//	m_player->Jump();
+			Control_up();
 		}
 		if (uthInput.Keyboard.IsKeyDown(Keyboard::Down))
 		{
-			if (!m_player->m_isJumping && !m_player->m_isCrouching && !m_player->m_isTurning)
-			{
-				m_player->Crouch();
-				isInitedShake = true;
-			}
+			//if (!m_player->m_isJumping && !m_player->m_isCrouching && !m_player->m_isTurning)
+			//{
+			//	m_player->Crouch();
+			//	isInitedShake = true;
+			//}
+			Control_down();
 		}
 		if (uthInput.Keyboard.IsKeyDown(Keyboard::Left) &&
 			!uthInput.Keyboard.IsKeyDown(Keyboard::Right))
 		{
-			if (m_player->CheckIfGoingRight())
-			{
-				m_player->ChangeDirection();
-			}
+			//if (m_player->CheckIfGoingRight())
+			//{
+			//	m_player->ChangeDirection();
+			//}
+			Control_left();
 		}
 
 		if (uthInput.Keyboard.IsKeyDown(Keyboard::Right) &&
 			!uthInput.Keyboard.IsKeyDown(Keyboard::Left))
 		{
-			if (!m_player->CheckIfGoingRight())
-			{
-				m_player->ChangeDirection();
-			}
+			//if (!m_player->CheckIfGoingRight())
+			//{
+			//	m_player->ChangeDirection();
+			//}
+			Control_right();
 		}
 
-		if (uthInput.Mouse.IsButtonReleased(Mouse::LEFT))
-		{
-			FlameEmitter::Emit(uthInput.Mouse.Position());
-			getLayer(LayerId::InGame).AddChild(new FireBreath(pmath::Vec2(0, 280), uthInput.Mouse.Position()));
-		}
+		//if (uthInput.Mouse.IsButtonReleased(Mouse::LEFT))
+		//{
+		//	FlameEmitter::Emit(uthInput.Mouse.Position());
+		//	getLayer(LayerId::InGame).AddChild(new FireBreath(pmath::Vec2(0, 280), uthInput.Mouse.Position()));
+		//}
 
 		if (uthInput.Keyboard.IsKeyDown(Keyboard::P))
 		{
 			isPaused = true;
 		}
+#endif
+
 	}
+	//If Paused
 	else //TODO:: Pause menu stuff here
 	{
+#ifdef UTH_SYSTEM_ANDROID
+
+		//TODO: Android pause functions here
+
+#else
 		if (uthInput.Keyboard.IsKeyDown(Keyboard::O))
 		{
+
 			isPaused = false;
 		}
-	}
-
 #endif
+	}
 	//return true; // Update succeeded.
+}
+
+void GameScene::Control_up()
+{
+	if (!m_player->m_isCrouching && !m_player->m_isJumping)
+		m_player->Jump();
+}
+void GameScene::Control_down()
+{
+	if (!m_player->m_isJumping && !m_player->m_isCrouching && !m_player->m_isTurning)
+	{
+		m_player->Crouch();
+		isInitedShake = true;
+	}
+}
+void GameScene::Control_left()
+{
+	if (m_player->CheckIfGoingRight())
+	{
+		m_player->ChangeDirection();
+	}
+}
+void GameScene::Control_right()
+{
+	if (!m_player->CheckIfGoingRight())
+	{
+		m_player->ChangeDirection();
+	}
 }
 
 void GameScene::colliderChecks()
@@ -361,9 +391,9 @@ GameScene::GameScene()
 	:
 	m_bgManager
 	(
-		uthEngine.GetWindow().GetSize().y - 470,
-		uthEngine.GetWindow().GetSize().y - 220,
-		uthEngine.GetWindow().GetSize().y - 570
+		uthEngine.GetWindow().GetCamera().GetSize().y - 470,
+		uthEngine.GetWindow().GetCamera().GetSize().y - 220,
+		uthEngine.GetWindow().GetCamera().GetSize().y - 570
 	),
 	m_physWorld(0, 10)
 {

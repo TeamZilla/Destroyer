@@ -51,15 +51,15 @@ void Health::TakeDamage(float amount)
 
 void Health::update(float dt)
 {
-	m_Green->transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition().x - uthEngine.GetWindow().GetSize().x / 2 +168,
-		uthEngine.GetWindow().GetCamera().GetPosition().y - uthEngine.GetWindow().GetSize().y / 2 + 5) ;
-	m_Red->transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition().x - uthEngine.GetWindow().GetSize().x / 2 + 168,
-		uthEngine.GetWindow().GetCamera().GetPosition().y - uthEngine.GetWindow().GetSize().y / 2 + 5);
-	m_bottom->transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition().x - uthEngine.GetWindow().GetSize().x / 2 + 168,
-		uthEngine.GetWindow().GetCamera().GetPosition().y - uthEngine.GetWindow().GetSize().y / 2 + 5);
+	m_Green->transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition().x - uthEngine.GetWindow().GetCamera().GetSize().x / 2 + 168,
+		uthEngine.GetWindow().GetCamera().GetPosition().y - uthEngine.GetWindow().GetCamera().GetSize().y / 2 + 5);
+	m_Red->transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition().x - uthEngine.GetWindow().GetCamera().GetSize().x / 2 + 168,
+		uthEngine.GetWindow().GetCamera().GetPosition().y - uthEngine.GetWindow().GetCamera().GetSize().y / 2 + 5);
+	m_bottom->transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition().x - uthEngine.GetWindow().GetCamera().GetSize().x / 2 + 168,
+		uthEngine.GetWindow().GetCamera().GetPosition().y - uthEngine.GetWindow().GetCamera().GetSize().y / 2 + 5);
 
-	m_cover->transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition().x - uthEngine.GetWindow().GetSize().x / 2 + 100,
-		uthEngine.GetWindow().GetCamera().GetPosition().y - uthEngine.GetWindow().GetSize().y / 2);
+	m_cover->transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition().x - uthEngine.GetWindow().GetCamera().GetSize().x / 2 + 100,
+		uthEngine.GetWindow().GetCamera().GetPosition().y - uthEngine.GetWindow().GetCamera().GetSize().y / 2);
 	
 	m_Green->transform.SetRotation(uthEngine.GetWindow().GetCamera().GetRotation());
 	m_Red->transform.SetRotation(uthEngine.GetWindow().GetCamera().GetRotation());

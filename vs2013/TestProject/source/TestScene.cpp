@@ -1,5 +1,7 @@
 #include <TestScene.hpp>
 #include <Scenes.hpp>
+#include <uth/Platform/JavaFunctions.hpp>
+#include <UtH/Platform/GooglePlayGameServices.hpp>
 
 using namespace uth;
 
@@ -23,8 +25,8 @@ bool TestScene::Init()
     // Objects
     // First
 	{
-	    auto test = AddChild<GameObject>();
-		test->AddComponent(new Sprite(pmath::Vec4(1,0,0,1),pmath::Vec2(128,128)));
+	    auto child = AddChild<GameObject>();
+		child->AddComponent(test = new Sprite(pmath::Vec4(1,0,0,1),pmath::Vec2(128,128)));
     }
 
     // Second (ParticleSystem)
@@ -52,7 +54,8 @@ bool TestScene::Init()
 
         ps->AddAffector(aff);
         ps->SetEmitProperties(true, 0.05f, 0.1f, 1, 5);
-    }
+	}
+	javaFunc::Vibrate(1000);
 
 	return true;
 }
@@ -61,10 +64,43 @@ bool TestScene::DeInit()
 	return true;
 }
 
-//void TestScene::Update(float dt)
-//{
-//	Scene::Update(dt);
-//}
+void TestScene::Update(float dt)
+{
+
+	if (uthInput.Common == uth::InputEvent::TAP)
+	{
+		javaFunc::Vibrate(2000);
+		
+
+		//std::string location = uthGPGS.gps.GetCurrentLocation();
+		//WriteLog("Current location: %s", location.c_str());
+
+		GooglePlayGameServices::Location location = uthGPGS.gps.GetCurrentLocation();
+		
+		WriteLog("Accuracy: %f", uthGPGS.gps.GetAccuracy());
+		WriteLog("ConvLat: %f", location.loc_latitude);
+		WriteLog("ConvLong: %f", location.loc_longitude);
+		WriteLog("ConvAcc: %f", location.loc_accuracy);
+		WriteLog("ConvTime: %s", location.device_time_since_reboot.c_str());
+	}
+
+	static float a = 0;
+	static float time = 0;
+	time += dt;
+	if (time < 1)
+		a = 1 - time;
+	else if (time < 2)
+		a = time - 1;
+	else
+		time = 0;
+
+	pmath::Vec4 color = test->GetColor();
+	color.a = a;
+	test->SetColor(color);
+
+	Scene::Update(dt);
+
+}
 
 //void TestScene::Draw(RenderTarget& target, RenderAttributes attributes)
 //{

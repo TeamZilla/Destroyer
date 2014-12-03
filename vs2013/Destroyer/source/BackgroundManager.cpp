@@ -22,51 +22,51 @@ bool BackgroundManager::Init(uth::Layer& bg, uth::Layer& fg)
 	//Sky
 	backG->AddChild(temp = new GameObject(std::vector<std::string>{ "bg", "sky1" }));
 	temp->AddComponent(new Background(c_mountainSpeedM/2,
-		uthEngine.GetWindow().GetSize().y - 740, 0, true,
+		uthEngine.GetWindow().GetCamera().GetSize().y - 740, 0, true,
 		"backgrounds/sky.png"));
 	backG->AddChild(temp = new GameObject(std::vector<std::string>{ "bg", "sky1" }));
 	temp->AddComponent(new Background(c_mountainSpeedM/2,
-		uthEngine.GetWindow().GetSize().y - 740, 0, false,
+		uthEngine.GetWindow().GetCamera().GetSize().y - 740, 0, false,
 		"backgrounds/sky.png"));
 
 
 	//Mountains
 	backG->AddChild(temp = new GameObject(std::vector<std::string>{ "bg", "mountain1" }));
 	temp->AddComponent(new Background(c_mountainSpeedM,
-		uthEngine.GetWindow().GetSize().y - 570, 0.5, true,
+		uthEngine.GetWindow().GetCamera().GetSize().y - 570, 0.5, true,
 		"backgrounds/mountains01.png"));
 	backG->AddChild(temp = new GameObject(std::vector<std::string>{ "bg", "mountain2" }));
 	temp->AddComponent(new Background(c_mountainSpeedM,
-		uthEngine.GetWindow().GetSize().y - 570, 0.5, false,
+		uthEngine.GetWindow().GetCamera().GetSize().y - 570, 0.5, false,
 		"backgrounds/mountains02.png"));
 
 	//Backcity
 	backG->AddChild(temp = new GameObject(std::vector<std::string>{ "bg", "building3" }));
 	temp->AddComponent(new Background(c_backSpeedM / 1.2f,
-		uthEngine.GetWindow().GetSize().y - 480, 2, true,
+		uthEngine.GetWindow().GetCamera().GetSize().y - 480, 2, true,
 		"backgrounds/buildings01.png"));
 	backG->AddChild(temp = new GameObject(std::vector<std::string>{ "bg", "building4" }));
 	temp->AddComponent(new Background(c_backSpeedM / 1.2f,
-		uthEngine.GetWindow().GetSize().y - 480, 2, false,
+		uthEngine.GetWindow().GetCamera().GetSize().y - 480, 2, false,
 		"backgrounds/buildings01.png"));
 
 	backG->AddChild(temp = new GameObject(std::vector<std::string>{ "bg", "building1" }));
 	temp->AddComponent(new Background(c_backSpeedM,
-		uthEngine.GetWindow().GetSize().y - 480, 2,true, 
+		uthEngine.GetWindow().GetCamera().GetSize().y - 480, 2, true,
 		"backgrounds/buildings02.png"));
 	backG->AddChild(temp = new GameObject(std::vector<std::string>{ "bg", "building2" }));
 	temp->AddComponent(new Background(c_backSpeedM,
-		uthEngine.GetWindow().GetSize().y - 480, 2, false,
+		uthEngine.GetWindow().GetCamera().GetSize().y - 480, 2, false,
 		"backgrounds/buildings02.png"));
 
 	//Frontcity
 	backF->AddChild(temp = new GameObject(std::vector<std::string>{ "bg", "lantern1" }));
 	temp->AddComponent(new Background(c_frontSpeedM,
-		uthEngine.GetWindow().GetSize().y - 120, 4, true,
+		uthEngine.GetWindow().GetCamera().GetSize().y - 120, 4, true,
 		"backgrounds/lanterns.png"));
 	backF->AddChild(temp = new GameObject(std::vector<std::string>{ "bg", "lantern2" }));
 	temp->AddComponent(new Background(c_frontSpeedM,
-		uthEngine.GetWindow().GetSize().y - 120, 4, false,
+		uthEngine.GetWindow().GetCamera().GetSize().y - 120, 4, false,
 		"backgrounds/lanterns.png"));
 
 	

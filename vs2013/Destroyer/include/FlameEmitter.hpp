@@ -14,7 +14,7 @@ private:
 	~FlameEmitter() = delete;
 public:
 	static void Emit(pmath::Vec2);
-	static void FlameEmitter::Emit(pmath::Vec2 pos, float size);
+	static void Emit(pmath::Vec2 pos, float size);
 	static void Init(uth::Object*);
 	static void DeInit();
 };

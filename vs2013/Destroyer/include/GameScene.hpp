@@ -11,6 +11,7 @@
 #include <ExpParAffector.hpp>
 
 #include <Tank.hpp>
+#include <Button.hpp>
 
 
 class GameScene : public uth::Scene
@@ -19,6 +20,8 @@ class GameScene : public uth::Scene
 	uth::PhysicsWorld m_physWorld;
 	uth::PhysicsContactListener contactListener;
 	uth::GameObject m_gameFloor;
+	Button* m_pauseB;
+	uth::GameObject* m_PauseButton;
 
 	enum class LayerId : char
 	{
@@ -31,6 +34,12 @@ class GameScene : public uth::Scene
 	std::map<const LayerId, uth::Layer*> m_layers;
 
 	uth::Layer& getLayer(LayerId id);
+
+	void Control_up();
+	void Control_down();
+	void Control_left();
+	void Control_right();
+
 	void colliderChecks();
 
 	BackgroundManager m_bgManager;
