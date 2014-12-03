@@ -1,6 +1,7 @@
 #pragma once
 
 #include <UtH/UtHEngine.hpp>
+#include <Player.hpp>
 
 class SoldierBehavior : public uth::Component
 {
@@ -11,7 +12,10 @@ class SoldierBehavior : public uth::Component
 	bool				m_isGoingToExp = false;
 	bool				m_isGoingToFlat = false;
 	bool				m_tailWhipped = false;
-	uth::GameObject*	m_player;
+	float				m_attackTime = 1;
+	float				m_attackCounter = 0;
+
+	Player*	m_player;
 	uth::Rigidbody*		m_rigidBody;
 	pmath::Vec2			m_direction;
 	pmath::Vec2			m_maxDistance;
@@ -20,13 +24,13 @@ class SoldierBehavior : public uth::Component
 
 public:
 
-	SoldierBehavior::SoldierBehavior(float speed, uth::GameObject* player) :
+	SoldierBehavior(float speed, Player* player) :
 		m_speed(speed),
 		m_player(player)
 	{
 		
 	}
-	SoldierBehavior::~SoldierBehavior()
+	~SoldierBehavior()
 	{
 
 	}
@@ -45,48 +49,68 @@ public:
 
 	}
 
-	void SoldierBehavior::Update(float dt)
+	void Update(float dt)
 	{
-		if (!m_isStopped && !m_isGoingToExp && !m_tailWhipped)
+		if (!m_isGoingToExp && !m_tailWhipped)
 		{
 			Movement();
 		}
-		else if (m_isStopped && !m_isGoingToExp && !m_tailWhipped)
-		{
-			m_rigidBody->SetVelocity(pmath::Vec2f(0, m_rigidBody->GetVelocity().y));
-			m_rigidBody->SetAngle(0);
-		}
+
 		else if (m_isGoingToExp)
 		{
 			//TODO: add hurt animation frame here
 		}
+
+		Attack(dt);
 	}
 
-	void SoldierBehavior::Movement()
+	void Movement()
 	{
+
+
 		if (m_isGoingLeft)
 		{
 			m_rigidBody->ApplyForce(pmath::Vec2(m_direction.x * m_speed, -10));
 			if (m_rigidBody->GetPosition().x <= m_maxDistance.x)
+			{
+				m_rigidBody->SetVelocity(pmath::Vec2f(0, m_rigidBody->GetVelocity().y));
+				m_rigidBody->SetAngle(0);
 				m_isStopped = true;
+			}
+			else
+			{
+				m_isStopped = false;
+			}
 		}
+
 		else
 		{
 			m_rigidBody->ApplyForce(pmath::Vec2(m_direction.x * m_speed, -10));
 			if (m_rigidBody->GetPosition().x >= m_maxDistance.x)
+			{
+				
+				m_rigidBody->SetVelocity(pmath::Vec2f(0, m_rigidBody->GetVelocity().y));
+				m_rigidBody->SetAngle(0);
 				m_isStopped = true;
+
+			}
+			else
+			{
+				m_isStopped = false;
+			}
 		}
+
 		m_rigidBody->SetAngle(0);
 	}
 	
-	void SoldierBehavior::Hit()
+	void Hit()
 	{
 		m_rigidBody->ApplyImpulse(
 			pmath::Vec2(uth::Randomizer::GetFloat(-1, 1),     //X direction
 			-uth::Randomizer::GetFloat(2, 4)),				  //Y direction
 			pmath::Vec2(0, 0));								  //offset
 	}
-	void SoldierBehavior::TailWhipHit()
+	void TailWhipHit()
 	{
 		m_rigidBody->ApplyImpulse(
 			pmath::Vec2(uth::Randomizer::GetFloat(-10, 10),      //X direction
@@ -94,13 +118,14 @@ public:
 			pmath::Vec2(uth::Randomizer::GetFloat(-25, 25), 0)); //offset
 		m_rigidBody->SetPhysicsGroup(-2);
 		m_isGoingToExp = true;
+		m_isStopped = false;
 	}
-	void SoldierBehavior::Destroy()
+	void Destroy()
 	{
 		m_isDead = true;
 	}
 
-	void SoldierBehavior::setTarget(pmath::Vec2 to)
+	void setTarget(pmath::Vec2 to)
 	{
 		const auto& from = parent->transform.GetPosition();
 		const auto& sc = parent->transform.GetScale();
@@ -112,17 +137,30 @@ public:
 
 	}
 
-	void SoldierBehavior::Shoot()
+	void Shoot()
 	{
 
 	}
 
-	bool SoldierBehavior::isDestroyed()
+	bool isDestroyed()
 	{
 		return m_isDead;
 	}
-	bool SoldierBehavior::isExploding()
+	bool isExploding()
 	{
 		return m_isGoingToExp;
+	}
+
+	void Attack(float dt)
+	{
+		if (m_isStopped)
+		{
+			if (m_attackTime <= m_attackCounter)
+			{
+				m_player->Hit(0.5);
+				m_attackCounter = 0;
+			}
+			m_attackCounter += dt;
+		}
 	}
 };

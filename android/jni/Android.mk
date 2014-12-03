@@ -30,11 +30,28 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE    := uthengine
 LOCAL_SRC_FILES := main.cpp \
-../../vs2013/TestProject/source/TestScene.cpp
+../../vs2013/Destroyer/source/Aeroplane.cpp \
+../../vs2013/Destroyer/source/Background.cpp \
+../../vs2013/Destroyer/source/BackgroundManager.cpp \
+../../vs2013/Destroyer/source/Button.cpp \
+../../vs2013/Destroyer/source/EnemyFactory.cpp \
+../../vs2013/Destroyer/source/ExplosionEmitter.cpp \
+../../vs2013/Destroyer/source/FireBreath.cpp \
+../../vs2013/Destroyer/source/FlameEmitter.cpp \
+../../vs2013/Destroyer/source/GameScene.cpp \
+../../vs2013/Destroyer/source/Health.cpp \
+../../vs2013/Destroyer/source/Heli.cpp \
+../../vs2013/Destroyer/source/Missile.cpp \
+../../vs2013/Destroyer/source/Player.cpp \
+../../vs2013/Destroyer/source/Road.cpp \
+../../vs2013/Destroyer/source/RoadBlock.cpp \
+../../vs2013/Destroyer/source/Statistics.cpp \
+../../vs2013/Destroyer/source/TankBullet.cpp \
+../../vs2013/Destroyer/source/TitleScene.cpp
 LOCAL_LDLIBS    := -llog -landroid -lEGL -lGLESv2 -lOpenSLES
 LOCAL_STATIC_LIBRARIES := android_native_app_glue engine
 LOCAL_SHARED_LIBRARIES :=
-LOCAL_C_INCLUDES += $(LOCAL_PATH)/../../vs2013/TestProject/include/
+LOCAL_C_INCLUDES += $(LOCAL_PATH)/../../vs2013/Destroyer/include/
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/../../include/
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/../../ext/include/
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/../../ext/include/freetype_include/

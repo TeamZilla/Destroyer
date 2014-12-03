@@ -27,7 +27,7 @@ bool GameScene::Init()
 	
 	m_gameFloor.AddComponent(new Sprite(pmath::Vec4(1, 0, 0, 1), pmath::Vec2(3000, 100)));
 	m_gameFloor.AddTag("Floor");
-	m_gameFloor.transform.SetPosition(0, uthEngine.GetWindow().GetSize().y);
+	m_gameFloor.transform.SetPosition(0, uthEngine.GetWindow().GetCamera().GetSize().y);
 	m_gameFloor.AddComponent(new Rigidbody(m_physWorld));
 	m_gameFloor.GetComponent<Rigidbody>()->SetKinematic(true);
 
@@ -44,7 +44,7 @@ bool GameScene::Init()
 
 	m_road->Init(m_player,&m_physWorld);
 	
-	m_bgManager.SetCameraStartPos(pmath::Vec2f(0, uthEngine.GetWindow().GetSize().y/2));
+	m_bgManager.SetCameraStartPos(pmath::Vec2f(0, uthEngine.GetWindow().GetCamera().GetSize().y / 2));
 	
 
 	m_music = uthRS.LoadSound("Audio/Music/city_theme3.wav");
@@ -52,9 +52,7 @@ bool GameScene::Init()
 	m_music->Loop(true);
 
 	m_waveSound = uthRS.LoadSound("Audio/Effects/Explosion1.wav");
-	//m_waveSound->SetVolume(10);
 
-	//ParticleInit();
 	ExplosionEmitter::Init(&getLayer(LayerId::Foreground));
 	FlameEmitter::Init(&getLayer(LayerId::Foreground));
 
@@ -63,16 +61,25 @@ bool GameScene::Init()
 
 	colliderChecks();
 	isPaused = false;
+	isPlayerDead = false;
+	m_soundSlowerTimer = 0;
 
 	uth::Texture* PlayTex = uthRS.LoadTexture("UI/pause.png");
 	PlayTex->SetSmooth(true);
-
+	//UI
 	getLayer(LayerId::Userinterface).AddChild(m_PauseButton = new GameObject());
 	m_PauseButton->AddComponent(new AnimatedSprite(PlayTex, 2, 2, 1, 0));
 	m_PauseButton->transform.SetOrigin(uth::Origin::TopLeft);
-	m_PauseButton->transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition().x - uthEngine.GetWindow().GetSize().x / 2 + 1500,
-		uthEngine.GetWindow().GetCamera().GetPosition().y - uthEngine.GetWindow().GetSize().y / 2 + 25);
+	m_PauseButton->transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition().x - uthEngine.GetWindow().GetCamera().GetSize().x / 2 + 1500,
+		uthEngine.GetWindow().GetCamera().GetPosition().y - uthEngine.GetWindow().GetCamera().GetSize().y / 2 + 25);
 	m_pauseB = new Button(m_PauseButton);
+
+	//auto gotext = uthRS.LoadTexture("UI/go_pholder.png");
+	//m_gameOverScreenPicture.AddComponent(new Sprite(gotext));
+	//m_gameFloor.transform.SetPosition(uthEngine.GetWindow().GetCamera().GetSize().x,
+	//								  uthEngine.GetWindow().GetCamera().GetSize().y);
+
+	//getLayer(LayerId::Userinterface).AddChild(&m_gameOverScreenPicture);
 
 	return true;
 }
@@ -81,9 +88,8 @@ bool GameScene::Init()
 // Update loop. Gone trought once per frame.
 void GameScene::Update(float dt)
 {
-	if (!isPaused)
-	{
-		
+	if (!isPaused && !isPlayerDead)
+	{	
 		static int count;
 		static float time = 0;
 		time += dt;
@@ -112,119 +118,145 @@ void GameScene::Update(float dt)
 		}
 
 		EnemyFactory::Update(dt);
-
 		Scene::Update(dt);
-		//dt *= 20;
 		m_pauseB->update(dt);
-		//m_heli->Update(dt);
+		ControlFunctions();
+		if (Statistics::player_hp <= 0)
+			isPlayerDead = true;
 
-
-#ifdef UTH_SYSTEM_ANDROID
-
-		const auto& wnd = uthEngine.GetWindow();
-		const pmath::Vec2& touchStart = wnd.PixelToCoords(uthInput.Touch[0].GetStartPosition());
-		const pmath::Vec2& touchEnd = wnd.PixelToCoords(uthInput.Touch[0].GetEndPosition());
-
-		if (uthInput.Touch.Motion() == TouchMotion::TAP)
-		{
-			m_health->TakeDamage(1);
-		}
-
-		if(uthInput.Touch.Motion() == TouchMotion::DRAG)
-		{
-			if (touchStart.y - 80 > touchEnd.y + 80)
-			{
-				if (!m_player.m_isCrouching)
-				{
-					m_player->Jump();
-				}
-			}
-			else if (touchStart.y + 80 < touchEnd.y - 80)
-			{
-				if (!m_player.m_isJumping)
-				{
-					m_player->Crouch();
-					m_bgManager.Shake(5, 0.4f); // Amount, Delay
-				}
-			}
-
-			if (touchStart.x + 90 > touchEnd.x - 90)
-			{
-				if (m_player->CheckIfGoingRight())
-				{
-					m_player->ChangeDirection();
-				}
-			}
-			else if (touchStart.x - 90 < touchEnd.x + 90)
-			{
-				if (!m_player->CheckIfGoingRight())
-				{
-					m_player->ChangeDirection();
-				}
-			}
-		}
-
-
-#else
-		if (uthInput.Common.Event() == uth::InputEvent::TAP)
-		{
-			//m_health->TakeDamage(1);
-			m_player->Hit(3);
-		}
-		if (uthInput.Keyboard.IsKeyDown(Keyboard::Up))
-		{
-			if (!m_player->m_isCrouching && !m_player->m_isJumping)
-				m_player->Jump();
-		}
-		if (uthInput.Keyboard.IsKeyDown(Keyboard::Down))
-		{
-			if (!m_player->m_isJumping && !m_player->m_isCrouching && !m_player->m_isTurning)
-			{
-				m_player->Crouch();
-				isInitedShake = true;
-			}
-		}
-		if (uthInput.Keyboard.IsKeyDown(Keyboard::Left) &&
-			!uthInput.Keyboard.IsKeyDown(Keyboard::Right))
-		{
-			if (m_player->CheckIfGoingRight())
-			{
-				m_player->ChangeDirection();
-			}
-		}
-
-		if (uthInput.Keyboard.IsKeyDown(Keyboard::Right) &&
-			!uthInput.Keyboard.IsKeyDown(Keyboard::Left))
-		{
-			if (!m_player->CheckIfGoingRight())
-			{
-				m_player->ChangeDirection();
-			}
-		}
-
-		if (uthInput.Mouse.IsButtonReleased(Mouse::LEFT))
-		{
-			FlameEmitter::Emit(uthInput.Mouse.Position());
-			getLayer(LayerId::InGame).AddChild(new FireBreath(pmath::Vec2(0, 280), uthInput.Mouse.Position()));
-		}
-
-		if (uthInput.Keyboard.IsKeyDown(Keyboard::P))
+		if (m_pauseB->IsPressedS())
 		{
 			isPaused = true;
 		}
+
+		//Music gets normal
+		if (m_soundSlowerTimer > 0)
+		{
+			m_soundSlowerTimer -= dt * 90;
+			m_music->SetPitch(100-m_soundSlowerTimer);
+		}
 	}
-	else //TODO:: Pause menu stuff here
+	//If Paused
+	else if (isPaused && !isPlayerDead) //TODO:: Pause menu stuff here
 	{
-		if (uthInput.Keyboard.IsKeyDown(Keyboard::O))
+		//Music gets slower
+		if (m_soundSlowerTimer < 100)
+		{
+			m_soundSlowerTimer += dt * 90;
+			m_music->SetPitch(100-m_soundSlowerTimer);
+		}
+
+	#ifdef UTH_SYSTEM_ANDROID
+		//TODO: Android only pause functions here
+
+	#else
+		//PC only code here
+
+	#endif
+		//If user press m_mause button game resumes
+		m_pauseB->update(dt);
+		if (m_pauseB->IsPressedS())
 		{
 			isPaused = false;
 		}
 	}
+	//TODO::REMOVE COMMENTS SO PLAYER WILL DIE
+	//else if (!isPaused && isPlayerDead) //Game over functions here
+	//{
+
+	//}
+} //Update end
+
+
+void GameScene::ControlFunctions()
+{
+
+#ifdef UTH_SYSTEM_ANDROID
+
+	const auto& wnd = uthEngine.GetWindow();
+	const pmath::Vec2& touchStart = wnd.PixelToCoords(uthInput.Touch[0].GetStartPosition());
+	const pmath::Vec2& touchEnd = wnd.PixelToCoords(uthInput.Touch[0].GetEndPosition());
+
+	if (uthInput.Touch.Motion() == TouchMotion::DRAG)
+	{	//Swipe up
+		if (touchStart.y > touchEnd.y + 160)
+		{
+			Control_up();
+		}
+		//Swipe down
+		else if (touchStart.y < touchEnd.y - 160)
+		{
+			Control_down();
+		}
+		//Swipe left
+		else if (touchStart.x > touchEnd.x + 180)
+		{
+			Control_left();
+		}
+		//Swipe right
+		else if (touchStart.x < touchEnd.x - 180)
+		{
+			Control_right();
+		}
+	}
+#else
+	if (uthInput.Keyboard.IsKeyDown(Keyboard::Up))
+	{
+		Control_up();
+	}
+	if (uthInput.Keyboard.IsKeyDown(Keyboard::Down))
+	{
+		Control_down();
+	}
+	if (uthInput.Keyboard.IsKeyDown(Keyboard::Left) &&
+		!uthInput.Keyboard.IsKeyDown(Keyboard::Right))
+	{
+		Control_left();
+	}
+	if (uthInput.Keyboard.IsKeyDown(Keyboard::Right) &&
+		!uthInput.Keyboard.IsKeyDown(Keyboard::Left))
+	{
+		Control_right();
+	}
+	if (uthInput.Keyboard.IsKeyDown(Keyboard::P))
+	{
+		isPaused = true;
+	}
+
+		if (uthInput.Keyboard.IsKeyDown(Keyboard::F))
+		{
+		}
 
 #endif
-	//return true; // Update succeeded.
 }
 
+void GameScene::Control_up()
+{
+	if (!m_player->m_isCrouching && !m_player->m_isJumping)
+		m_player->Jump();
+}
+void GameScene::Control_down()
+{
+	if (!m_player->m_isJumping && !m_player->m_isCrouching && !m_player->m_isTurning)
+	{
+		m_player->Crouch();
+		isInitedShake = true;
+	}
+}
+void GameScene::Control_left()
+{
+	if (m_player->CheckIfGoingRight())
+	{
+		m_player->ChangeDirection();
+	}
+}
+void GameScene::Control_right()
+{
+	if (!m_player->CheckIfGoingRight())
+	{
+		m_player->ChangeDirection();
+	}
+}
 void GameScene::colliderChecks()
 {
 	contactListener.onBeginContact = [](b2Contact* contact, GameObject* A, GameObject* B)
@@ -264,7 +296,6 @@ void GameScene::colliderChecks()
 			else if (B->HasTag("Soldier"))
 			{
 				B->GetComponent<SoldierBehavior>()->Destroy();
-				static_cast<Player*>(A)->Hit(3);
 			}
 			else if (B->HasTag("Aeroplane"))
 			{
@@ -365,16 +396,15 @@ void GameScene::colliderChecks()
 	m_physWorld.SetContactListener(&contactListener);
 
 }
-
 //Default constructor for initialising constant variables.
 GameScene::GameScene()
 //: m_bgManager(250,500,150)
 	:
 	m_bgManager
 	(
-		uthEngine.GetWindow().GetSize().y - 470,
-		uthEngine.GetWindow().GetSize().y - 220,
-		uthEngine.GetWindow().GetSize().y - 570
+		uthEngine.GetWindow().GetCamera().GetSize().y - 470,
+		uthEngine.GetWindow().GetCamera().GetSize().y - 220,
+		uthEngine.GetWindow().GetCamera().GetSize().y - 570
 	),
 	m_physWorld(0, 10)
 {

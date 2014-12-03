@@ -6,7 +6,8 @@
 enum SceneName
 {
 	DEFAULT = UTHDefaultScene,
-	GAME,TITLE,
+	TITLE,
+	GAME,
 	COUNT // Keep this last, it tells how many scenes there are
 };
 

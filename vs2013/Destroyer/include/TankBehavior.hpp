@@ -7,7 +7,7 @@ class TankBehavior : public uth::Component
 {
 	float				m_speed;
 	float				m_explodeTimer = 3;
-	float				m_shootTimer = 3;
+	float				m_shootTimer = 0;
 	bool				m_isGoingLeft;
 	bool				m_isDead = false;
 	bool				m_isGoingToExp = false;
@@ -19,19 +19,19 @@ class TankBehavior : public uth::Component
 	pmath::Vec2			m_maxDistance;
 	pmath::Vec2			m_minDistance;
 	pmath::Vec2			m_target;
-	float				m_combatIntensity = 2;
+	float				m_combatIntensity = 5;
 	float				m_combatTimer = 0;
 
 public:
 
-	TankBehavior::TankBehavior(float speed, Player* player, uth::Layer* layer) :
+	TankBehavior(float speed, Player* player, uth::Layer* layer) :
 		m_speed(speed),
 		m_player(player),
 		m_layer(layer)
 	{
 		
 	}
-	TankBehavior::~TankBehavior()
+	~TankBehavior()
 	{
 
 	}
@@ -53,7 +53,7 @@ public:
 
 	}
 
-	void TankBehavior::Update(float dt)
+	void Update(float dt)
 	{
 		if (m_isGoingToExp)
 			Exploding(dt);
@@ -64,7 +64,7 @@ public:
 		}
 	}
 
-	void TankBehavior::Movement()
+	void Movement()
 	{
 		if (m_isGoingLeft)
 		{
@@ -83,7 +83,7 @@ public:
 		m_rigidBody->SetAngle(0);
 	}
 	
-	void TankBehavior::Exploding(float dt)
+	void Exploding(float dt)
 	{
 		m_explodeTimer -= dt;
 		//auto& col = parent->GetComponent<uth::Sprite>()->GetColor();
@@ -99,7 +99,7 @@ public:
 		//	m_isDead = true;
 	}
 
-	void TankBehavior::Hit()
+	void Hit()
 	{
 		m_rigidBody->ApplyImpulse(
 			pmath::Vec2(uth::Randomizer::GetFloat(-10, 10),      //X direction
@@ -110,12 +110,12 @@ public:
 		parent->GetComponent<uth::AnimatedSprite>()->ChangeAnimation(2, 1, 2, 0, false);
 	}
 
-	void TankBehavior::Destroy()
+	void Destroy()
 	{
 		m_isDead = true;
 	}
 
-	void TankBehavior::setTarget(pmath::Vec2 to)
+	void setTarget(pmath::Vec2 to)
 	{
 		const auto& from = parent->transform.GetPosition();
 		const auto& sc = parent->transform.GetScale();
@@ -126,7 +126,7 @@ public:
 
 	}
 
-	void TankBehavior::Combat(float dt)
+	void Combat(float dt)
 	{
 
 		if (m_combatIntensity <= m_combatTimer)
@@ -142,16 +142,16 @@ public:
 	}
 
 
-	void TankBehavior::Shoot()
+	void Shoot()
 	{
 		m_layer->AddChild(new TankBullet(m_player, parent->transform.GetPosition()));
 	}
 
-	bool TankBehavior::isDestroyed()
+	bool isDestroyed()
 	{
 		return m_isDead;
 	}
-	bool TankBehavior::isExploding()
+	bool isExploding()
 	{
 		return m_isGoingToExp;
 	}

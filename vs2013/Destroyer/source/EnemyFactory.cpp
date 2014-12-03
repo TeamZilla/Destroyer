@@ -26,7 +26,7 @@ std::shared_ptr<GameObject> EnemyFactory::CreateTank()
 	const static float speed(8.0f);
 	static uth::Texture* textureId = uthRS.LoadTexture("Enemies/tank_sheet.png");
 
-	auto& obj = std::shared_ptr<GameObject>(new GameObject());
+	auto obj = std::shared_ptr<GameObject>(new GameObject());
 	obj->AddTags({ "Tank", "Enemy" });
 	obj->AddComponent(new AnimatedSprite(textureId,3,3,1,0));
 
@@ -46,7 +46,7 @@ std::shared_ptr<GameObject> EnemyFactory::CreateSoldier()
 	const static float speed(uth::Randomizer::GetFloat(1.5f,4.5f));
 	static uth::Texture* textureId = uthRS.LoadTexture("Enemies/soldier.png");
 
-	auto& obj = std::shared_ptr<GameObject>(new GameObject());
+	auto obj = std::shared_ptr<GameObject>(new GameObject());
 	obj->AddTags({ "Soldier", "Enemy" });
 	obj->AddComponent(new AnimatedSprite(textureId, 6, 6, 1, 12));
 
@@ -66,7 +66,7 @@ std::shared_ptr<GameObject> EnemyFactory::CreateAeroplane()
 {
 	const static std::string textureId("Enemies/aeroplane.png");
 
-	auto& obj = std::shared_ptr<GameObject>(new GameObject());
+	auto obj = std::shared_ptr<GameObject>(new GameObject());
 	obj->AddTags({ "Aeroplane", "Enemy" });
 	obj->AddComponent(new Sprite(textureId));
 
@@ -176,13 +176,13 @@ for (auto& e : m_layer->Children("Heli"))
 
 void EnemyFactory::Update(float dt)
 {
-	if (m_layer->Children("Tank").size() < 4)
+	if (m_layer->Children("Tank").size() < 0)
 		m_tankSpawn(dt);
 	if (m_layer->Children("Soldier").size() < 25)
 		m_soldierSpawn(dt);
 	if (m_layer->Children("Aeroplane").size() < 1)
 		m_aeroplaneSpawn(dt);
-	if (m_layer->Children("Heli").size() < 2)
+	if (m_layer->Children("Heli").size() < 0)
 		m_heliSpawn(dt);
 
 

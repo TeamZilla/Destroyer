@@ -42,9 +42,27 @@ void Transform::SetPosition(const float posX, const float posY)
 {
 	SetPosition(pmath::Vec2(posX, posY));
 }
+void uth::Transform::SetGlobalPosition(const pmath::Vec2& position)
+{
+    // Updating the transform is required
+    // (will most likely break everything if not called)
+    updateTransform();
+    const auto transform = GetTransform()*m_modelTransform.inverse();
+
+    SetPosition(transform.inverse() * position);
+}
+void uth::Transform::SetGlobalPosition(const float posX, const float posY)
+{
+    SetGlobalPosition(pmath::Vec2(posX, posY));
+}
 const pmath::Vec2& Transform::GetPosition() const
 {
     return m_position;
+}
+const pmath::Vec2 uth::Transform::GetGlobalPosition() const
+{
+    const auto& transform = GetTransform();
+    return pmath::Vec2(transform[0][3], transform[1][3]);
 }
 
 void Transform::SetSize(const pmath::Vec2& size)
@@ -180,13 +198,13 @@ pmath::Rect Transform::GetGlobalBounds() const
 
 pmath::Rect Transform::GetBounds() const
 {
-    Deprecated("");
+    Deprecated("Use GetLocalBounds()");
     return GetLocalBounds();
 }
 
 pmath::Rect Transform::GetTransformedBounds() const
 {
-    Deprecated("");
+    Deprecated("Use GetGlobalBounds()");
     return GetGlobalBounds();
 }
 
@@ -205,16 +223,9 @@ const pmath::Mat4& Transform::GetTransform() const
 {
 	updateTransform();
 
-	if (parent && (parent->HasParent<GameObject>()))
+	if (parent && (parent->HasParent<Object>()))
 	{
-		m_combinedTransform = parent->Parent<GameObject>()->transform.GetTransform() *
-			m_modelTransform;
-
-		return m_combinedTransform;
-	}
-	else if (parent && parent->HasParent<Layer>())
-	{
-		m_combinedTransform = parent->Parent<Layer>()->transform.GetTransform() *
+		m_combinedTransform = parent->Parent<Object>()->transform.GetTransform() *
 			m_modelTransform;
 
 		return m_combinedTransform;
