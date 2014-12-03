@@ -1,4 +1,5 @@
 #include <Road.hpp>
+#include <UtH/Platform/JavaFunctions.hpp>
 using namespace uth;
 
 Road::Road(const int blocks)
@@ -82,6 +83,10 @@ void Road::InitShock()
 			m_shockDir = -1;
 			m_shockSpeed = m_shockStartSpeed;
 		}
+
+#ifdef UTH_SYSTEM_ANDROID
+		javaFunc::Vibrate(100);
+#endif
 	}
 
 

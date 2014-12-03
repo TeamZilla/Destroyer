@@ -22,6 +22,8 @@ public:
 	void SetLinearSpeed(float);
 	void SetHoverSpeed(float);
 	bool isDestroyed();
+	//Taking damage and dying
+	void takeDamage(int amount);
 
 private:
 	int m_health;
