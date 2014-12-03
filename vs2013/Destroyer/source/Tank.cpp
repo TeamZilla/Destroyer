@@ -34,7 +34,6 @@ Tank::Tank(pmath::Vec2 pos, PhysicsWorld* physworld)
 }
 Tank::~Tank()
 {
-
 }
 void Tank::update(float dt)
 {
