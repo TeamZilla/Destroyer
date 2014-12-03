@@ -49,20 +49,23 @@ void Health::TakeDamage(float amount)
 
 void Health::update(float dt)
 {
-	m_Green->transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition().x - uthEngine.GetWindow().GetSize().x / 2 +100,
-		uthEngine.GetWindow().GetCamera().GetPosition().y - uthEngine.GetWindow().GetSize().y / 2 + 20) ;
-	m_Red->transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition().x - uthEngine.GetWindow().GetSize().x / 2 + 100,
-		uthEngine.GetWindow().GetCamera().GetPosition().y - uthEngine.GetWindow().GetSize().y / 2 + 20);
-	m_bottom->transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition().x - uthEngine.GetWindow().GetSize().x / 2 + 100,
-		uthEngine.GetWindow().GetCamera().GetPosition().y - uthEngine.GetWindow().GetSize().y / 2 + 20);
 
-	m_cover->transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition().x - uthEngine.GetWindow().GetSize().x / 2 + 32,
-		uthEngine.GetWindow().GetCamera().GetPosition().y - uthEngine.GetWindow().GetSize().y / 2 +15);
+	auto& camera = uthEngine.GetWindow().GetCamera();
+
+	 m_Green->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 2 + 75,
+		camera.GetPosition().y - camera.GetSize().y / 2 + 20) ;
+	   m_Red->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 2 + 75,
+		camera.GetPosition().y - camera.GetSize().y / 2 + 20);
+	m_bottom->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 2 + 75,
+		camera.GetPosition().y - camera.GetSize().y / 2 + 20);
 	
-	m_Green->transform.SetRotation(uthEngine.GetWindow().GetCamera().GetRotation());
-	m_Red->transform.SetRotation(uthEngine.GetWindow().GetCamera().GetRotation());
-	m_bottom->transform.SetRotation(uthEngine.GetWindow().GetCamera().GetRotation());
-	m_cover->transform.SetRotation(uthEngine.GetWindow().GetCamera().GetRotation());
+	m_cover->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 2 + 17,
+		camera.GetPosition().y - camera.GetSize().y / 2 + 15);
+	
+	 m_Green->transform.SetRotation(camera.GetRotation());
+	   m_Red->transform.SetRotation(camera.GetRotation());
+	m_bottom->transform.SetRotation(camera.GetRotation());
+	 m_cover->transform.SetRotation(camera.GetRotation());
 
 	if (m_Chealth == m_Mhealth)
 	{

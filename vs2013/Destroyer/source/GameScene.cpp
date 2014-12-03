@@ -70,8 +70,7 @@ bool GameScene::Init()
 	getLayer(LayerId::Userinterface).AddChild(m_PauseButton = new GameObject());
 	m_PauseButton->AddComponent(new AnimatedSprite(PlayTex, 2, 2, 1, 0));
 	m_PauseButton->transform.SetOrigin(uth::Origin::TopLeft);
-	m_PauseButton->transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition().x - uthEngine.GetWindow().GetCamera().GetSize().x / 2 + 1500,
-		uthEngine.GetWindow().GetCamera().GetPosition().y - uthEngine.GetWindow().GetCamera().GetSize().y / 2 + 25);
+	
 	m_pauseB = new Button(m_PauseButton);
 
 	//auto gotext = uthRS.LoadTexture("UI/go_pholder.png");
@@ -88,8 +87,14 @@ bool GameScene::Init()
 // Update loop. Gone trought once per frame.
 void GameScene::Update(float dt)
 {
+	auto& camera = uthEngine.GetWindow().GetCamera();
+
 	if (!isPaused && !isPlayerDead)
 	{	
+		m_PauseButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 2 + 1150,
+											 camera.GetPosition().y - camera.GetSize().y / 2 + 20);
+		m_PauseButton->transform.SetRotation(camera.GetRotation());
+		
 		static int count;
 		static float time = 0;
 		time += dt;
