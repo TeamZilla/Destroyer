@@ -26,7 +26,7 @@ Missile::Missile(pmath::Vec2f start, Player* player)
 	m_scale = 0.5f;
 	m_isDestroyed = false;
 	m_player = player;
-	m_dmg = 3;
+	m_dmg = 2;
 
 	transform.SetScale(m_scale);
 }
