@@ -32,6 +32,7 @@ public:
 	static uth::Sound* music_gameOver;
 	static uth::Sound* music_afterMath;
 	static void ChangeMusic(int);
+	static float GetScore();
 	//Here you write stuff
 	static std::string save_data;
 
