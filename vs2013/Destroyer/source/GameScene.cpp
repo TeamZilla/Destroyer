@@ -51,6 +51,7 @@ bool GameScene::Init()
 
 	m_music = uthRS.LoadSound("Audio/Music/city_theme3.wav");
 	m_music->Play();
+	m_music->SetPitch(100);
 	m_music->Loop(true);
 
 	m_waveSound = uthRS.LoadSound("Audio/Effects/Explosion1.wav");
@@ -154,23 +155,18 @@ void GameScene::Update(float dt)
 
 		EnemyFactory::Update(dt);
 		Scene::Update(dt);
-		m_pauseB->update(dt);
 		ControlFunctions();
 		if (Statistics::player_hp <= 0)
+		{
 			isPlayerDead = true;
+			m_music->Stop();
 
+		}
+
+		m_pauseB->update(dt);
 		if (m_pauseB->IsPressedS())
 		{
-			
-						
-			m_pauseMenu->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 540, camera.GetPosition().y - camera.GetSize().y / 2 +20 );
-			m_MenuButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 650, camera.GetPosition().y - camera.GetSize().y / 2 + 450);
-			m_RestartButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 650, camera.GetPosition().y - camera.GetSize().y / 2 + 325);
-
-			
-
-
-			
+			isPaused = true;	
 		}
 		
 
@@ -194,6 +190,14 @@ void GameScene::Update(float dt)
 			m_music->SetPitch(100 - m_soundSlowerTimer);
 		}
 
+		m_pauseMenu->SetActive(true);
+		m_MenuButton->SetActive(true);
+		m_RestartButton->SetActive(true);
+
+		m_pauseMenu->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 540, camera.GetPosition().y - camera.GetSize().y / 2 + 20);
+		m_MenuButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 650, camera.GetPosition().y - camera.GetSize().y / 2 + 450);
+		m_RestartButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 650, camera.GetPosition().y - camera.GetSize().y / 2 + 325);
+
 	#ifdef UTH_SYSTEM_ANDROID
 		//TODO: Android only pause functions here
 
@@ -202,12 +206,20 @@ void GameScene::Update(float dt)
 
 	#endif
 		//If user press m_pause button game resumes
+		m_menuB->update(dt);
+		m_restartB->update(dt);
 		m_pauseB->update(dt);
 		if (m_pauseB->IsPressedS())
 		{
+			m_pauseMenu->SetActive(false);
+			m_MenuButton->SetActive(false);
+			m_RestartButton->SetActive(false);
 			isPaused = false;
-			
 		}
+		if (m_restartB->IsPressedS())
+			uthSceneM.GoToScene(GAME);
+		if (m_menuB->IsPressedS())
+			uthSceneM.GoToScene(TITLE);
 	}
 	else if (!isPaused && isPlayerDead) //Game over functions here
 	{
