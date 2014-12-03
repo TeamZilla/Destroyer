@@ -27,6 +27,9 @@ class GameScene : public uth::Scene
 	uth::GameObject* m_MenuButton;
 	uth::GameObject* m_RestartButton;
 	uth::GameObject*  m_gameOverScreenPicture;
+	uth::GameObject* m_ExitButton;
+	
+
 
 	enum class LayerId : char
 	{
