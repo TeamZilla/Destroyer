@@ -86,18 +86,14 @@ bool GameScene::Init()
 	m_pauseB = new Button(m_PauseButton);
 
 	getLayer(LayerId::Userinterface).AddChild(m_MenuButton = new GameObject());
-	m_MenuButton->AddComponent(new AnimatedSprite(playTex, 2, 2, 1, 0));
+	m_MenuButton->AddComponent(new AnimatedSprite(restarttext, 2, 2, 1, 0));
 	m_MenuButton->transform.SetOrigin(uth::Origin::TopLeft);
-	m_MenuButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 2 + 300,
-									    camera.GetPosition().y - camera.GetSize().y / 2 + 25);
 	m_menuB = new Button(m_MenuButton);
 	m_MenuButton->SetActive(false);
 
 	getLayer(LayerId::Userinterface).AddChild(m_RestartButton = new GameObject());
-	m_RestartButton->AddComponent(new AnimatedSprite(playTex, 2, 2, 1, 0));
+	m_RestartButton->AddComponent(new AnimatedSprite(menutext, 2, 2, 1, 0));
 	m_RestartButton->transform.SetOrigin(uth::Origin::TopLeft);
-	m_RestartButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 2 + 500,
-										   camera.GetPosition().y - camera.GetSize().y / 2 + 25);
 	m_restartB = new Button(m_RestartButton);
 	m_RestartButton->SetActive(false);
 
@@ -192,15 +188,13 @@ void GameScene::Update(float dt)
 		auto& camera = uthEngine.GetWindow().GetCamera();
 
 		m_gameOverScreenPicture->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 50, camera.GetPosition().y - camera.GetSize().y / 2);
-		m_MenuButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 175, camera.GetPosition().y - camera.GetSize().y /2 + 200);
-		m_RestartButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 475, camera.GetPosition().y - camera.GetSize().y /2 + 200);
+		m_MenuButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 200, camera.GetPosition().y - camera.GetSize().y /2 + 630);
+		m_RestartButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 500, camera.GetPosition().y - camera.GetSize().y /2 + 630);
 
 		if (m_restartB->IsPressedS())
 			uthSceneM.GoToScene(GAME);
 		if (m_menuB->IsPressedS())
 			uthSceneM.GoToScene(TITLE);
-
-
 	}
 } //Update end
 
