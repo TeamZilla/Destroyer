@@ -125,6 +125,9 @@ bool GameScene::Init()
 // Update loop. Gone trought once per frame.
 void GameScene::Update(float dt)
 {
+	if (dt > 0.1)
+		dt = 0.1;
+
 	auto& camera = uthEngine.GetWindow().GetCamera();
 
 	if (m_blackOverlay->GetComponent<Sprite>()->GetColor().a > 0)
@@ -265,8 +268,8 @@ void GameScene::Update(float dt)
 		auto& camera = uthEngine.GetWindow().GetCamera();
 
 		m_gameOverScreenPicture->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 50, camera.GetPosition().y - camera.GetSize().y / 2);
-		m_MenuButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 200, camera.GetPosition().y - camera.GetSize().y /2 + 630);
-		m_RestartButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 500, camera.GetPosition().y - camera.GetSize().y /2 + 630);
+		m_MenuButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 100, camera.GetPosition().y - camera.GetSize().y /2 + 600);
+		m_RestartButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 400, camera.GetPosition().y - camera.GetSize().y /2 + 600);
 
 		if (m_restartB->IsPressedS())
 		{

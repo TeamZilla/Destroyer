@@ -86,7 +86,7 @@ std::shared_ptr<GameObject> EnemyFactory::CreateHeli()
 {
 	const static std::string textureId("Enemies/heli.png");
 
-	auto spawn = pmath::Vec2(SpawnPosition().x,SpawnPosition().y - 300);
+	auto spawn = pmath::Vec2(SpawnPosition().x - 100,SpawnPosition().y - 300);
 	auto obj = new Heli(spawn,m_player);
 	obj->AddTags({ "Heli", "Enemy" });
 
@@ -104,7 +104,7 @@ std::shared_ptr<GameObject> EnemyFactory::CreateHeli()
 
 pmath::Vec2 EnemyFactory::SpawnPosition()
 {
-	const static pmath::Vec2 spawnPosition(m_player->transform.GetPosition().x + 800, 500);
+	const static pmath::Vec2 spawnPosition(m_player->transform.GetPosition().x + 1100, 500);
 
 	if (uth::Randomizer::GetInt(0, 11) < 6)
 		return pmath::Vec2(spawnPosition.x, spawnPosition.y);

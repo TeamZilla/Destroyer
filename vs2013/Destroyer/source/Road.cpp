@@ -85,7 +85,7 @@ void Road::InitShock()
 		}
 
 #ifdef UTH_SYSTEM_ANDROID
-		javaFunc::Vibrate(100);
+		javaFunc::Vibrate(1000);
 #endif
 	}
 
