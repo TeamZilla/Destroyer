@@ -7,7 +7,7 @@ class TankBehavior : public uth::Component
 {
 	float				m_speed;
 	float				m_explodeTimer = 3;
-	float				m_shootTimer = 3;
+	float				m_shootTimer = 0;
 	bool				m_isGoingLeft;
 	bool				m_isDead = false;
 	bool				m_isGoingToExp = false;
@@ -19,7 +19,7 @@ class TankBehavior : public uth::Component
 	pmath::Vec2			m_maxDistance;
 	pmath::Vec2			m_minDistance;
 	pmath::Vec2			m_target;
-	float				m_combatIntensity = 2;
+	float				m_combatIntensity = 5;
 	float				m_combatTimer = 0;
 
 public:

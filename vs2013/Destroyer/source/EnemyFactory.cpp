@@ -182,7 +182,7 @@ void EnemyFactory::Update(float dt)
 		m_soldierSpawn(dt);
 	if (m_layer->Children("Aeroplane").size() < 1)
 		m_aeroplaneSpawn(dt);
-	if (m_layer->Children("Heli").size() < 2)
+	if (m_layer->Children("Heli").size() < 1)
 		m_heliSpawn(dt);
 
 

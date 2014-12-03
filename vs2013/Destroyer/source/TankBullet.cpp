@@ -32,7 +32,7 @@ void TankBullet::Init()
 	}
 	transform.SetRotation(180*atan(m_direction.y / m_direction.x)/pmath::pi);
 
-	m_dmg = 3;
+	m_dmg = 4;
 
 }
 void TankBullet::update(float m_dt)
@@ -46,7 +46,7 @@ void TankBullet::hitCheck()
 {
 	if ((pmath::Vec2(0, 360) - transform.GetPosition()).length() <= 140)
 	{
-		m_player->Hit(m_player->CheckIfGoingRight() == (m_direction.x < 0 ? true : false) ? m_dmg : m_dmg / 3);
+		m_player->Hit(m_player->CheckIfGoingRight() == (m_direction.x < 0 ? true : false) ? m_dmg : m_dmg / 10);
 		ExplosionEmitter::Emit(transform.GetPosition());
 		Parent()->RemoveChild(this);
 	}
