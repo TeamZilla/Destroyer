@@ -1,4 +1,6 @@
 #include <Road.hpp>
+#include <UtH/Platform/JavaFunctions.hpp>
+
 using namespace uth;
 
 Road::Road(const int blocks)
@@ -75,10 +77,12 @@ void Road::InitShock()
 		if (m_player->CheckIfGoingRight() == true)
 		{
 			m_shockDir = 1;
+			javaFunc::Vibrate(100);
 		}
 		else
 		{
 			m_shockDir = -1;
+			javaFunc::Vibrate(100);
 		}
 	}
 

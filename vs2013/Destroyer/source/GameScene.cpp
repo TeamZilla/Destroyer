@@ -52,9 +52,7 @@ bool GameScene::Init()
 	m_music->Loop(true);
 
 	m_waveSound = uthRS.LoadSound("Audio/Effects/Explosion1.wav");
-	//m_waveSound->SetVolume(10);
 
-	//ParticleInit();
 	ExplosionEmitter::Init(&getLayer(LayerId::Foreground));
 	FlameEmitter::Init(&getLayer(LayerId::Foreground));
 
@@ -63,16 +61,25 @@ bool GameScene::Init()
 
 	colliderChecks();
 	isPaused = false;
+	isPlayerDead = false;
+	m_soundSlowerTimer = 0;
 
 	uth::Texture* PlayTex = uthRS.LoadTexture("UI/pause.png");
 	PlayTex->SetSmooth(true);
-
+	//UI
 	getLayer(LayerId::Userinterface).AddChild(m_PauseButton = new GameObject());
 	m_PauseButton->AddComponent(new AnimatedSprite(PlayTex, 2, 2, 1, 0));
 	m_PauseButton->transform.SetOrigin(uth::Origin::TopLeft);
 	m_PauseButton->transform.SetPosition(uthEngine.GetWindow().GetCamera().GetPosition().x - uthEngine.GetWindow().GetCamera().GetSize().x / 2 + 1500,
 		uthEngine.GetWindow().GetCamera().GetPosition().y - uthEngine.GetWindow().GetCamera().GetSize().y / 2 + 25);
 	m_pauseB = new Button(m_PauseButton);
+
+	//auto gotext = uthRS.LoadTexture("UI/go_pholder.png");
+	//m_gameOverScreenPicture.AddComponent(new Sprite(gotext));
+	//m_gameFloor.transform.SetPosition(uthEngine.GetWindow().GetCamera().GetSize().x,
+	//								  uthEngine.GetWindow().GetCamera().GetSize().y);
+
+	//getLayer(LayerId::Userinterface).AddChild(&m_gameOverScreenPicture);
 
 	return true;
 }
@@ -81,9 +88,8 @@ bool GameScene::Init()
 // Update loop. Gone trought once per frame.
 void GameScene::Update(float dt)
 {
-	if (!isPaused)
-	{
-		
+	if (!isPaused && !isPlayerDead)
+	{	
 		static int count;
 		static float time = 0;
 		time += dt;
@@ -112,108 +118,111 @@ void GameScene::Update(float dt)
 		}
 
 		EnemyFactory::Update(dt);
-
 		Scene::Update(dt);
-		//dt *= 20;
 		m_pauseB->update(dt);
-		//m_heli->Update(dt);
+		ControlFunctions();
+		if (Statistics::player_hp <= 0)
+			isPlayerDead = true;
 
-
-#ifdef UTH_SYSTEM_ANDROID
-
-		const auto& wnd = uthEngine.GetWindow();
-		const pmath::Vec2& touchStart = wnd.PixelToCoords(uthInput.Touch[0].GetStartPosition());
-		const pmath::Vec2& touchEnd = wnd.PixelToCoords(uthInput.Touch[0].GetEndPosition());
-
-		if(uthInput.Touch.Motion() == TouchMotion::DRAG)
-		{	//Swipe up
-			if (touchStart.y > touchEnd.y + 160)
-			{
-				Control_up();
-			}
-			//Swipe down
-			else if (touchStart.y < touchEnd.y - 160)
-			{
-				Control_down();
-			}
-			//Swipe left
-			else if (touchStart.x > touchEnd.x + 180)
-			{
-				Control_left();
-			}
-			//Swipe right
-			else if (touchStart.x < touchEnd.x -180)
-			{
-				Control_right();
-			}
-		}
-
-
-#else
-		if (uthInput.Keyboard.IsKeyDown(Keyboard::Up))
-		{
-			//if (!m_player->m_isCrouching && !m_player->m_isJumping)
-			//	m_player->Jump();
-			Control_up();
-		}
-		if (uthInput.Keyboard.IsKeyDown(Keyboard::Down))
-		{
-			//if (!m_player->m_isJumping && !m_player->m_isCrouching && !m_player->m_isTurning)
-			//{
-			//	m_player->Crouch();
-			//	isInitedShake = true;
-			//}
-			Control_down();
-		}
-		if (uthInput.Keyboard.IsKeyDown(Keyboard::Left) &&
-			!uthInput.Keyboard.IsKeyDown(Keyboard::Right))
-		{
-			//if (m_player->CheckIfGoingRight())
-			//{
-			//	m_player->ChangeDirection();
-			//}
-			Control_left();
-		}
-
-		if (uthInput.Keyboard.IsKeyDown(Keyboard::Right) &&
-			!uthInput.Keyboard.IsKeyDown(Keyboard::Left))
-		{
-			//if (!m_player->CheckIfGoingRight())
-			//{
-			//	m_player->ChangeDirection();
-			//}
-			Control_right();
-		}
-
-		//if (uthInput.Mouse.IsButtonReleased(Mouse::LEFT))
-		//{
-		//	FlameEmitter::Emit(uthInput.Mouse.Position());
-		//	getLayer(LayerId::InGame).AddChild(new FireBreath(pmath::Vec2(0, 280), uthInput.Mouse.Position()));
-		//}
-
-		if (uthInput.Keyboard.IsKeyDown(Keyboard::P))
+		if (m_pauseB->IsPressedS())
 		{
 			isPaused = true;
 		}
-#endif
 
+		//Music gets normal
+		if (m_soundSlowerTimer > 0)
+		{
+			m_soundSlowerTimer -= dt * 90;
+			m_music->SetPitch(100-m_soundSlowerTimer);
+		}
 	}
 	//If Paused
-	else //TODO:: Pause menu stuff here
+	else if (isPaused && !isPlayerDead) //TODO:: Pause menu stuff here
 	{
-#ifdef UTH_SYSTEM_ANDROID
-
-		//TODO: Android pause functions here
-
-#else
-		if (uthInput.Keyboard.IsKeyDown(Keyboard::O))
+		//Music gets slower
+		if (m_soundSlowerTimer < 100)
 		{
+			m_soundSlowerTimer += dt * 90;
+			m_music->SetPitch(100-m_soundSlowerTimer);
+		}
 
+	#ifdef UTH_SYSTEM_ANDROID
+		//TODO: Android only pause functions here
+
+	#else
+		//PC only code here
+
+	#endif
+		//If user press m_mause button game resumes
+		m_pauseB->update(dt);
+		if (m_pauseB->IsPressedS())
+		{
 			isPaused = false;
 		}
-#endif
 	}
-	//return true; // Update succeeded.
+	//TODO::REMOVE COMMENTS SO PLAYER WILL DIE
+	//else if (!isPaused && isPlayerDead) //Game over functions here
+	//{
+
+	//}
+} //Update end
+
+
+void GameScene::ControlFunctions()
+{
+
+#ifdef UTH_SYSTEM_ANDROID
+
+	const auto& wnd = uthEngine.GetWindow();
+	const pmath::Vec2& touchStart = wnd.PixelToCoords(uthInput.Touch[0].GetStartPosition());
+	const pmath::Vec2& touchEnd = wnd.PixelToCoords(uthInput.Touch[0].GetEndPosition());
+
+	if (uthInput.Touch.Motion() == TouchMotion::DRAG)
+	{	//Swipe up
+		if (touchStart.y > touchEnd.y + 160)
+		{
+			Control_up();
+		}
+		//Swipe down
+		else if (touchStart.y < touchEnd.y - 160)
+		{
+			Control_down();
+		}
+		//Swipe left
+		else if (touchStart.x > touchEnd.x + 180)
+		{
+			Control_left();
+		}
+		//Swipe right
+		else if (touchStart.x < touchEnd.x - 180)
+		{
+			Control_right();
+		}
+	}
+#else
+	if (uthInput.Keyboard.IsKeyDown(Keyboard::Up))
+	{
+		Control_up();
+	}
+	if (uthInput.Keyboard.IsKeyDown(Keyboard::Down))
+	{
+		Control_down();
+	}
+	if (uthInput.Keyboard.IsKeyDown(Keyboard::Left) &&
+		!uthInput.Keyboard.IsKeyDown(Keyboard::Right))
+	{
+		Control_left();
+	}
+	if (uthInput.Keyboard.IsKeyDown(Keyboard::Right) &&
+		!uthInput.Keyboard.IsKeyDown(Keyboard::Left))
+	{
+		Control_right();
+	}
+	if (uthInput.Keyboard.IsKeyDown(Keyboard::P))
+	{
+		isPaused = true;
+	}
+#endif
 }
 
 void GameScene::Control_up()
@@ -243,7 +252,6 @@ void GameScene::Control_right()
 		m_player->ChangeDirection();
 	}
 }
-
 void GameScene::colliderChecks()
 {
 	contactListener.onBeginContact = [](b2Contact* contact, GameObject* A, GameObject* B)
@@ -384,7 +392,6 @@ void GameScene::colliderChecks()
 	m_physWorld.SetContactListener(&contactListener);
 
 }
-
 //Default constructor for initialising constant variables.
 GameScene::GameScene()
 //: m_bgManager(250,500,150)

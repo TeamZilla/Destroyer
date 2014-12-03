@@ -34,7 +34,6 @@ void Statistics::Init()
 }
 void Statistics::DeInit()
 {
-
 }
 bool Statistics::SaveStats()
 {
@@ -64,7 +63,7 @@ bool Statistics::ResetSaveFile()
 		return true;
 	return false;
 }
-void ChangeMusic(int music)
+void Statistics::ChangeMusic(int music)
 {
 	switch (music)
 	{
@@ -82,4 +81,8 @@ void ChangeMusic(int music)
 		WriteLog("Invalid music chosen..");
 		break;
 	}
+}
+float Statistics::GetScore()
+{
+	return game_score;
 }

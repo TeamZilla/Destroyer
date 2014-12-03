@@ -22,6 +22,7 @@ class GameScene : public uth::Scene
 	uth::GameObject m_gameFloor;
 	Button* m_pauseB;
 	uth::GameObject* m_PauseButton;
+	uth::GameObject  m_gameOverScreenPicture;
 
 	enum class LayerId : char
 	{
@@ -35,6 +36,7 @@ class GameScene : public uth::Scene
 
 	uth::Layer& getLayer(LayerId id);
 
+	void ControlFunctions();
 	void Control_up();
 	void Control_down();
 	void Control_left();
@@ -49,9 +51,9 @@ class GameScene : public uth::Scene
 	uth::Sound* m_waveSound;
 	Road* m_road;
 	float m_shakeDelayTimer;
-
-
 	float aeroplaneTimer;
+	float m_soundSlowerTimer;
+	bool isPlayerDead;
 
 public: // Every one of these public functions are required.
 	GameScene();

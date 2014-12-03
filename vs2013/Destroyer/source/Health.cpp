@@ -1,12 +1,10 @@
 #include <Health.hpp>
+#include <Statistics.hpp>
 
 using namespace uth;
 
 Health::Health()
 {
-	
-
-
 	auto healthTex = uthRS.LoadTexture("UI/bar_bg.png");
 	healthTex->SetSmooth(true);
 	
@@ -95,12 +93,10 @@ void Health::update(float dt)
 	{
 		m_Green->GetComponent<Sprite>("Green")->SetColor(0, 0, 1, 1);
 	}
+
+	Statistics::player_hp = m_Chealth;
 }
 
-//void Health::Draw()
-//{
-//	GameObject::Draw(uthEngine.GetWindow());
-//}
 Health::~Health()
 {
 }
