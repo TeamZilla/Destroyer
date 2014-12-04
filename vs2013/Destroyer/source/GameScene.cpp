@@ -261,6 +261,7 @@ void GameScene::Update(float dt)
 		m_gameOverScreenPicture->SetActive(true);
 		m_MenuButton->SetActive(true);
 		m_RestartButton->SetActive(true);
+		m_health->update(dt);
 
 		m_menuB->update(dt);
 		m_restartB->update(dt);
