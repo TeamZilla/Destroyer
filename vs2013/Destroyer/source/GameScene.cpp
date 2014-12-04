@@ -283,6 +283,8 @@ void GameScene::Update(float dt)
 			m_afterMathMusic->Stop();
 		}
 	}
+
+
 } //Update end
 
 

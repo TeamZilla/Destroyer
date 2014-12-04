@@ -86,3 +86,12 @@ float Statistics::GetScore()
 {
 	return game_score;
 }
+
+void Statistics::ScoreCheck()
+{
+	if (game_highscore < game_score)
+	{
+		game_highscore = game_score;
+		game_score = 0;
+	}
+}
