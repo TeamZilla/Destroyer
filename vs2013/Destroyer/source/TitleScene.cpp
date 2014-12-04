@@ -107,7 +107,7 @@ TitleScene::~TitleScene()
 void TitleScene::Update(float dt)
 {
 	
-	if (!Creditsu)
+	if (!Creditsu && !options)
 	{
 		button->update(dt);
 		button2->update(dt);
@@ -130,7 +130,7 @@ void TitleScene::Update(float dt)
 		}
 		
 	}
-	else
+	else if (Creditsu)
 	{
 		
 		m_CBG->SetActive(true);
