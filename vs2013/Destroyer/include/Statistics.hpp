@@ -12,6 +12,7 @@ public:
 	//Functions to load and save stats to file
 	static void  Init();
 	static void  DeInit();
+	static void  ScoreCheck();
 	static bool  SaveStats();
 	static bool  LoadStats();
 	static bool  ResetSaveFile();

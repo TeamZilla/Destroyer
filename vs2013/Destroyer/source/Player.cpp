@@ -1,4 +1,5 @@
 #include <Player.hpp>
+#include <Statistics.hpp>
 
 using namespace uth;
 
@@ -68,6 +69,10 @@ void Player::init(uth::PhysicsWorld* physworld, Health* hp)
 }
 void Player::update(float dt)
 {
+	//// temporary code begins////
+	std::cout << Statistics::GetScore() << std::endl;
+	//// temporary code ends////
+
 	m_dt = dt;
 	Acceleration();
 	if (m_isJumping)
@@ -85,6 +90,13 @@ void Player::update(float dt)
 	else if (m_isDied)
 	{
 		Dying();
+
+
+	//// temporary code begins ////
+		Statistics::ScoreCheck();
+		std::cout << Statistics::game_highscore << std::endl;
+	//// temporary code ends////
+
 	}
 	if (m_isHurting)
 	{

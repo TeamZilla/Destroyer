@@ -71,10 +71,10 @@ bool GameScene::Init()
 	m_soundSlowerTimer = 0;
 
 	auto playTex =		uthRS.LoadTexture("UI/pause.png");
-	auto gotext  =		uthRS.LoadTexture("UI/go_pholder.png");
+	auto gotext =		uthRS.LoadTexture("UI/GOmenu.png");
 	auto restarttext =	uthRS.LoadTexture("UI/restart.png");
 	auto menutext =		uthRS.LoadTexture("UI/menu.png");
-	auto pauseBG =		uthRS.LoadTexture("UI/pause_BG.png");
+	auto pauseBG =		uthRS.LoadTexture("UI/pausemenu.png");
 	auto ExitText =		uthRS.LoadTexture("UI/esc.png");
 	
 	playTex->SetSmooth(true);
@@ -82,6 +82,7 @@ bool GameScene::Init()
 	getLayer(LayerId::Userinterface).AddChild(m_pauseMenu = new GameObject());
 	m_pauseMenu->AddComponent(new Sprite(pauseBG, "pauseBGsprite"));
 	m_pauseMenu->transform.SetOrigin(uth::Origin::TopLeft);
+	m_pauseMenu->transform.SetScale(0.90f, 0.90f);
 	m_pauseMenu->SetActive(false);
 
 
@@ -226,9 +227,9 @@ void GameScene::Update(float dt)
 		m_MenuButton->SetActive(true);
 		m_RestartButton->SetActive(true);
 
-		m_pauseMenu->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 540, camera.GetPosition().y - camera.GetSize().y / 2 + 20);
-		m_MenuButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 650, camera.GetPosition().y - camera.GetSize().y / 2 + 450);
-		m_RestartButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 650, camera.GetPosition().y - camera.GetSize().y / 2 + 325);
+		m_pauseMenu->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 50, camera.GetPosition().y - camera.GetSize().y / 2 );
+		m_MenuButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 120, camera.GetPosition().y - camera.GetSize().y / 2 + 525);
+		m_RestartButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 470, camera.GetPosition().y - camera.GetSize().y / 2 + 525);
 
 	#ifdef UTH_SYSTEM_ANDROID
 		//TODO: Android only pause functions here
@@ -264,6 +265,7 @@ void GameScene::Update(float dt)
 		m_gameOverScreenPicture->SetActive(true);
 		m_MenuButton->SetActive(true);
 		m_RestartButton->SetActive(true);
+		m_health->update(dt);
 
 		m_menuB->update(dt);
 		m_restartB->update(dt);
@@ -287,6 +289,8 @@ void GameScene::Update(float dt)
 			Statistics.Save();
 		}
 	}
+
+
 } //Update end
 
 
