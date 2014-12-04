@@ -68,7 +68,7 @@ public:
 	{
 
 
-		if (m_isGoingLeft)
+		if (m_isGoingLeft && m_rigidBody->GetPosition().y > 630)
 		{
 			m_rigidBody->ApplyForce(pmath::Vec2(m_direction.x * m_speed, -10));
 			if (m_rigidBody->GetPosition().x <= m_maxDistance.x)
@@ -83,7 +83,7 @@ public:
 			}
 		}
 
-		else
+		if (!m_isGoingLeft && m_rigidBody->GetPosition().y > 630)
 		{
 			m_rigidBody->ApplyForce(pmath::Vec2(m_direction.x * m_speed, -10));
 			if (m_rigidBody->GetPosition().x >= m_maxDistance.x)
