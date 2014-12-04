@@ -8,8 +8,8 @@ class BackgroundManager
 {
 	float m_backSpawnY, m_frontSpawnY, m_mountainSpawnY;
 	float m_cameraPan, m_cameraPanMax, m_cameraPanSpd;
-	bool m_isCameraTurning;
 	float m_camShakeAmount;
+	bool m_isCameraTurning;
 
 	const float c_backSpeedM = 50;
 	const float c_frontSpeedM = 100;

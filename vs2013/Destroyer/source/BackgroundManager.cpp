@@ -13,6 +13,7 @@ bool BackgroundManager::Init(uth::Layer& bg, uth::Layer& fg)
 	m_cameraPanMax = 350;
 	m_cameraPanSpd = 2.5;
 	m_isCameraTurning = false;
+	m_camShakeAmount = 0;
 	backG = &bg;
 	backF = &fg;
 

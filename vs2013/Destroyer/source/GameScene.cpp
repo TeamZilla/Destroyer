@@ -412,6 +412,11 @@ void GameScene::colliderChecks()
 			}
 			else if (BB->HasTag("Soldier"))
 			{
+				if (static_cast<Player*>(AA)->m_isJumping)
+				{
+					//TODO: player gets health
+				}
+
 				BB->GetComponent<SoldierBehavior>()->Destroy();
 			}
 			else if (BB->HasTag("Aeroplane"))
