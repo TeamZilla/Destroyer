@@ -18,6 +18,7 @@ TitleScene::TitleScene()
 	auto& window = uthEngine.GetWindow();
 
 	Creditsu = false;
+	options = false;
 	isGameStarting = false;
 
 	getLayer(LayerId::TitleBackground);
@@ -80,7 +81,7 @@ TitleScene::TitleScene()
 	CBGTex->SetSmooth(true);
 	m_CBG->AddComponent(new Sprite(CBGTex, "CBG"));
 	m_CBG->transform.SetOrigin(uth::Origin::TopLeft);
-	m_CBG->transform.SetPosition(window.GetCamera().GetPosition().x - window.GetCamera().GetSize().x / 2 + 780,
+	m_CBG->transform.SetPosition(window.GetCamera().GetPosition().x - window.GetCamera().GetSize().x / 2 + 775,
 								 window.GetCamera().GetPosition().y - window.GetCamera().GetSize().y / 2 + 50);
 	m_CBG->SetActive(false);
 	
@@ -89,8 +90,8 @@ TitleScene::TitleScene()
 	OptionsTex->SetSmooth(true);
 	m_EscB->AddComponent(new AnimatedSprite(EscTex, 2, 2, 1, 0));
 	m_EscB->transform.SetOrigin(uth::Origin::TopLeft);
-	m_EscB->transform.SetPosition(window.GetCamera().GetPosition().x - window.GetCamera().GetSize().x / 2 + 1150,
-								  window.GetCamera().GetPosition().y - window.GetCamera().GetSize().y / 2 + 75);
+	m_EscB->transform.SetPosition(window.GetCamera().GetPosition().x - window.GetCamera().GetSize().x / 2 + 1175,
+								  window.GetCamera().GetPosition().y - window.GetCamera().GetSize().y / 2 + 50);
 	button4 = new Button(m_EscB);
 	
 	m_EscB->SetActive(false);
@@ -144,6 +145,31 @@ void TitleScene::Update(float dt)
 		}
 
 	}
+	if (!options)
+	{
+		if (button3->IsPressedS())
+		{
+			options = true;
+
+		}
+	}
+	else
+	{
+		m_CBG->SetActive(true);
+		m_EscB->SetActive(true);
+		button4->update(dt);
+		button3->update(dt);
+		
+		if (button4->IsPressedS())
+		{
+			options = false;
+		}
+		if (button3->IsPressedS())
+		{
+			options = false;
+		}
+	}
+
 
 	if (isGameStarting)
 	{
