@@ -8,26 +8,28 @@ Health::Health()
 	auto healthTex = uthRS.LoadTexture("UI/bar_bg.png");
 	healthTex->SetSmooth(true);
 	
+	auto barTex = uthRS.LoadTexture("UI/bar.png");
+	barTex->SetSmooth(true);
+	
 	m_bottom = new GameObject();
 	m_bottom->AddComponent(new Sprite(healthTex, "bottom"));
 	m_bottom->transform.SetOrigin(uth::Origin::TopLeft);
 	AddChild(m_bottom);
 
 	m_Red = new GameObject();
-	m_Red->AddComponent(new Sprite(healthTex,"Red"));
+	m_Red->AddComponent(new Sprite(barTex,"Red"));
 	m_Red->transform.SetOrigin(uth::Origin::TopLeft);
 	AddChild(m_Red);
 	
 
 	m_Green = new GameObject();
-	m_Green->AddComponent(new Sprite(healthTex,"Green"));
+	m_Green->AddComponent(new Sprite(barTex,"Green"));
 	m_Green->transform.SetOrigin(uth::Origin::TopLeft);
 	AddChild(m_Green);
 
 	//cover for healthbar
 	auto CoverTex = uthRS.LoadTexture("UI/life_bar.png");
 	CoverTex->SetSmooth(true);
-
 
 	m_cover = new GameObject();
 	m_cover->AddComponent(new Sprite(CoverTex, "cover"));
@@ -52,9 +54,9 @@ void Health::update(float dt)
 
 	auto& camera = uthEngine.GetWindow().GetCamera();
 
-	 m_Green->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 2 + 75,
+	 m_Green->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 2 + 115,
 		camera.GetPosition().y - camera.GetSize().y / 2 + 20) ;
-	   m_Red->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 2 + 75,
+	   m_Red->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 2 + 115,
 		camera.GetPosition().y - camera.GetSize().y / 2 + 20);
 	m_bottom->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 2 + 75,
 		camera.GetPosition().y - camera.GetSize().y / 2 + 20);
