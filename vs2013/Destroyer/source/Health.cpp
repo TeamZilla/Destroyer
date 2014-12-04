@@ -1,5 +1,5 @@
 #include <Health.hpp>
-#include <Statistics.hpp>
+#include <GameStats.hpp>
 
 using namespace uth;
 
@@ -34,9 +34,8 @@ Health::Health()
 	m_cover->transform.SetOrigin(uth::Origin::TopLeft);
 	AddChild(m_cover);
 
-
-	m_Mhealth = 1;
-	m_Chealth = m_Mhealth;
+	m_Mhealth = Statistics.player.maxHp;
+	m_Chealth = Statistics.player.maxHp;
 
 	AddTag("Health");
 
@@ -44,11 +43,12 @@ Health::Health()
 
 void Health::TakeDamage(float amount)
 {
-	m_Chealth -= amount/100;
+	Statistics.player.hp -= amount/100;
 }
 
 void Health::update(float dt)
 {
+	m_Chealth = Statistics.player.hp;
 
 	auto& camera = uthEngine.GetWindow().GetCamera();
 
@@ -97,7 +97,6 @@ void Health::update(float dt)
 		m_Green->GetComponent<Sprite>("Green")->SetColor(0, 0, 1, 1);
 	}
 
-	Statistics::player_hp = m_Chealth;
 }
 
 Health::~Health()

@@ -35,6 +35,4 @@ public:
 	static float GetScore();
 	//Here you write stuff
 	static std::string save_data;
-
-
 };

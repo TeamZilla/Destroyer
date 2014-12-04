@@ -10,6 +10,7 @@ Background::Background(float speed, float spawnY, float shakeMultiplier, bool fi
 	m_first(first),
 	Sprite(filePath)
 {
+	m_shakeTimer = 0;
 }
 
 Background::~Background()

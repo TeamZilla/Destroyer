@@ -9,7 +9,8 @@
 #include <FireBreath.hpp>
 
 #include <Scenes.hpp>
-#include <Statistics.hpp>
+//#include <Statistics.hpp>
+#include <GameStats.hpp>
 
 using namespace uth;
 
@@ -125,6 +126,7 @@ bool GameScene::Init()
 // Update loop. Gone trought once per frame.
 void GameScene::Update(float dt)
 {
+
 	if (dt > 0.1)
 		dt = 0.1;
 
@@ -178,7 +180,8 @@ void GameScene::Update(float dt)
 		EnemyFactory::Update(dt);
 		Scene::Update(dt);
 		ControlFunctions();
-		if (Statistics::player_hp <= 0)
+
+		if (Statistics.player.hp <= 0)
 		{
 			m_music->Stop();
 			m_player->Die();
@@ -275,11 +278,13 @@ void GameScene::Update(float dt)
 		{
 			uthSceneM.GoToScene(GAME);
 			m_afterMathMusic->Stop();
+			Statistics.Save();
 		}
 		if (m_menuB->IsPressedS())
 		{
 			uthSceneM.GoToScene(TITLE);
 			m_afterMathMusic->Stop();
+			Statistics.Save();
 		}
 	}
 } //Update end

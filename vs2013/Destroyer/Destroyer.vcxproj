@@ -117,11 +117,11 @@
     <ClInclude Include="include\SmokeParAffector.hpp" />
     <ClInclude Include="include\Soldier.hpp" />
     <ClInclude Include="include\SoldierBehavior.hpp" />
-    <ClInclude Include="include\Statistics.hpp" />
     <ClInclude Include="include\Tank.hpp" />
     <ClInclude Include="include\TankBehavior.hpp" />
     <ClInclude Include="include\TitleScene.hpp" />
     <ClInclude Include="include\TankBullet.hpp" />
+    <ClInclude Include="include\GameStats.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\Aeroplane.cpp" />
@@ -141,10 +141,10 @@
     <ClCompile Include="source\Road.cpp" />
     <ClCompile Include="source\RoadBlock.cpp" />
     <ClCompile Include="source\Soldier.cpp" />
-    <ClCompile Include="source\Statistics.cpp" />
     <ClCompile Include="source\Tank.cpp" />
     <ClCompile Include="source\TitleScene.cpp" />
     <ClCompile Include="source\TankBullet.cpp" />
+    <ClCompile Include="source\GameStats.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
