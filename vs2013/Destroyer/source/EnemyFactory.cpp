@@ -4,6 +4,7 @@
 #include <AeroplaneBehavior.hpp>
 #include <ExplosionEmitter.hpp>
 #include <Heli.hpp>
+#include <Statistics.hpp>
 
 using namespace uth;
 
@@ -124,6 +125,8 @@ void EnemyFactory::CheckEnemies()
 			ExplosionEmitter::Emit(obj.transform.GetPosition());
 			m_expSound->Play();
 			m_layer->RemoveChild(&obj);
+			Statistics::game_TankKills++;
+			Statistics::game_score += 10;
 		}
 	}
 	for (auto& e : m_layer->Children("Soldier"))
@@ -136,6 +139,8 @@ void EnemyFactory::CheckEnemies()
 			ExplosionEmitter::Emit(obj.transform.GetPosition());
 			m_expSound->Play();
 			m_layer->RemoveChild(&obj);
+			Statistics::game_SoldKills++;
+			Statistics::game_score += 1;
 		}
 	}
 
@@ -149,6 +154,8 @@ void EnemyFactory::CheckEnemies()
 			ExplosionEmitter::Emit(obj.transform.GetPosition());
 			m_expSound->Play();
 			m_layer->RemoveChild(&obj);
+			Statistics::game_AeroKills++;
+			Statistics::game_score += 100;
 		}
 	}
 
@@ -164,6 +171,8 @@ for (auto& e : m_layer->Children("Heli"))
 		ExplosionEmitter::Emit(obj.transform.GetPosition());
 		m_expSound->Play();
 		m_layer->RemoveChild(&obj);
+		Statistics::game_HeliKills++;
+		Statistics::game_score += 20;
 	}
 }
 
