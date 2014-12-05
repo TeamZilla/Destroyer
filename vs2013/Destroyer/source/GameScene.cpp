@@ -226,6 +226,8 @@ void GameScene::Update(float dt)
 		m_pauseMenu->SetActive(true);
 		m_MenuButton->SetActive(true);
 		m_RestartButton->SetActive(true);
+		m_player->SetActive(false);
+		
 
 		m_pauseMenu->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 50, camera.GetPosition().y - camera.GetSize().y / 2 );
 		m_MenuButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 120, camera.GetPosition().y - camera.GetSize().y / 2 + 525);
@@ -247,6 +249,8 @@ void GameScene::Update(float dt)
 			m_pauseMenu->SetActive(false);
 			m_MenuButton->SetActive(false);
 			m_RestartButton->SetActive(false);
+			m_player->SetActive(true);
+			
 			isPaused = false;
 		}
 		if (m_restartB->IsPressedS())
@@ -273,8 +277,8 @@ void GameScene::Update(float dt)
 		auto& camera = uthEngine.GetWindow().GetCamera();
 
 		m_gameOverScreenPicture->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 50, camera.GetPosition().y - camera.GetSize().y / 2);
-		m_MenuButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 100, camera.GetPosition().y - camera.GetSize().y /2 + 600);
-		m_RestartButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 400, camera.GetPosition().y - camera.GetSize().y /2 + 600);
+		m_MenuButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 120, camera.GetPosition().y - camera.GetSize().y /2 + 525);
+		m_RestartButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 470, camera.GetPosition().y - camera.GetSize().y /2 + 525);
 
 		if (m_restartB->IsPressedS())
 		{
@@ -586,7 +590,7 @@ GameScene::GameScene()
 	getLayer(LayerId::InGame);
 	getLayer(LayerId::Foreground);
 	getLayer(LayerId::Userinterface);
-
+	
 	for (auto& e : m_layers)
 	{
 		AddChild(e.second = new Layer());

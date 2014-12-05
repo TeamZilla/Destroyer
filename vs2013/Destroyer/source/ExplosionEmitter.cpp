@@ -32,6 +32,8 @@ void ExplosionEmitter::Emit(pmath::Vec2 pos, float size)
 		ss->transform.SetPosition(pos);
 		ss->transform.SetScale(size);
 		ss->Emit(10);
+
+
 	}
 }
 //
