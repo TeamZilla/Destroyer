@@ -141,6 +141,7 @@
     <ClCompile Include="source\Road.cpp" />
     <ClCompile Include="source\RoadBlock.cpp" />
     <ClCompile Include="source\Soldier.cpp" />
+    <ClCompile Include="source\Statistics.cpp" />
     <ClCompile Include="source\Tank.cpp" />
     <ClCompile Include="source\TitleScene.cpp" />
     <ClCompile Include="source\TankBullet.cpp" />
