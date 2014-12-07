@@ -1,5 +1,5 @@
 #include <Player.hpp>
-#include <Statistics.hpp>
+#include <GameStats.hpp>
 
 using namespace uth;
 
@@ -70,7 +70,7 @@ void Player::init(uth::PhysicsWorld* physworld, Health* hp)
 void Player::update(float dt)
 {
 	//// temporary code begins////
-	std::cout << Statistics::GetScore() << std::endl;
+	WriteLog("%f", Statistics.score.current);
 	//// temporary code ends////
 
 	m_dt = dt;
@@ -91,11 +91,15 @@ void Player::update(float dt)
 	{
 		Dying();
 
-
-	//// temporary code begins ////
-		Statistics::ScoreCheck();
-		std::cout << Statistics::game_highscore << std::endl;
-	//// temporary code ends////
+		//// temp code start ///
+		//Check if player has better score than highscore
+		if (Statistics.score.highscore < Statistics.score.current)
+		{
+			WriteLog("New Highscore! : ""%f", Statistics.score.current);
+			//Let's save the highscore then
+			Statistics.score.highscore = Statistics.score.current;
+		}
+		/// temp code end ///
 
 	}
 	if (m_isHurting)

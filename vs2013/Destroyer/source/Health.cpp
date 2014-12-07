@@ -36,6 +36,7 @@ Health::Health()
 	m_cover->transform.SetOrigin(uth::Origin::TopLeft);
 	AddChild(m_cover);
 
+	Statistics.player.hp = Statistics.player.maxHp;
 	m_Mhealth = Statistics.player.maxHp;
 	m_Chealth = Statistics.player.maxHp;
 

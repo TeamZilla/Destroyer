@@ -15,17 +15,18 @@ struct GameStats
 		float speed;
 	} player;
 
-	struct Game
+	struct Score
 	{
 		//Functions what we update to keep track of game
 		float highscore = 0;
-		
+		float current = 0;
+
 		//Enemy kill counts
 		size_t tankKills = 0;
 		size_t soldKills = 0;
 		size_t heliKills = 0;
 		size_t aeroKills = 0;
-	} game;
+	} score;
 
 	struct Music
 	{	
@@ -38,6 +39,7 @@ struct GameStats
 	GameStats() = default;
 	bool Load();
 	bool Save();
+
 
 	static bool ResetSave();
 };

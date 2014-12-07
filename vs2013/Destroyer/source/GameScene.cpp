@@ -9,7 +9,6 @@
 #include <FireBreath.hpp>
 
 #include <Scenes.hpp>
-//#include <Statistics.hpp>
 #include <GameStats.hpp>
 
 using namespace uth;
@@ -24,6 +23,9 @@ uth::Layer& GameScene::getLayer(LayerId id)
 bool GameScene::Init()
 {
 	m_shakeDelayTimer = 0;
+	//Put score to 0 at start of the game
+	Statistics.score.current = 0;
+
 	Randomizer::SetSeed();
 	uthEngine.GetWindow().GetCamera().SetSize(1280, 720);
 	auto& camera = uthEngine.GetWindow().GetCamera();
@@ -36,13 +38,10 @@ bool GameScene::Init()
 
 	m_bgManager.Init(getLayer(LayerId::Background), getLayer(LayerId::Foreground));
 
-	//m_heli = new Heli(pmath::Vec2f(0, 0));
-	//getLayer(LayerId::InGame).AddChild(&m_gameFloor);
 	getLayer(LayerId::InGame).AddChild(m_road = new Road(225));
 	getLayer(LayerId::InGame).AddChild(m_player = new Player(&m_physWorld));
 	getLayer(LayerId::Userinterface).AddChild(m_health = new Health);
 	m_player->init(&m_physWorld, m_health);
-	//getLayer(LayerId::InGame).AddChild(m_heli = new Heli(pmath::Vec2f(0, 0),m_player));
 
 
 	m_road->Init(m_player,&m_physWorld);

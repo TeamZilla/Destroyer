@@ -8,7 +8,7 @@ bool GameStats::Load()
 {
 	uth::FileManager fm;
 	fm.OpenFile(SaveFilePath, uth::FileManager::Location::ASSET, false);
-	fm.ReadBytes(&game, 1, sizeof(GameStats::Game));
+	fm.ReadBytes(&score, 1, sizeof(GameStats::Score));
 	return true;
 }
 
@@ -16,7 +16,7 @@ bool GameStats::Save()
 {
 	uth::FileManager fm;
 	fm.OpenFile(SaveFilePath, uth::FileManager::Location::ASSET, true);
-	fm.WriteBinary(BINARY_DATA((void*)&game, sizeof(GameStats::Game)));
+	fm.WriteBinary(BINARY_DATA((void*)&score, sizeof(GameStats::Score)));
 	return true;
 }
 

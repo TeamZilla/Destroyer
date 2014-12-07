@@ -4,7 +4,7 @@
 #include <AeroplaneBehavior.hpp>
 #include <ExplosionEmitter.hpp>
 #include <Heli.hpp>
-#include <Statistics.hpp>
+#include <GameStats.hpp>
 
 using namespace uth;
 
@@ -82,7 +82,6 @@ std::shared_ptr<GameObject> EnemyFactory::CreateAeroplane()
 }
 
 
-
 std::shared_ptr<GameObject> EnemyFactory::CreateHeli()
 {
 	const static std::string textureId("Enemies/heli.png");
@@ -100,7 +99,6 @@ std::shared_ptr<GameObject> EnemyFactory::CreateHeli()
 	return m_layer->AddChild(obj);
 
 }
-
 
 
 pmath::Vec2 EnemyFactory::SpawnPosition()
@@ -125,8 +123,8 @@ void EnemyFactory::CheckEnemies()
 			ExplosionEmitter::Emit(obj.transform.GetPosition());
 			m_expSound->Play();
 			m_layer->RemoveChild(&obj);
-			Statistics::game_TankKills++;
-			Statistics::game_score += 10;
+			Statistics.score.tankKills++;
+			Statistics.score.current += 10;
 		}
 	}
 	for (auto& e : m_layer->Children("Soldier"))
@@ -139,8 +137,8 @@ void EnemyFactory::CheckEnemies()
 			ExplosionEmitter::Emit(obj.transform.GetPosition());
 			m_expSound->Play();
 			m_layer->RemoveChild(&obj);
-			Statistics::game_SoldKills++;
-			Statistics::game_score += 1;
+			Statistics.score.soldKills++;
+			Statistics.score.current += 1;
 		}
 	}
 
@@ -154,8 +152,8 @@ void EnemyFactory::CheckEnemies()
 			ExplosionEmitter::Emit(obj.transform.GetPosition());
 			m_expSound->Play();
 			m_layer->RemoveChild(&obj);
-			Statistics::game_AeroKills++;
-			Statistics::game_score += 100;
+			Statistics.score.aeroKills++;
+			Statistics.score.current += 100;
 		}
 	}
 
@@ -171,8 +169,8 @@ for (auto& e : m_layer->Children("Heli"))
 		ExplosionEmitter::Emit(obj.transform.GetPosition());
 		m_expSound->Play();
 		m_layer->RemoveChild(&obj);
-		Statistics::game_HeliKills++;
-		Statistics::game_score += 20;
+		Statistics.score.heliKills++;
+		Statistics.score.current += 20;
 	}
 }
 
