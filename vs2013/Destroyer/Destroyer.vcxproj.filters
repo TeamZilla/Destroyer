@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Aeroplane.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\BackgroundManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -101,9 +98,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="source\Aeroplane.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="source\BackgroundManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -132,9 +126,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\RoadBlock.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Soldier.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\Background.cpp">
