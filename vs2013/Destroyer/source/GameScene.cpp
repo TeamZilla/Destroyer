@@ -370,14 +370,6 @@ void GameScene::ControlFunctions()
 	{
 		Control_right();
 	}
-	if (uthInput.Keyboard.IsKeyDown(Keyboard::P))
-	{
-		isPaused = true;
-	}
-
-		if (uthInput.Keyboard.IsKeyDown(Keyboard::F))
-		{
-		}
 
 #endif
 }

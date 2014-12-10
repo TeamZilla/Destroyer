@@ -21,6 +21,9 @@ class SoldierBehavior : public uth::Component
 	pmath::Vec2			m_maxDistance;
 	pmath::Vec2			m_minDistance;
 	pmath::Vec2			m_target;
+	pmath::Vec4			m_walkAnim;
+	pmath::Vec4			m_attackAnim;
+	pmath::Vec4			m_curAnim;
 
 public:
 
@@ -46,6 +49,14 @@ public:
 
 		setTarget(m_player->transform.GetPosition());
 		m_target = m_maxDistance;
+		m_attackAnim = pmath::Vec4(0, 6, 0, 12);
+		m_walkAnim = pmath::Vec4(6, 6, 6, 12);
+
+		parent->GetComponent<uth::AnimatedSprite>()->ChangeAnimation(m_walkAnim.x,
+															    m_walkAnim.y,
+															    m_walkAnim.z,
+															    m_walkAnim.w);
+		m_curAnim = m_walkAnim;
 
 	}
 
@@ -53,12 +64,22 @@ public:
 	{
 		if (!m_isGoingToExp && !m_tailWhipped)
 		{
+			//Call movement update
 			Movement();
+			//Check is the animation correct
+			if (m_curAnim != m_walkAnim && !m_isStopped)
+			{
+				parent->GetComponent<uth::AnimatedSprite>()->ChangeAnimation(m_walkAnim.x,
+					m_walkAnim.y,
+					m_walkAnim.z,
+					m_walkAnim.w);
+				m_curAnim = m_walkAnim;
+			}
 		}
 
 		else if (m_isGoingToExp)
 		{
-			//TODO: add hurt animation frame here
+			parent->GetComponent<uth::AnimatedSprite>()->ChangeAnimation(3, 1, 3, 1);
 		}
 
 		Attack(dt);
@@ -81,6 +102,8 @@ public:
 			{
 				m_isStopped = false;
 			}
+			if (m_rigidBody->GetPosition().x <= 0)
+				Destroy();
 		}
 
 		if (!m_isGoingLeft && m_rigidBody->GetPosition().y > 630)
@@ -98,6 +121,8 @@ public:
 			{
 				m_isStopped = false;
 			}
+			if (m_rigidBody->GetPosition().x >= 0)
+				Destroy();
 		}
 
 		m_rigidBody->SetAngle(0);
@@ -106,9 +131,9 @@ public:
 	void Hit()
 	{
 		m_rigidBody->ApplyImpulse(
-			pmath::Vec2(uth::Randomizer::GetFloat(-1, 1),     //X direction
-			-uth::Randomizer::GetFloat(2, 4)),				  //Y direction
-			pmath::Vec2(0, 0));								  //offset
+			pmath::Vec2(uth::Randomizer::GetFloat(-1, 1),		 //X direction
+			-uth::Randomizer::GetFloat(2, 4)),					 //Y direction
+			pmath::Vec2(0, 0));									 //offset
 	}
 	void TailWhipHit()
 	{
@@ -153,6 +178,7 @@ public:
 
 	void Attack(float dt)
 	{
+		//Slash player with sword
 		if (m_isStopped)
 		{
 			if (m_attackTime <= m_attackCounter)
@@ -160,6 +186,17 @@ public:
 				m_player->Hit(0.5);
 				m_attackCounter = 0;
 			}
+
+			//Check is the animation correct animation
+			if (m_curAnim != m_attackAnim)
+			{
+				parent->GetComponent<uth::AnimatedSprite>()->ChangeAnimation(m_attackAnim.x,
+					m_attackAnim.y,
+					m_attackAnim.z,
+					m_attackAnim.w);
+				m_curAnim = m_attackAnim;
+			}
+
 			m_attackCounter += dt;
 		}
 	}

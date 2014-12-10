@@ -148,6 +148,9 @@
     <ClCompile Include="source\TankBullet.cpp" />
     <ClCompile Include="source\GameStats.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\backgrounds\gravel_texture.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
