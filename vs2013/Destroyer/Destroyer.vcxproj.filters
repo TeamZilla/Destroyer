@@ -157,5 +157,8 @@
     <Image Include="assets\backgrounds\gravel_texture.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="assets\Enemies\Projectiles\AtomBomb.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
