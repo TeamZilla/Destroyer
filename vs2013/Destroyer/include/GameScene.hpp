@@ -4,9 +4,7 @@
 #include <Player.hpp>
 #include <Health.hpp>
 #include <BackgroundManager.hpp>
-//#include <EnemyManager.hpp>
 #include <Heli.hpp>
-//#include <Aeroplane.hpp>
 #include <Road.hpp>
 #include <ExpParAffector.hpp>
 

@@ -131,9 +131,9 @@ public:
 	void Hit()
 	{
 		m_rigidBody->ApplyImpulse(
-			pmath::Vec2(uth::Randomizer::GetFloat(-1, 1),     //X direction
-			-uth::Randomizer::GetFloat(2, 4)),				  //Y direction
-			pmath::Vec2(0, 0));								  //offset
+			pmath::Vec2(uth::Randomizer::GetFloat(-1, 1),		 //X direction
+			-uth::Randomizer::GetFloat(2, 4)),					 //Y direction
+			pmath::Vec2(0, 0));									 //offset
 	}
 	void TailWhipHit()
 	{

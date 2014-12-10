@@ -9,7 +9,7 @@ Heli::Heli(pmath::Vec2f givenPos, Player* player)
 	m_prevPos = m_curPos;
 	auto heliTex = uthRS.LoadTexture("Enemies/copteri.png");
 	heliTex->SetSmooth(true);
-	this->AddComponent(new Sprite(heliTex));
+	this->AddComponent(new AnimatedSprite(heliTex, 2, 2, 1, 12));
 	m_hoverTime = 0;
 	m_hoverSpeed = 1;
 	m_hoverScale = pmath::Vec2f(80, 80);
