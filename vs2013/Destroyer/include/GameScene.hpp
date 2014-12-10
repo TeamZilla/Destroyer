@@ -24,6 +24,7 @@ class GameScene : public uth::Scene
 	Button* m_menuB;
 	Button* m_restartB;
 	Button* m_ExitB;
+	uth::Text* m_scoreText;
 	uth::GameObject* m_PauseButton;
 	uth::GameObject* m_MenuButton;
 	uth::GameObject* m_RestartButton;
@@ -31,6 +32,7 @@ class GameScene : public uth::Scene
 	uth::GameObject* m_ExitButton;
 	uth::GameObject* m_pauseMenu;
 	uth::GameObject* m_blackOverlay;
+	uth::GameObject* m_ScoreBoard;
 	
 
 

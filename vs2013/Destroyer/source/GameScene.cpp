@@ -58,6 +58,9 @@ bool GameScene::Init()
 
 	m_waveSound = uthRS.LoadSound("Audio/Effects/Explosion1.wav");
 
+	
+
+
 	ExplosionEmitter::Init(&getLayer(LayerId::Foreground));
 	FlameEmitter::Init(&getLayer(LayerId::Foreground));
 
@@ -119,6 +122,15 @@ bool GameScene::Init()
 	m_blackOverlay->transform.SetPosition(camera.GetPosition().x / 2,
 										  camera.GetPosition().y / 2 - camera.GetSize().y / 2);
 
+
+	//scoreboard
+	getLayer(LayerId::Userinterface).AddChild(m_ScoreBoard = new GameObject());
+	
+	
+	m_scoreText = new Text("8bitoperator.ttf", 28);
+	m_ScoreBoard->AddComponent(m_scoreText);
+	m_ScoreBoard->transform.SetOrigin(uth::Origin::TopLeft);
+	m_ScoreBoard->transform.SetPosition(0, 100);
 	return true;
 }
 
@@ -126,11 +138,22 @@ bool GameScene::Init()
 // Update loop. Gone trought once per frame.
 void GameScene::Update(float dt)
 {
+	auto& camera = uthEngine.GetWindow().GetCamera();
+	std::stringstream ss;
+	ss << Statistics.score.current;
+
+	std::string Cscore = "SCORE: ";
+	Cscore += ss.str();
+	m_scoreText->SetText(Cscore);
+	m_ScoreBoard->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 2 + 800,
+		camera.GetPosition().y - camera.GetSize().y / 2 + 20);
+	
+
 
 	if (dt > 0.1)
 		dt = 0.1;
 
-	auto& camera = uthEngine.GetWindow().GetCamera();
+	
 
 	if (m_blackOverlay->GetComponent<Sprite>()->GetColor().a > 0)
 	{
