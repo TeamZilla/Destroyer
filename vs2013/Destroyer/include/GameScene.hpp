@@ -8,7 +8,6 @@
 #include <Road.hpp>
 #include <ExpParAffector.hpp>
 
-#include <Tank.hpp>
 #include <Button.hpp>
 
 

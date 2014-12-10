@@ -95,7 +95,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Aeroplane.hpp" />
     <ClInclude Include="include\AeroplaneBehavior.hpp" />
     <ClInclude Include="include\Background.hpp" />
     <ClInclude Include="include\BackgroundManager.hpp" />
@@ -116,7 +115,6 @@
     <ClInclude Include="include\RoadBlock.hpp" />
     <ClInclude Include="include\Scenes.hpp" />
     <ClInclude Include="include\SmokeParAffector.hpp" />
-    <ClInclude Include="include\Soldier.hpp" />
     <ClInclude Include="include\SoldierBehavior.hpp" />
     <ClInclude Include="include\TankBehavior.hpp" />
     <ClInclude Include="include\TitleScene.hpp" />
@@ -124,7 +122,6 @@
     <ClInclude Include="include\GameStats.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="source\Aeroplane.cpp" />
     <ClCompile Include="source\Background.cpp" />
     <ClCompile Include="source\BackgroundManager.cpp" />
     <ClCompile Include="source\Button.cpp" />
@@ -141,7 +138,6 @@
     <ClCompile Include="source\Player.cpp" />
     <ClCompile Include="source\Road.cpp" />
     <ClCompile Include="source\RoadBlock.cpp" />
-    <ClCompile Include="source\Soldier.cpp" />
     <ClCompile Include="source\TitleScene.cpp" />
     <ClCompile Include="source\TankBullet.cpp" />
     <ClCompile Include="source\GameStats.cpp" />
