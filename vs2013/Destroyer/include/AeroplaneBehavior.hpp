@@ -59,18 +59,20 @@ public:
 			m_direction = -1;
 		}
 
-		
+
 		auto bombTex = uthRS.LoadTexture("Enemies/Projectiles/AtomBomb.png");
 		bombTex->SetSmooth(true);
 		auto AtomBomb = new uth::Sprite(bombTex);
 		pAtomBomb->AddComponent(AtomBomb);
-		pAtomBomb->transform.SetScale(pmath::Vec2(-m_direction, 1));
+		pAtomBomb->transform.SetOrigin(4);
+		pAtomBomb->transform.SetScale(pmath::Vec2(-m_direction*3, 3));
 		m_layer->AddChild(pAtomBomb);
 
-		auto ropeTex = uthRS.LoadTexture("Enemies/Projectiles/rope.png");
+		uth::Texture* ropeTex = uthRS.LoadTexture("Enemies/Projectiles/rope.png");
 		ropeTex->SetSmooth(true);
 		auto Rope = new uth::Sprite(ropeTex);
 		pRope->AddComponent(Rope);
+		pRope->transform.SetOrigin(9);
 		m_layer->AddChild(pRope);
 
 	}
@@ -99,11 +101,15 @@ public:
 		pAtomBomb->transform.SetPosition(m_bombPos);
 
 		pRope->transform.SetPosition(pAtomBomb->transform.GetPosition());
-		pmath::Vec2 m_ropeDir = pAtomBomb->transform.GetPosition() - m_pos;
+		pmath::Vec2 ropeDir = pAtomBomb->transform.GetPosition() - m_pos;
 
-		float angle = pmath::radiansToDegrees(atan(sin(m_ropeDir.y) / m_ropeDir.x));
+		float angle = pmath::radiansToDegrees(atan2(ropeDir.y,ropeDir.x));
+
+		pAtomBomb->transform.SetRotation(cos(m_pos.x / 170) * 10 + - m_direction * 15);
+
+		std::cout << angle << std::endl;
 		pRope->transform.SetRotation(angle);
-		pRope->transform.SetScale(pmath::Vec2(m_ropeDir.length() / pRope->transform.GetSize().x));
+		pRope->transform.ScaleToSize(ropeDir.length(), -m_direction * pRope->transform.GetSize().y);
 	}
 
 	void pathFunc()
