@@ -60,6 +60,28 @@ bool BackgroundManager::Init(uth::Layer& bg, uth::Layer& fg)
 		uthEngine.GetWindow().GetCamera().GetSize().y - 480, 2, false,
 		"backgrounds/buildings02.png"));
 
+	//backG->AddChild(temp = new GameObject(std::vector<std::string>{ "bg", "gravel_texture" }));
+	//temp->AddComponent(new Background(c_backSpeedM,
+	//	uthEngine.GetWindow().GetCamera().GetSize().y -200, 2, false,
+	//	"backgrounds/gravel_texture.png"));
+
+	//
+	auto groundTex = uthRS.LoadTexture("backgrounds/gravel_texture.png");
+	groundTex->SetSmooth(true);
+	auto ground = new Sprite(groundTex);
+	GameObject* go = new GameObject();
+	go->transform.SetPosition(-740, uthEngine.GetWindow().GetCamera().GetSize().y - 40);
+	go->AddComponent(ground);
+	backG->AddChild(go);
+
+	auto ground2 = new Sprite(groundTex);
+	GameObject* go2 = new GameObject();
+	go2->transform.SetPosition(740, uthEngine.GetWindow().GetCamera().GetSize().y - 40);
+	go2->AddComponent(ground2);
+	backG->AddChild(go2);
+
+	//
+
 	//Frontcity
 	backF->AddChild(temp = new GameObject(std::vector<std::string>{ "bg", "lantern1" }));
 	temp->AddComponent(new Background(c_frontSpeedM,
