@@ -6,18 +6,28 @@ std::string GameStats::SaveFilePath = "testi.txt";
 
 bool GameStats::Load()
 {
-	uth::FileManager fm;
-	fm.OpenFile(SaveFilePath, uth::FileManager::Location::ASSET, false);
-	fm.ReadBytes(&score, 1, sizeof(GameStats::Score));
-	return true;
+	uth::FileManager file;
+
+	if (file.OpenFile(SaveFilePath, uth::FileManager::Location::INTERNAL, false))
+	{
+		file.ReadBytes(&score, 1, sizeof(Score));
+		return true; // TODO: Return IO error state, when uth engine supports it.
+	}
+
+	return false;
 }
 
 bool GameStats::Save()
 {
-	uth::FileManager fm;
-	fm.OpenFile(SaveFilePath, uth::FileManager::Location::ASSET, true);
-	fm.WriteBinary(BINARY_DATA((void*)&score, sizeof(GameStats::Score)));
-	return true;
+	uth::FileManager file;
+
+	if (file.OpenFile(SaveFilePath, uth::FileManager::Location::INTERNAL, true))
+	{
+		file.WriteBytes(&score, 1, sizeof(Score));
+		return true; // TODO: Return IO error state, when uth engine supports it.
+	}
+
+	return false;
 }
 
 bool GameStats::ResetSave()

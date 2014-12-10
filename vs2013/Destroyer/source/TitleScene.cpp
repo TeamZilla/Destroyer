@@ -68,8 +68,8 @@ TitleScene::TitleScene()
 	OptionsTex->SetSmooth(true);
 	m_OptionsB->AddComponent(new AnimatedSprite(OptionsTex, 2, 2, 1, 0));
 	m_OptionsB->transform.SetOrigin(uth::Origin::TopLeft);
-	m_OptionsB->transform.SetPosition(window.GetCamera().GetPosition().x - window.GetCamera().GetSize().x / 2 + 40,
-		window.GetCamera().GetPosition().y - window.GetCamera().GetSize().y / 2 + 600);
+	m_OptionsB->transform.SetPosition(window.GetCamera().GetPosition().x - window.GetCamera().GetSize().x / 2 + 10,
+		window.GetCamera().GetPosition().y - window.GetCamera().GetSize().y / 2 + 10);
 	button3 = new Button(m_OptionsB);
 	
 
