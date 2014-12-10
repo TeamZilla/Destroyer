@@ -8,7 +8,7 @@ class AeroplaneBehavior : public uth::Component
 	float pathFlatnes = 55; // ++ for flatnes
 	float m_speed = 700;
 	float m_time = 0;
-	float m_minY = 320;
+	float m_minY = 290;
 	float verticalScaler = 1;
 	float mainScale = 0.35;
 	float m_startX = 1200;
@@ -16,11 +16,15 @@ class AeroplaneBehavior : public uth::Component
 	float angle;
 	float m_sliding = 1;
 	int   m_direction; // uses values 1 and -1 only.
-	bool m_isDestroyed = false;
-
+	bool  m_isDestroyed = false;
+	pmath::Vec2 m_bombPos;
+	pmath::Vec2 m_bombOffset;
 	pmath::Vec2f m_pos;
 	pmath::Vec2f prevPos;
 	uth::Rigidbody*	m_rigidBody;
+	uth::GameObject* pAtomBomb = new uth::GameObject();
+	uth::GameObject* pRope = new uth::GameObject();
+	uth::Layer* m_layer;
 
 	//void explodeCheck();
 
@@ -31,7 +35,11 @@ public:
 		return m_isDestroyed;
 	}
 
-	AeroplaneBehavior(){}
+	AeroplaneBehavior(uth::Layer* layer) :
+		m_layer(layer)
+	{
+
+	}
 	
 	void Init() override
 	{
@@ -51,6 +59,20 @@ public:
 			m_direction = -1;
 		}
 
+		
+		auto bombTex = uthRS.LoadTexture("Enemies/Projectiles/AtomBomb.png");
+		bombTex->SetSmooth(true);
+		auto AtomBomb = new uth::Sprite(bombTex);
+		pAtomBomb->AddComponent(AtomBomb);
+		pAtomBomb->transform.SetScale(pmath::Vec2(-m_direction, 1));
+		m_layer->AddChild(pAtomBomb);
+
+		auto ropeTex = uthRS.LoadTexture("Enemies/Projectiles/rope.png");
+		ropeTex->SetSmooth(true);
+		auto Rope = new uth::Sprite(ropeTex);
+		pRope->AddComponent(Rope);
+		m_layer->AddChild(pRope);
+
 	}
 
 	~AeroplaneBehavior()
@@ -67,10 +89,21 @@ public:
 		rotation();
 		
 		prevPos = m_rigidBody->GetPosition();
-		if (prevPos.y <= -1000)
+		if (prevPos.y <= -500)
 		{
 			m_isDestroyed = true;
 		}
+
+		m_bombOffset = pmath::Vec2(-m_direction * 400, 200);
+		m_bombPos =  m_pos + m_bombOffset;
+		pAtomBomb->transform.SetPosition(m_bombPos);
+
+		pRope->transform.SetPosition(pAtomBomb->transform.GetPosition());
+		pmath::Vec2 m_ropeDir = pAtomBomb->transform.GetPosition() - m_pos;
+
+		float angle = pmath::radiansToDegrees(atan(sin(m_ropeDir.y) / m_ropeDir.x));
+		pRope->transform.SetRotation(angle);
+		pRope->transform.SetScale(pmath::Vec2(m_ropeDir.length() / pRope->transform.GetSize().x));
 	}
 
 	void pathFunc()

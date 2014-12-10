@@ -76,7 +76,7 @@ std::shared_ptr<GameObject> EnemyFactory::CreateAeroplane()
 
 	obj->transform.SetScale(0.5f);
 	obj->AddComponent(new Rigidbody(*m_physicsWorld, uth::COLLIDER_BOX, CollisionSize));
-	obj->AddComponent(new AeroplaneBehavior());
+	obj->AddComponent(new AeroplaneBehavior(m_layer));
 
 	return m_layer->AddChild(obj);
 
@@ -184,13 +184,13 @@ for (auto& e : m_layer->Children("Heli"))
 
 void EnemyFactory::Update(float dt)
 {
-	if (m_layer->Children("Tank").size() < 6)
+	if (m_layer->Children("Tank").size() < 0)
 		m_tankSpawn(dt);
-	if (m_layer->Children("Soldier").size() < 25)
+	if (m_layer->Children("Soldier").size() < 0)
 		m_soldierSpawn(dt);
-	if (m_layer->Children("Aeroplane").size() < 1)
+	if (m_layer->Children("Aeroplane").size() < 2)
 		m_aeroplaneSpawn(dt);
-	if (m_layer->Children("Heli").size() < 2)
+	if (m_layer->Children("Heli").size() < 0)
 		m_heliSpawn(dt);
 
 

@@ -28,6 +28,14 @@ Aeroplane::Aeroplane(float spawnX)
 
 	pathFlatnes = 55;
 	sliding = 1;
+
+
+	auto bombTex = uthRS.LoadTexture("Enemies\Projectiles\AtomBomb.png");
+	bombTex->SetSmooth(true);
+	auto AtomBomb = new Sprite(bombTex);
+	pAtomBomb->AddComponent(AtomBomb);
+	this->Parent()->AddChild(pAtomBomb);
+
 }
 
 

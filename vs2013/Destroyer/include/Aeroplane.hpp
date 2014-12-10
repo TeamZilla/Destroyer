@@ -21,6 +21,7 @@ class Aeroplane: public uth::GameObject
 	float sliding;
 	float verticalScaler;
 	float mainScale;
+	GameObject* pAtomBomb = new GameObject();
 
 public:
 	Aeroplane(float);
@@ -29,6 +30,4 @@ public:
 	void update(float) override;
 	void Draw();
 	void Init();
-
-
 };

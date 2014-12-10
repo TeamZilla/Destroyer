@@ -70,7 +70,7 @@ void Player::init(uth::PhysicsWorld* physworld, Health* hp)
 void Player::update(float dt)
 {
 	//// temporary code begins////
-	WriteLog("%f", Statistics.score.current);
+	//WriteLog("%f", Statistics.score.current);
 	//// temporary code ends////
 
 	m_dt = dt;

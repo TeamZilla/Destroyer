@@ -150,6 +150,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\backgrounds\gravel_texture.png" />
+    <Image Include="assets\Enemies\Projectiles\AtomBomb.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
