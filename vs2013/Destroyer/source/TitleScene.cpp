@@ -1,5 +1,6 @@
 #include <TitleScene.hpp>
 #include <Scenes.hpp>
+#include <UtH/Platform/JavaFunctions.hpp>
 
 using namespace uth;
 
@@ -9,6 +10,8 @@ uth::Layer& TitleScene::getLayer(LayerId id)
 }
 TitleScene::TitleScene()
 {
+	javaFunc::ShowAdBanner("6300978111",Origin::BottomRight);
+
 	uthEngine.GetWindow().GetCamera().SetSize(1280, 720);
 	m_roar = uthRS.LoadSound("Audio/Effects/moz_howl.wav");
 	m_BGM = uthRS.LoadSound("Audio/Music/menu_theme.wav");
@@ -59,16 +62,13 @@ TitleScene::TitleScene()
 		window.GetCamera().GetPosition().y - window.GetCamera().GetSize().y / 2 + 550);
 	button2 = new Button(m_CreditsB);
 	
-
-
-
 	//options (ball)
 	getLayer(LayerId::Buttons).AddChild(m_OptionsB = new GameObject());
 	uth::Texture* OptionsTex = uthRS.LoadTexture("Title/options.png");
 	OptionsTex->SetSmooth(true);
 	m_OptionsB->AddComponent(new AnimatedSprite(OptionsTex, 2, 2, 1, 0));
 	m_OptionsB->transform.SetOrigin(uth::Origin::TopLeft);
-	m_OptionsB->transform.SetPosition(window.GetCamera().GetPosition().x - window.GetCamera().GetSize().x / 2 + 630,
+	m_OptionsB->transform.SetPosition(window.GetCamera().GetPosition().x - window.GetCamera().GetSize().x / 2 + 40,
 		window.GetCamera().GetPosition().y - window.GetCamera().GetSize().y / 2 + 600);
 	button3 = new Button(m_OptionsB);
 	
@@ -107,7 +107,7 @@ TitleScene::~TitleScene()
 void TitleScene::Update(float dt)
 {
 	
-	if (!Creditsu && !options)
+	if (!Creditsu && !options && !isGameStarting)
 	{
 		button->update(dt);
 		button2->update(dt);
@@ -116,15 +116,17 @@ void TitleScene::Update(float dt)
 		m_CBG->SetActive(false);
 		m_EscB->SetActive(false);
 
-		if (button->IsPressedS() )
+		if (button->IsPressedS() && !isGameStarting)
 		{
 			m_BGM->Stop();
 			m_roar->Play();
 			m_roar->SetVolume(50);
 			isGameStarting = true;
+			//Remember to close ad before playing game
+			javaFunc::CloseAd("6300978111");
 		}
 
-		if (button2->IsPressedS() )
+		if (button2->IsPressedS() && !isGameStarting)
 		{
 			Creditsu = true;
 		}

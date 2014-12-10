@@ -102,6 +102,9 @@
     <ClInclude Include="include\Statistics.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\Pickup.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\Aeroplane.cpp">
@@ -168,6 +171,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\Statistics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Pickup.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -39,6 +39,7 @@ LOCAL_SRC_FILES := main.cpp \
 ../../vs2013/Destroyer/source/FireBreath.cpp \
 ../../vs2013/Destroyer/source/FlameEmitter.cpp \
 ../../vs2013/Destroyer/source/GameScene.cpp \
+../../vs2013/Destroyer/source/GameStats.cpp \
 ../../vs2013/Destroyer/source/Health.cpp \
 ../../vs2013/Destroyer/source/Heli.cpp \
 ../../vs2013/Destroyer/source/Missile.cpp \
