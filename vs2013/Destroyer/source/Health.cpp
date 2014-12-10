@@ -72,8 +72,8 @@ void Health::update(float dt)
 
 	if (m_Chealth == m_Mhealth)
 	{
-		m_Red->GetComponent<Sprite>("Red")->SetColor(1, 0, 0, 1);
-		m_Green->GetComponent<Sprite>("Green")->SetColor(0, 1, 0, 1);
+		m_Red->GetComponent<Sprite>("Red")->SetColor(0.6f, 0, 0, 1);
+		
 		m = m_Mhealth;
 
 	}
@@ -87,7 +87,7 @@ void Health::update(float dt)
 		}
 
 		n = (m_Mhealth - m_Chealth)/2;
-		m_Green->GetComponent<Sprite>("Green")->SetColor(0+n, 1-n, 0, 1);
+		
 		
 		if (m_Chealth > 0)
 		{
@@ -97,7 +97,7 @@ void Health::update(float dt)
 
 	if(m_Chealth == 0)
 	{
-		m_Green->GetComponent<Sprite>("Green")->SetColor(0, 0, 1, 1);
+		
 	}
 
 }

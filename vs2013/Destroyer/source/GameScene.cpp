@@ -72,13 +72,43 @@ bool GameScene::Init()
 	isPlayerDead = false;
 	m_soundSlowerTimer = 0;
 
-	auto playTex =		uthRS.LoadTexture("UI/pause.png");
-	auto gotext =		uthRS.LoadTexture("UI/GOmenu.png");
-	auto restarttext =	uthRS.LoadTexture("UI/restart.png");
-	auto menutext =		uthRS.LoadTexture("UI/menu.png");
-	auto pauseBG =		uthRS.LoadTexture("UI/pausemenu.png");
-	auto ExitText =		uthRS.LoadTexture("UI/esc.png");
+
 	
+	//scoreboard
+	getLayer(LayerId::Userinterface).AddChild(m_ScoreBoard = new GameObject());
+	
+	auto ScoreTex = uthRS.LoadTexture("UI/points_bar.png");
+	ScoreTex->SetSmooth(true);
+	m_ScoreBoard->AddComponent(new Sprite(ScoreTex, "ScoreBoardo"));
+	m_ScoreBoard->transform.SetOrigin(uth::Origin::TopLeft);
+	
+	
+	
+	
+	
+	getLayer(LayerId::Userinterface).AddChild(m_scorePoints = new GameObject());
+	m_scoreText = new Text("Brushy_New.TTF", 50);
+	m_scorePoints->AddComponent(m_scoreText);
+	m_scorePoints->transform.SetOrigin(uth::Origin::Center);
+	
+	
+	
+
+	
+	
+	auto playTex = uthRS.LoadTexture("UI/pause.png");
+	playTex->SetSmooth(true);
+	auto gotext = uthRS.LoadTexture("UI/GOmenu.png");
+	gotext->SetSmooth(true);
+	auto restarttext = uthRS.LoadTexture("UI/restart.png");
+	restarttext->SetSmooth(true);
+	auto menutext = uthRS.LoadTexture("UI/menu.png");
+	menutext->SetSmooth(true);
+	auto pauseBG = uthRS.LoadTexture("UI/pausemenu.png");
+	pauseBG->SetSmooth(true);
+	auto ExitText = uthRS.LoadTexture("UI/esc.png");
+	ExitText->SetSmooth(true);
+
 	playTex->SetSmooth(true);
 	//UI
 	getLayer(LayerId::Userinterface).AddChild(m_pauseMenu = new GameObject());
@@ -123,14 +153,6 @@ bool GameScene::Init()
 										  camera.GetPosition().y / 2 - camera.GetSize().y / 2);
 
 
-	//scoreboard
-	getLayer(LayerId::Userinterface).AddChild(m_ScoreBoard = new GameObject());
-	
-	
-	m_scoreText = new Text("8bitoperator.ttf", 28);
-	m_ScoreBoard->AddComponent(m_scoreText);
-	m_ScoreBoard->transform.SetOrigin(uth::Origin::TopLeft);
-	m_ScoreBoard->transform.SetPosition(0, 100);
 	return true;
 }
 
@@ -142,11 +164,18 @@ void GameScene::Update(float dt)
 	std::stringstream ss;
 	ss << Statistics.score.current;
 
-	std::string Cscore = "SCORE: ";
-	Cscore += ss.str();
+	std::string Cscore = ss.str();
+	
 	m_scoreText->SetText(Cscore);
-	m_ScoreBoard->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 2 + 800,
-		camera.GetPosition().y - camera.GetSize().y / 2 + 20);
+	m_scorePoints->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 2 + 580,
+		camera.GetPosition().y - camera.GetSize().y / 2 + 45);
+	m_ScoreBoard->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 2 + 400,
+		camera.GetPosition().y - camera.GetSize().y / 2 + 10);
+
+	m_ScoreBoard->transform.SetRotation(camera.GetRotation());
+	m_scorePoints->transform.SetRotation(camera.GetRotation());
+	m_PauseButton->transform.SetRotation(camera.GetRotation());
+
 	
 
 
