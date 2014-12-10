@@ -110,6 +110,7 @@
     <ClInclude Include="include\Health.hpp" />
     <ClInclude Include="include\Heli.hpp" />
     <ClInclude Include="include\Missile.hpp" />
+    <ClInclude Include="include\Pickup.hpp" />
     <ClInclude Include="include\Player.hpp" />
     <ClInclude Include="include\Road.hpp" />
     <ClInclude Include="include\RoadBlock.hpp" />
@@ -138,6 +139,7 @@
     <ClCompile Include="source\Heli.cpp" />
     <ClCompile Include="source\main.cpp" />
     <ClCompile Include="source\Missile.cpp" />
+    <ClCompile Include="source\Pickup.cpp" />
     <ClCompile Include="source\Player.cpp" />
     <ClCompile Include="source\Road.cpp" />
     <ClCompile Include="source\RoadBlock.cpp" />
