@@ -49,7 +49,8 @@ std::shared_ptr<GameObject> EnemyFactory::CreateSoldier()
 
 	auto obj = std::shared_ptr<GameObject>(new GameObject());
 	obj->AddTags({ "Soldier", "Enemy" });
-	obj->AddComponent(new AnimatedSprite(textureId, 6, 6, 1, 12));
+	obj->AddComponent(new AnimatedSprite(textureId, 12, 6, 2, 12));
+	obj->GetComponent<AnimatedSprite>()->ChangeAnimation(0, 6, 0, 12);
 
 	const static pmath::Vec2 CollisionSize(obj->transform.GetSize() / 2);
 	obj->transform.SetPosition(SpawnPosition());
