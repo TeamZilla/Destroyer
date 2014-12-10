@@ -11,6 +11,8 @@
 #include <Scenes.hpp>
 #include <GameStats.hpp>
 
+#include <UtH/Platform/JavaFunctions.hpp>
+
 using namespace uth;
 
 uth::Layer& GameScene::getLayer(LayerId id)
@@ -121,7 +123,7 @@ bool GameScene::Init()
 	getLayer(LayerId::Userinterface).AddChild(m_gameOverScreenPicture = new GameObject());
 	m_gameOverScreenPicture->AddComponent(new Sprite(gotext));
 	m_gameOverScreenPicture->transform.SetOrigin(uth::Origin::TopLeft);
-	m_gameOverScreenPicture->transform.SetScale(0.90f, 0.90f);
+	m_gameOverScreenPicture->transform.SetScale(0.90f, 0.70f);
 	m_gameOverScreenPicture->SetActive(false);
 
 	getLayer(LayerId::Userinterface).AddChild(m_PauseButton = new GameObject());
@@ -244,6 +246,7 @@ void GameScene::Update(float dt)
 				m_afterMathMusic->Play();
 				m_afterMathMusic->Loop(true);
 				isPlayerDead = true;
+				javaFunc::ShowAdBanner("6300978111",uth::Origin::BottomCenter);
 			}
 		}
 
@@ -336,12 +339,16 @@ void GameScene::Update(float dt)
 			uthSceneM.GoToScene(GAME);
 			m_afterMathMusic->Stop();
 			Statistics.Save();
+			//Test ad
+			javaFunc::CloseAd("6300978111");
 		}
 		if (m_menuB->IsPressedS())
 		{
 			uthSceneM.GoToScene(TITLE);
 			m_afterMathMusic->Stop();
 			Statistics.Save();
+			//Test ad
+			javaFunc::CloseAd("6300978111");
 		}
 	}
 

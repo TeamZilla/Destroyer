@@ -57,9 +57,6 @@
     <ClInclude Include="include\Soldier.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Tank.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\Background.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -99,7 +96,7 @@
     <ClInclude Include="include\GameStats.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Statistics.hpp">
+    <ClInclude Include="include\Pickup.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -140,9 +137,6 @@
     <ClCompile Include="source\Soldier.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\Tank.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="source\Background.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -167,12 +161,15 @@
     <ClCompile Include="source\GameStats.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\Statistics.cpp">
+    <ClCompile Include="source\Pickup.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\backgrounds\gravel_texture.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\Enemies\Projectiles\AtomBomb.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
