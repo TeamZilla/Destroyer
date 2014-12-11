@@ -97,7 +97,7 @@ public:
 	
 
 		parent->transform.SetScale(verticalScaler * pmath::Vec2f(-m_direction * 0.35,0.35));				// Aeroplane scale
-		pAtomBomb->transform.SetScale(pmath::Vec2(m_direction * 0.4 * verticalScaler, 0.4 * verticalScaler));	// bomb scale
+		pAtomBomb->transform.SetScale(pmath::Vec2(m_direction * 0.45 * verticalScaler, 0.45 * verticalScaler));	// bomb scale
 		m_dt = dt;
 		pathFunc();
 		rotation();

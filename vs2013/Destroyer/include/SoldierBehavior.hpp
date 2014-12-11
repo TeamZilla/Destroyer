@@ -45,7 +45,7 @@ public:
 		m_rigidBody->SetFriction(0);
 
 		m_maxDistance = pmath::Vec2(m_player->transform.GetPosition().x + 
-									uth::Randomizer::GetFloat(100,300));
+									uth::Randomizer::GetFloat(100,180));
 
 		setTarget(m_player->transform.GetPosition());
 		m_target = m_maxDistance;
