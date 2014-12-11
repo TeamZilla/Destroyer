@@ -162,24 +162,8 @@ bool GameScene::Init()
 // Update loop. Gone trought once per frame.
 void GameScene::Update(float dt)
 {
+
 	auto& camera = uthEngine.GetWindow().GetCamera();
-	std::stringstream ss;
-	ss << Statistics.score.current;
-
-	std::string Cscore = ss.str();
-	
-	m_scoreText->SetText(Cscore);
-	m_scorePoints->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 2 + 580,
-		camera.GetPosition().y - camera.GetSize().y / 2 + 45);
-	m_ScoreBoard->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 2 + 400,
-		camera.GetPosition().y - camera.GetSize().y / 2 + 10);
-
-	m_ScoreBoard->transform.SetRotation(camera.GetRotation());
-	m_scorePoints->transform.SetRotation(camera.GetRotation());
-	m_PauseButton->transform.SetRotation(camera.GetRotation());
-
-	
-
 
 	if (dt > 0.1)
 		dt = 0.1;
@@ -200,6 +184,25 @@ void GameScene::Update(float dt)
 
 	if (!isPaused && !isPlayerDead)
 	{	
+
+		m_bgManager.Update(dt);
+
+		Scene::Update(dt);
+		std::stringstream ss;
+		ss << Statistics.score.current;
+
+		std::string Cscore = ss.str();
+
+		m_scoreText->SetText(Cscore);
+		m_scorePoints->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 2 + 580,
+			camera.GetPosition().y - camera.GetSize().y / 2 + 45);
+		m_ScoreBoard->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 2 + 400,
+			camera.GetPosition().y - camera.GetSize().y / 2 + 10);
+
+		m_ScoreBoard->transform.SetRotation(camera.GetRotation());
+		m_scorePoints->transform.SetRotation(camera.GetRotation());
+		m_PauseButton->transform.SetRotation(camera.GetRotation());
+
 		m_PauseButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 2 + 1150,
 											 camera.GetPosition().y - camera.GetSize().y / 2 + 20);
 		m_PauseButton->transform.SetRotation(camera.GetRotation());
@@ -215,7 +218,6 @@ void GameScene::Update(float dt)
 		}
 
 		m_physWorld.Update(dt);
-		m_bgManager.Update(dt);
 
 		if (isInitedShake)
 		{
@@ -232,7 +234,6 @@ void GameScene::Update(float dt)
 		}
 
 		EnemyFactory::Update(dt);
-		Scene::Update(dt);
 		ControlFunctions();
 
 		if (Statistics.player.hp <= 0)
