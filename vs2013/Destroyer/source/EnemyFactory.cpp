@@ -76,7 +76,7 @@ std::shared_ptr<GameObject> EnemyFactory::CreateAeroplane()
 
 	obj->transform.SetScale(0.5f);
 	obj->AddComponent(new Rigidbody(*m_physicsWorld, uth::COLLIDER_BOX, CollisionSize));
-	obj->AddComponent(new AeroplaneBehavior(m_layer));
+	obj->AddComponent(new AeroplaneBehavior(m_layer, m_player));
 
 	return m_layer->AddChild(obj);
 
@@ -149,12 +149,17 @@ void EnemyFactory::CheckEnemies()
 		auto& aeroplane = *static_cast<AeroplaneBehavior*>(obj.GetComponent<AeroplaneBehavior>());
 
 		if (aeroplane.isDestroyed())
-		{
+		{	
+			if (abs(aeroplane.m_rigidBody->GetPosition().x) < 100)
+			{
+				Statistics.score.current += 150;
+				Statistics.score.aeroKills++;
+			}
 			ExplosionEmitter::Emit(obj.transform.GetPosition());
 			m_expSound->Play();
 			m_layer->RemoveChild(&obj);
-			Statistics.score.aeroKills++;
-			Statistics.score.current += 100;
+
+
 		}
 	}
 
