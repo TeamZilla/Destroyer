@@ -51,9 +51,6 @@
     <ClInclude Include="include\SmokeParAffector.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Soldier.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\Background.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>

@@ -30,7 +30,6 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE    := uthengine
 LOCAL_SRC_FILES := main.cpp \
-../../vs2013/Destroyer/source/Aeroplane.cpp \
 ../../vs2013/Destroyer/source/Background.cpp \
 ../../vs2013/Destroyer/source/BackgroundManager.cpp \
 ../../vs2013/Destroyer/source/Button.cpp \
@@ -46,7 +45,6 @@ LOCAL_SRC_FILES := main.cpp \
 ../../vs2013/Destroyer/source/Player.cpp \
 ../../vs2013/Destroyer/source/Road.cpp \
 ../../vs2013/Destroyer/source/RoadBlock.cpp \
-../../vs2013/Destroyer/source/Statistics.cpp \
 ../../vs2013/Destroyer/source/TankBullet.cpp \
 ../../vs2013/Destroyer/source/TitleScene.cpp
 LOCAL_LDLIBS    := -llog -landroid -lEGL -lGLESv2 -lOpenSLES
