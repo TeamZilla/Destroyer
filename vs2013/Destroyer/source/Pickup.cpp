@@ -3,6 +3,11 @@ using namespace uth;
 
 Pickup::Pickup(int type)
 {
+	isDestroyed = false;
+	m_timer = 0;
+
+	m_displayTime = 1;
+
 	std::string filepath;
 	switch (type)
 	{
@@ -28,6 +33,15 @@ Pickup::~Pickup()
 
 void Pickup::update(float dt)
 {
-
+	m_timer += dt;
+	if (m_timer <= m_displayTime)
+	{
+		transform.Move(0, -(m_timer * 4));
+		transform.Rotate(m_timer * 2);
+	}
+	else
+	{
+		isDestroyed = true;
+	}
 
 }

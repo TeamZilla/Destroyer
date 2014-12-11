@@ -226,7 +226,7 @@ void Heli::m_reload()
 
 void Heli::m_launch()
 {
-	Parent()->Parent()->AddChild(new Missile(transform.GetPosition(), m_player));
+	Parent()->AddChild(new Missile(transform.GetPosition(), m_player));
 	//Parent()->AddChild(new Missile(transform.GetPosition(),m_player));
 }
 
