@@ -30,6 +30,7 @@ class GameScene : public uth::Scene
 	uth::GameObject* m_pauseMenu;
 	uth::GameObject* m_blackOverlay;
 	uth::GameObject* m_ScoreBoard;
+	uth::GameObject* m_scorePoints;
 	
 
 
