@@ -2,6 +2,8 @@
 
 #include <UtH/UtHEngine.hpp>
 #include <ExplosionEmitter.hpp>
+#include <Player.hpp>
+#include <GameStats.hpp>
 
 class AeroplaneBehavior : public uth::Component
 {
@@ -11,17 +13,21 @@ class AeroplaneBehavior : public uth::Component
 	float m_minY = 290;
 	float verticalScaler = 1;
 	float mainScale = 0.35;
-	float m_startX = 1200;
+	float m_startX = 1400;
 	float m_dt;
 	float angle;
 	float m_sliding = 1;
+	float m_bending = 0;
+	float m_dmg = 60;
 	int   m_direction; // uses values 1 and -1 only.
 	bool  m_isDestroyed = false;
+	bool isDetonated = false;
+	Player* m_player;
 	pmath::Vec2 m_bombPos;
 	pmath::Vec2 m_bombOffset;
 	pmath::Vec2f m_pos;
+	pmath::Vec2f m_BombLastPos;
 	pmath::Vec2f prevPos;
-	uth::Rigidbody*	m_rigidBody;
 	uth::GameObject* pAtomBomb = new uth::GameObject();
 	uth::GameObject* pRope = new uth::GameObject();
 	uth::Layer* m_layer;
@@ -30,13 +36,15 @@ class AeroplaneBehavior : public uth::Component
 
 public:
 
+	uth::Rigidbody*	m_rigidBody;
+
 	bool isDestroyed()
 	{
 		return m_isDestroyed;
 	}
 
-	AeroplaneBehavior(uth::Layer* layer) :
-		m_layer(layer)
+	AeroplaneBehavior(uth::Layer* layer, Player* player) :
+		m_layer(layer), m_player(player)
 	{
 
 	}
@@ -65,7 +73,6 @@ public:
 		auto AtomBomb = new uth::Sprite(bombTex);
 		pAtomBomb->AddComponent(AtomBomb);
 		pAtomBomb->transform.SetOrigin(4);
-		pAtomBomb->transform.SetScale(pmath::Vec2(-m_direction*3, 3));
 		m_layer->AddChild(pAtomBomb);
 
 		uth::Texture* ropeTex = uthRS.LoadTexture("Enemies/Projectiles/rope.png");
@@ -83,22 +90,47 @@ public:
 
 	void Update(float dt)
 	{
-		verticalScaler = (abs(m_rigidBody->GetPosition().y) + 300) / 450;
-		parent->transform.SetScale(verticalScaler * pmath::Vec2f(-m_direction * 0.35,0.35));
+	
+		
+			verticalScaler = (abs(m_rigidBody->GetPosition().y) + 450) / 500;
+	
+	
 
+		parent->transform.SetScale(verticalScaler * pmath::Vec2f(-m_direction * 0.35,0.35));				// Aeroplane scale
+		pAtomBomb->transform.SetScale(pmath::Vec2(-m_direction * 2 * verticalScaler, 2 * verticalScaler));	// bomb scale
 		m_dt = dt;
 		pathFunc();
 		rotation();
 		
 		prevPos = m_rigidBody->GetPosition();
-		if (prevPos.y <= -500)
+		if (prevPos.y <= -800)
 		{
 			m_isDestroyed = true;
 		}
 
-		m_bombOffset = pmath::Vec2(-m_direction * 400, 200);
+		m_bending = 350 - m_pos.y;
+		
+	
+		m_bombOffset = pmath::Vec2(-m_direction * 400 + m_direction * m_bending, 200);
 		m_bombPos =  m_pos + m_bombOffset;
 		pAtomBomb->transform.SetPosition(m_bombPos);
+
+		if (m_direction * pAtomBomb->transform.GetPosition().x > -40 && !isDetonated)
+		{
+			// ExplosionEmitter::Emit(pAtomBomb->transform.GetPosition());
+			m_player->Hit(m_player->CheckIfGoingRight() == (m_direction == 1 ? true : false) ? m_dmg / 3 : m_dmg);
+			isDetonated = true;
+
+		}
+			
+		if (m_player->m_isJumping && m_direction * m_pos.x > -40 && m_direction * m_pos.x < -20 && (m_player->isGoingRight * 2 - 1) * m_direction == -1)
+		{
+			m_isDestroyed = true;
+			m_layer->RemoveChild(pRope);
+			m_layer->RemoveChild(pAtomBomb);
+		}
+
+			////////////
 
 		pRope->transform.SetPosition(pAtomBomb->transform.GetPosition());
 		pmath::Vec2 ropeDir = pAtomBomb->transform.GetPosition() - m_pos;
@@ -115,7 +147,7 @@ public:
 	void pathFunc()
 	{
 		m_pos.x = m_direction * m_speed * m_time + m_startX;
-		m_pos.y = -pow((m_pos.x) / pathFlatnes, 2) + m_minY;
+		m_pos.y = -pow((m_pos.x) / pathFlatnes, 2) + m_minY - 10;
 		m_rigidBody->SetPosition(m_pos);
 
 		rotation();
