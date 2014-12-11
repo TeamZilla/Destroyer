@@ -93,8 +93,18 @@ TitleScene::TitleScene()
 	m_EscB->transform.SetPosition(window.GetCamera().GetPosition().x - window.GetCamera().GetSize().x / 2 + 1175,
 								  window.GetCamera().GetPosition().y - window.GetCamera().GetSize().y / 2 + 50);
 	button4 = new Button(m_EscB);
-	
 	m_EscB->SetActive(false);
+
+	getLayer(LayerId::Buttons).AddChild(m_credits = new GameObject());
+	auto CreditsTex = uthRS.LoadTexture("credits.png");
+	CreditsTex->SetSmooth(true);
+	m_credits->AddComponent(new Sprite(CreditsTex, "hops"));
+	
+	m_credits->transform.SetOrigin(uth::Origin::TopLeft);
+	m_credits->transform.SetScale(0.8f, 0.8f);
+	m_credits->transform.SetPosition(window.GetCamera().GetPosition().x - window.GetCamera().GetSize().x / 2 + 825,
+		window.GetCamera().GetPosition().y - window.GetCamera().GetSize().y / 2 + 25);
+	m_credits->SetActive(false);
 
 	getLayer(LayerId::Buttons).AddChild(m_blackOverlay = new GameObject());
 	m_blackOverlay->AddComponent(new Sprite(pmath::Vec4(0, 0, 0, 0),pmath::Vec2(3500, 3500)));
@@ -102,15 +112,9 @@ TitleScene::TitleScene()
 										  window.GetCamera().GetPosition().y / 2 - window.GetCamera().GetSize().y / 2);
 
 	//credits texts
-	/*
-	getLayer(LayerId::Buttons).AddChild(m_CBG = new GameObject());
-	uth::Texture* CreditsTex = uthRS.LoadTexture("credits.png");
-	CreditsTex->SetSmooth(true);
-	m_credits->AddComponent(new Sprite(CreditsTex, "creditstexti"));
-	m_credits->transform.SetOrigin(uth::Origin::TopLeft);
-	m_credits->transform.SetPosition(window.GetCamera().GetPosition().x - window.GetCamera().GetSize().x / 2 + 775,
-		window.GetCamera().GetPosition().y - window.GetCamera().GetSize().y / 2 + 50);
-*/
+	
+
+
 
 
 	
@@ -129,6 +133,7 @@ void TitleScene::Update(float dt)
 
 		m_CBG->SetActive(false);
 		m_EscB->SetActive(false);
+		m_credits->SetActive(false);
 
 		if (button->IsPressedS() && !isGameStarting)
 		{
@@ -149,12 +154,10 @@ void TitleScene::Update(float dt)
 	else if (Creditsu)
 	{
 		
-		m_CBG->SetActive(true);
-		m_EscB->SetActive(true);
+		m_credits->SetActive(true);
+		button2->update(dt);
 
-		button4->update(dt);
-
-		if (button4->IsPressedS())
+		if (button2->IsPressedS())
 		{
 			Creditsu = false;
 			
