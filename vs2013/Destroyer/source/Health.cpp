@@ -86,7 +86,6 @@ void Health::update(float dt)
 			m = m - 0.002f;
 		}
 
-		n = (m_Mhealth - m_Chealth)/2;
 		
 		
 		if (m_Chealth > 0)
@@ -95,10 +94,7 @@ void Health::update(float dt)
 		}
 	}
 
-	if(m_Chealth == 0)
-	{
-		
-	}
+	
 
 }
 

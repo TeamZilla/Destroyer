@@ -37,6 +37,8 @@ public: // Every one of these public functions are required.
 	uth::GameObject* m_EscB;
 	uth::GameObject* m_CBG;
 	uth::GameObject* m_blackOverlay;
+	uth::GameObject* m_credits;
+	
 
 	bool Creditsu,options, isGameStarting;
 	virtual bool Init();

@@ -32,6 +32,7 @@ class GameScene : public uth::Scene
 	uth::GameObject* m_ScoreBoard;
 	uth::GameObject* m_scorePoints;
 	
+	
 
 
 	enum class LayerId : char

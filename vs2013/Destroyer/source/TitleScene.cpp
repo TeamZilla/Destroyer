@@ -19,7 +19,7 @@ TitleScene::TitleScene()
 	m_BGM->Loop(true);
 
 	auto& window = uthEngine.GetWindow();
-
+	        
 	Creditsu = false;
 	options = false;
 	isGameStarting = false;
@@ -54,7 +54,7 @@ TitleScene::TitleScene()
 	
 	//credits
 	getLayer(LayerId::Buttons).AddChild(m_CreditsB = new GameObject());
-	uth::Texture* CredTex = uthRS.LoadTexture("Title/credits.png");
+	uth::Texture* CredTex = uthRS.LoadTexture("Title/creditsb.png");
 	CredTex->SetSmooth(true);
 	m_CreditsB->AddComponent(new AnimatedSprite(CredTex, 2, 2, 1, 0));
 	m_CreditsB->transform.SetOrigin(uth::Origin::TopLeft);
@@ -100,6 +100,20 @@ TitleScene::TitleScene()
 	m_blackOverlay->AddComponent(new Sprite(pmath::Vec4(0, 0, 0, 0),pmath::Vec2(3500, 3500)));
 	m_blackOverlay->transform.SetPosition(window.GetCamera().GetPosition().x / 2,
 										  window.GetCamera().GetPosition().y / 2 - window.GetCamera().GetSize().y / 2);
+
+	//credits texts
+	/*
+	getLayer(LayerId::Buttons).AddChild(m_CBG = new GameObject());
+	uth::Texture* CreditsTex = uthRS.LoadTexture("credits.png");
+	CreditsTex->SetSmooth(true);
+	m_credits->AddComponent(new Sprite(CreditsTex, "creditstexti"));
+	m_credits->transform.SetOrigin(uth::Origin::TopLeft);
+	m_credits->transform.SetPosition(window.GetCamera().GetPosition().x - window.GetCamera().GetSize().x / 2 + 775,
+		window.GetCamera().GetPosition().y - window.GetCamera().GetSize().y / 2 + 50);
+*/
+
+
+	
 
 }
 TitleScene::~TitleScene()
