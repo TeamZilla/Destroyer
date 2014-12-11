@@ -540,7 +540,7 @@ void GameScene::colliderChecks()
 				if (AA->GetComponent<SoldierBehavior>()->isExploding())
 				{
 					AA->GetComponent<SoldierBehavior>()->Destroy();
-					BB->GetComponent<AeroplaneBehavior>()->Hit();
+					//BB->GetComponent<AeroplaneBehavior>()->Hit();
 				}
 			}
 		}

@@ -13,13 +13,13 @@ uth::PhysicsWorld*	EnemyFactory::m_physicsWorld;
 Player*				EnemyFactory::m_player;
 uth::Sound*			EnemyFactory::m_expSound;
 
-float EnemyFactory::m_aeroplaneSpawnCooldown = 60;
+float EnemyFactory::m_aeroplaneSpawnCooldown = 45;
 float EnemyFactory::m_aeroplaneSpawnTimer = 0;
 float EnemyFactory::m_tankSpawnCooldown = 3;
 float EnemyFactory::m_tankSpawnTimer = 0;
 float EnemyFactory::m_soldierSpawnCooldown = 1;
 float EnemyFactory::m_soldierSpawnTimer = 0;
-float EnemyFactory::m_heliSpawnCooldown = 1;
+float EnemyFactory::m_heliSpawnCooldown = 7;
 float EnemyFactory::m_heliSpawnTimer = 0;
 
 std::shared_ptr<GameObject> EnemyFactory::CreateTank()
@@ -163,8 +163,6 @@ void EnemyFactory::CheckEnemies()
 		}
 	}
 
-	///////////////////////////
-
 for (auto& e : m_layer->Children("Heli"))
 {
 	auto& obj = *static_cast<Heli*>(e.get());
@@ -179,8 +177,6 @@ for (auto& e : m_layer->Children("Heli"))
 		Statistics.score.current += 20;
 	}
 }
-
-////////////////////////////////////
 }
 
 
@@ -192,7 +188,7 @@ void EnemyFactory::Update(float dt)
 
 	if (m_layer->Children("Tank").size() < 6)
 		m_tankSpawn(dt);
-	if (m_layer->Children("Soldier").size() < 16)
+	if (m_layer->Children("Soldier").size() < 15)
 		m_soldierSpawn(dt);
 	if (m_layer->Children("Aeroplane").size() < 1)
 		m_aeroplaneSpawn(dt);
