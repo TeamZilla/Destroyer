@@ -5,6 +5,7 @@
 #include <ExplosionEmitter.hpp>
 #include <Heli.hpp>
 #include <GameStats.hpp>
+#include <Pickup.hpp>
 
 using namespace uth;
 
@@ -12,14 +13,16 @@ uth::Layer*			EnemyFactory::m_layer;
 uth::PhysicsWorld*	EnemyFactory::m_physicsWorld;
 Player*				EnemyFactory::m_player;
 uth::Sound*			EnemyFactory::m_expSound;
+uth::Sound*			EnemyFactory::m_hpSound;
+uth::Sound*			EnemyFactory::m_starSound;
 
-float EnemyFactory::m_aeroplaneSpawnCooldown = 60;
+float EnemyFactory::m_aeroplaneSpawnCooldown = 45;
 float EnemyFactory::m_aeroplaneSpawnTimer = 0;
 float EnemyFactory::m_tankSpawnCooldown = 3;
 float EnemyFactory::m_tankSpawnTimer = 0;
 float EnemyFactory::m_soldierSpawnCooldown = 1;
 float EnemyFactory::m_soldierSpawnTimer = 0;
-float EnemyFactory::m_heliSpawnCooldown = 1;
+float EnemyFactory::m_heliSpawnCooldown = 7;
 float EnemyFactory::m_heliSpawnTimer = 0;
 
 std::shared_ptr<GameObject> EnemyFactory::CreateTank()
@@ -101,6 +104,24 @@ std::shared_ptr<GameObject> EnemyFactory::CreateHeli()
 
 }
 
+std::shared_ptr<GameObject> EnemyFactory::CreateHP(pmath::Vec2 pos)
+{
+	auto obj = new Pickup(0);
+	obj->AddTag("HealthPickup");
+	obj->transform.SetPosition(pos);
+
+	return m_layer->AddChild(obj);
+}
+
+std::shared_ptr<GameObject> EnemyFactory::CreateStar(pmath::Vec2 pos)
+{
+	auto obj = new Pickup(1);
+	obj->AddTag("StarPickup");
+	obj->transform.SetPosition(pos);
+
+	return m_layer->AddChild(obj);
+}
+
 
 pmath::Vec2 EnemyFactory::SpawnPosition()
 {
@@ -120,9 +141,12 @@ void EnemyFactory::CheckEnemies()
 		auto& tank = *static_cast<TankBehavior*>(obj.GetComponent<TankBehavior>());
 
 		if (tank.isDestroyed())
-		{
+		{	//Emit pickups
+			CreateHP(obj.transform.GetPosition());
+			CreateStar(obj.transform.GetPosition());
+
 			ExplosionEmitter::Emit(obj.transform.GetPosition());
-			m_expSound->Play();
+			m_expSound->PlayEffect();
 			m_layer->RemoveChild(&obj);
 			Statistics.score.tankKills++;
 			Statistics.score.current += 10;
@@ -134,9 +158,11 @@ void EnemyFactory::CheckEnemies()
 		auto& tank = *static_cast<SoldierBehavior*>(obj.GetComponent<SoldierBehavior>());
 
 		if (tank.isDestroyed())
-		{
+		{	//Emit pickups
+			CreateStar(obj.transform.GetPosition());
+
 			ExplosionEmitter::Emit(obj.transform.GetPosition());
-			m_expSound->Play();
+			m_expSound->PlayEffect();
 			m_layer->RemoveChild(&obj);
 			Statistics.score.soldKills++;
 			Statistics.score.current += 1;
@@ -149,57 +175,81 @@ void EnemyFactory::CheckEnemies()
 		auto& aeroplane = *static_cast<AeroplaneBehavior*>(obj.GetComponent<AeroplaneBehavior>());
 
 		if (aeroplane.isDestroyed())
-		{	
+		{	//Emit pickups
+			CreateHP(obj.transform.GetPosition());
+			CreateStar(obj.transform.GetPosition());
+
 			if (abs(aeroplane.m_rigidBody->GetPosition().x) < 100)
 			{
 				Statistics.score.current += 150;
 				Statistics.score.aeroKills++;
 			}
 			ExplosionEmitter::Emit(obj.transform.GetPosition());
-			m_expSound->Play();
+			m_expSound->PlayEffect();
 			m_layer->RemoveChild(&obj);
 
 
 		}
 	}
 
-	///////////////////////////
-
-for (auto& e : m_layer->Children("Heli"))
-{
-	auto& obj = *static_cast<Heli*>(e.get());
-	//auto& heli = *static_cast<Heli*>(obj.GetComponent<Heli>());
-
-	if (obj.isDestroyed())
+	for (auto& e : m_layer->Children("Heli"))
 	{
-		ExplosionEmitter::Emit(obj.transform.GetPosition());
-		m_expSound->Play();
-		m_layer->RemoveChild(&obj);
-		Statistics.score.heliKills++;
-		Statistics.score.current += 20;
+		auto& obj = *static_cast<Heli*>(e.get());
+		//auto& heli = *static_cast<Heli*>(obj.GetComponent<Heli>());
+	
+		if (obj.isDestroyed())
+		{	//Emit pickups
+			CreateHP(obj.transform.GetPosition());
+			CreateStar(obj.transform.GetPosition());
+
+			ExplosionEmitter::Emit(obj.transform.GetPosition());
+			m_expSound->PlayEffect();
+			m_layer->RemoveChild(&obj);
+			Statistics.score.heliKills++;
+			Statistics.score.current += 20;
+		}
+	}
+	
+	////////////////////////////////////
+	
+	for (auto& e : m_layer->Children("HealthPickup"))
+	{
+		auto& obj = *static_cast<Pickup*>(e.get());
+	
+		if (obj.isDestroyed)
+		{
+			m_hpSound->PlayEffect();
+			m_layer->RemoveChild(&obj);
+			Statistics.player.hp += 0.05f;
+		}
+	
+	}
+	
+	for (auto& e : m_layer->Children("StarPickup"))
+	{
+		auto& obj = *static_cast<Pickup*>(e.get());
+	
+		if (obj.isDestroyed)
+		{
+			m_starSound->PlayEffect();
+			m_layer->RemoveChild(&obj);
+			Statistics.score.current += 10;
+		}
+	
 	}
 }
-
-////////////////////////////////////
-}
-
-
-
-
 
 void EnemyFactory::Update(float dt)
 {
 
 	if (m_layer->Children("Tank").size() < 6)
 		m_tankSpawn(dt);
-	if (m_layer->Children("Soldier").size() < 16)
+	if (m_layer->Children("Soldier").size() < 15)
 		m_soldierSpawn(dt);
 	if (m_layer->Children("Aeroplane").size() < 1)
 		m_aeroplaneSpawn(dt);
 	if (m_layer->Children("Heli").size() < 2)
 		m_heliSpawn(dt);
-
-
 
 	CheckEnemies();
 }

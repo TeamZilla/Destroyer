@@ -234,7 +234,11 @@ void GameScene::Update(float dt)
 		}
 
 		EnemyFactory::Update(dt);
-		ControlFunctions();
+
+		if (m_player->m_isDied == false)
+		{
+			ControlFunctions();
+		}
 
 		if (Statistics.player.hp <= 0)
 		{
@@ -540,7 +544,7 @@ void GameScene::colliderChecks()
 				if (AA->GetComponent<SoldierBehavior>()->isExploding())
 				{
 					AA->GetComponent<SoldierBehavior>()->Destroy();
-					BB->GetComponent<AeroplaneBehavior>()->Hit();
+					//BB->GetComponent<AeroplaneBehavior>()->Hit();
 				}
 			}
 		}

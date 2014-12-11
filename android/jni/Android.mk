@@ -43,6 +43,7 @@ LOCAL_SRC_FILES := main.cpp \
 ../../vs2013/Destroyer/source/Heli.cpp \
 ../../vs2013/Destroyer/source/Missile.cpp \
 ../../vs2013/Destroyer/source/Player.cpp \
+../../vs2013/Destroyer/source/Pickup.cpp \
 ../../vs2013/Destroyer/source/Road.cpp \
 ../../vs2013/Destroyer/source/RoadBlock.cpp \
 ../../vs2013/Destroyer/source/TankBullet.cpp \

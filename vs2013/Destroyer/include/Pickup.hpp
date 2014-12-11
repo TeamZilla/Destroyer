@@ -4,7 +4,7 @@
 
 class Pickup : public uth::GameObject
 {
-	bool m_isPressed;
+	float m_timer, m_displayTime, m_Xdirection;
 
 public:
 	//Pickup types-  0 Health  1 Score
@@ -12,6 +12,7 @@ public:
 	~Pickup();
 
 	int pickupType;
+	bool isDestroyed;
 
 	void update(float dt) override;
 };

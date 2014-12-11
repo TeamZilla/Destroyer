@@ -68,11 +68,11 @@ public:
 		}
 
 
-		auto bombTex = uthRS.LoadTexture("Enemies/Projectiles/AtomBomb.png");
+		auto bombTex = uthRS.LoadTexture("Enemies/Projectiles/boulder.png");
 		bombTex->SetSmooth(true);
 		auto AtomBomb = new uth::Sprite(bombTex);
 		pAtomBomb->AddComponent(AtomBomb);
-		pAtomBomb->transform.SetOrigin(4);
+		pAtomBomb->transform.SetOrigin(6);
 		m_layer->AddChild(pAtomBomb);
 
 		uth::Texture* ropeTex = uthRS.LoadTexture("Enemies/Projectiles/rope.png");
@@ -86,22 +86,18 @@ public:
 
 	~AeroplaneBehavior()
 	{
-		if (pRope)
-		m_layer->RemoveChild(pRope);
-		if (pAtomBomb)
-		m_layer->RemoveChild(pAtomBomb);
 	}
 
 	void Update(float dt)
 	{
 	
 		
-			verticalScaler = (abs(m_rigidBody->GetPosition().y) + 450) / 500;
+			verticalScaler = abs(m_rigidBody->GetPosition().y + 400) / 420;
 	
 	
 
 		parent->transform.SetScale(verticalScaler * pmath::Vec2f(-m_direction * 0.35,0.35));				// Aeroplane scale
-		pAtomBomb->transform.SetScale(pmath::Vec2(-m_direction * 2 * verticalScaler, 2 * verticalScaler));	// bomb scale
+		pAtomBomb->transform.SetScale(pmath::Vec2(m_direction * 0.45 * verticalScaler, 0.45 * verticalScaler));	// bomb scale
 		m_dt = dt;
 		pathFunc();
 		rotation();
@@ -121,7 +117,6 @@ public:
 
 		if (m_direction * pAtomBomb->transform.GetPosition().x > -40 && !isDetonated)
 		{
-			// ExplosionEmitter::Emit(pAtomBomb->transform.GetPosition());
 			m_player->Hit(m_player->CheckIfGoingRight() == (m_direction == 1 ? true : false) ? m_dmg / 3 : m_dmg);
 			isDetonated = true;
 
@@ -178,6 +173,8 @@ public:
 	void Hit()
 	{
 		m_isDestroyed = true;
+		m_layer->RemoveChild(pRope);
+		m_layer->RemoveChild(pAtomBomb);
 	}
 
 };
