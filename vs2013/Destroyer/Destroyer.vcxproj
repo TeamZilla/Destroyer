@@ -115,7 +115,6 @@
     <ClInclude Include="include\RoadBlock.hpp" />
     <ClInclude Include="include\Scenes.hpp" />
     <ClInclude Include="include\SmokeParAffector.hpp" />
-    <ClInclude Include="include\Soldier.hpp" />
     <ClInclude Include="include\SoldierBehavior.hpp" />
     <ClInclude Include="include\TankBehavior.hpp" />
     <ClInclude Include="include\TitleScene.hpp" />
