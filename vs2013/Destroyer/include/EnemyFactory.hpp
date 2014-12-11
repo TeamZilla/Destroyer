@@ -8,7 +8,9 @@ class EnemyFactory
 	static uth::Layer*			m_layer;
 	static uth::PhysicsWorld*	m_physicsWorld;
 	static Player*				m_player;
-    static uth::Sound*			m_expSound;
+	static uth::Sound*			m_expSound;
+	static uth::Sound*			m_hpSound;
+	static uth::Sound*			m_starSound;
 
 	static pmath::Vec2 SpawnPosition();
 
@@ -34,7 +36,9 @@ public:
 		m_layer = layer;
 		m_physicsWorld = physWorld;
 		m_player = player;
-		m_expSound = uthRS.LoadSound("Audio/Effects/Short_Explosion1.wav");
+		m_expSound =  uthRS.LoadSound("Audio/Effects/Short_Explosion1.wav");
+		m_hpSound =   uthRS.LoadSound("Audio/Effects/Heart_pickup.wav");
+		m_starSound = uthRS.LoadSound("Audio/Effects/Star_pickup.wav");
 		//m_expSound->SetVolume(50);
 	}
 	static void Update(float dt);
@@ -43,6 +47,8 @@ public:
 	static std::shared_ptr<uth::GameObject> CreateSoldier();
 	static std::shared_ptr<uth::GameObject> CreateAeroplane();
 	static std::shared_ptr<uth::GameObject> CreateHeli();
+	static std::shared_ptr<uth::GameObject> CreateHP(pmath::Vec2 pos);
+	static std::shared_ptr<uth::GameObject> CreateStar(pmath::Vec2 pos);
 	static void CheckEnemies();
 
 };
