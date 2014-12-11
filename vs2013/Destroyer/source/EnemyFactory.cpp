@@ -16,7 +16,7 @@ uth::Sound*			EnemyFactory::m_expSound;
 uth::Sound*			EnemyFactory::m_hpSound;
 uth::Sound*			EnemyFactory::m_starSound;
 
-float EnemyFactory::m_aeroplaneSpawnCooldown = 10;
+float EnemyFactory::m_aeroplaneSpawnCooldown = 60;
 float EnemyFactory::m_aeroplaneSpawnTimer = 0;
 float EnemyFactory::m_tankSpawnCooldown = 3;
 float EnemyFactory::m_tankSpawnTimer = 0;
@@ -243,13 +243,14 @@ void EnemyFactory::CheckEnemies()
 
 void EnemyFactory::Update(float dt)
 {
-	if (m_layer->Children("Tank").size() < 10)
+
+	if (m_layer->Children("Tank").size() < 6)
 		m_tankSpawn(dt);
-	if (m_layer->Children("Soldier").size() < 0)
+	if (m_layer->Children("Soldier").size() < 16)
 		m_soldierSpawn(dt);
-	if (m_layer->Children("Aeroplane").size() < 2)
+	if (m_layer->Children("Aeroplane").size() < 1)
 		m_aeroplaneSpawn(dt);
-	if (m_layer->Children("Heli").size() < 0)
+	if (m_layer->Children("Heli").size() < 2)
 		m_heliSpawn(dt);
 
 	CheckEnemies();

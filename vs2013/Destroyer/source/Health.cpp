@@ -80,7 +80,7 @@ void Health::update(float dt)
 	
 	if (m_Chealth <= m_Mhealth)
 	{
-		if (m >= m_Chealth && m > 0)
+		if (m >= m_Chealth && m >= 0)
 		{
 			m_Red->transform.SetScale(m, 1);
 			m = m - 0.002f;
@@ -88,7 +88,7 @@ void Health::update(float dt)
 
 		
 		
-		if (m_Chealth > 0)
+		if (m_Chealth >= 0)
 		{
 			m_Green->transform.SetScale(m_Chealth, 1);
 		}
