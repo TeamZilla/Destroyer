@@ -184,7 +184,7 @@ for (auto& e : m_layer->Children("Heli"))
 
 void EnemyFactory::Update(float dt)
 {
-	if (m_layer->Children("Tank").size() < 0)
+	if (m_layer->Children("Tank").size() < 10)
 		m_tankSpawn(dt);
 	if (m_layer->Children("Soldier").size() < 0)
 		m_soldierSpawn(dt);
