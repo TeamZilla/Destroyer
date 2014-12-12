@@ -5,6 +5,7 @@
 class Pickup : public uth::GameObject
 {
 	float m_timer, m_displayTime, m_Xdirection;
+	bool m_smaller;
 
 public:
 	//Pickup types-  0 Health  1 Score
