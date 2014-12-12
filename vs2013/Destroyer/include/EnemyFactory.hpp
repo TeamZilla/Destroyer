@@ -27,6 +27,7 @@ class EnemyFactory
 	static float m_soldierSpawnTimer;
 	static float m_heliSpawnCooldown;
 	static float m_heliSpawnTimer;
+	static float m_timeCounter;
 
 
 public:
