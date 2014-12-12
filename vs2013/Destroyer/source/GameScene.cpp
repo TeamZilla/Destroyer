@@ -494,10 +494,10 @@ void GameScene::colliderChecks()
 			}
 			else if (BB->HasTag("Heli"))
 			{
-				if (static_cast<Player*>(AA)->m_isJumping)
-				{
-					static_cast<Heli*>(BB)->takeDamage(100);
-				}
+				//if (static_cast<Player*>(AA)->m_isJumping)
+				//{
+				//	static_cast<Heli*>(BB)->takeDamage(100);
+				//}
 			}
 		}
 		//When enemies are dying and are hitting floor

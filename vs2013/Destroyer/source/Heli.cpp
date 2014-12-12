@@ -52,6 +52,13 @@ void Heli::update(float dt)
 	m_dt = dt*3;
 	if (GetComponent<Rigidbody>())
 		Pilot();
+
+	if (m_player->m_isJumping && ((transform.GetPosition().x < 140 && transform.GetPosition().x > 80 && m_player->isGoingRight == true) || (transform.GetPosition().x > -140 && transform.GetPosition().x < -80 && m_player->isGoingRight == false)))
+	{
+		m_health = 0;
+		std::cout << "asdfg" << std::endl;
+	}
+
 #ifdef UTH_SYSTEM_ANDROID
 	if (uthInput.Touch.Motion() == TouchMotion::TAP)
 	{
