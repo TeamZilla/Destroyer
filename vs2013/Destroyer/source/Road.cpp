@@ -143,6 +143,7 @@ void Road::m_shock()
 			isShock = false;
 			m_shockSpeed = m_shockStartSpeed;
 			m_shock_x = m_shockStartX;
+			m_player->m_allowShock = true;
 		}
 	}
 
