@@ -252,6 +252,7 @@ void GameScene::Update(float dt)
 				m_afterMathMusic->Loop(true);
 				isPlayerDead = true;
 				javaFunc::ShowAdBanner("6300978111",uth::Origin::BottomCenter);
+				EnemyFactory::m_timeCounter = 0;
 			}
 		}
 

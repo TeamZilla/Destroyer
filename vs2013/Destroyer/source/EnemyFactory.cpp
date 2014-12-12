@@ -256,7 +256,7 @@ void EnemyFactory::Update(float dt)
 		EnemyFactory::m_aeroplaneSpawnCooldown = 0;
 		EnemyFactory::m_tankSpawnCooldown = 0;
 		EnemyFactory::m_soldierSpawnCooldown = 1.5;
-		EnemyFactory::m_heliSpawnCooldown = 0;
+		EnemyFactory::m_heliSpawnCooldown = 1;
 
 
 		if (m_layer->Children("Tank").size() < 0)

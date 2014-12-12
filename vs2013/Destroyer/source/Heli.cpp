@@ -32,6 +32,8 @@ Heli::Heli(pmath::Vec2f givenPos, Player* player)
 	isCool = 0;
 	m_player = player;
 	m_health = 100;
+	m_stabilizer = 1;
+	m_angleMod = 35;
 
 	//m_heliSound = uthRS.LoadSound("Audio/Effects/helicopter.wav");
 	//m_heliSound->Play();
@@ -57,6 +59,9 @@ void Heli::update(float dt)
 	{
 		m_health = 0;
 	}
+
+	
+		m_lastX = transform.GetPosition().x;
 
 #ifdef UTH_SYSTEM_ANDROID
 	if (uthInput.Touch.Motion() == TouchMotion::TAP)
@@ -142,12 +147,13 @@ void Heli::Pilot()
 	}
 
 	Hover();
+	Torque();
 
 	// direction change
 	transform.SetScale((-m_shootingTarget.x + transform.GetPosition().x) / std::abs(m_shootingTarget.x - transform.GetPosition().x), 1);
 
 	GetComponent<Rigidbody>()->SetPosition(m_curPos + m_hoverDisplacement);
-	GetComponent<Rigidbody>()->SetAngle(0);
+	GetComponent<Rigidbody>()->SetAngle(m_angle);
 	GetComponent<Rigidbody>()->SetPhysicsGroup(3);
 	//transform.SetPosition(m_curPos + m_hoverDisplacement); // sums up hover origin and hover displacement. Puts the object into the point.
 
@@ -169,6 +175,18 @@ void Heli::Pilot()
 }
 
 
+
+void Heli::Torque()
+{
+	if (transform.GetPosition().x > 0)
+	{
+		m_angle = m_angleMod * cos(0.5 * (m_lastX - transform.GetPosition().x)) / 2;
+	}
+	else
+	{
+		m_angle = -m_angleMod * cos(-0.5 * (m_lastX - transform.GetPosition().x)) / 2;
+	}
+}
 
 void Heli::SetNextPos(pmath::Vec2f targ)
 {

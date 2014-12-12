@@ -22,6 +22,10 @@ public:
 	void SetLinearSpeed(float);
 	void SetHoverSpeed(float);
 	bool isDestroyed();
+	float m_lastX;
+	float m_angleMod;
+	float m_angle;
+	float m_stabilizer;
 	//Taking damage and dying
 	void takeDamage(int amount);
 
@@ -44,7 +48,7 @@ private:
 	//linear move	
 	void LinearMove();					// calculates linear progression between each update
 	void Navigate(pmath::Vec2f targ);	// called when there's a new place to go to.
-	
+	void Torque();
 	bool isMoving;
 	float m_linearSpeed;				// m_linearSpeed in linear movement
 	float m_pathLenght;					// lenght of path. Changed only in m_navigate()
