@@ -221,7 +221,11 @@ void EnemyFactory::CheckEnemies()
 		{
 			m_hpSound->PlayEffect();
 			m_layer->RemoveChild(&obj);
-			Statistics.player.hp += 0.05f;
+
+			if (Statistics.player.hp < Statistics.player.maxHp)
+				Statistics.player.hp += 0.05f;
+			else
+				Statistics.player.hp = Statistics.player.maxHp;
 		}
 	
 	}
