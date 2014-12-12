@@ -92,17 +92,6 @@ void Player::update(float dt)
 	else if (m_isDied)
 	{
 		Dying();
-
-		//// temp code start ///
-		//Check if player has better score than highscore
-		if (Statistics.score.highscore < Statistics.score.current)
-		{
-			WriteLog("New Highscore! : ""%f", Statistics.score.current);
-			//Let's save the highscore then
-			Statistics.score.highscore = Statistics.score.current;
-		}
-		/// temp code end ///
-
 	}
 	if (m_isHurting)
 	{

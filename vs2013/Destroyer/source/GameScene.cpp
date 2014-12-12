@@ -64,6 +64,7 @@ bool GameScene::Init()
 
 
 	ExplosionEmitter::Init(&getLayer(LayerId::Foreground));
+
 	FlameEmitter::Init(&getLayer(LayerId::Foreground));
 
 	EnemyFactory::Init(&getLayer(LayerId::InGame),&m_physWorld,m_player);
@@ -74,29 +75,6 @@ bool GameScene::Init()
 	isPlayerDead = false;
 	m_soundSlowerTimer = 0;
 
-
-	
-	//scoreboard
-	getLayer(LayerId::Userinterface).AddChild(m_ScoreBoard = new GameObject());
-	
-	auto ScoreTex = uthRS.LoadTexture("UI/points_bar.png");
-	ScoreTex->SetSmooth(true);
-	m_ScoreBoard->AddComponent(new Sprite(ScoreTex, "ScoreBoardo"));
-	m_ScoreBoard->transform.SetOrigin(uth::Origin::TopLeft);
-	
-	
-	
-	
-	
-	getLayer(LayerId::Userinterface).AddChild(m_scorePoints = new GameObject());
-	m_scoreText = new Text("Brushy_New.TTF", 50);
-	m_scorePoints->AddComponent(m_scoreText);
-	m_scorePoints->transform.SetOrigin(uth::Origin::Center);
-	
-	
-	
-
-	
 	
 	auto playTex = uthRS.LoadTexture("UI/pause.png");
 	playTex->SetSmooth(true);
@@ -111,6 +89,19 @@ bool GameScene::Init()
 	auto ExitText = uthRS.LoadTexture("UI/esc.png");
 	ExitText->SetSmooth(true);
 
+	//scoreboard
+	getLayer(LayerId::Userinterface).AddChild(m_ScoreBoard = new GameObject());
+	auto ScoreTex = uthRS.LoadTexture("UI/points_bar.png");
+	ScoreTex->SetSmooth(true);
+	m_ScoreBoard->AddComponent(new Sprite(ScoreTex, "ScoreBoardo"));
+	m_ScoreBoard->transform.SetOrigin(uth::Origin::TopLeft);
+
+
+	getLayer(LayerId::Userinterface).AddChild(m_scorePoints = new GameObject());
+	m_scoreText = new Text("Brushy_New.TTF", 50);
+	m_scorePoints->AddComponent(m_scoreText);
+	m_scorePoints->transform.SetOrigin(uth::Origin::Center);
+
 	playTex->SetSmooth(true);
 	//UI
 	getLayer(LayerId::Userinterface).AddChild(m_pauseMenu = new GameObject());
@@ -118,7 +109,6 @@ bool GameScene::Init()
 	m_pauseMenu->transform.SetOrigin(uth::Origin::TopLeft);
 	m_pauseMenu->transform.SetScale(0.90f, 0.90f);
 	m_pauseMenu->SetActive(false);
-
 
 	getLayer(LayerId::Userinterface).AddChild(m_gameOverScreenPicture = new GameObject());
 	m_gameOverScreenPicture->AddComponent(new Sprite(gotext));
@@ -154,6 +144,20 @@ bool GameScene::Init()
 	m_blackOverlay->transform.SetPosition(camera.GetPosition().x / 2,
 										  camera.GetPosition().y / 2 - camera.GetSize().y / 2);
 
+
+	//Game over score stuff here
+
+	getLayer(LayerId::Userinterface).AddChild(m_goScoreObj = new GameObject());
+	m_goScoreText = new Text("Brushy_New.TTF", 75, "GameOverText", pmath::Vec4(0, 0, 0, 1));
+	m_goScoreObj->AddComponent(m_goScoreText);
+
+	getLayer(LayerId::Userinterface).AddChild(m_goHiScoreObj = new GameObject());
+	m_goHiScoreText = new Text("Brushy_New.TTF", 75, "GameOverText", pmath::Vec4(0, 0, 0, 1));
+	m_goHiScoreObj->AddComponent(m_goHiScoreText);
+
+
+	m_goScoreObj->SetActive(false);
+	m_goHiScoreObj->SetActive(false);
 
 	return true;
 }
@@ -328,16 +332,48 @@ void GameScene::Update(float dt)
 		m_gameOverScreenPicture->SetActive(true);
 		m_MenuButton->SetActive(true);
 		m_RestartButton->SetActive(true);
+		m_goScoreObj->SetActive(true);
+		m_goHiScoreObj->SetActive(true);
+
+		m_ScoreBoard->SetActive(false);
+		m_scorePoints->SetActive(false);
+		m_PauseButton->SetActive(false);
+
 		m_health->update(dt);
 
 		m_menuB->update(dt);
 		m_restartB->update(dt);
 
+		//Check if player has better score than highscore
+		if (Statistics.score.highscore < Statistics.score.current)
+		{
+			WriteLog("New Highscore! : ""%f", Statistics.score.current);
+			//Let's save the highscore then
+			Statistics.score.highscore = Statistics.score.current;
+		}
+
+		std::stringstream gs;
+		std::stringstream gh;
+
+		gs << Statistics.score.current;
+		gh << Statistics.score.highscore;
+
+		std::string GOscore = gs.str();
+		std::string GOHscore = gh.str();
+
+		m_goScoreText->SetText("SCORE: " + GOscore);
+		m_goHiScoreText->SetText("HIGHSCORE: " + GOHscore);
+
+
 		auto& camera = uthEngine.GetWindow().GetCamera();
 
 		m_gameOverScreenPicture->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 50, camera.GetPosition().y - camera.GetSize().y / 2);
-		m_MenuButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 120, camera.GetPosition().y - camera.GetSize().y /2 + 525);
-		m_RestartButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 470, camera.GetPosition().y - camera.GetSize().y /2 + 525);
+		m_MenuButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 120, camera.GetPosition().y - camera.GetSize().y /2 + 400);
+		m_RestartButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 470, camera.GetPosition().y - camera.GetSize().y /2 + 400);
+
+		auto goPos = m_gameOverScreenPicture->transform.GetPosition();
+		m_goScoreObj->transform.SetPosition(goPos.x + 300, goPos.y + 270);
+		m_goHiScoreObj->transform.SetPosition(goPos.x + 300, goPos.y + 350);
 
 		if (m_restartB->IsPressedS())
 		{
