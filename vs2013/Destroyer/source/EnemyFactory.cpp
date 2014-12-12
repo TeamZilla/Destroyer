@@ -242,13 +242,13 @@ void EnemyFactory::CheckEnemies()
 void EnemyFactory::Update(float dt)
 {
 
-	if (m_layer->Children("Tank").size() < 6)
+	if (m_layer->Children("Tank").size() < 0)
 		m_tankSpawn(dt);
-	if (m_layer->Children("Soldier").size() < 15)
+	if (m_layer->Children("Soldier").size() < 0)
 		m_soldierSpawn(dt);
-	if (m_layer->Children("Aeroplane").size() < 1)
+	if (m_layer->Children("Aeroplane").size() < 0)
 		m_aeroplaneSpawn(dt);
-	if (m_layer->Children("Heli").size() < 2)
+	if (m_layer->Children("Heli").size() < 4)
 		m_heliSpawn(dt);
 
 	CheckEnemies();
