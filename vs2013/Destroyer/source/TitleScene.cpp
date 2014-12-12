@@ -104,8 +104,8 @@ TitleScene::TitleScene()
 	
 	m_credits->transform.SetOrigin(uth::Origin::TopLeft);
 	m_credits->transform.SetScale(0.8f, 0.8f);
-	m_credits->transform.SetPosition(window.GetCamera().GetPosition().x - window.GetCamera().GetSize().x / 2 + 825,
-		window.GetCamera().GetPosition().y - window.GetCamera().GetSize().y / 2 + 25);
+	m_credits->transform.SetPosition(window.GetCamera().GetPosition().x - window.GetCamera().GetSize().x / 2 + 625,
+		window.GetCamera().GetPosition().y - window.GetCamera().GetSize().y / 2 + 15);
 	m_credits->SetActive(false);
 
 	getLayer(LayerId::Buttons).AddChild(m_blackOverlay = new GameObject());
@@ -137,6 +137,8 @@ void TitleScene::Update(float dt)
 		m_EscB->SetActive(false);
 		m_credits->SetActive(false);
 
+
+
 		if (button->IsPressedS() && !isGameStarting)
 		{
 			m_BGM->Stop();
@@ -155,8 +157,8 @@ void TitleScene::Update(float dt)
 	}
 	else if (Creditsu)
 	{
-		
 		m_credits->SetActive(true);
+
 		button2->update(dt);
 
 		if (button2->IsPressedS())
@@ -168,6 +170,8 @@ void TitleScene::Update(float dt)
 	}
 	if (!options)
 	{
+
+
 		if (button3->IsPressedS())
 		{
 			options = true;
