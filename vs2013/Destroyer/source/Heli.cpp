@@ -53,7 +53,7 @@ void Heli::update(float dt)
 	if (GetComponent<Rigidbody>())
 		Pilot();
 
-	if (m_player->m_isJumping && ((transform.GetPosition().x < 150 && transform.GetPosition().x > 80 && m_player->isGoingRight == true) || (transform.GetPosition().x > -150 && transform.GetPosition().x < -80 && m_player->isGoingRight == false)))
+	if (m_player->m_isJumping && transform.GetPosition().y > 175 && ((transform.GetPosition().x < 180 && transform.GetPosition().x > 80 && m_player->isGoingRight == true) || (transform.GetPosition().x > -180 && transform.GetPosition().x < -90 && m_player->isGoingRight == false)))
 	{
 		m_health = 0;
 		std::cout << "asdfg" << std::endl;

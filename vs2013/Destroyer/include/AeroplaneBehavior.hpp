@@ -122,11 +122,12 @@ public:
 
 		}
 			
-		if (m_player->m_isJumping && m_direction * m_pos.x > -60 && m_direction * m_pos.x < -40 && (m_player->isGoingRight * 2 - 1) * m_direction == -1)
+		if (m_player->m_isJumping && m_direction * m_pos.x > -175 && m_direction * m_pos.x < -60 && (m_player->isGoingRight * 2 - 1) * m_direction == -1)
 		{
 			m_isDestroyed = true;
 			m_layer->RemoveChild(pRope);
 			m_layer->RemoveChild(pAtomBomb);
+			ExplosionEmitter::Emit(pAtomBomb->transform.GetPosition());
 		}
 
 			////////////
