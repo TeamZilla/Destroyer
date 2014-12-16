@@ -25,7 +25,6 @@ public:
 	float m_lastX;
 	float m_angleMod;
 	float m_angle;
-	float m_stabilizer;
 	//Taking damage and dying
 	void takeDamage(int amount);
 

@@ -32,7 +32,6 @@ Heli::Heli(pmath::Vec2f givenPos, Player* player)
 	isCool = 0;
 	m_player = player;
 	m_health = 100;
-	m_stabilizer = 1;
 	m_angleMod = 35;
 
 	//m_heliSound = uthRS.LoadSound("Audio/Effects/helicopter.wav");

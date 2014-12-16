@@ -22,15 +22,19 @@ class GameScene : public uth::Scene
 	Button* m_restartB;
 	Button* m_ExitB;
 	uth::Text* m_scoreText;
+	uth::Text* m_goScoreText;
+	uth::Text* m_goHiScoreText;
 	uth::GameObject* m_PauseButton;
 	uth::GameObject* m_MenuButton;
 	uth::GameObject* m_RestartButton;
-	uth::GameObject*  m_gameOverScreenPicture;
+	uth::GameObject* m_gameOverScreenPicture;
 	uth::GameObject* m_ExitButton;
 	uth::GameObject* m_pauseMenu;
 	uth::GameObject* m_blackOverlay;
 	uth::GameObject* m_ScoreBoard;
 	uth::GameObject* m_scorePoints;
+	uth::GameObject* m_goScoreObj;
+	uth::GameObject* m_goHiScoreObj;
 	
 	
 
