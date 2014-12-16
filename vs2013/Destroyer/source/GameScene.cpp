@@ -40,7 +40,7 @@ bool GameScene::Init()
 
 	m_bgManager.Init(getLayer(LayerId::Background), getLayer(LayerId::Foreground));
 
-	getLayer(LayerId::InGame).AddChild(m_road = new Road(225));
+	getLayer(LayerId::InGame).AddChild(m_road = new Road(282));
 	getLayer(LayerId::InGame).AddChild(m_player = new Player(&m_physWorld));
 	getLayer(LayerId::Userinterface).AddChild(m_health = new Health);
 	m_player->init(&m_physWorld, m_health);
