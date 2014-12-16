@@ -11,29 +11,32 @@ Heli::Heli(pmath::Vec2f givenPos, Player* player)
 	heliTex->SetSmooth(true);
 	this->AddComponent(new AnimatedSprite(heliTex, 2, 2, 1, 12));
 	m_hoverTime = 0;
-	m_hoverSpeed = 0.8;
-	m_hoverScale = pmath::Vec2f(100, 100);
+	m_hoverSpeed = 2;
+	m_hoverScale = pmath::Vec2f(100, 80);
 	isMoving = 0;
-	m_linearSpeed = 5;
+	m_linearSpeedBase = 0.5;
+	m_linearSpeed = 0.5;
 	m_missileCD_max = 0.7;
 	m_missileCD_min = 0.2;
 	m_dt = 0;
 	m_pathLenght = 0;
-	m_shootDelay = 0.16;
-	burstTimer = 0;
-	m_missileClip = 6;
+	m_shootDelay = 0.08;
+	burstTimer = 3;
+	m_missileClip = 8;
 	m_missileCount = 0;
 	m_shootingTarget = pmath::Vec2f(0,400);
 	bonVoyageTimer = 0;
 	m_missileRegenTimer = 0;
-	m_missileRegenTime = 3;
-	m_hoverMaxTime = 15;
-	burstTimer = 3;
+	m_missileRegenTime = 1;
+	m_hoverMaxTime = 3;
 	isCool = 0;
 	m_player = player;
 	m_health = 100;
-	m_stabilizer = 1;
-	m_angleMod = 30;
+	m_stabilizer = 6;
+	m_angleMod = 20;
+	m_currentAngle = 0;
+	m_hoverMod = 1;
+
 
 	//m_heliSound = uthRS.LoadSound("Audio/Effects/helicopter.wav");
 	//m_heliSound->Play();
@@ -41,6 +44,18 @@ Heli::Heli(pmath::Vec2f givenPos, Player* player)
 	//m_heliSound->Loop(true);
 }
 
+void Heli::slerpToAngle()
+{
+	float tempAngle = m_currentAngle - m_targetAngle;
+	if (abs(tempAngle) > 1)
+	{
+		m_currentAngle -= tempAngle / m_stabilizer;
+	}
+	else
+	{
+		m_currentAngle = m_targetAngle;
+	}
+}
 Heli::Heli()
 {
 }
@@ -51,7 +66,7 @@ Heli::~Heli()
 
 void Heli::update(float dt)
 {
-	m_dt = dt*3;
+	m_dt = dt;
 	if (GetComponent<Rigidbody>())
 		Pilot();
 
@@ -87,8 +102,10 @@ bool Heli::isDestroyed()
 
 void Heli::Hover()
 {
-	m_hoverTime += m_hoverSpeed * m_dt;
-	m_hoverDisplacement = pmath::Vec2f(m_hoverScale.x * sin(m_hoverTime), m_hoverScale.y * cos(m_hoverTime / 2));
+		// m_hoverMod = sin(pmath::pi * (m_nextPos - m_curPos).length() / m_pathLengh); // acceleration and deacceleration
+		m_hoverTime +=  m_hoverSpeed * m_dt;
+		//std::cout << m_pathLenght << std::endl;
+		m_hoverDisplacement =/* m_hoverMod * */pmath::Vec2f(m_hoverScale.x * sin(m_hoverTime), m_hoverScale.y * cos(m_hoverTime / 2));
 }
 
 
@@ -109,13 +126,14 @@ void Heli::Navigate(pmath::Vec2f targ)
 
 void Heli::LinearMove()
 {
+	m_linearSpeedBoost = m_linearSpeedBase + (m_nextPos - m_curPos).length() / 1000;
+	m_curPos +=  (m_linearSpeed + m_linearSpeedBoost)* m_moveDir;
 
-	m_curPos +=  m_linearSpeed * m_moveDir;
-
-	if (std::abs((m_curPos - m_nextPos).length()) < 5 )
+	if (std::abs((m_curPos - m_nextPos).length()) < 2 )
 	{
 		m_curPos = m_nextPos;
 		isMoving = 0;
+		m_hoverMaxTime = Randomizer::GetFloat(6, 10);
 	}
 
 }
@@ -123,10 +141,10 @@ void Heli::LinearMove()
 
 void Heli::Pilot()
 {
-	if (bonVoyageTimer > m_hoverMaxTime)
+	if (bonVoyageTimer > m_hoverMaxTime && !isShooting)
 	{
-		auto voyage = pmath::Vec2f(Randomizer::GetFloat(-700, 700), Randomizer::GetFloat(150, 300));
-		if ((transform.GetPosition() - voyage).length() > 130 && abs(voyage.x) > 200)
+		auto voyage = pmath::Vec2f(Randomizer::GetFloat(-700, 700), Randomizer::GetFloat(150, 275));
+		if ((transform.GetPosition() - voyage).length() > 200 && abs(voyage.x) > 400)
 		{
 			SetNextPos(voyage);
 			bonVoyageTimer = 0;
@@ -153,7 +171,8 @@ void Heli::Pilot()
 	transform.SetScale((-m_shootingTarget.x + transform.GetPosition().x) / std::abs(m_shootingTarget.x - transform.GetPosition().x), 1);
 
 	GetComponent<Rigidbody>()->SetPosition(m_curPos + m_hoverDisplacement);
-	GetComponent<Rigidbody>()->SetAngle(m_angle);
+	slerpToAngle();
+	GetComponent<Rigidbody>()->SetAngle(m_currentAngle);
 	GetComponent<Rigidbody>()->SetPhysicsGroup(3);
 	//transform.SetPosition(m_curPos + m_hoverDisplacement); // sums up hover origin and hover displacement. Puts the object into the point.
 
@@ -178,14 +197,7 @@ void Heli::Pilot()
 
 void Heli::Torque()
 {
-	if (transform.GetPosition().x > 0)
-	{
-		m_angle = m_angleMod * cos(0.5 * (m_lastX - transform.GetPosition().x)) / 2;
-	}
-	else
-	{
-		m_angle = -m_angleMod * cos(-0.5 * (m_lastX - transform.GetPosition().x)) / 2;
-	}
+	m_targetAngle = -m_angleMod * sin(0.5*(m_lastX - transform.GetPosition().x));
 }
 
 void Heli::SetNextPos(pmath::Vec2f targ)
