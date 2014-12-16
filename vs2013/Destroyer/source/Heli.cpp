@@ -11,8 +11,8 @@ Heli::Heli(pmath::Vec2f givenPos, Player* player)
 	heliTex->SetSmooth(true);
 	this->AddComponent(new AnimatedSprite(heliTex, 2, 2, 1, 12));
 	m_hoverTime = 0;
-	m_hoverSpeed = 1;
-	m_hoverScale = pmath::Vec2f(80, 80);
+	m_hoverSpeed = 0.8;
+	m_hoverScale = pmath::Vec2f(100, 100);
 	isMoving = 0;
 	m_linearSpeed = 5;
 	m_missileCD_max = 0.7;
@@ -33,7 +33,7 @@ Heli::Heli(pmath::Vec2f givenPos, Player* player)
 	m_player = player;
 	m_health = 100;
 	m_stabilizer = 1;
-	m_angleMod = 35;
+	m_angleMod = 30;
 
 	//m_heliSound = uthRS.LoadSound("Audio/Effects/helicopter.wav");
 	//m_heliSound->Play();
