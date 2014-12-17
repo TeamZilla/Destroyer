@@ -19,6 +19,7 @@ class AeroplaneBehavior : public uth::Component
 	float m_sliding = 1;
 	float m_bending = 0;
 	float m_dmg = 60;
+	bool isInited = false;
 	int   m_direction; // uses values 1 and -1 only.
 	bool  m_isDestroyed = false;
 	bool isDetonated = false;
@@ -54,7 +55,6 @@ public:
 		m_rigidBody = parent->GetComponent<uth::Rigidbody>();
 		//m_rigidBody->SetKinematic(true);
 		m_rigidBody->SetPhysicsGroup(3);
-		
 		m_direction = uth::Randomizer::GetInt(0, 10);
 
 		if (m_direction < 6)
@@ -67,12 +67,12 @@ public:
 			m_direction = -1;
 		}
 
-
 		auto bombTex = uthRS.LoadTexture("Enemies/Projectiles/boulder.png");
 		bombTex->SetSmooth(true);
 		auto AtomBomb = new uth::Sprite(bombTex);
 		pAtomBomb->AddComponent(AtomBomb);
 		pAtomBomb->transform.SetOrigin(6);
+		pAtomBomb->transform.SetPosition(m_rigidBody->GetPosition());
 		m_layer->AddChild(pAtomBomb);
 
 		uth::Texture* ropeTex = uthRS.LoadTexture("Enemies/Projectiles/rope.png");
@@ -80,7 +80,12 @@ public:
 		auto Rope = new uth::Sprite(ropeTex);
 		pRope->AddComponent(Rope);
 		pRope->transform.SetOrigin(9);
+		pRope->transform.SetPosition(m_rigidBody->GetPosition());
 		m_layer->AddChild(pRope);
+
+
+
+		isInited = true;
 
 	}
 
@@ -146,12 +151,15 @@ public:
 
 	void pathFunc()
 	{
-		m_pos.x = m_direction * m_speed * m_time + m_startX;
-		m_pos.y = -pow((m_pos.x) / pathFlatnes, 2) + m_minY - 10;
-		m_rigidBody->SetPosition(m_pos);
+		if (isInited = true)
+		{
+			m_pos.x = m_direction * m_speed * m_time + m_startX;
+			m_pos.y = -pow((m_pos.x) / pathFlatnes, 2) + m_minY - 10;
+			m_rigidBody->SetPosition(m_pos);
 
-		rotation();
-		m_time += m_dt;
+			rotation();
+			m_time += m_dt;
+		}
 	}
 
 	void rotation()

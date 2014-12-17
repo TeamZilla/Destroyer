@@ -4,9 +4,6 @@ using namespace uth;
 
 Heli::Heli(pmath::Vec2f givenPos, Player* player)
 {
-	m_curPos = givenPos;
-	m_nextPos = m_curPos;
-	m_prevPos = m_curPos;
 	auto heliTex = uthRS.LoadTexture("Enemies/copteri.png");
 	heliTex->SetSmooth(true);
 	this->AddComponent(new AnimatedSprite(heliTex, 2, 2, 1, 12));
@@ -14,13 +11,13 @@ Heli::Heli(pmath::Vec2f givenPos, Player* player)
 	m_hoverSpeed = 2;
 	m_hoverScale = pmath::Vec2f(100, 80);
 	isMoving = 0;
-	m_linearSpeedBase = 0.5;
+	m_linearSpeedBase = 1;
 	m_linearSpeed = 0.5;
 	m_missileCD_max = 0.7;
 	m_missileCD_min = 0.2;
 	m_dt = 0;
 	m_pathLenght = 0;
-	m_shootDelay = 0.08;
+	m_shootDelay = 0.07;
 	burstTimer = 3;
 	m_missileClip = 8;
 	m_missileCount = 0;
@@ -28,14 +25,18 @@ Heli::Heli(pmath::Vec2f givenPos, Player* player)
 	bonVoyageTimer = 0;
 	m_missileRegenTimer = 0;
 	m_missileRegenTime = 1;
-	m_hoverMaxTime = 3;
+	m_hoverMaxTime = 0; // randomized in pilot func.
 	isCool = 0;
 	m_player = player;
 	m_health = 100;
-	m_stabilizer = 6;
-	m_angleMod = 20;
+	m_stabilizer = 6.5;
+	m_angleMod = 18;
 	m_currentAngle = 0;
 	m_hoverMod = 1;
+	m_curPos = givenPos - pmath::Vec2(1,0);
+	Navigate(pmath::Vec2f(givenPos));
+	isShooting = false;
+
 
 
 	//m_heliSound = uthRS.LoadSound("Audio/Effects/helicopter.wav");
@@ -74,8 +75,6 @@ void Heli::update(float dt)
 	{
 		m_health = 0;
 	}
-
-	
 		m_lastX = transform.GetPosition().x;
 
 #ifdef UTH_SYSTEM_ANDROID
@@ -102,10 +101,9 @@ bool Heli::isDestroyed()
 
 void Heli::Hover()
 {
-		// m_hoverMod = sin(pmath::pi * (m_nextPos - m_curPos).length() / m_pathLengh); // acceleration and deacceleration
+		m_hoverMod = pow(cos(pmath::pi * (m_nextPos - m_curPos).length() / m_pathLenght),2); // acceleration and deacceleration. Use pows 2 * n only.
 		m_hoverTime +=  m_hoverSpeed * m_dt;
-		//std::cout << m_pathLenght << std::endl;
-		m_hoverDisplacement =/* m_hoverMod * */pmath::Vec2f(m_hoverScale.x * sin(m_hoverTime), m_hoverScale.y * cos(m_hoverTime / 2));
+		m_hoverDisplacement = m_hoverMod * pmath::Vec2f(m_hoverScale.x * sin(m_hoverTime), m_hoverScale.y * cos(m_hoverTime / 2));
 }
 
 
@@ -114,26 +112,29 @@ void Heli::Navigate(pmath::Vec2f targ)
 	if (m_nextPos != m_curPos)
 	{
 		m_prevPos = m_curPos;
+		std::cout << m_prevPos << std::endl;
 		m_nextPos = targ;
+		std::cout << m_nextPos << std::endl << std::endl;
 		m_moveDir = (m_nextPos - m_prevPos);
 		m_pathLenght = m_moveDir.length();
 		m_moveDir = m_moveDir.normalize();
 		isMoving = 1;
 	}
+
 }
 
 
 
 void Heli::LinearMove()
 {
-	m_linearSpeedBoost = m_linearSpeedBase + (m_nextPos - m_curPos).length() / 1000;
-	m_curPos +=  (m_linearSpeed + m_linearSpeedBoost)* m_moveDir;
+	m_linearSpeedBoost = (1 - m_hoverMod) * (m_nextPos - m_curPos).length() / 100;  // boost kicks in on long distances. max dist is 1400 so max boost is 1400/200 = 7. (1 - m_hoverMod) gives smooth acceleration.
+	m_curPos +=  (m_linearSpeed + m_linearSpeedBoost) * m_moveDir;
 
 	if (std::abs((m_curPos - m_nextPos).length()) < 2 )
 	{
 		m_curPos = m_nextPos;
 		isMoving = 0;
-		m_hoverMaxTime = Randomizer::GetFloat(6, 10);
+		m_hoverMaxTime = Randomizer::GetFloat(4, 8); // sets time until next transition.
 	}
 
 }
@@ -169,7 +170,6 @@ void Heli::Pilot()
 
 	// direction change
 	transform.SetScale((-m_shootingTarget.x + transform.GetPosition().x) / std::abs(m_shootingTarget.x - transform.GetPosition().x), 1);
-
 	GetComponent<Rigidbody>()->SetPosition(m_curPos + m_hoverDisplacement);
 	slerpToAngle();
 	GetComponent<Rigidbody>()->SetAngle(m_currentAngle);
@@ -238,6 +238,7 @@ void Heli::m_shooter()
 {
 	m_reload();
 	burst();
+	
 }
 
 
@@ -262,8 +263,10 @@ void Heli::m_reload()
 
 void Heli::m_launch()
 {
-	Parent()->AddChild(new Missile(transform.GetPosition(), m_player));
-	//Parent()->AddChild(new Missile(transform.GetPosition(),m_player));
+	if ((transform.GetPosition() - m_shootingTarget).length() < 1000)
+	{
+		Parent()->AddChild(new Missile(transform.GetPosition(), m_player));
+	}
 }
 
 
