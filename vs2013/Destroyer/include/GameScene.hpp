@@ -21,6 +21,7 @@ class GameScene : public uth::Scene
 	Button* m_menuB;
 	Button* m_restartB;
 	Button* m_ExitB;
+	Button* m_resumeB;
 	uth::Text* m_scoreText;
 	uth::Text* m_goScoreText;
 	uth::Text* m_goHiScoreText;
@@ -35,6 +36,7 @@ class GameScene : public uth::Scene
 	uth::GameObject* m_scorePoints;
 	uth::GameObject* m_goScoreObj;
 	uth::GameObject* m_goHiScoreObj;
+	
 	
 	
 
