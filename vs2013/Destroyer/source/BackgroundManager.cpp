@@ -73,7 +73,6 @@ bool BackgroundManager::Init(uth::Layer& bg, uth::Layer& fg)
 	go->transform.SetPosition(-740, uthEngine.GetWindow().GetCamera().GetSize().y - 40);
 	go->AddComponent(ground);
 	backG->AddChild(go);
-
 	auto ground2 = new Sprite(groundTex);
 	GameObject* go2 = new GameObject();
 	go2->transform.SetPosition(740, uthEngine.GetWindow().GetCamera().GetSize().y - 40);

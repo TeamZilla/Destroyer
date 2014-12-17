@@ -25,6 +25,8 @@ float EnemyFactory::m_soldierSpawnTimer = 0;
 float EnemyFactory::m_heliSpawnCooldown = 7;
 float EnemyFactory::m_heliSpawnTimer = 0;
 float EnemyFactory::m_timeCounter = 0;
+bool EnemyFactory::isBoss = false;
+bool EnemyFactory::isVictory = false;
 
 std::shared_ptr<GameObject> EnemyFactory::CreateTank()
 {
@@ -33,9 +35,9 @@ std::shared_ptr<GameObject> EnemyFactory::CreateTank()
 
 	auto obj = std::shared_ptr<GameObject>(new GameObject());
 	obj->AddTags({ "Tank", "Enemy" });
-	obj->AddComponent(new AnimatedSprite(textureId,3,3,1,0));
+	obj->AddComponent(new AnimatedSprite(textureId, 3, 3, 1, 0));
 
-	const static pmath::Vec2 CollisionSize(obj->transform.GetSize()/2);
+	const static pmath::Vec2 CollisionSize(obj->transform.GetSize() / 2);
 	obj->transform.SetPosition(SpawnPosition());
 
 	obj->transform.SetScale(0.5f);
@@ -48,7 +50,7 @@ std::shared_ptr<GameObject> EnemyFactory::CreateTank()
 
 std::shared_ptr<GameObject> EnemyFactory::CreateSoldier()
 {
-	const static float speed(uth::Randomizer::GetFloat(1.5f,4.5f));
+	const static float speed(uth::Randomizer::GetFloat(1.5f, 4.5f));
 	static uth::Texture* textureId = uthRS.LoadTexture("Enemies/soldier.png");
 
 	auto obj = std::shared_ptr<GameObject>(new GameObject());
@@ -92,8 +94,8 @@ std::shared_ptr<GameObject> EnemyFactory::CreateHeli()
 {
 	const static std::string textureId("Enemies/heli.png");
 
-	auto spawn = pmath::Vec2(SpawnPosition().x - 500,SpawnPosition().y - 800);
-	auto obj = new Heli(spawn,m_player);
+	auto spawn = pmath::Vec2(SpawnPosition().x - 500, SpawnPosition().y - 800);
+	auto obj = new Heli(spawn, m_player);
 	obj->AddTags({ "Heli", "Enemy" });
 
 	const static pmath::Vec2 CollisionSize(obj->transform.GetSize() / 2);
@@ -125,6 +127,22 @@ std::shared_ptr<GameObject> EnemyFactory::CreateStar(pmath::Vec2 pos)
 	return m_layer->AddChild(obj);
 }
 
+std::shared_ptr<GameObject> EnemyFactory::CreateBoss()
+{
+	auto obj = new Pickup(2);
+	obj->transform.SetPosition(pmath::Vec2(0, 280));
+	obj->AddTag("BossPickup");
+	return m_layer->AddChild(obj);
+}
+
+std::shared_ptr<GameObject> EnemyFactory::CreateBossVictory()
+{
+	auto obj = new Pickup(3);
+	obj->transform.SetPosition(pmath::Vec2(0, 280));
+	obj->AddTag("BossVictoryPickup");
+	return m_layer->AddChild(obj);
+}
+
 
 pmath::Vec2 EnemyFactory::SpawnPosition()
 {
@@ -140,7 +158,7 @@ void EnemyFactory::CheckEnemies()
 {
 	for (auto& e : m_layer->Children("Tank"))
 	{
-		auto& obj  = *static_cast<GameObject*>(e.get());
+		auto& obj = *static_cast<GameObject*>(e.get());
 		auto& tank = *static_cast<TankBehavior*>(obj.GetComponent<TankBehavior>());
 
 		if (tank.isDestroyed())
@@ -157,7 +175,7 @@ void EnemyFactory::CheckEnemies()
 	}
 	for (auto& e : m_layer->Children("Soldier"))
 	{
-		auto& obj  = *static_cast<GameObject*>(e.get());
+		auto& obj = *static_cast<GameObject*>(e.get());
 		auto& tank = *static_cast<SoldierBehavior*>(obj.GetComponent<SoldierBehavior>());
 
 		if (tank.isDestroyed())
@@ -199,7 +217,7 @@ void EnemyFactory::CheckEnemies()
 	{
 		auto& obj = *static_cast<Heli*>(e.get());
 		//auto& heli = *static_cast<Heli*>(obj.GetComponent<Heli>());
-	
+
 		if (obj.isDestroyed())
 		{	//Emit pickups
 			CreateHP(obj.transform.GetPosition());
@@ -212,13 +230,13 @@ void EnemyFactory::CheckEnemies()
 			Statistics.score.current += 20;
 		}
 	}
-	
+
 	////////////////////////////////////
-	
+
 	for (auto& e : m_layer->Children("HealthPickup"))
 	{
 		auto& obj = *static_cast<Pickup*>(e.get());
-	
+
 		if (obj.isDestroyed)
 		{
 			m_hpSound->PlayEffect();
@@ -229,20 +247,20 @@ void EnemyFactory::CheckEnemies()
 			else
 				Statistics.player.hp = Statistics.player.maxHp;
 		}
-	
+
 	}
-	
+
 	for (auto& e : m_layer->Children("StarPickup"))
 	{
 		auto& obj = *static_cast<Pickup*>(e.get());
-	
+
 		if (obj.isDestroyed)
 		{
 			m_starSound->PlayEffect();
 			m_layer->RemoveChild(&obj);
 			Statistics.score.current += 10;
 		}
-	
+
 	}
 }
 
@@ -252,7 +270,7 @@ void EnemyFactory::Update(float dt)
 
 	// easy 1
 
-	if (m_timeCounter < 15)
+	if (m_timeCounter < 150000000)
 	{
 
 		EnemyFactory::m_aeroplaneSpawnCooldown = 1;
@@ -271,7 +289,7 @@ void EnemyFactory::Update(float dt)
 			m_heliSpawn(dt);
 	}
 
-// easy 2
+	// easy 2
 	if (m_timeCounter < 45 && m_timeCounter > 15)
 	{
 		EnemyFactory::m_aeroplaneSpawnCooldown = 0;
@@ -289,7 +307,7 @@ void EnemyFactory::Update(float dt)
 			m_heliSpawn(dt);
 	}
 
-// easy 3
+	// easy 3
 	if (m_timeCounter < 80 && m_timeCounter > 45)
 	{
 		EnemyFactory::m_aeroplaneSpawnCooldown = 0;
@@ -328,7 +346,7 @@ void EnemyFactory::Update(float dt)
 
 	// Pre-boss scene
 
-	if (m_timeCounter < 160 && m_timeCounter > 150)
+	if (m_timeCounter < 155 && m_timeCounter > 150)
 	{
 		EnemyFactory::m_aeroplaneSpawnCooldown = 0;
 		EnemyFactory::m_tankSpawnCooldown = 0;
@@ -344,14 +362,13 @@ void EnemyFactory::Update(float dt)
 			m_aeroplaneSpawn(dt);
 		if (m_layer->Children("Heli").size() < 0)
 			m_heliSpawn(dt);
+
 	}
 
-
 	// Aeroplain boss
-
-	if (m_timeCounter < 190 && m_timeCounter > 160)
+	if (m_timeCounter < 195 && m_timeCounter > 155)
 	{
-		EnemyFactory::m_aeroplaneSpawnCooldown = 7;
+		EnemyFactory::m_aeroplaneSpawnCooldown = 5;
 		EnemyFactory::m_tankSpawnCooldown = 0;
 		EnemyFactory::m_soldierSpawnCooldown = 0;
 		EnemyFactory::m_heliSpawnCooldown = 0;
@@ -365,10 +382,31 @@ void EnemyFactory::Update(float dt)
 			m_aeroplaneSpawn(dt);
 		if (m_layer->Children("Heli").size() < 0)
 			m_heliSpawn(dt);
+
+
+		if (isBoss == false)
+		{
+			CreateBoss();
+			EnemyFactory::isBoss = true;
+		}
+
+		for (auto& e : m_layer->Children("BossPickup"))
+		{
+			auto& obj = *static_cast<Pickup*>(e.get());
+
+			if (obj.isDestroyed)
+			{
+				m_starSound->PlayEffect(); // need boss sound
+				m_layer->RemoveChild(&obj);
+				Statistics.score.current += 250;
+			}
+
+		}
 	}
 
-	// after boss scene
 
+
+	// after boss scene
 	if (m_timeCounter < 200 && m_timeCounter > 195)
 	{
 		EnemyFactory::m_aeroplaneSpawnCooldown = 0;
@@ -385,17 +423,36 @@ void EnemyFactory::Update(float dt)
 			m_aeroplaneSpawn(dt);
 		if (m_layer->Children("Heli").size() < 0)
 			m_heliSpawn(dt);
+
+		if (isVictory == false)
+		{
+			CreateBossVictory();
+			EnemyFactory::isVictory = true;
+		}
+
+		for (auto& e : m_layer->Children("BossVictoryPickup"))
+		{
+			auto& obj = *static_cast<Pickup*>(e.get());
+
+			if (obj.isDestroyed)
+			{
+				m_starSound->PlayEffect(); // need boss victory sound
+				m_layer->RemoveChild(&obj);
+				Statistics.score.current += 750;
+			}
+
+		}
 	}
 
 
 	// all enemies 1
-
 	if (m_timeCounter < 230 && m_timeCounter > 200)
 	{
 		EnemyFactory::m_aeroplaneSpawnCooldown = 17;
 		EnemyFactory::m_tankSpawnCooldown = 3;
 		EnemyFactory::m_soldierSpawnCooldown = 2;
 		EnemyFactory::m_heliSpawnCooldown = 10;
+		isVictory = false;
 
 
 		if (m_layer->Children("Tank").size() < 1)
@@ -471,7 +528,7 @@ void EnemyFactory::Update(float dt)
 
 	// pre-boss scene
 
-	if (m_timeCounter < 390 && m_timeCounter > 380)
+	if (m_timeCounter < 385 && m_timeCounter > 380)
 	{
 		EnemyFactory::m_aeroplaneSpawnCooldown = 0;
 		EnemyFactory::m_tankSpawnCooldown = 0;
@@ -491,12 +548,12 @@ void EnemyFactory::Update(float dt)
 
 	// Heli boss
 
-	if (m_timeCounter < 420 && m_timeCounter > 390)
+	if (m_timeCounter < 420 && m_timeCounter > 385)
 	{
 		EnemyFactory::m_aeroplaneSpawnCooldown = 0;
 		EnemyFactory::m_tankSpawnCooldown = 0;
 		EnemyFactory::m_soldierSpawnCooldown = 0;
-		EnemyFactory::m_heliSpawnCooldown = 1;
+		EnemyFactory::m_heliSpawnCooldown = 0.5;
 
 		if (m_layer->Children("Tank").size() < 0)
 			m_tankSpawn(dt);
@@ -504,8 +561,27 @@ void EnemyFactory::Update(float dt)
 			m_soldierSpawn(dt);
 		if (m_layer->Children("Aeroplane").size() < 0)
 			m_aeroplaneSpawn(dt);
-		if (m_layer->Children("Heli").size() < 4)
+		if (m_layer->Children("Heli").size() < 6)
 			m_heliSpawn(dt);
+
+		if (isBoss == false)
+		{
+			CreateBoss();
+			EnemyFactory::isBoss = true;
+		}
+
+		for (auto& e : m_layer->Children("BossPickup"))
+		{
+			auto& obj = *static_cast<Pickup*>(e.get());
+
+			if (obj.isDestroyed)
+			{
+				m_starSound->PlayEffect(); // need boss sound
+				m_layer->RemoveChild(&obj);
+				Statistics.score.current += 250;
+			}
+
+		}
 	}
 
 	// after boss scene
@@ -526,12 +602,31 @@ void EnemyFactory::Update(float dt)
 			m_aeroplaneSpawn(dt);
 		if (m_layer->Children("Heli").size() < 0)
 			m_heliSpawn(dt);
+
 	}
 
 	// all enemies 5
 
 	if (m_timeCounter > 445)
 	{
+		if (isVictory == false)
+		{
+			CreateBossVictory();
+			EnemyFactory::isVictory = true;
+		}
+
+		for (auto& e : m_layer->Children("BossVictoryPickup"))
+		{
+			auto& obj = *static_cast<Pickup*>(e.get());
+
+			if (obj.isDestroyed)
+			{
+				m_starSound->PlayEffect(); // need boss victory sound
+				m_layer->RemoveChild(&obj);
+				Statistics.score.current += 750;
+			}
+		}
+
 		EnemyFactory::m_aeroplaneSpawnCooldown = 6;
 		EnemyFactory::m_tankSpawnCooldown = 2;
 		EnemyFactory::m_soldierSpawnCooldown = 1;
@@ -550,6 +645,7 @@ void EnemyFactory::Update(float dt)
 
 	CheckEnemies();
 }
+
 
 void EnemyFactory::m_soldierSpawn(float dt)
 {

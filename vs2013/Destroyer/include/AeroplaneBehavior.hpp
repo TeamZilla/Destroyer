@@ -122,7 +122,7 @@ public:
 
 		if (m_direction * pAtomBomb->transform.GetPosition().x > -40 && !isDetonated)
 		{
-			m_player->Hit(m_player->CheckIfGoingRight() == (m_direction == 1 ? true : false) ? m_dmg / 3 : m_dmg);
+			m_player->Hit(m_player->CheckIfGoingRight() == (m_direction == 1 ? true : false) ? m_dmg / 2.5 : m_dmg);
 			isDetonated = true;
 
 		}
