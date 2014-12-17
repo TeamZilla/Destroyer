@@ -4,7 +4,7 @@ using namespace uth;
 
 Road::Road(const int blocks)
 {
-	blockWidth = 10;
+	blockWidth = 8;
 	AddChild(m_spriteBatch = new SpriteBatch());
 	m_spriteBatch->SetTexture(uthRS.LoadTexture("backgrounds/asphalt_block.png"));
 	leftMostX = -0.5*blocks*blockWidth;
@@ -143,6 +143,7 @@ void Road::m_shock()
 			isShock = false;
 			m_shockSpeed = m_shockStartSpeed;
 			m_shock_x = m_shockStartX;
+			m_player->m_allowShock = true;
 		}
 	}
 

@@ -136,7 +136,7 @@ void Sound::SetVolume(int volumePercent)
 		return;
 
 	float newVolume = float(volumePercent) / 100.0f;
-	alSourcef(source, AL_GAIN, newVolume);
+	alListenerf(AL_GAIN, newVolume);
 	CheckALError("al_sourcef AL_GAIN");
 }
 
@@ -340,7 +340,7 @@ void Sound::effectCopy()
 	float pitch, gain;
 	alGetSourcef(source, AL_PITCH, &pitch);
 	CheckALError("al_getsourcef AL_PITCH");
-	alGetSourcef(source, AL_GAIN, &gain);
+	alGetListenerf(AL_GAIN, &gain);
 	CheckALError("al_getsourcef AL_GAIN");
 
 	for (int i = 0; i < tempSource.size(); i++)

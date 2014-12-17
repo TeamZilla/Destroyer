@@ -22,6 +22,11 @@ public:
 	void SetLinearSpeed(float);
 	void SetHoverSpeed(float);
 	bool isDestroyed();
+	float m_lastX;
+	float m_angleMod;
+	float m_targetAngle;
+	float m_currentAngle;
+	float m_stabilizer;
 	//Taking damage and dying
 	void takeDamage(int amount);
 
@@ -39,16 +44,20 @@ private:
 	float m_hoverTime;					// howerDisplacement is a function of m_hoverTime
 	pmath::Vec2f m_hoverDisplacement;	// the difference of curPos and exact position
 	Player* m_player;
+	float m_hoverMod;
 	
 	
 	//linear move	
 	void LinearMove();					// calculates linear progression between each update
 	void Navigate(pmath::Vec2f targ);	// called when there's a new place to go to.
-	
+	void Torque();
 	bool isMoving;
 	float m_linearSpeed;				// m_linearSpeed in linear movement
+	float m_linearSpeedBase;
+	float m_linearSpeedBoost;
 	float m_pathLenght;					// lenght of path. Changed only in m_navigate()
-	pmath::Vec2f m_moveDir;				// direction for linear move
+	pmath::Vec2f m_moveDir;	
+	// direction for linear move
 	pmath::Vec2f m_curPos;				// the current hovering origin. NOT SAME AS this->transfor.GetPos()
 	pmath::Vec2f m_nextPos;				// is the given target destination in m_navigate()
 	pmath::Vec2f m_prevPos;				//the position at the moment new destination is given.
@@ -67,6 +76,7 @@ private:
 	//std::vector <Missile*> m_missiles;
 	void m_shooter();
 	void m_launch();
+	void slerpToAngle();
 	void burst();
 	void m_reload();
 	int m_missileClip;

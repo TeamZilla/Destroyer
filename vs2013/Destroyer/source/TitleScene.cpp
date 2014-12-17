@@ -1,5 +1,6 @@
 #include <TitleScene.hpp>
 #include <Scenes.hpp>
+#include <GameStats.hpp>
 #include <UtH/Platform/JavaFunctions.hpp>
 
 using namespace uth;
@@ -11,6 +12,7 @@ uth::Layer& TitleScene::getLayer(LayerId id)
 TitleScene::TitleScene()
 {
 	javaFunc::ShowAdBanner("6300978111",Origin::BottomRight);
+	Statistics.Load();
 
 	uthEngine.GetWindow().GetCamera().SetSize(1280, 720);
 	m_roar = uthRS.LoadSound("Audio/Effects/moz_howl.wav");

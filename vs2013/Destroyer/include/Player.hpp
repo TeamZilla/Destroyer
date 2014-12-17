@@ -38,6 +38,7 @@ public:
 	Player(uth::PhysicsWorld*);
 	~Player();
 
+	bool m_allowShock;
 	bool m_isDied;
 	bool m_isJumping, m_isCrouching, m_isTurning, m_isDoneDying;
 	static bool isGoingRight;

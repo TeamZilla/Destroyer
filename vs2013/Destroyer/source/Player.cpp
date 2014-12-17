@@ -23,6 +23,7 @@ Player::Player(uth::PhysicsWorld* physworld)
 	m_isHurting = false;
 	m_isDoneDying = false;
 	m_isDied = false;
+	
 
 	//Create, set position and scale player Sprite
 	auto playerTexture = uthRS.LoadTexture("modzilla/moz_animation.png");
@@ -65,6 +66,7 @@ void Player::init(uth::PhysicsWorld* physworld, Health* hp)
 	m_tailBox->GetComponent<Rigidbody>()->SetPhysicsMask(Physics::Category2);
 	m_tailBox->AddTag("TailCollider");
 	Parent()->AddChild(m_tailBox);
+	m_allowShock = true;
 
 }
 void Player::update(float dt)
@@ -90,17 +92,6 @@ void Player::update(float dt)
 	else if (m_isDied)
 	{
 		Dying();
-
-		//// temp code start ///
-		//Check if player has better score than highscore
-		if (Statistics.score.highscore < Statistics.score.current)
-		{
-			WriteLog("New Highscore! : ""%f", Statistics.score.current);
-			//Let's save the highscore then
-			Statistics.score.highscore = Statistics.score.current;
-		}
-		/// temp code end ///
-
 	}
 	if (m_isHurting)
 	{
@@ -173,7 +164,7 @@ void Player::Jumping()
 }
 void Player::Crouch()
 {
-	if (!m_isJumping && !m_isCrouching && !m_isTurning)
+	if (!m_isJumping && !m_isCrouching && !m_isTurning && m_allowShock)
 	{
 		m_tempPos = transform.GetPosition();
 		m_isCrouching = true;
@@ -184,6 +175,7 @@ void Player::Crouch()
 }
 void Player::Crouching()
 {
+	m_allowShock = false;
 	m_jumpSpeed -= m_dt * 20;
 	m_crouchTimer += m_dt;
 	transform.Move(0, -m_jumpSpeed);
@@ -191,7 +183,7 @@ void Player::Crouching()
 	{
 		transform.SetPosition(m_tempPos);
 	}
-	if (m_crouchTimer >= 1)
+	if (m_crouchTimer >= 0.75)
 	{
 		SetAnimation(m_walkAnim);
 		m_isCrouching = false;

@@ -30,7 +30,7 @@ class EnemyFactory
 
 
 public:
-
+	static float m_timeCounter;
 	static void Init(uth::Layer* layer, uth::PhysicsWorld* physWorld, Player* player)
 	{
 		m_layer = layer;
