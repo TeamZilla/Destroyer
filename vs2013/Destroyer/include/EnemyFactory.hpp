@@ -50,8 +50,8 @@ public:
 	static std::shared_ptr<uth::GameObject> CreateHeli();
 	static std::shared_ptr<uth::GameObject> CreateHP(pmath::Vec2 pos);
 	static std::shared_ptr<uth::GameObject> CreateStar(pmath::Vec2 pos);
-	static std::shared_ptr<uth::GameObject> EnemyFactory::CreateBoss();
-	static std::shared_ptr<uth::GameObject> EnemyFactory::CreateBossVictory();
+	static std::shared_ptr<uth::GameObject> CreateBoss();
+	static std::shared_ptr<uth::GameObject> CreateBossVictory();
 	static void CheckEnemies();
 
 };
