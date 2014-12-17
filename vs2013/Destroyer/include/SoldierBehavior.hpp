@@ -17,6 +17,7 @@ class SoldierBehavior : public uth::Component
 
 	Player*	m_player;
 	uth::Rigidbody*		m_rigidBody;
+	uth::Sound*			m_slashSound;
 	pmath::Vec2			m_direction;
 	pmath::Vec2			m_maxDistance;
 	pmath::Vec2			m_minDistance;
@@ -31,7 +32,7 @@ public:
 		m_speed(speed),
 		m_player(player)
 	{
-		
+		m_slashSound = uthRS.LoadSound("Audio/Effects/Sword.wav");
 	}
 	~SoldierBehavior()
 	{
@@ -183,6 +184,7 @@ public:
 		{
 			if (m_attackTime <= m_attackCounter)
 			{
+				m_slashSound->Play();
 				m_player->Hit(0.5);
 				m_attackCounter = 0;
 			}
