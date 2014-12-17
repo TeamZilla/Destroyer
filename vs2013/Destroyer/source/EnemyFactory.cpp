@@ -82,6 +82,7 @@ std::shared_ptr<GameObject> EnemyFactory::CreateAeroplane()
 	const static pmath::Vec2 CollisionSize(obj->transform.GetSize() / 2);
 
 	obj->transform.SetScale(0.5f);
+	obj->transform.SetPosition(0, -1000);
 	obj->AddComponent(new Rigidbody(*m_physicsWorld, uth::COLLIDER_BOX, CollisionSize));
 	obj->AddComponent(new AeroplaneBehavior(m_layer, m_player));
 
@@ -94,13 +95,14 @@ std::shared_ptr<GameObject> EnemyFactory::CreateHeli()
 {
 	const static std::string textureId("Enemies/heli.png");
 
-	auto spawn = pmath::Vec2(SpawnPosition().x - 100,SpawnPosition().y - 300);
+	auto spawn = pmath::Vec2(SpawnPosition().x - 500,SpawnPosition().y - 800);
 	auto obj = new Heli(spawn,m_player);
 	obj->AddTags({ "Heli", "Enemy" });
 
 	const static pmath::Vec2 CollisionSize(obj->transform.GetSize() / 2);
 
 	obj->transform.SetScale(0.5f);
+	obj->transform.SetPosition(spawn);
 	obj->AddComponent(new Rigidbody(*m_physicsWorld, uth::COLLIDER_BOX, CollisionSize));
 
 
@@ -129,7 +131,7 @@ std::shared_ptr<GameObject> EnemyFactory::CreateStar(pmath::Vec2 pos)
 
 pmath::Vec2 EnemyFactory::SpawnPosition()
 {
-	const static pmath::Vec2 spawnPosition(m_player->transform.GetPosition().x + 1100, 500);
+	const static pmath::Vec2 spawnPosition(m_player->transform.GetPosition().x + 1500, 500);
 
 	if (uth::Randomizer::GetInt(0, 11) < 6)
 		return pmath::Vec2(spawnPosition.x, spawnPosition.y);
@@ -265,7 +267,7 @@ void EnemyFactory::Update(float dt)
 	if (m_timeCounter < 15)
 	{
 
-		EnemyFactory::m_aeroplaneSpawnCooldown = 0;
+		EnemyFactory::m_aeroplaneSpawnCooldown = 1;
 		EnemyFactory::m_tankSpawnCooldown = 0;
 		EnemyFactory::m_soldierSpawnCooldown = 1.5;
 		EnemyFactory::m_heliSpawnCooldown = 1;
@@ -277,7 +279,7 @@ void EnemyFactory::Update(float dt)
 			m_soldierSpawn(dt);
 		if (m_layer->Children("Aeroplane").size() < 0)
 			m_aeroplaneSpawn(dt);
-		if (m_layer->Children("Heli").size() < 1)
+		if (m_layer->Children("Heli").size() < 0)
 			m_heliSpawn(dt);
 	}
 

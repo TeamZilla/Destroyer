@@ -62,7 +62,6 @@ private:
 	pmath::Vec2f m_nextPos;				// is the given target destination in m_navigate()
 	pmath::Vec2f m_prevPos;				//the position at the moment new destination is given.
 	float m_dt;
-	float m_hoverRatio;
 	float m_hoverMaxTime;
 
 	//shooting
