@@ -27,11 +27,10 @@ class EnemyFactory
 	static float m_soldierSpawnTimer;
 	static float m_heliSpawnCooldown;
 	static float m_heliSpawnTimer;
-	static float m_timeCounter;
 
 
 public:
-
+	static float m_timeCounter;
 	static void Init(uth::Layer* layer, uth::PhysicsWorld* physWorld, Player* player)
 	{
 		m_layer = layer;

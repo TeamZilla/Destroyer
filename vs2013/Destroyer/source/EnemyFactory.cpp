@@ -256,7 +256,7 @@ void EnemyFactory::Update(float dt)
 		EnemyFactory::m_aeroplaneSpawnCooldown = 0;
 		EnemyFactory::m_tankSpawnCooldown = 0;
 		EnemyFactory::m_soldierSpawnCooldown = 1.5;
-		EnemyFactory::m_heliSpawnCooldown = 0;
+		EnemyFactory::m_heliSpawnCooldown = 1;
 
 
 		if (m_layer->Children("Tank").size() < 0)
@@ -265,7 +265,7 @@ void EnemyFactory::Update(float dt)
 			m_soldierSpawn(dt);
 		if (m_layer->Children("Aeroplane").size() < 0)
 			m_aeroplaneSpawn(dt);
-		if (m_layer->Children("Heli").size() < 0)
+		if (m_layer->Children("Heli").size() < 1)
 			m_heliSpawn(dt);
 	}
 
