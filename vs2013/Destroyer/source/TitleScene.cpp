@@ -73,6 +73,7 @@ TitleScene::TitleScene()
 	m_OptionsB->transform.SetPosition(window.GetCamera().GetPosition().x - window.GetCamera().GetSize().x / 2 + 10,
 		window.GetCamera().GetPosition().y - window.GetCamera().GetSize().y / 2 + 10);
 	button3 = new Button(m_OptionsB);
+	m_OptionsB->SetActive(false);
 	
 
 	
