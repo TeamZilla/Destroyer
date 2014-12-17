@@ -88,6 +88,8 @@ bool GameScene::Init()
 	pauseBG->SetSmooth(true);
 	auto ExitText = uthRS.LoadTexture("UI/esc.png");
 	ExitText->SetSmooth(true);
+	auto ResumeText = uthRS.LoadTexture("UI/Resume.png");
+	ResumeText->SetSmooth(true);
 
 	//scoreboard
 	getLayer(LayerId::Userinterface).AddChild(m_ScoreBoard = new GameObject());
@@ -107,7 +109,7 @@ bool GameScene::Init()
 	getLayer(LayerId::Userinterface).AddChild(m_pauseMenu = new GameObject());
 	m_pauseMenu->AddComponent(new Sprite(pauseBG, "pauseBGsprite"));
 	m_pauseMenu->transform.SetOrigin(uth::Origin::TopLeft);
-	m_pauseMenu->transform.SetScale(0.90f, 0.90f);
+	m_pauseMenu->transform.SetScale(0.70f, 0.70f);
 	m_pauseMenu->SetActive(false);
 
 	getLayer(LayerId::Userinterface).AddChild(m_gameOverScreenPicture = new GameObject());
@@ -124,14 +126,23 @@ bool GameScene::Init()
 	getLayer(LayerId::Userinterface).AddChild(m_MenuButton = new GameObject());
 	m_MenuButton->AddComponent(new AnimatedSprite(menutext, 2, 2, 1, 0));
 	m_MenuButton->transform.SetOrigin(uth::Origin::TopLeft);
+	m_MenuButton->transform.SetScale(0.80f, 0.80f);
 	m_menuB = new Button(m_MenuButton);
 	m_MenuButton->SetActive(false);
 
 	getLayer(LayerId::Userinterface).AddChild(m_RestartButton = new GameObject());
 	m_RestartButton->AddComponent(new AnimatedSprite(restarttext, 2, 2, 1, 0));
 	m_RestartButton->transform.SetOrigin(uth::Origin::TopLeft);
+	m_RestartButton->transform.SetScale(0.80f, 0.80f);
 	m_restartB = new Button(m_RestartButton);
 	m_RestartButton->SetActive(false);
+
+	getLayer(LayerId::Userinterface).AddChild(m_ResumeButton = new GameObject());
+	m_ResumeButton->AddComponent(new AnimatedSprite(ResumeText, 2, 2, 1, 0));
+	m_ResumeButton->transform.SetOrigin(uth::Origin::TopLeft);
+	m_ResumeButton->transform.SetScale(0.80f, 0.80f);
+	m_resumeB = new Button(m_ResumeButton);
+	m_ResumeButton->SetActive(false);
 
 	getLayer(LayerId::Userinterface).AddChild(m_ExitButton = new GameObject());
 	m_ExitButton->AddComponent(new AnimatedSprite(ExitText, 2, 2, 1, 0));
@@ -290,13 +301,14 @@ void GameScene::Update(float dt)
 		m_pauseMenu->SetActive(true);
 		m_MenuButton->SetActive(true);
 		m_RestartButton->SetActive(true);
+		m_ResumeButton->SetActive(true);
 		m_player->SetActive(false);
 		
 
-		m_pauseMenu->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 50, camera.GetPosition().y - camera.GetSize().y / 2 );
-		m_MenuButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 120, camera.GetPosition().y - camera.GetSize().y / 2 + 525);
-		m_RestartButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 470, camera.GetPosition().y - camera.GetSize().y / 2 + 525);
-
+		m_pauseMenu->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 150, camera.GetPosition().y - camera.GetSize().y / 2 + 125);
+		m_MenuButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 325, camera.GetPosition().y - camera.GetSize().y / 2 + 535);
+		m_RestartButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 325, camera.GetPosition().y - camera.GetSize().y / 2 + 435);
+		m_ResumeButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 325, camera.GetPosition().y - camera.GetSize().y / 2 + 330);
 	#ifdef UTH_SYSTEM_ANDROID
 		//TODO: Android only pause functions here
 
@@ -308,11 +320,13 @@ void GameScene::Update(float dt)
 		m_menuB->update(dt);
 		m_restartB->update(dt);
 		m_pauseB->update(dt);
-		if (m_pauseB->IsPressedS())
+		m_resumeB->update(dt);
+		if (m_pauseB->IsPressedS()|| m_resumeB->IsPressedS() )
 		{
 			m_pauseMenu->SetActive(false);
 			m_MenuButton->SetActive(false);
 			m_RestartButton->SetActive(false);
+			m_ResumeButton->SetActive(false);
 			m_player->SetActive(true);
 			
 			isPaused = false;
@@ -362,19 +376,19 @@ void GameScene::Update(float dt)
 		std::string GOscore = gs.str();
 		std::string GOHscore = gh.str();
 
-		m_goScoreText->SetText("SCORE: " + GOscore);
+		m_goScoreText->SetText("YOUR SCORE: " + GOscore);
 		m_goHiScoreText->SetText("HIGHSCORE: " + GOHscore);
 
 
 		auto& camera = uthEngine.GetWindow().GetCamera();
 
-		m_gameOverScreenPicture->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 50, camera.GetPosition().y - camera.GetSize().y / 2);
-		m_MenuButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 120, camera.GetPosition().y - camera.GetSize().y /2 + 400);
-		m_RestartButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 470, camera.GetPosition().y - camera.GetSize().y /2 + 400);
+		m_gameOverScreenPicture->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 50, camera.GetPosition().y - camera.GetSize().y / 2+50);
+		m_MenuButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 120, camera.GetPosition().y - camera.GetSize().y /2 + 450);
+		m_RestartButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 470, camera.GetPosition().y - camera.GetSize().y /2 + 450);
 
 		auto goPos = m_gameOverScreenPicture->transform.GetPosition();
-		m_goScoreObj->transform.SetPosition(goPos.x + 300, goPos.y + 270);
-		m_goHiScoreObj->transform.SetPosition(goPos.x + 300, goPos.y + 350);
+		m_goScoreObj->transform.SetPosition(goPos.x + 350, goPos.y + 340);
+		m_goHiScoreObj->transform.SetPosition(goPos.x + 350, goPos.y + 260);
 
 		if (m_restartB->IsPressedS())
 		{
