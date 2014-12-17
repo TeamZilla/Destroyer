@@ -9,6 +9,7 @@ class Button : public uth::GameObject
 	bool m_isPressed = false;
 	uth::Transform* m_butTransform;
 	uth::AnimatedSprite* m_butAnim;
+	uth::Sound* m_buttonSound;
 	
 
 public:
