@@ -90,7 +90,7 @@ public:
 	{
 
 
-		if (m_isGoingLeft && m_rigidBody->GetPosition().y > 630)
+		if (m_isGoingLeft && !m_isDead /*&& m_rigidBody->GetPosition().y > 630*/)
 		{
 			m_rigidBody->ApplyForce(pmath::Vec2(m_direction.x * m_speed, -10));
 			if (m_rigidBody->GetPosition().x <= m_maxDistance.x)
@@ -107,7 +107,7 @@ public:
 				Destroy();
 		}
 
-		if (!m_isGoingLeft && m_rigidBody->GetPosition().y > 630)
+		if (!m_isGoingLeft && !m_isDead /*&& m_rigidBody->GetPosition().y > 630*/)
 		{
 			m_rigidBody->ApplyForce(pmath::Vec2(m_direction.x * m_speed, -10));
 			if (m_rigidBody->GetPosition().x >= m_maxDistance.x)
@@ -180,7 +180,7 @@ public:
 	void Attack(float dt)
 	{
 		//Slash player with sword
-		if (m_isStopped)
+		if (m_isStopped && !m_isDead)
 		{
 			if (m_attackTime <= m_attackCounter)
 			{
