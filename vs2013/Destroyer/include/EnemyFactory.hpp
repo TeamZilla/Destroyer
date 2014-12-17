@@ -11,6 +11,9 @@ class EnemyFactory
 	static uth::Sound*			m_expSound;
 	static uth::Sound*			m_hpSound;
 	static uth::Sound*			m_starSound;
+	static uth::Sound*			m_humanSound1;
+	static uth::Sound*			m_humanSound2;
+	static uth::Sound*			m_humanSound3;
 
 	static pmath::Vec2 SpawnPosition();
 
@@ -39,6 +42,9 @@ public:
 		m_expSound =  uthRS.LoadSound("Audio/Effects/Short_Explosion1.wav");
 		m_hpSound =   uthRS.LoadSound("Audio/Effects/Heart_pickup.wav");
 		m_starSound = uthRS.LoadSound("Audio/Effects/Star_pickup.wav");
+		m_humanSound1 = uthRS.LoadSound("Audio/Effects/auts1.wav");
+		m_humanSound2 = uthRS.LoadSound("Audio/Effects/auts2.wav");
+		m_humanSound3 = uthRS.LoadSound("Audio/Effects/auts3.wav");
 		//m_expSound->SetVolume(50);
 	}
 	static void Update(float dt);

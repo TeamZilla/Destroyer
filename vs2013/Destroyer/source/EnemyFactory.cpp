@@ -15,6 +15,9 @@ Player*				EnemyFactory::m_player;
 uth::Sound*			EnemyFactory::m_expSound;
 uth::Sound*			EnemyFactory::m_hpSound;
 uth::Sound*			EnemyFactory::m_starSound;
+uth::Sound*			EnemyFactory::m_humanSound1;
+uth::Sound*			EnemyFactory::m_humanSound2;
+uth::Sound*			EnemyFactory::m_humanSound3;
 
 float EnemyFactory::m_aeroplaneSpawnCooldown = 45;
 float EnemyFactory::m_aeroplaneSpawnTimer = 0;
@@ -162,7 +165,16 @@ void EnemyFactory::CheckEnemies()
 		{	//Emit pickups
 			CreateStar(obj.transform.GetPosition());
 
-			ExplosionEmitter::Emit(obj.transform.GetPosition());
+			//ExplosionEmitter::Emit(obj.transform.GetPosition());
+
+			auto soundIndex = Randomizer::GetFloat(0, 100);
+			if (soundIndex >= 0 && soundIndex < 35)
+				m_humanSound1->PlayEffect();
+			else if (soundIndex > 35 && soundIndex < 70)
+				m_humanSound2->PlayEffect();
+			else if (soundIndex > 70 && soundIndex <= 100)
+				m_humanSound3->PlayEffect();
+
 			m_expSound->PlayEffect();
 			m_layer->RemoveChild(&obj);
 			Statistics.score.soldKills++;

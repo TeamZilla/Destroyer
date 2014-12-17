@@ -184,7 +184,7 @@ public:
 		{
 			if (m_attackTime <= m_attackCounter)
 			{
-				m_slashSound->Play();
+				m_slashSound->PlayEffect();
 				m_player->Hit(0.5);
 				m_attackCounter = 0;
 			}
