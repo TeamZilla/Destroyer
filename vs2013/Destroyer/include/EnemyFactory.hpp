@@ -30,7 +30,8 @@ class EnemyFactory
 	static float m_soldierSpawnTimer;
 	static float m_heliSpawnCooldown;
 	static float m_heliSpawnTimer;
-
+	static bool isBoss;
+	static bool isVictory;
 
 public:
 	static float m_timeCounter;
@@ -55,6 +56,8 @@ public:
 	static std::shared_ptr<uth::GameObject> CreateHeli();
 	static std::shared_ptr<uth::GameObject> CreateHP(pmath::Vec2 pos);
 	static std::shared_ptr<uth::GameObject> CreateStar(pmath::Vec2 pos);
+	static std::shared_ptr<uth::GameObject> EnemyFactory::CreateBoss();
+	static std::shared_ptr<uth::GameObject> EnemyFactory::CreateBossVictory();
 	static void CheckEnemies();
 
 };

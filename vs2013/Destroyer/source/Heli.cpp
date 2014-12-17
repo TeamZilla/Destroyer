@@ -112,9 +112,7 @@ void Heli::Navigate(pmath::Vec2f targ)
 	if (m_nextPos != m_curPos)
 	{
 		m_prevPos = m_curPos;
-		std::cout << m_prevPos << std::endl;
 		m_nextPos = targ;
-		std::cout << m_nextPos << std::endl << std::endl;
 		m_moveDir = (m_nextPos - m_prevPos);
 		m_pathLenght = m_moveDir.length();
 		m_moveDir = m_moveDir.normalize();
