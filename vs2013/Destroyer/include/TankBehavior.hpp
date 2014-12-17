@@ -15,6 +15,8 @@ class TankBehavior : public uth::Component
 	Player*				m_player;
 	uth::Rigidbody*		m_rigidBody;
 	uth::Layer*			m_layer;
+	uth::Sound*			m_shootSound;
+	uth::Sound*			m_hitSound;
 	pmath::Vec2			m_direction;
 	pmath::Vec2			m_maxDistance;
 	pmath::Vec2			m_minDistance;
@@ -29,7 +31,8 @@ public:
 		m_player(player),
 		m_layer(layer)
 	{
-		
+		m_shootSound = uthRS.LoadSound("Audio/Effects/Tank_Shot.wav");
+		m_hitSound	 = uthRS.LoadSound("Audio/Effects/Metal_Hit.wav");
 	}
 	~TankBehavior()
 	{
@@ -101,6 +104,7 @@ public:
 
 	void Hit()
 	{
+		m_hitSound->Play();
 		m_rigidBody->ApplyImpulse(
 			pmath::Vec2(uth::Randomizer::GetFloat(-10, 10),      //X direction
 			-uth::Randomizer::GetFloat(80, 110)),				 //Y direction
@@ -131,6 +135,7 @@ public:
 
 		if (m_combatIntensity <= m_combatTimer)
 		{
+			m_shootSound->Play();
 			Shoot();
 			m_combatTimer = 0;
 		}
