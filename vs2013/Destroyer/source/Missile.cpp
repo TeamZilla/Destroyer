@@ -29,6 +29,7 @@ Missile::Missile(pmath::Vec2f start, Player* player)
 	m_dmg = 2;
 
 	transform.SetScale(m_scale);
+	transform.SetPosition(startPos);
 }
 
 

@@ -75,8 +75,6 @@ void Heli::update(float dt)
 	{
 		m_health = 0;
 	}
-
-	
 		m_lastX = transform.GetPosition().x;
 
 #ifdef UTH_SYSTEM_ANDROID
@@ -114,12 +112,15 @@ void Heli::Navigate(pmath::Vec2f targ)
 	if (m_nextPos != m_curPos)
 	{
 		m_prevPos = m_curPos;
+		std::cout << m_prevPos << std::endl;
 		m_nextPos = targ;
+		std::cout << m_nextPos << std::endl << std::endl;
 		m_moveDir = (m_nextPos - m_prevPos);
 		m_pathLenght = m_moveDir.length();
 		m_moveDir = m_moveDir.normalize();
 		isMoving = 1;
 	}
+
 }
 
 
@@ -131,10 +132,9 @@ void Heli::LinearMove()
 
 	if (std::abs((m_curPos - m_nextPos).length()) < 2 )
 	{
-
 		m_curPos = m_nextPos;
 		isMoving = 0;
-		m_hoverMaxTime = Randomizer::GetFloat(4, 8);
+		m_hoverMaxTime = Randomizer::GetFloat(4, 8); // sets time until next transition.
 	}
 
 }
@@ -238,6 +238,7 @@ void Heli::m_shooter()
 {
 	m_reload();
 	burst();
+	
 }
 
 
@@ -262,8 +263,10 @@ void Heli::m_reload()
 
 void Heli::m_launch()
 {
-	Parent()->AddChild(new Missile(transform.GetPosition(), m_player));
-	//Parent()->AddChild(new Missile(transform.GetPosition(),m_player));
+	if ((transform.GetPosition() - m_shootingTarget).length() < 1000)
+	{
+		Parent()->AddChild(new Missile(transform.GetPosition(), m_player));
+	}
 }
 
 
