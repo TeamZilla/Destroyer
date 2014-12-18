@@ -42,7 +42,7 @@ public:
 	{
 		m_rigidBody = parent->GetComponent<uth::Rigidbody>();
 		m_rigidBody->SetPhysicsGroup(-3);
-		m_rigidBody->SetFriction(0);
+		m_rigidBody->SetFriction(0.5f);
 		
 		m_maxDistance = pmath::Vec2(
 			uth::Randomizer::GetFloat(m_player->transform.GetPosition().x + 400,
@@ -62,13 +62,13 @@ public:
 			Exploding(dt);
 		else
 		{
-			Movement();
+			Movement(dt);
 			Combat(dt);
 		}
 	}
 
-	void Movement()
-	{
+	void Movement(float dt)
+	{/*
 		if (m_isGoingLeft)
 		{
 			if (m_rigidBody->GetPosition().x > m_target.x)
@@ -82,6 +82,23 @@ public:
 				m_rigidBody->ApplyForce(pmath::Vec2(m_direction.x * m_speed, 0));
 			else
 				m_rigidBody->ApplyForce(pmath::Vec2(-m_direction.x * 30, 0));
+		}*/
+
+		auto vel = m_rigidBody->GetVelocity();
+
+		if (m_isGoingLeft)
+		{
+			if (m_rigidBody->GetPosition().x > (m_target.x + 150))
+				m_rigidBody->SetVelocity(pmath::Vec2(vel.x + (m_direction.x * m_speed * dt), vel.y));
+			else
+				m_rigidBody->SetVelocity(pmath::Vec2(vel.x + (-m_direction.x * m_speed * dt), vel.y));
+		}
+		else
+		{
+			if (m_rigidBody->GetPosition().x < -(m_target.x + 150))
+				m_rigidBody->SetVelocity(pmath::Vec2(vel.x + (m_direction.x * m_speed * dt), vel.y));
+			else
+				m_rigidBody->SetVelocity(pmath::Vec2(vel.x + (-m_direction.x * m_speed * dt), vel.y));
 		}
 		m_rigidBody->SetAngle(0);
 	}
@@ -145,7 +162,6 @@ public:
 		if (m_combatIntensity/1.12f <= m_combatTimer)
 			parent->GetComponent<uth::AnimatedSprite>()->ChangeAnimation(1, 1, 1, 0, false);
 	}
-
 
 	void Shoot()
 	{
