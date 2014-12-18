@@ -18,26 +18,25 @@ Road::Road(const int blocks)
 			pmath::Vec2(leftMostX + i * blockWidth + 0.5*blockWidth,
 			m_roadY));
 		m_spriteBatch->AddSprite(m_blocks[i]);
-
-		m_shockLenght = 128;
-		m_shockSpeed = 200;
-		m_shockStartX = 40;
-		m_shockHeight = 100;
-		m_roadY = uthEngine.GetWindow().GetCamera().GetSize().y - 95;
-		m_shockRange = 1600;
-		isShock = false;
-		m_shockHeightMatcher = 250;
-		m_shockFriction = 0.5;
-		m_shockStartSpeed = 1200;
-		m_shockMinSpeed = 150;
-		m_shock_x = 0;
-		m_heightMod = 2.1;
-		m_intensityScaler = 15;
-		m_afterShakeTime = 0;
-		m_delayCounter = 0;
-		m_delay = 0.03;
-
 	}
+
+	m_shockLenght = 128;
+	m_shockSpeed = 200;
+	m_shockStartX = 40;
+	m_shockHeight = 100;
+	m_roadY = uthEngine.GetWindow().GetCamera().GetSize().y - 95;
+	m_shockRange = 1600;
+	isShock = false;
+	m_shockHeightMatcher = 250;
+	m_shockFriction = 0.5;
+	m_shockStartSpeed = 1100;
+	m_shockMinSpeed = 150;
+	m_shock_x = 0;
+	m_heightMod = 2.1;
+	m_intensityScaler = 15;
+	m_afterShakeTime = 0;
+	m_delayCounter = 0;
+	m_delay = 0.03;
 }
 
 void Road::Init(Player* asd, uth::PhysicsWorld* physworld)
@@ -172,15 +171,21 @@ void Road::m_shock()
 		m_shock_x = m_shockStartX;
 		m_player->m_allowShock = true;
 
-		// smoothing the edge of m_blocks[0].y and m_blocks[max].y
-		// REMEMBER!!! if you change the size of the m_blocks you'll have to change also the followong values
-		float temp0 = m_blocks[0]->GetPosition().y;
-		float temp1 = m_blocks[281]->GetPosition().y;
+		float smooth0 = (m_blocks[0]->GetPosition().y - m_roadY) / 1.5;
+		float smooth1 = (m_blocks[1]->GetPosition().y - m_roadY) / 3;
+		float smooth2 = (m_blocks[2]->GetPosition().y - m_roadY) / 4;
+					    
+		float smooth279 = (m_blocks[279]->GetPosition().y - m_roadY) / 4;
+		float smooth280 = (m_blocks[280]->GetPosition().y - m_roadY) / 3;
+		float smooth281 = (m_blocks[281]->GetPosition().y - m_roadY) / 1.5;
 
-		float average = (m_blocks[281]->GetPosition().y + m_blocks[2]->GetPosition().y + temp0) / 3;
-		m_blocks[0]->SetPosition(m_blocks[0]->GetPosition().x, average);
-		average = (m_blocks[279]->GetPosition().y + m_blocks[1]->GetPosition().y + temp1) / 3;
-		m_blocks[281]->SetPosition(m_blocks[281]->GetPosition().x, average);
+		m_blocks[0]->SetPosition(m_blocks[0]->GetPosition().x, m_blocks[0]->GetPosition().y - smooth0);
+		m_blocks[1]->SetPosition(m_blocks[1]->GetPosition().x, m_blocks[1]->GetPosition().y - smooth1);
+		m_blocks[2]->SetPosition(m_blocks[2]->GetPosition().x, m_blocks[2]->GetPosition().y - smooth2);
+
+		m_blocks[0]->SetPosition(m_blocks[279]->GetPosition().x, m_blocks[279]->GetPosition().y - smooth279);
+		m_blocks[1]->SetPosition(m_blocks[280]->GetPosition().x, m_blocks[280]->GetPosition().y - smooth280);
+		m_blocks[2]->SetPosition(m_blocks[281]->GetPosition().x, m_blocks[281]->GetPosition().y - smooth281);
 
 	}
 
