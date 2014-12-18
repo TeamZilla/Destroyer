@@ -28,6 +28,8 @@ Player::Player(uth::PhysicsWorld* physworld)
 	//Create, set position and scale player Sprite
 	auto playerTexture = uthRS.LoadTexture("modzilla/moz_animation.png");
 	m_tailSound = uthRS.LoadSound("Audio/Effects/tail_whip.wav");
+	m_jumpSound = uthRS.LoadSound("Audio/Effects/Jump_Normal.wav");
+
 	playerTexture->SetSmooth(true);
 	AddTag("Player");
 	AddComponent(new AnimatedSprite(playerTexture,24,8,3));
@@ -154,6 +156,10 @@ void Player::Jumping()
 	m_jumpTimer -= m_dt;
 	if (m_jumpTimer <= 0)
 	{
+		if (!m_jumpSound->IsPlaying())
+		{
+			m_jumpSound->Play();
+		}
 		m_jumpSpeed -= m_dt * 30;
 		m_rigidbody->SetPosition(pmath::Vec2(0, m_rigidbody->GetPosition().y - m_jumpSpeed));
 		if (m_rigidbody->GetPosition().y >= m_tempPos.y)
