@@ -172,15 +172,32 @@ void Road::m_shock()
 		m_shock_x = m_shockStartX;
 		m_player->m_allowShock = true;
 
+		float smooth0 = (m_blocks[0]->GetPosition().y - m_roadY) / 1.5;
+		float smooth1 = (m_blocks[1]->GetPosition().y - m_roadY) / 3;
+		float smooth2 = (m_blocks[2]->GetPosition().y - m_roadY) / 4;
+					    
+		float smooth279 = (m_blocks[279]->GetPosition().y - m_roadY) / 4;
+		float smooth280 = (m_blocks[280]->GetPosition().y - m_roadY) / 3;
+		float smooth281 = (m_blocks[281]->GetPosition().y - m_roadY) / 1.5;
+
+		m_blocks[0]->SetPosition(m_blocks[0]->GetPosition().x, m_blocks[0]->GetPosition().y - smooth0);
+		m_blocks[1]->SetPosition(m_blocks[1]->GetPosition().x, m_blocks[1]->GetPosition().y - smooth1);
+		m_blocks[2]->SetPosition(m_blocks[2]->GetPosition().x, m_blocks[2]->GetPosition().y - smooth2);
+
+		m_blocks[0]->SetPosition(m_blocks[279]->GetPosition().x, m_blocks[279]->GetPosition().y - smooth279);
+		m_blocks[1]->SetPosition(m_blocks[280]->GetPosition().x, m_blocks[280]->GetPosition().y - smooth280);
+		m_blocks[2]->SetPosition(m_blocks[281]->GetPosition().x, m_blocks[281]->GetPosition().y - smooth281);
+
+
 		// smoothing the edge of m_blocks[0].y and m_blocks[max].y
 		// REMEMBER!!! if you change the size of the m_blocks you'll have to change also the followong values
-		float temp0 = m_blocks[0]->GetPosition().y;
-		float temp1 = m_blocks[281]->GetPosition().y;
+		//float temp0 = m_blocks[0]->GetPosition().y;
+		//float temp1 = m_blocks[281]->GetPosition().y;
 
-		float average = (m_blocks[281]->GetPosition().y + m_blocks[2]->GetPosition().y + temp0) / 3;
-		m_blocks[0]->SetPosition(m_blocks[0]->GetPosition().x, average);
-		average = (m_blocks[279]->GetPosition().y + m_blocks[1]->GetPosition().y + temp1) / 3;
-		m_blocks[281]->SetPosition(m_blocks[281]->GetPosition().x, average);
+		//float average = (m_blocks[281]->GetPosition().y + m_blocks[2]->GetPosition().y + temp0) / 3;
+		//m_blocks[0]->SetPosition(m_blocks[0]->GetPosition().x, average);
+		//average = (m_blocks[279]->GetPosition().y + m_blocks[1]->GetPosition().y + temp1) / 3;
+		//m_blocks[281]->SetPosition(m_blocks[281]->GetPosition().x, average);
 
 	}
 
