@@ -179,16 +179,6 @@ void Heli::Pilot()
 	m_reload();
 	m_shooter();
 
-
-	//Sound volume, sound volume increases when helicopter gets closer
-	//TODO::COMPLETE THIS
-	//auto distance = pmath::Vec2(transform.GetPosition().x, pmath::Vec2(0, 400).x).length();
-	//WriteLog("%f", distance);
-	//if (distance >= 100.0f)
-	//	distance = 100.0f;
-	//else if (distance <= 5.0f)
-	//	distance = 5.0f;
-	//m_heliSound->SetVolume(100/(distance/10));
 }
 
 

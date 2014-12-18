@@ -106,6 +106,12 @@ bool GameScene::Init()
 
 	playTex->SetSmooth(true);
 	//UI
+
+	getLayer(LayerId::Userinterface).AddChild(m_blackOverlay = new GameObject());
+	m_blackOverlay->AddComponent(new Sprite(pmath::Vec4(1, 0, 1, 1), pmath::Vec2(3500, 3500)));
+	m_blackOverlay->transform.SetPosition(camera.GetPosition().x / 2,
+		camera.GetPosition().y / 2 - camera.GetSize().y / 2);
+
 	getLayer(LayerId::Userinterface).AddChild(m_pauseMenu = new GameObject());
 	m_pauseMenu->AddComponent(new Sprite(pauseBG, "pauseBGsprite"));
 	m_pauseMenu->transform.SetOrigin(uth::Origin::TopLeft);
@@ -150,11 +156,6 @@ bool GameScene::Init()
 	m_ExitB = new Button(m_ExitButton);
 	m_ExitButton->SetActive(false);
 
-	getLayer(LayerId::Userinterface).AddChild(m_blackOverlay = new GameObject());
-	m_blackOverlay->AddComponent(new Sprite(pmath::Vec4(0, 0, 0, 1), pmath::Vec2(3500, 3500)));
-	m_blackOverlay->transform.SetPosition(camera.GetPosition().x / 2,
-										  camera.GetPosition().y / 2 - camera.GetSize().y / 2);
-
 
 	//Game over score stuff here
 
@@ -183,235 +184,263 @@ void GameScene::Update(float dt)
 	if (dt > 0.1)
 		dt = 0.1;
 
-	
-
-	if (m_blackOverlay->GetComponent<Sprite>()->GetColor().a > 0)
+	if (!isPaused && !isPlayerDead) // Game 
 	{
-		m_blackOverlay->transform.SetPosition(camera.GetPosition().x,
-											  camera.GetPosition().y);
-		m_blackOverlay->GetComponent<Sprite>()->SetColor(pmath::Vec4(0, 0, 0, m_blackOverlay->GetComponent<Sprite>()->GetColor().a - 0.5f*dt));
-	}
-	else
-	{
-		m_blackOverlay->SetActive(false);
-	}
-	
-
-	if (!isPaused && !isPlayerDead)
-	{	
-
-		m_bgManager.Update(dt);
-
-		Scene::Update(dt);
-		std::stringstream ss;
-		ss << Statistics.score.current;
-
-		std::string Cscore = ss.str();
-
-		m_scoreText->SetText(Cscore);
-		m_scorePoints->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 2 + 580,
-			camera.GetPosition().y - camera.GetSize().y / 2 + 45);
-		m_ScoreBoard->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 2 + 400,
-			camera.GetPosition().y - camera.GetSize().y / 2 + 10);
-
-		m_ScoreBoard->transform.SetRotation(camera.GetRotation());
-		m_scorePoints->transform.SetRotation(camera.GetRotation());
-		m_PauseButton->transform.SetRotation(camera.GetRotation());
-
-		m_PauseButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 2 + 1150,
-											 camera.GetPosition().y - camera.GetSize().y / 2 + 20);
-		m_PauseButton->transform.SetRotation(camera.GetRotation());
-		
-		static int count;
-		static float time = 0;
-		time += dt;
-		count++;
-		if (time > 6)
+		if (m_blackOverlay->GetComponent<Sprite>()->GetColor().a > 0)
 		{
-			time -= 6;
-			count = 0;
+			m_blackOverlay->transform.SetPosition(camera.GetPosition().x,
+				camera.GetPosition().y);
+			m_blackOverlay->GetComponent<Sprite>()->SetColor(pmath::Vec4(0.01f, 0, 0.02f, m_blackOverlay->GetComponent<Sprite>()->GetColor().a - 0.5f*dt));
 		}
-
-		m_physWorld.Update(dt);
-
-		if (isInitedShake)
+		else
 		{
-			m_shakeDelayTimer += dt;
-
-			if (m_shakeDelayTimer >= 0.6)
-			{
-				m_bgManager.Shake(3, 2.0f);
-				m_road->InitShock();
-				m_waveSound->Play();
-				isInitedShake = false;
-				m_shakeDelayTimer = 0;
-			}
-		}
-
-		EnemyFactory::Update(dt);
-
-		if (m_player->m_isDied == false)
-		{
-			ControlFunctions();
+			m_blackOverlay->SetActive(false);
 		}
 
 		if (Statistics.player.hp <= 0)
 		{
-			m_music->Stop();
-			m_player->Die();
-			if (!m_gameOverMusic->IsPlaying())
-				m_gameOverMusic->Play();
-			if (m_player->m_isDoneDying)
-			{
-				m_afterMathMusic->Play();
-				m_afterMathMusic->Loop(true);
-				isPlayerDead = true;
-				javaFunc::ShowAdBanner("6300978111",uth::Origin::BottomCenter);
-				EnemyFactory::m_timeCounter = 0;
-			}
+			dt /= 3;
 		}
 
-		m_pauseB->update(dt);
-		if (m_pauseB->IsPressedS())
-		{
-			isPaused = true;	
-		}
-		
-
-		//Music gets normal
-		if (m_soundSlowerTimer > 0)
-		{
-			m_soundSlowerTimer -= dt * 90;
-			m_music->SetPitch(100-m_soundSlowerTimer);
-		}
+		Game(dt);
 	}
-	
-	
-	//If Paused
-
-	else if (isPaused && !isPlayerDead) //TODO:: Pause menu stuff here
+	else if (isPaused && !isPlayerDead) // If Paused
 	{
-		//Music gets slower
-		if (m_soundSlowerTimer < 100)
-		{
-			m_soundSlowerTimer += dt * 90;
-			m_music->SetPitch(100 - m_soundSlowerTimer);
-		}
+		if (dt > 0.1)
+			dt = 0.1;
 
-		m_pauseMenu->SetActive(true);
-		m_MenuButton->SetActive(true);
-		m_RestartButton->SetActive(true);
-		m_ResumeButton->SetActive(true);
-		m_player->SetActive(false);
-		
-
-		m_pauseMenu->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 150, camera.GetPosition().y - camera.GetSize().y / 2 + 125);
-		m_MenuButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 325, camera.GetPosition().y - camera.GetSize().y / 2 + 535);
-		m_RestartButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 325, camera.GetPosition().y - camera.GetSize().y / 2 + 435);
-		m_ResumeButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 325, camera.GetPosition().y - camera.GetSize().y / 2 + 330);
-	#ifdef UTH_SYSTEM_ANDROID
-		//TODO: Android only pause functions here
-
-	#else
-		//PC only code here
-
-	#endif
-		//If user press m_pause button game resumes
-		m_menuB->update(dt);
-		m_restartB->update(dt);
-		m_pauseB->update(dt);
-		m_resumeB->update(dt);
-		if (m_pauseB->IsPressedS()|| m_resumeB->IsPressedS() )
-		{
-			m_pauseMenu->SetActive(false);
-			m_MenuButton->SetActive(false);
-			m_RestartButton->SetActive(false);
-			m_ResumeButton->SetActive(false);
-			m_player->SetActive(true);
-			
-			isPaused = false;
-		}
-		if (m_restartB->IsPressedS())
-		{
-			uthSceneM.GoToScene(GAME);
-			m_music->Stop();
-		}
-		if (m_menuB->IsPressedS())
-		{
-			uthSceneM.GoToScene(TITLE);
-			m_music->Stop();
-		}
+		Pause(dt);
 	}
-	else if (!isPaused && isPlayerDead) //Game over functions here
+	else if (!isPaused && isPlayerDead) // Game over functions here
 	{
-		m_gameOverScreenPicture->SetActive(true);
-		m_MenuButton->SetActive(true);
-		m_RestartButton->SetActive(true);
-		m_goScoreObj->SetActive(true);
-		m_goHiScoreObj->SetActive(true);
 
-		m_ScoreBoard->SetActive(false);
-		m_scorePoints->SetActive(false);
-		m_PauseButton->SetActive(false);
+		if (dt > 0.1)
+			dt = 0.1;
 
-		m_health->update(dt);
+		m_blackOverlay->SetActive(true);
 
-		m_menuB->update(dt);
-		m_restartB->update(dt);
-
-		//Check if player has better score than highscore
-		if (Statistics.score.highscore < Statistics.score.current)
+		if (m_blackOverlay->GetComponent<Sprite>()->GetColor().a < 0.80f)
 		{
-			WriteLog("New Highscore! : ""%f", Statistics.score.current);
-			//Let's save the highscore then
-			Statistics.score.highscore = Statistics.score.current;
+			m_blackOverlay->transform.SetPosition(camera.GetPosition().x,
+				camera.GetPosition().y);
+			m_blackOverlay->GetComponent<Sprite>()->SetColor(pmath::Vec4(0.06f, 0, 0.12f, m_blackOverlay->GetComponent<Sprite>()->GetColor().a + 0.5f*dt));
 		}
 
-		std::stringstream gs;
-		std::stringstream gh;
-
-		gs << Statistics.score.current;
-		gh << Statistics.score.highscore;
-
-		std::string GOscore = gs.str();
-		std::string GOHscore = gh.str();
-
-		m_goScoreText->SetText("YOUR SCORE: " + GOscore);
-		m_goHiScoreText->SetText("HIGHSCORE: " + GOHscore);
-
-
-		auto& camera = uthEngine.GetWindow().GetCamera();
-
-		m_gameOverScreenPicture->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 50, camera.GetPosition().y - camera.GetSize().y / 2+50);
-		m_MenuButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 120, camera.GetPosition().y - camera.GetSize().y /2 + 450);
-		m_RestartButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 470, camera.GetPosition().y - camera.GetSize().y /2 + 450);
-
-		auto goPos = m_gameOverScreenPicture->transform.GetPosition();
-		m_goScoreObj->transform.SetPosition(goPos.x + 350, goPos.y + 340);
-		m_goHiScoreObj->transform.SetPosition(goPos.x + 350, goPos.y + 260);
-
-		if (m_restartB->IsPressedS())
-		{
-			uthSceneM.GoToScene(GAME);
-			m_afterMathMusic->Stop();
-			Statistics.Save();
-			//Test ad
-			javaFunc::CloseAd("6300978111");
-		}
-		if (m_menuB->IsPressedS())
-		{
-			uthSceneM.GoToScene(TITLE);
-			m_afterMathMusic->Stop();
-			Statistics.Save();
-			//Test ad
-			javaFunc::CloseAd("6300978111");
-		}
+		GameOver(dt);
 	}
-
 
 } //Update end
 
 
+void GameScene::Game(float dt)
+{
+	auto& camera = uthEngine.GetWindow().GetCamera();
+
+	m_bgManager.Update(dt);
+
+	Scene::Update(dt);
+	std::stringstream ss;
+	ss << Statistics.score.current;
+
+	std::string Cscore = ss.str();
+
+	m_scoreText->SetText(Cscore);
+	m_scorePoints->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 2 + 580,
+		camera.GetPosition().y - camera.GetSize().y / 2 + 45);
+	m_ScoreBoard->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 2 + 400,
+		camera.GetPosition().y - camera.GetSize().y / 2 + 10);
+
+	m_ScoreBoard->transform.SetRotation(camera.GetRotation());
+	m_scorePoints->transform.SetRotation(camera.GetRotation());
+	m_PauseButton->transform.SetRotation(camera.GetRotation());
+
+	m_PauseButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 2 + 1150,
+		camera.GetPosition().y - camera.GetSize().y / 2 + 20);
+	m_PauseButton->transform.SetRotation(camera.GetRotation());
+
+	static int count;
+	static float time = 0;
+	time += dt;
+	count++;
+	if (time > 6)
+	{
+		time -= 6;
+		count = 0;
+	}
+
+	m_physWorld.Update(dt);
+
+	if (isInitedShake)
+	{
+		m_shakeDelayTimer += dt;
+
+		if (m_shakeDelayTimer >= 0.6)
+		{
+			m_bgManager.Shake(3, 2.0f);
+			m_road->InitShock();
+			m_waveSound->Play();
+			isInitedShake = false;
+			m_shakeDelayTimer = 0;
+		}
+	}
+
+	EnemyFactory::Update(dt);
+
+	if (m_player->m_isDied == false)
+	{
+		ControlFunctions();
+	}
+
+	if (Statistics.player.hp <= 0)
+	{
+		m_music->Stop();
+		m_player->Die();
+		if (!m_gameOverMusic->IsPlaying())
+			m_gameOverMusic->Play();
+		if (m_player->m_isDoneDying)
+		{
+			m_afterMathMusic->Play();
+			m_afterMathMusic->Loop(true);
+			isPlayerDead = true;
+			javaFunc::ShowAdBanner("6300978111", uth::Origin::BottomCenter);
+			EnemyFactory::m_timeCounter = 0;
+		}
+	}
+
+	m_pauseB->update(dt);
+	if (m_pauseB->IsPressedS())
+	{
+		isPaused = true;
+	}
+
+
+	//Music gets normal
+	if (m_soundSlowerTimer > 0)
+	{
+		m_soundSlowerTimer -= dt * 90;
+		m_music->SetPitch(100 - m_soundSlowerTimer);
+	}
+};
+void GameScene::Pause(float dt)
+{
+	auto& camera = uthEngine.GetWindow().GetCamera();
+
+	//Music gets slower
+	if (m_soundSlowerTimer < 100)
+	{
+		m_soundSlowerTimer += dt * 90;
+		m_music->SetPitch(100 - m_soundSlowerTimer);
+	}
+
+	m_pauseMenu->SetActive(true);
+	m_MenuButton->SetActive(true);
+	m_RestartButton->SetActive(true);
+	m_ResumeButton->SetActive(true);
+	m_player->SetActive(false);
+
+
+	m_pauseMenu->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 150, camera.GetPosition().y - camera.GetSize().y / 2 + 125);
+	m_MenuButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 325, camera.GetPosition().y - camera.GetSize().y / 2 + 535);
+	m_RestartButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 325, camera.GetPosition().y - camera.GetSize().y / 2 + 435);
+	m_ResumeButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 325, camera.GetPosition().y - camera.GetSize().y / 2 + 330);
+#ifdef UTH_SYSTEM_ANDROID
+	//TODO: Android only pause functions here
+
+#else
+	//PC only code here
+
+#endif
+	//If user press m_pause button game resumes
+	m_menuB->update(dt);
+	m_restartB->update(dt);
+	m_pauseB->update(dt);
+	m_resumeB->update(dt);
+	if (m_pauseB->IsPressedS() || m_resumeB->IsPressedS())
+	{
+		m_pauseMenu->SetActive(false);
+		m_MenuButton->SetActive(false);
+		m_RestartButton->SetActive(false);
+		m_ResumeButton->SetActive(false);
+		m_player->SetActive(true);
+
+		isPaused = false;
+	}
+	if (m_restartB->IsPressedS())
+	{
+		uthSceneM.GoToScene(GAME);
+		m_music->Stop();
+	}
+	if (m_menuB->IsPressedS())
+	{
+		uthSceneM.GoToScene(TITLE);
+		m_music->Stop();
+	}
+};
+void GameScene::GameOver(float dt)
+{
+	auto& camera = uthEngine.GetWindow().GetCamera();
+
+	m_gameOverScreenPicture->SetActive(true);
+	m_MenuButton->SetActive(true);
+	m_RestartButton->SetActive(true);
+	m_goScoreObj->SetActive(true);
+	m_goHiScoreObj->SetActive(true);
+
+	m_ScoreBoard->SetActive(false);
+	m_scorePoints->SetActive(false);
+	m_PauseButton->SetActive(false);
+
+	m_health->update(dt);
+
+	m_menuB->update(dt);
+	m_restartB->update(dt);
+
+	//Check if player has better score than highscore
+	if (Statistics.score.highscore < Statistics.score.current)
+	{
+		WriteLog("New Highscore! : ""%f", Statistics.score.current);
+		//Let's save the highscore then
+		Statistics.score.highscore = Statistics.score.current;
+	}
+
+	std::stringstream gs;
+	std::stringstream gh;
+
+	gs << Statistics.score.current;
+	gh << Statistics.score.highscore;
+
+	std::string GOscore = gs.str();
+	std::string GOHscore = gh.str();
+
+	m_goScoreText->SetText("YOUR SCORE: " + GOscore);
+	m_goHiScoreText->SetText("HIGHSCORE: " + GOHscore);
+
+	m_gameOverScreenPicture->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 50, camera.GetPosition().y - camera.GetSize().y / 2 + 50);
+	m_MenuButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 120, camera.GetPosition().y - camera.GetSize().y / 2 + 450);
+	m_RestartButton->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 3 + 470, camera.GetPosition().y - camera.GetSize().y / 2 + 450);
+
+	auto goPos = m_gameOverScreenPicture->transform.GetPosition();
+	m_goScoreObj->transform.SetPosition(goPos.x + 350, goPos.y + 340);
+	m_goHiScoreObj->transform.SetPosition(goPos.x + 350, goPos.y + 260);
+
+	if (m_restartB->IsPressedS())
+	{
+		uthSceneM.GoToScene(GAME);
+		m_afterMathMusic->Stop();
+		Statistics.Save();
+		//Test ad
+		javaFunc::CloseAd("6300978111");
+	}
+	if (m_menuB->IsPressedS())
+	{
+		uthSceneM.GoToScene(TITLE);
+		m_afterMathMusic->Stop();
+		Statistics.Save();
+		//Test ad
+		javaFunc::CloseAd("6300978111");
+	}
+
+};
 void GameScene::ControlFunctions()
 {
 

@@ -55,7 +55,9 @@ class GameScene : public uth::Scene
 	uth::Layer& getLayer(LayerId id);
 
 
-
+	void Game(float dt);
+	void Pause(float dt);
+	void GameOver(float dt);
 	void ControlFunctions();
 	void Control_up();
 	void Control_down();

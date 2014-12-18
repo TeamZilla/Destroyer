@@ -80,25 +80,28 @@ void Player::update(float dt)
 
 	m_dt = dt;
 	Acceleration();
-	if (m_isJumping)
+	if (!m_isDied)
 	{
-		Jumping();
+		if (m_isJumping)
+		{
+			Jumping();
+		}
+		else if (m_isCrouching)
+		{
+			Crouching();
+		}
+		else if (m_isTurning)
+		{
+			Turning();
+		}
+		if (m_isHurting)
+		{
+			Hurting();
+		}
 	}
-	else if (m_isCrouching)
-	{
-		Crouching();
-	}
-	else if (m_isTurning)
-	{
-		Turning();
-	}
-	else if (m_isDied)
+	else
 	{
 		Dying();
-	}
-	if (m_isHurting)
-	{
-		Hurting();
 	}
 	
 	SwipeTail(dt);
@@ -255,8 +258,8 @@ void Player::Die()
 }
 void Player::Dying()
 {
-	m_rigidbody->Rotate(2.5f);
-	m_rigidbody->Move(pmath::Vec2(0,0.15f));
+	m_rigidbody->Rotate(0.75f);
+	m_rigidbody->Move(pmath::Vec2(0,1.15f));
 	if (m_rigidbody->GetAngle() > 90)
 		m_isDoneDying = true;
 }
