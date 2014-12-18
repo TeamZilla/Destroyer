@@ -144,7 +144,6 @@ void TitleScene::Update(float dt)
 		{
 			m_BGM->Stop();
 			m_roar->Play();
-			m_roar->SetVolume(50);
 			isGameStarting = true;
 			//Remember to close ad before playing game
 			javaFunc::CloseAd("6300978111");

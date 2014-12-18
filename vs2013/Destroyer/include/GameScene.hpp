@@ -37,7 +37,7 @@ class GameScene : public uth::Scene
 	uth::GameObject* m_scorePoints;
 	uth::GameObject* m_goScoreObj;
 	uth::GameObject* m_goHiScoreObj;
-	
+	uth::GameObject* m_tutorial;
 	
 	
 
