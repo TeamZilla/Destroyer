@@ -74,10 +74,6 @@ void Player::init(uth::PhysicsWorld* physworld, Health* hp)
 }
 void Player::update(float dt)
 {
-	//// temporary code begins////
-	//WriteLog("%f", Statistics.score.current);
-	//// temporary code ends////
-
 	m_dt = dt;
 	Acceleration();
 	if (!m_isDied)
@@ -203,7 +199,6 @@ void Player::Crouching()
 }
 void Player::SwipeTail(float dt)
 {
-	//WriteLog("Speed: %f",m_tailSpeed);
 	if (m_isSwiping)
 	{
 		auto pLength = pmath::Vec2(m_tailBox->transform.GetPosition().x, transform.GetPosition().x).length();
@@ -227,7 +222,6 @@ void Player::SwipeTail(float dt)
 		{
 			m_tailSpeed -= dt;
 		}
-		//m_tailBox->GetComponent<uth::Rigidbody>()->
 		auto pos = pmath::Vec2(m_tailBox->transform.GetPosition().x + m_tailSpeed);
 		m_tailBox->GetComponent<uth::Rigidbody>()->SetPosition(pmath::Vec2(m_tailSpeed * 100, m_tailBox->transform.GetPosition().y));
 	}

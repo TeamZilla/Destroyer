@@ -27,7 +27,6 @@ bool GameScene::Init()
 	m_shakeDelayTimer = 0;
 	//Put score to 0 at start of the game
 	Statistics.score.current = 0;
-	WriteLog("D1");
 	Randomizer::SetSeed();
 	uthEngine.GetWindow().GetCamera().SetSize(1280, 720);
 	auto& camera = uthEngine.GetWindow().GetCamera();
@@ -90,6 +89,8 @@ bool GameScene::Init()
 	ExitText->SetSmooth(true);
 	auto ResumeText = uthRS.LoadTexture("UI/Resume.png");
 	ResumeText->SetSmooth(true);
+	auto TutorialTex = uthRS.LoadTexture("UI/tutorial.png");
+	TutorialTex->SetSmooth(true);
 
 	//scoreboard
 	getLayer(LayerId::Userinterface).AddChild(m_ScoreBoard = new GameObject());
@@ -170,6 +171,15 @@ bool GameScene::Init()
 
 	m_goScoreObj->SetActive(false);
 	m_goHiScoreObj->SetActive(false);
+
+	//tutorial stuff here
+
+	getLayer(LayerId::Userinterface).AddChild(m_tutorial = new GameObject());
+	m_tutorial->AddComponent(new Sprite(TutorialTex));
+	m_tutorial->transform.SetOrigin(uth::Origin::TopLeft);
+	m_tutorial->transform.SetScale(m_tutorial->transform.GetScale().x * 2, m_tutorial->transform.GetScale().y * 1.8f );
+	m_tutorial->transform.SetPosition(m_tutorial->transform.GetPosition().x - 200, m_tutorial->transform.GetPosition().y);
+	m_tutorial->SetActive(false);
 
 	return true;
 }

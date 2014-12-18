@@ -144,7 +144,7 @@ public:
 
 		pAtomBomb->transform.SetRotation(cos(m_pos.x / 170) * 10 + - m_direction * 15);
 
-		std::cout << angle << std::endl;
+		//std::cout << angle << std::endl;
 		pRope->transform.SetRotation(angle);
 		pRope->transform.ScaleToSize(ropeDir.length(), -m_direction * pRope->transform.GetSize().y);
 	}
