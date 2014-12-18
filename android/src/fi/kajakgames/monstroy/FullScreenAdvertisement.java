@@ -1,4 +1,4 @@
-package fi.kajakgames.uth;
+package fi.kajakgames.monstroy;
 
 import com.google.android.gms.ads.InterstitialAd;
 

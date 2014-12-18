@@ -1,4 +1,4 @@
-package fi.kajakgames.uth;
+package fi.kajakgames.monstroy;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -10,6 +10,8 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.games.GamesActivityResultCodes;
+
+import fi.kajakgames.monstroy.R;
 
 public class BaseGameUtils {
 

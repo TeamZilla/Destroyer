@@ -1,4 +1,4 @@
-package fi.kajakgames.uth;
+package fi.kajakgames.monstroy;
 
 import android.view.Gravity;
 import android.view.ViewGroup.MarginLayoutParams;

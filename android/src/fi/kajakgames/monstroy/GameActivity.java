@@ -1,4 +1,4 @@
-package fi.kajakgames.uth;
+package fi.kajakgames.monstroy;
 
 import java.util.Vector;
 
@@ -12,7 +12,8 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.*;
-import fi.kajakgames.uth.R;
+import fi.kajakgames.monstroy.BaseGameUtils;
+import fi.kajakgames.monstroy.R;
 
 import com.google.android.gms.ads.*;
 import com.google.android.gms.games.Games;
@@ -23,8 +24,6 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.analytics.*;
 import com.google.android.gms.location.*;
-
-import fi.kajakgames.uth.BaseGameUtils;
 
 public class GameActivity extends android.app.NativeActivity
 implements LocationListener, 
