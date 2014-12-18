@@ -41,13 +41,13 @@ public:
 		m_layer = layer;
 		m_physicsWorld = physWorld;
 		m_player = player;
-		m_expSound =  uthRS.LoadSound("Audio/Effects/Short_Explosion1.wav");
-		m_hpSound =   uthRS.LoadSound("Audio/Effects/Heart_pickup.wav");
-		m_starSound = uthRS.LoadSound("Audio/Effects/Star_pickup.wav");
-		m_humanSound1 = uthRS.LoadSound("Audio/Effects/auts1.wav");
-		m_humanSound2 = uthRS.LoadSound("Audio/Effects/auts2.wav");
-		m_humanSound3 = uthRS.LoadSound("Audio/Effects/auts3.wav");
-		m_bossSound = uthRS.LoadSound("Audio/Effects/boss_theme.wav");
+		m_expSound =  uthRS.LoadSound("Audio/Effects/Short_Explosion1.ogg");
+		m_hpSound =   uthRS.LoadSound("Audio/Effects/Heart_pickup.ogg");
+		m_starSound = uthRS.LoadSound("Audio/Effects/Star_pickup.ogg");
+		m_humanSound1 = uthRS.LoadSound("Audio/Effects/auts1.ogg");
+		m_humanSound2 = uthRS.LoadSound("Audio/Effects/auts2.ogg");
+		m_humanSound3 = uthRS.LoadSound("Audio/Effects/auts3.ogg");
+		m_bossSound = uthRS.LoadSound("Audio/Effects/boss_theme.ogg");
 		//m_expSound->SetVolume(50);
 	}
 	static void Update(float dt);

@@ -32,7 +32,7 @@ public:
 		m_speed(speed),
 		m_player(player)
 	{
-		m_slashSound = uthRS.LoadSound("Audio/Effects/Sword.wav");
+		m_slashSound = uthRS.LoadSound("Audio/Effects/Sword.ogg");
 	}
 	~SoldierBehavior()
 	{

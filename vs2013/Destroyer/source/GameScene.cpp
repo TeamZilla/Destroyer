@@ -27,7 +27,7 @@ bool GameScene::Init()
 	m_shakeDelayTimer = 0;
 	//Put score to 0 at start of the game
 	Statistics.score.current = 0;
-
+	WriteLog("D1");
 	Randomizer::SetSeed();
 	uthEngine.GetWindow().GetCamera().SetSize(1280, 720);
 	auto& camera = uthEngine.GetWindow().GetCamera();
@@ -51,9 +51,9 @@ bool GameScene::Init()
 	m_bgManager.SetCameraStartPos(pmath::Vec2f(0, camera.GetSize().y / 2));
 	
 
-	m_gameOverMusic  = uthRS.LoadSound("Audio/Music/game_over.wav");
-	m_afterMathMusic = uthRS.LoadSound("Audio/Music/aftermath_theme.wav");
-	m_music = uthRS.LoadSound("Audio/Music/city_theme3.wav");
+	m_gameOverMusic  = uthRS.LoadSound("Audio/Music/game_over.ogg");
+	m_afterMathMusic = uthRS.LoadSound("Audio/Music/aftermath_theme.ogg");
+	m_music = uthRS.LoadSound("Audio/Music/city_theme3.ogg");
 	m_music->Play();
 	m_music->SetPitch(100);
 	m_music->Loop(true);

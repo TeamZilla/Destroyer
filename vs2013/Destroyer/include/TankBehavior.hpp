@@ -32,7 +32,7 @@ public:
 		m_layer(layer)
 	{
 		m_shootSound = uthRS.LoadSound("Audio/Effects/Tank_Shot.wav");
-		m_hitSound	 = uthRS.LoadSound("Audio/Effects/Metal_Hit.wav");
+		m_hitSound	 = uthRS.LoadSound("Audio/Effects/Metal_Hit.ogg");
 	}
 	~TankBehavior()
 	{

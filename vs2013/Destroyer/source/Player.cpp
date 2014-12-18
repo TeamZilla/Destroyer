@@ -27,8 +27,8 @@ Player::Player(uth::PhysicsWorld* physworld)
 
 	//Create, set position and scale player Sprite
 	auto playerTexture = uthRS.LoadTexture("modzilla/moz_animation.png");
-	m_tailSound = uthRS.LoadSound("Audio/Effects/tail_whip.wav");
-	m_jumpSound = uthRS.LoadSound("Audio/Effects/Jump_Normal.wav");
+	m_tailSound = uthRS.LoadSound("Audio/Effects/tail_whip.ogg");
+	m_jumpSound = uthRS.LoadSound("Audio/Effects/Jump_Normal.ogg");
 
 	playerTexture->SetSmooth(true);
 	AddTag("Player");

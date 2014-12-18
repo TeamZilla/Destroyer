@@ -15,8 +15,8 @@ TitleScene::TitleScene()
 	Statistics.Load();
 
 	uthEngine.GetWindow().GetCamera().SetSize(1280, 720);
-	m_roar = uthRS.LoadSound("Audio/Effects/moz_howl.wav");
-	m_BGM = uthRS.LoadSound("Audio/Music/menu_theme.wav");
+	m_roar = uthRS.LoadSound("Audio/Effects/moz_howl.ogg");
+	m_BGM = uthRS.LoadSound("Audio/Music/menu_theme.ogg");
 	m_BGM->Play();
 	m_BGM->Loop(true);
 
