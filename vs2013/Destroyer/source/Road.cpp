@@ -31,6 +31,12 @@ Road::Road(const int blocks)
 		m_shockStartSpeed = 1200;
 		m_shockMinSpeed = 150;
 		m_shock_x = 0;
+		m_heightMod = 2.1;
+		m_intensityScaler = 15;
+		m_afterShakeTime = 0;
+		m_delayCounter = 0;
+		m_delay = 0.03;
+
 	}
 }
 
@@ -47,6 +53,13 @@ void Road::Init(Player* asd, uth::PhysicsWorld* physworld)
 	hitBox->GetComponent<Rigidbody>("Rigidbody")->SetPhysicsGroup(-2);
 	hitBox->AddTag("RoadCollider");
 	AddChild(hitBox);
+
+	for (int i = 0; i < m_blocks.size(); i++)
+	{
+		m_blocks[i]->SetPosition(leftMostX + i * blockWidth + 0.5*blockWidth, m_roadY);
+	}
+
+
 }
 
 
@@ -96,55 +109,114 @@ void Road::InitShock()
 
 void Road::m_shock()
 {
-		if (isShock)
+
+
+	if (isShock)
+	{
+
+		m_randomFactor1 = Randomizer::GetFloat(2, 50);
+		m_randomFactor2 = Randomizer::GetFloat(2, 50);
+		m_randomFactor3 = Randomizer::GetFloat(2, 50);
+
+		if (m_shockMinSpeed < m_shockSpeed)
 		{
 
-			if (m_shockMinSpeed < m_shockSpeed)
-			{
-		
-				m_shockSpeed = m_shockStartSpeed - m_shockFriction * abs(m_shock_x);
-			}
+			m_shockSpeed = m_shockStartSpeed - m_shockFriction * abs(m_shock_x);
+		}
 
+		else
+		{
+			m_shockSpeed = m_shockMinSpeed;
+		}
+
+		m_shock_x += m_shockDir * m_shockSpeed * m_dt;
+		m_shockLenghtMatcher = 130000 / m_shock_x;
+		m_shockHeightMatcher = std::abs(m_shock_x) / 8;
+
+
+		for (int i = 0; i < m_blocks.size(); i++)
+		{
+
+			m_modulator = m_heightMod * (sin((m_blocks[i]->GetPosition().x - m_shock_x) / (m_intensityScaler)) + sin((m_blocks[i]->GetPosition().x - m_shock_x) / (m_intensityScaler + m_randomFactor2)) + sin((m_blocks[i]->GetPosition().x - m_shock_x) / (m_intensityScaler + 3 * m_randomFactor3)));
+
+			if (m_shockLenght < std::abs(m_shock_x - m_blocks[i]->GetPosition().x))
+			{
+
+				m_modulator = m_heightMod * (sin((m_blocks[i]->GetPosition().x - m_shock_x) / (m_intensityScaler)) + sin((m_blocks[i]->GetPosition().x - m_shock_x) / (m_intensityScaler + m_randomFactor1)) + sin((m_blocks[i]->GetPosition().x - m_shock_x) / (m_intensityScaler + m_randomFactor3)));
+				m_blocks[i]->SetPosition(m_blocks[i]->GetPosition().x, m_roadY + m_modulator);
+
+
+			}
 			else
 			{
-				m_shockSpeed = m_shockMinSpeed;
-			}
+				m_modulator = 1.5 * m_heightMod * (sin((m_blocks[i]->GetPosition().x) / (m_intensityScaler)) + sin((m_blocks[i]->GetPosition().x) / (m_intensityScaler + m_randomFactor1)) + sin((m_blocks[i]->GetPosition().x) / (m_intensityScaler + m_randomFactor3)));
+				m_blocks[i]->SetPosition(
 
-			m_shock_x += m_shockDir * m_shockSpeed * m_dt;
-			m_shockLenghtMatcher = 130000 / m_shock_x;
-			m_shockHeightMatcher = std::abs(m_shock_x) / 8;
-
-
-			for (int i = 0; i < m_blocks.size(); i++)
-			{
-				if (m_shockLenght < std::abs(m_shock_x - m_blocks[i]->GetPosition().x))
-				{
-					m_blocks[i]->SetPosition(m_blocks[i]->GetPosition().x, m_roadY);
-				}
-				else
-				{
-
-					m_blocks[i]->SetPosition(
-
-						m_blocks[i]->GetPosition().x,
-						m_roadY +
-						std::pow(m_shock_x - m_blocks[i]->GetPosition().x, 2) / abs(m_shockLenghtMatcher) -
-						m_shockHeightMatcher
-						);
-				}
+					m_blocks[i]->GetPosition().x,
+					m_roadY +
+					std::pow(m_shock_x - m_blocks[i]->GetPosition().x, 2) / abs(m_shockLenghtMatcher) -
+					m_shockHeightMatcher + m_modulator
+					);
 			}
 		}
 
-		hitBox->GetComponent<Rigidbody>("Rigidbody")->SetPosition(pmath::Vec2(m_shock_x, m_roadY + 50));
+	}
 
-		if (abs(m_shock_x) >= m_shockRange)
+	hitBox->GetComponent<Rigidbody>("Rigidbody")->SetPosition(pmath::Vec2(m_shock_x, m_roadY + 50));
+
+	if (abs(m_shock_x) >= m_shockRange)
+	{
+		// stop shockwave
+		isShock = false;
+		m_shockSpeed = m_shockStartSpeed;
+		m_shock_x = m_shockStartX;
+		m_player->m_allowShock = true;
+
+		// smoothing the edge of m_blocks[0].y and m_blocks[max].y
+		// REMEMBER!!! if you change the size of the m_blocks you'll have to change also the followong values
+		float temp0 = m_blocks[0]->GetPosition().y;
+		float temp1 = m_blocks[281]->GetPosition().y;
+
+		float average = (m_blocks[281]->GetPosition().y + m_blocks[2]->GetPosition().y + temp0) / 3;
+		m_blocks[0]->SetPosition(m_blocks[0]->GetPosition().x, average);
+		average = (m_blocks[279]->GetPosition().y + m_blocks[1]->GetPosition().y + temp1) / 3;
+		m_blocks[281]->SetPosition(m_blocks[281]->GetPosition().x, average);
+
+	}
+
+	if (m_player->isGoingRight == true && isShock == false)
+	{
+		if (m_delay < m_delayCounter)
 		{
-			// stop shockwave
-			isShock = false;
-			m_shockSpeed = m_shockStartSpeed;
-			m_shock_x = m_shockStartX;
-			m_player->m_allowShock = true;
+			float temp = m_blocks[0]->GetPosition().y;
+
+			for (int i = 1 /* 0 */; i < m_blocks.size(); i++) // use 0 if you dont want non-broken asphalt when walking forward else 1
+			{
+				m_blocks[i]->SetPosition(m_blocks[i]->GetPosition().x, m_blocks[(i + 1) % m_blocks.size()]->GetPosition().y);
+				m_blocks[281]->SetPosition(m_blocks[i]->GetPosition().x, temp);
+			}
+
+			m_delayCounter = 0;
+
 		}
 	}
+	if (m_player->isGoingRight == false && isShock == false)
+	{
+		if (m_delay < m_delayCounter)
+		{
+			float temp = m_blocks[281]->GetPosition().y;
+
+			for (int j = 281; j > 1 /* 0 */ ; j--) // use 0 if you dont want non-broken asphalt when walking forward else 1
+			{
+				m_blocks[j]->SetPosition(m_blocks[j]->GetPosition().x, m_blocks[(j - 1)]->GetPosition().y);
+			}
+			m_blocks[0]->SetPosition(m_blocks[281]->GetPosition().x, temp);
+			m_delayCounter = 0;
+
+		}
+	}
+
+	m_delayCounter += m_dt;
+}
 
 

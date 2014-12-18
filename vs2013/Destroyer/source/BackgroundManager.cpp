@@ -70,12 +70,12 @@ bool BackgroundManager::Init(uth::Layer& bg, uth::Layer& fg)
 	groundTex->SetSmooth(true);
 	auto ground = new Sprite(groundTex);
 	GameObject* go = new GameObject();
-	go->transform.SetPosition(-740, uthEngine.GetWindow().GetCamera().GetSize().y - 40);
+	go->transform.SetPosition(-740, uthEngine.GetWindow().GetCamera().GetSize().y);
 	go->AddComponent(ground);
 	backG->AddChild(go);
 	auto ground2 = new Sprite(groundTex);
 	GameObject* go2 = new GameObject();
-	go2->transform.SetPosition(740, uthEngine.GetWindow().GetCamera().GetSize().y - 40);
+	go2->transform.SetPosition(740, uthEngine.GetWindow().GetCamera().GetSize().y);
 	go2->AddComponent(ground2);
 	backG->AddChild(go2);
 
@@ -152,7 +152,7 @@ void BackgroundManager::Shake(float amount, float delay)
 			auto bg = static_cast<GameObject*>(e.get());
 			bg->GetComponent<Background>()->Shake(amount);
 		}
-		m_camShakeAmount = amount*0.4f;
+		m_camShakeAmount = amount*0.2f;
 	}
 }
 BackgroundManager::~BackgroundManager()
