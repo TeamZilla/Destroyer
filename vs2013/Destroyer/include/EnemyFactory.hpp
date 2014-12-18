@@ -14,6 +14,7 @@ class EnemyFactory
 	static uth::Sound*			m_humanSound1;
 	static uth::Sound*			m_humanSound2;
 	static uth::Sound*			m_humanSound3;
+	static uth::Sound*			m_bossSound;
 
 	static pmath::Vec2 SpawnPosition();
 
@@ -46,6 +47,7 @@ public:
 		m_humanSound1 = uthRS.LoadSound("Audio/Effects/auts1.wav");
 		m_humanSound2 = uthRS.LoadSound("Audio/Effects/auts2.wav");
 		m_humanSound3 = uthRS.LoadSound("Audio/Effects/auts3.wav");
+		m_bossSound = uthRS.LoadSound("Audio/Effects/boss_theme.wav");
 		//m_expSound->SetVolume(50);
 	}
 	static void Update(float dt);

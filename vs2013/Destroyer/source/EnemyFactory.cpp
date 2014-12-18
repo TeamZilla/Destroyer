@@ -18,6 +18,7 @@ uth::Sound*			EnemyFactory::m_starSound;
 uth::Sound*			EnemyFactory::m_humanSound1;
 uth::Sound*			EnemyFactory::m_humanSound2;
 uth::Sound*			EnemyFactory::m_humanSound3;
+uth::Sound*			EnemyFactory::m_bossSound;
 
 float EnemyFactory::m_aeroplaneSpawnCooldown = 45;
 float EnemyFactory::m_aeroplaneSpawnTimer = 0;
@@ -195,7 +196,6 @@ void EnemyFactory::CheckEnemies()
 			else if (soundIndex > 70 && soundIndex <= 100)
 				m_humanSound3->PlayEffect();
 
-			m_expSound->PlayEffect();
 			m_layer->RemoveChild(&obj);
 			Statistics.score.soldKills++;
 			Statistics.score.current += 1;
@@ -408,7 +408,7 @@ void EnemyFactory::Update(float dt)
 
 			if (obj.isDestroyed)
 			{
-				m_starSound->PlayEffect(); // need boss sound
+				m_bossSound->PlayEffect(); // need boss sound
 				m_layer->RemoveChild(&obj);
 				Statistics.score.current += 250;
 			}

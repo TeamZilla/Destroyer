@@ -27,6 +27,7 @@ Player::Player(uth::PhysicsWorld* physworld)
 
 	//Create, set position and scale player Sprite
 	auto playerTexture = uthRS.LoadTexture("modzilla/moz_animation.png");
+	m_tailSound = uthRS.LoadSound("Audio/Effects/tail_whip.wav");
 	playerTexture->SetSmooth(true);
 	AddTag("Player");
 	AddComponent(new AnimatedSprite(playerTexture,24,8,3));
@@ -111,18 +112,19 @@ void Player::ChangeDirection()
 		m_isSwiping = true;
 		m_tailTimer = 0.33f;
 		SetAnimation(m_tailAnim);
+		m_tailSound->PlayEffect();
 		//Give speed to tail box
 		m_tailSpeed = 1;
 		if (isGoingRight)
 			m_tailSpeed *= 1;
 		else
 			m_tailSpeed *= -1;
+
 	}
 }
 void Player::Turning()
 {
 	m_tailTimer -= m_dt;
-
 	if (m_tailTimer < 0)
 	{
 		//Flip player sprite to create illusion that player turns

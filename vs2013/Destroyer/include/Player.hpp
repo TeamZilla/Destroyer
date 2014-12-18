@@ -26,6 +26,7 @@ class Player : public uth::GameObject
 	uth::Rigidbody* m_rigidbody;
 	uth::GameObject* m_tailBox;
 	uth::GameObject* m_headBox;
+	uth::Sound* m_tailSound;
 	Health* m_health;
 	void Acceleration();
 	void Jumping();
