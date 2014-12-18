@@ -7,31 +7,45 @@ class SoldierBehavior : public uth::Component
 {
 	float				m_speed;
 	bool				m_isGoingLeft;
-	bool				m_isStopped = false;
-	bool				m_isDead = false;
-	bool				m_isGoingToExp = false;
-	bool				m_isGoingToFlat = false;
-	bool				m_tailWhipped = false;
-	float				m_attackTime = 1;
-	float				m_attackCounter = 0;
+	bool				m_isStopped;
+	bool				m_isDead;
+	bool				m_isGoingToExp;
+	bool				m_isGoingToFlat;
+	bool				m_tailWhipped;
+	float				m_attackTime;
+	float				m_attackCounter;
+	float				m_playerSpeed;
 
 	Player*	m_player;
 	uth::Rigidbody*		m_rigidBody;
 	uth::Sound*			m_slashSound;
 	pmath::Vec2			m_direction;
-	pmath::Vec2			m_maxDistance;
-	pmath::Vec2			m_minDistance;
+	//pmath::Vec2			m_maxDistance;
+	//pmath::Vec2			m_minDistance;
+	float m_minDistance = 120;
 	pmath::Vec2			m_target;
 	pmath::Vec4			m_walkAnim;
 	pmath::Vec4			m_attackAnim;
 	pmath::Vec4			m_curAnim;
-
+	float m_hitRange;
 public:
 
 	SoldierBehavior(float speed, Player* player) :
 		m_speed(speed),
 		m_player(player)
 	{
+		m_speed = 3 + uth::Randomizer::GetFloat(0, 2);
+		m_isGoingLeft;
+		m_isStopped = false;
+		m_isDead = false;
+		m_isGoingToExp = false;
+		m_isGoingToFlat = false;
+		m_tailWhipped = false;
+		m_attackTime = 1;
+		m_attackCounter = 0;
+		m_playerSpeed = 2;
+		m_hitRange = uth::Randomizer::GetFloat(0, 100);
+
 		m_slashSound = uthRS.LoadSound("Audio/Effects/Sword.wav");
 	}
 	~SoldierBehavior()
@@ -45,13 +59,24 @@ public:
 		m_rigidBody->SetPhysicsCategory(uth::Physics::Category2);
 		m_rigidBody->SetFriction(0);
 
-		m_maxDistance = pmath::Vec2(m_player->transform.GetPosition().x + 
-									uth::Randomizer::GetFloat(100,180));
+		//m_maxDistance = pmath::Vec2(m_player->transform.GetPosition().x + 
+		//							uth::Randomizer::GetFloat(100,180));
 
-		setTarget(m_player->transform.GetPosition());
-		m_target = m_maxDistance;
+		//setTarget(m_player->transform.GetPosition());
+		//m_target = m_maxDistance;
 		m_attackAnim = pmath::Vec4(0, 6, 0, 12);
 		m_walkAnim = pmath::Vec4(6, 6, 6, 12);
+
+		if (m_rigidBody->GetPosition().x < 0)
+		{
+			m_isGoingLeft = false;
+			auto& transf = parent->transform;
+			transf.SetScale(-transf.GetScale().x, transf.GetScale().y);
+		}
+		else
+		{
+			m_isGoingLeft = true;
+		}
 
 		parent->GetComponent<uth::AnimatedSprite>()->ChangeAnimation(m_walkAnim.x,
 															    m_walkAnim.y,
@@ -89,45 +114,66 @@ public:
 	void Movement()
 	{
 
-
-		if (m_isGoingLeft && !m_isDead /*&& m_rigidBody->GetPosition().y > 630*/)
+		if (m_isGoingLeft && !m_isDead && m_rigidBody->GetPosition().y > 630 && m_minDistance + m_hitRange < abs(m_rigidBody->GetPosition().x))
 		{
-			m_rigidBody->ApplyForce(pmath::Vec2(m_direction.x * m_speed, -10));
-			if (m_rigidBody->GetPosition().x <= m_maxDistance.x)
-			{
-				m_rigidBody->SetVelocity(pmath::Vec2f(0, m_rigidBody->GetVelocity().y));
-				m_rigidBody->SetAngle(0);
-				m_isStopped = true;
-			}
-			else
-			{
-				m_isStopped = false;
-			}
-			if (m_rigidBody->GetPosition().x <= 0)
-				Destroy();
+			m_isStopped = false;
+			m_rigidBody->SetPosition(pmath::Vec2(m_rigidBody->GetPosition().x - m_speed - ((m_player->isGoingRight)*2 - 1) * m_playerSpeed, m_rigidBody->GetPosition().y));
+			std::cout << m_rigidBody->GetPosition().x << std::endl;
+			m_rigidBody->SetAngle(0);
+		}
+		else if (!m_isGoingLeft && !m_isDead && m_rigidBody->GetPosition().y > 630 && m_minDistance + m_hitRange < abs(m_rigidBody->GetPosition().x))
+		{
+			m_isStopped = false;
+			m_rigidBody->SetAngle(0);
+			m_rigidBody->SetPosition(pmath::Vec2(m_rigidBody->GetPosition().x + m_speed - ((m_player->isGoingRight) * 2 - 1) * m_playerSpeed, m_rigidBody->GetPosition().y));
 		}
 
-		if (!m_isGoingLeft && !m_isDead /*&& m_rigidBody->GetPosition().y > 630*/)
+		else
 		{
-			m_rigidBody->ApplyForce(pmath::Vec2(m_direction.x * m_speed, -10));
-			if (m_rigidBody->GetPosition().x >= m_maxDistance.x)
-			{
-				
-				m_rigidBody->SetVelocity(pmath::Vec2f(0, m_rigidBody->GetVelocity().y));
-				m_rigidBody->SetAngle(0);
-				m_isStopped = true;
-
-			}
-			else
-			{
-				m_isStopped = false;
-			}
-			if (m_rigidBody->GetPosition().x >= 0)
-				Destroy();
+			m_isStopped = true;
+			m_rigidBody->SetAngle(0);
 		}
 
-		m_rigidBody->SetAngle(0);
 	}
+
+	//	if (m_isGoingLeft && !m_isDead /*&& m_rigidBody->GetPosition().y > 630*/)
+	//	{
+	//		m_rigidBody->ApplyForce(pmath::Vec2(m_direction.x * m_speed, -10));
+	//		if (m_rigidBody->GetPosition().x <= m_maxDistance.x)
+	//		{
+	//			m_rigidBody->SetVelocity(pmath::Vec2f(0, m_rigidBody->GetVelocity().y));
+	//			m_rigidBody->SetAngle(0);
+	//			m_isStopped = true;
+	//		}
+	//		else
+	//		{
+	//			m_isStopped = false;
+	//		}
+	//		if (m_rigidBody->GetPosition().x <= 0)
+	//			Destroy();
+	//	}
+
+	//	if (!m_isGoingLeft && !m_isDead /*&& m_rigidBody->GetPosition().y > 630*/)
+	//	{
+	//		m_rigidBody->ApplyForce(pmath::Vec2(m_direction.x * m_speed, -10));
+	//		if (m_rigidBody->GetPosition().x >= m_maxDistance.x)
+	//		{
+	//			
+	//			m_rigidBody->SetVelocity(pmath::Vec2f(0, m_rigidBody->GetVelocity().y));
+	//			m_rigidBody->SetAngle(0);
+	//			m_isStopped = true;
+
+	//		}
+	//		else
+	//		{
+	//			m_isStopped = false;
+	//		}
+	//		if (m_rigidBody->GetPosition().x >= 0)
+	//			Destroy();
+	//	}
+
+	//	m_rigidBody->SetAngle(0);
+	//}
 	
 	void Hit()
 	{
@@ -151,17 +197,17 @@ public:
 		m_isDead = true;
 	}
 
-	void setTarget(pmath::Vec2 to)
-	{
-		const auto& from = parent->transform.GetPosition();
-		const auto& sc = parent->transform.GetScale();
+	//void setTarget(pmath::Vec2 to)
+	//{
+	//	const auto& from = parent->transform.GetPosition();
+	//	const auto& sc = parent->transform.GetScale();
 
-		m_direction = (to - from).normalize();
-		m_direction.x < 0 ? m_isGoingLeft = true : m_isGoingLeft = false;
-		m_isGoingLeft ? parent->transform.SetScale(sc.x, sc.y) : parent->transform.SetScale(-sc.x, sc.y);
-		m_isGoingLeft ? m_maxDistance = m_maxDistance : m_maxDistance = -m_maxDistance;
+	//	m_direction = (to - from).normalize();
+	//	m_direction.x < 0 ? m_isGoingLeft = true : m_isGoingLeft = false;
+	//	m_isGoingLeft ? parent->transform.SetScale(sc.x, sc.y) : parent->transform.SetScale(-sc.x, sc.y);
+	//	m_isGoingLeft ? m_maxDistance = m_maxDistance : m_maxDistance = -m_maxDistance;
 
-	}
+	//}
 
 	void Shoot()
 	{

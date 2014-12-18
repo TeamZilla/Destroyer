@@ -6,6 +6,7 @@
 #include <Heli.hpp>
 #include <GameStats.hpp>
 #include <Pickup.hpp>
+#include <Firebreath.hpp>
 
 using namespace uth;
 
@@ -284,7 +285,6 @@ void EnemyFactory::Update(float dt)
 
 	if (m_timeCounter < 150000000)
 	{
-
 		EnemyFactory::m_aeroplaneSpawnCooldown = 1;
 		EnemyFactory::m_tankSpawnCooldown = 0;
 		EnemyFactory::m_soldierSpawnCooldown = 1.5;
