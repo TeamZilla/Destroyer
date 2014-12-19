@@ -117,6 +117,14 @@ void Road::m_shock()
 		m_randomFactor2 = Randomizer::GetFloat(2, 50);
 		m_randomFactor3 = Randomizer::GetFloat(2, 50);
 		m_randomFactor4 = Randomizer::GetFloat(2, 50);
+
+		m_intensityScaler2[0] = Randomizer::GetFloat(40, 50);
+		m_intensityScaler2[1] = Randomizer::GetFloat(10, 20);
+		m_intensityScaler2[2] = Randomizer::GetFloat(25, 40);
+		m_intensityScaler2[3] = Randomizer::GetFloat(40, 65);
+
+
+
 		if (m_shockMinSpeed < m_shockSpeed)
 		{
 
@@ -136,24 +144,40 @@ void Road::m_shock()
 		for (int i = 0; i < m_blocks.size(); i++)
 		{
 
-			m_modulator = m_heightMod * (sin((m_blocks[i]->GetPosition().x - m_shock_x) / (m_intensityScaler)) + sin((m_blocks[i]->GetPosition().x - m_shock_x) / (m_intensityScaler + m_randomFactor2)) + sin((m_blocks[i]->GetPosition().x - m_shock_x) / (m_intensityScaler + 3 * m_randomFactor3)) + sin((m_blocks[i]->GetPosition().x - m_shock_x) / (m_intensityScaler + m_randomFactor4)));
+			m_modulator = 0;
+			for (int j = 0; j < 4; j++)
+			{
+				m_modulator += sin((m_blocks[i]->GetPosition().x) / m_intensityScaler2[j]);
+			}
 
 			if (m_shockLenght < std::abs(m_shock_x - m_blocks[i]->GetPosition().x))
 			{
-
-				m_modulator = m_heightMod * (sin((m_blocks[i]->GetPosition().x - m_shock_x) / (m_intensityScaler)) + sin((m_blocks[i]->GetPosition().x - m_shock_x) / (m_intensityScaler + m_randomFactor1)) + sin((m_blocks[i]->GetPosition().x - m_shock_x) / (m_intensityScaler + m_randomFactor3)));
-				m_blocks[i]->SetPosition(m_blocks[i]->GetPosition().x, m_roadY + m_modulator);
-
+				for (int j = 0; j < 4; j++)
+				{
+					m_modulator += sin((m_blocks[i]->GetPosition().x) / m_intensityScaler2[j]);
+					if (j == 1)
+					{
+						m_modulator *= m_heightMod;
+					}
+				}
+			m_blocks[i]->SetPosition(m_blocks[i]->GetPosition().x, m_roadY + m_modulator);
 			}
 			else
 			{
-				m_modulator = 1.5 * m_heightMod * (sin((m_blocks[i]->GetPosition().x) / (m_intensityScaler)) + sin((m_blocks[i]->GetPosition().x) / (m_intensityScaler + m_randomFactor1)) + sin((m_blocks[i]->GetPosition().x) / (m_intensityScaler + m_randomFactor3)));
+				for (int j = 0; j < 4; j++)
+				{
+					m_modulator += sin((m_blocks[i]->GetPosition().x) / m_intensityScaler2[j]);
+					if (j == 1)
+					{
+						m_modulator *= m_heightMod;
+					}
+				}
+				m_modulator *= m_heightMod;
 				m_blocks[i]->SetPosition(
-
 					m_blocks[i]->GetPosition().x,
 					m_roadY +
 					std::pow(m_shock_x - m_blocks[i]->GetPosition().x, 2) / abs(m_shockLenghtMatcher) -
-					m_shockHeightMatcher + m_modulator
+					m_shockHeightMatcher + 0.5 * m_modulator
 					);
 			}
 		}

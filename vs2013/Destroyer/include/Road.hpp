@@ -36,8 +36,11 @@ class Road : public uth::GameObject
 		m_intensityScaler,
 		m_modulator,
 		m_delay,
-		m_delayCounter;
+		m_delayCounter,
+		m_modulator2;
+	
 		int m_afterShakeTime;
+		float m_intensityScaler2[4];
 		
 	Player *m_player;
 	int m_shockDir;
