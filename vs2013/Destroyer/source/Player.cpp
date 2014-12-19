@@ -24,7 +24,10 @@ m_isDied(false),
 m_isSwiping(false)
 {
 	
-
+	if (m_isSwiping)
+		m_isSwiping = false;
+	if (!isGoingRight)
+		isGoingRight = true;
 	//Create, set position and scale player Sprite
 	auto playerTexture = uthRS.LoadTexture("modzilla/moz_animation.png");
 	m_tailSound = uthRS.LoadSound("Audio/Effects/tail_whip.ogg");
@@ -70,6 +73,9 @@ void Player::init(uth::PhysicsWorld* physworld, Health* hp)
 	m_tailBox->AddTag("TailCollider");
 	Parent()->AddChild(m_tailBox);
 	m_allowShock = true;
+
+
+	transform.SetScale(1.5f);
 
 }
 void Player::update(float dt)

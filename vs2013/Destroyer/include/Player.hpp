@@ -15,7 +15,8 @@ class Player : public uth::GameObject
 		m_dt;
 	float m_maxSpeed, m_minSpeed, m_acceleration;
 	float m_tailSpeed;
-	bool m_isHurting, m_isSwiping;
+	bool m_isHurting;
+	bool m_isSwiping;
 
 	pmath::Vec2 m_tempPos;
 	pmath::Vec4 m_walkAnim;
