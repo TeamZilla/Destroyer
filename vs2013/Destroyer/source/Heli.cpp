@@ -40,7 +40,7 @@ Heli::Heli(pmath::Vec2f givenPos, Player* player)
 
 
 
-	//m_heliSound = uthRS.LoadSound("Audio/Effects/helicopter.wav");
+	//m_heliSound = uthRS.LoadSound("Audio/Effects/helicopter.ogg");
 	//m_heliSound->Play();
 	//m_heliSound->SetVolume(70);
 	//m_heliSound->Loop(true);

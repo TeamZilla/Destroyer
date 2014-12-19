@@ -63,12 +63,14 @@ bool BackgroundManager::Init(uth::Layer& bg, uth::Layer& fg)
 	//sushi bars
 	backG->AddChild(temp = new GameObject(std::vector<std::string>{ "bg", "building5" }));
 	temp->AddComponent(new Background(c_backSpeedM * 1.2f,
-		uthEngine.GetWindow().GetCamera().GetSize().y - 300, 2, true,
+		uthEngine.GetWindow().GetCamera().GetSize().y - 320, 2, true,
 		"backgrounds/sushi_carts.png"));
+	temp->transform.SetSize(temp->transform.GetSize().x + 10, temp->transform.GetSize().y + 10);
 	backG->AddChild(temp = new GameObject(std::vector<std::string>{ "bg", "building6" }));
 	temp->AddComponent(new Background(c_backSpeedM * 1.2f,
-		uthEngine.GetWindow().GetCamera().GetSize().y - 300, 2, false,
+		uthEngine.GetWindow().GetCamera().GetSize().y - 320, 2, false,
 		"backgrounds/sushi_carts.png"));
+	temp->transform.SetSize(temp->transform.GetSize().x + 10, temp->transform.GetSize().y + 10);
 
 	auto groundTex = uthRS.LoadTexture("backgrounds/gravel_texture.png");
 	groundTex->SetSmooth(true);

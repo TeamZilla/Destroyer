@@ -26,8 +26,8 @@ bool GameScene::Init()
 {
 	m_shakeDelayTimer = 0;
 	//Put score to 0 at start of the game
+	Statistics.Load();
 	Statistics.score.current = 0;
-
 	Randomizer::SetSeed();
 	uthEngine.GetWindow().GetCamera().SetSize(1280, 720);
 	auto& camera = uthEngine.GetWindow().GetCamera();
@@ -51,9 +51,9 @@ bool GameScene::Init()
 	m_bgManager.SetCameraStartPos(pmath::Vec2f(0, camera.GetSize().y / 2));
 	
 
-	m_gameOverMusic  = uthRS.LoadSound("Audio/Music/game_over.wav");
-	m_afterMathMusic = uthRS.LoadSound("Audio/Music/aftermath_theme.wav");
-	m_music = uthRS.LoadSound("Audio/Music/city_theme3.wav");
+	m_gameOverMusic  = uthRS.LoadSound("Audio/Music/game_over.ogg");
+	m_afterMathMusic = uthRS.LoadSound("Audio/Music/aftermath_theme.ogg");
+	m_music = uthRS.LoadSound("Audio/Music/city_theme3.ogg");
 	m_music->Play();
 	m_music->SetPitch(100);
 	m_music->Loop(true);
@@ -90,6 +90,8 @@ bool GameScene::Init()
 	ExitText->SetSmooth(true);
 	auto ResumeText = uthRS.LoadTexture("UI/Resume.png");
 	ResumeText->SetSmooth(true);
+	auto TutorialTex = uthRS.LoadTexture("UI/tutorial.png");
+	TutorialTex->SetSmooth(true);
 
 	//scoreboard
 	getLayer(LayerId::Userinterface).AddChild(m_ScoreBoard = new GameObject());
@@ -108,7 +110,7 @@ bool GameScene::Init()
 	//UI
 
 	getLayer(LayerId::Userinterface).AddChild(m_blackOverlay = new GameObject());
-	m_blackOverlay->AddComponent(new Sprite(pmath::Vec4(1, 0, 1, 1), pmath::Vec2(3500, 3500)));
+	m_blackOverlay->AddComponent(new Sprite(pmath::Vec4(0.05f, 0, 0.1f, 0.80f), pmath::Vec2(3500, 3500)));
 	m_blackOverlay->transform.SetPosition(camera.GetPosition().x / 2,
 		camera.GetPosition().y / 2 - camera.GetSize().y / 2);
 
@@ -171,6 +173,18 @@ bool GameScene::Init()
 	m_goScoreObj->SetActive(false);
 	m_goHiScoreObj->SetActive(false);
 
+	//tutorial stuff here
+
+	getLayer(LayerId::Userinterface).AddChild(m_tutorial = new GameObject());
+	m_tutorial->AddComponent(new Sprite(TutorialTex));
+	m_tutorial->transform.SetOrigin(uth::Origin::TopLeft);
+	m_tutorial->transform.SetScale(m_tutorial->transform.GetScale().x * 1.9f, m_tutorial->transform.GetScale().y * 2.0f );
+	m_tutorial->transform.SetPosition(camera.GetPosition().x - camera.GetSize().x / 2, camera.GetPosition().y - camera.GetSize().y / 2 - 55);
+	if (Statistics.score.playTutorial)
+		m_tutorial->SetActive(true);
+	else
+		m_tutorial->SetActive(false);
+
 	return true;
 }
 
@@ -184,49 +198,77 @@ void GameScene::Update(float dt)
 	if (dt > 0.1)
 		dt = 0.1;
 
-	if (!isPaused && !isPlayerDead) // Game 
+	if (!m_tutorial->IsActive())
 	{
-		if (m_blackOverlay->GetComponent<Sprite>()->GetColor().a > 0)
+		if (!isPaused && !isPlayerDead) // Game 
 		{
-			m_blackOverlay->transform.SetPosition(camera.GetPosition().x,
-				camera.GetPosition().y);
-			m_blackOverlay->GetComponent<Sprite>()->SetColor(pmath::Vec4(0.01f, 0, 0.02f, m_blackOverlay->GetComponent<Sprite>()->GetColor().a - 0.5f*dt));
-		}
-		else
-		{
-			m_blackOverlay->SetActive(false);
-		}
+			if (m_blackOverlay->GetComponent<Sprite>()->GetColor().a > 0)
+			{
+				m_blackOverlay->transform.SetPosition(camera.GetPosition().x,
+					camera.GetPosition().y);
+				m_blackOverlay->GetComponent<Sprite>()->SetColor(pmath::Vec4(0.01f, 0, 0.02f, m_blackOverlay->GetComponent<Sprite>()->GetColor().a - 0.5f*dt));
+			}
+			else
+			{
+				m_blackOverlay->SetActive(false);
+			}
 
-		if (Statistics.player.hp <= 0)
-		{
-			dt /= 3;
-		}
+			if (Statistics.player.hp <= 0)
+			{
+				dt /= 3;
+			}
 
-		Game(dt);
+			Game(dt);
+		}
+		else if (isPaused && !isPlayerDead) // If Paused
+		{
+			if (dt > 0.1)
+				dt = 0.1;
+
+			Pause(dt);
+		}
+		else if (!isPaused && isPlayerDead) // Game over functions here
+		{
+
+			if (dt > 0.1)
+				dt = 0.1;
+
+			m_blackOverlay->SetActive(true);
+
+			if (m_blackOverlay->GetComponent<Sprite>()->GetColor().a < 0.80f)
+			{
+				m_blackOverlay->transform.SetPosition(camera.GetPosition().x,
+					camera.GetPosition().y);
+				m_blackOverlay->GetComponent<Sprite>()->SetColor(pmath::Vec4(0.06f, 0, 0.12f, m_blackOverlay->GetComponent<Sprite>()->GetColor().a + 0.5f*dt));
+			}
+
+			GameOver(dt);
+		}
 	}
-	else if (isPaused && !isPlayerDead) // If Paused
+
+	else
 	{
-		if (dt > 0.1)
-			dt = 0.1;
+		auto touchpos = uthEngine.GetWindow().PixelToCoords(uthInput.Common.Position());
 
-		Pause(dt);
-	}
-	else if (!isPaused && isPlayerDead) // Game over functions here
-	{
-
-		if (dt > 0.1)
-			dt = 0.1;
-
-		m_blackOverlay->SetActive(true);
-
-		if (m_blackOverlay->GetComponent<Sprite>()->GetColor().a < 0.80f)
+		if (uthInput.Common.Event() == uth::InputEvent::TAP)
 		{
-			m_blackOverlay->transform.SetPosition(camera.GetPosition().x,
-				camera.GetPosition().y);
-			m_blackOverlay->GetComponent<Sprite>()->SetColor(pmath::Vec4(0.06f, 0, 0.12f, m_blackOverlay->GetComponent<Sprite>()->GetColor().a + 0.5f*dt));
+			if (uthEngine.GetWindow().GetCamera().GetPosition().x < touchpos.x)
+			{
+				if (uthEngine.GetWindow().GetCamera().GetPosition().x < m_tutorial->transform.GetPosition().x + m_tutorial->transform.GetSize().x)
+					m_tutorial->transform.Move((-m_tutorial->transform.GetSize().x * m_tutorial->transform.GetScale().x) / 3, 0);
+				else
+				{
+					m_tutorial->SetActive(false);
+					Statistics.score.playTutorial = false;
+				}
+			}
+			else
+			{
+				if (uthEngine.GetWindow().GetCamera().GetPosition().x > m_tutorial->transform.GetPosition().x + m_tutorial->transform.GetSize().x / 3)
+					m_tutorial->transform.Move((m_tutorial->transform.GetSize().x * m_tutorial->transform.GetScale().x) / 3, 0);
+			}
 		}
 
-		GameOver(dt);
 	}
 
 } //Update end
@@ -367,11 +409,13 @@ void GameScene::Pause(float dt)
 	}
 	if (m_restartB->IsPressedS())
 	{
+		Statistics.Save();
 		uthSceneM.GoToScene(GAME);
 		m_music->Stop();
 	}
 	if (m_menuB->IsPressedS())
 	{
+		Statistics.Save();
 		uthSceneM.GoToScene(TITLE);
 		m_music->Stop();
 	}
@@ -737,6 +781,11 @@ GameScene::GameScene()
 //Default deconstrutor.
 GameScene::~GameScene()
 {
+	delete m_pauseB;
+	delete m_menuB;
+	delete m_restartB;
+	delete m_ExitB;
+	delete m_resumeB;
 	ExplosionEmitter::DeInit();
 }
 

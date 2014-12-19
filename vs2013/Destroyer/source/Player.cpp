@@ -5,30 +5,33 @@ using namespace uth;
 
 bool Player::isGoingRight = true;
 
-Player::Player(uth::PhysicsWorld* physworld)
+Player::Player(uth::PhysicsWorld* physworld) :
+m_speed(0),
+m_maxSpeed(400),
+m_minSpeed(-400),
+m_acceleration(750),
+m_jumpSpeed(0),
+m_jumpHeight(8),
+m_jumpTimer(0),
+m_tailTimer(0),
+m_tailSpeed(0),
+m_isJumping(false),
+m_isCrouching(false),
+m_isTurning(false),
+m_isHurting(false),
+m_isDoneDying(false),
+m_isDied(false),
+m_isSwiping(false)
 {
-	m_speed = 0;
-	m_maxSpeed = 400;
-	m_minSpeed = -400;
-	m_acceleration = 750;
-	m_jumpSpeed = 0;
-	m_jumpHeight = 8;
-	m_jumpTimer = 0;
-	m_tailTimer = 0;
-	m_tailSpeed = 0;
-	isGoingRight = true;
-	m_isJumping = false;
-	m_isCrouching = false;
-	m_isTurning = false;
-	m_isHurting = false;
-	m_isDoneDying = false;
-	m_isDied = false;
 	
-
+	if (m_isSwiping)
+		m_isSwiping = false;
+	if (!isGoingRight)
+		isGoingRight = true;
 	//Create, set position and scale player Sprite
 	auto playerTexture = uthRS.LoadTexture("modzilla/moz_animation.png");
-	m_tailSound = uthRS.LoadSound("Audio/Effects/tail_whip.wav");
-	m_jumpSound = uthRS.LoadSound("Audio/Effects/Jump_Normal.wav");
+	m_tailSound = uthRS.LoadSound("Audio/Effects/tail_whip.ogg");
+	m_jumpSound = uthRS.LoadSound("Audio/Effects/Jump_Normal.ogg");
 
 	playerTexture->SetSmooth(true);
 	AddTag("Player");
@@ -71,13 +74,12 @@ void Player::init(uth::PhysicsWorld* physworld, Health* hp)
 	Parent()->AddChild(m_tailBox);
 	m_allowShock = true;
 
+
+	transform.SetScale(1.5f);
+
 }
 void Player::update(float dt)
 {
-	//// temporary code begins////
-	//WriteLog("%f", Statistics.score.current);
-	//// temporary code ends////
-
 	m_dt = dt;
 	Acceleration();
 	if (!m_isDied)
@@ -203,7 +205,6 @@ void Player::Crouching()
 }
 void Player::SwipeTail(float dt)
 {
-	//WriteLog("Speed: %f",m_tailSpeed);
 	if (m_isSwiping)
 	{
 		auto pLength = pmath::Vec2(m_tailBox->transform.GetPosition().x, transform.GetPosition().x).length();
@@ -227,7 +228,6 @@ void Player::SwipeTail(float dt)
 		{
 			m_tailSpeed -= dt;
 		}
-		//m_tailBox->GetComponent<uth::Rigidbody>()->
 		auto pos = pmath::Vec2(m_tailBox->transform.GetPosition().x + m_tailSpeed);
 		m_tailBox->GetComponent<uth::Rigidbody>()->SetPosition(pmath::Vec2(m_tailSpeed * 100, m_tailBox->transform.GetPosition().y));
 	}
@@ -237,8 +237,8 @@ void Player::SwipeTail(float dt)
 void Player::Hurting()
 {
 	m_hurtTimer -= m_dt;
-	if (m_hurtTimer >= 1.2f)
-		m_hurtTimer = 1.1f;
+	if (m_hurtTimer >= 0.67f)
+		m_hurtTimer = 0.65f;
 
 	if (m_hurtTimer >= 0.5f)
 	{
@@ -267,7 +267,7 @@ void Player::Dying()
 void Player::Hit(float dmg)
 {
 	m_health->TakeDamage(dmg);
-	m_hurtTimer = dmg;
+	m_hurtTimer = 1.2f;
 	m_isHurting = true;
 }
 void Player::Acceleration()

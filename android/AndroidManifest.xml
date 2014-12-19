@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    		package="fi.kajakgames.uth"
+    		package="fi.kajakgames.monstroy"
     		android:versionCode="1"
     		android:versionName="1.0"
     		>
@@ -14,13 +14,13 @@
 
   <uses-sdk android:minSdkVersion="15" android:targetSdkVersion="21"/>
 
-  <application android:hasCode="true" android:icon="@drawable/ic_launcher" android:testOnly="false" android:label="Destroyer">
+  <application android:hasCode="true" android:icon="@drawable/ic_launcher" android:testOnly="false" android:label="Monstroy">
   
 	<meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version"/>
 	<meta-data 	android:name="com.google.android.gms.games.APP_ID"
 	    		android:value="@string/app_id" />
 	
-	<activity	android:name="fi.kajakgames.uth.GameActivity"
+	<activity	android:name="fi.kajakgames.monstroy.GameActivity"
 				android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
 				android:launchMode="singleTask"
 				android:screenOrientation="landscape"

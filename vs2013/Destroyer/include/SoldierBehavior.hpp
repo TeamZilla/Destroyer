@@ -22,8 +22,6 @@ class SoldierBehavior : public uth::Component
 	uth::Rigidbody*		m_rigidBody;
 	uth::Sound*			m_slashSound;
 	pmath::Vec2			m_direction;
-	//pmath::Vec2			m_maxDistance;
-	//pmath::Vec2			m_minDistance;
 	float m_minDistance = 120;
 	pmath::Vec2			m_target;
 	pmath::Vec4			m_walkAnim;
@@ -36,7 +34,7 @@ public:
 		m_speed(speed),
 		m_player(player)
 	{
-		m_speed = 3 + uth::Randomizer::GetFloat(0, 2);
+		m_slashSound = uthRS.LoadSound("Audio/Effects/Sword.ogg");
 		m_isGoingLeft;
 		m_isStopped = false;
 		m_isDead = false;
@@ -63,11 +61,6 @@ public:
 		m_rigidBody->SetPhysicsCategory(uth::Physics::Category2);
 		m_rigidBody->SetFriction(0);
 
-		//m_maxDistance = pmath::Vec2(m_player->transform.GetPosition().x + 
-		//							uth::Randomizer::GetFloat(100,180));
-
-		//setTarget(m_player->transform.GetPosition());
-		//m_target = m_maxDistance;
 		m_attackAnim = pmath::Vec4(0, 6, 0, 12);
 		m_walkAnim = pmath::Vec4(6, 6, 6, 12);
 
@@ -139,7 +132,6 @@ public:
 			m_rigidBody->SetAngle(0);
 			m_rigidBody->SetPosition(pmath::Vec2(m_rigidBody->GetPosition().x + m_speed - ((m_player->isGoingRight) * 2 - 1) * m_playerSpeed, m_rigidBody->GetPosition().y));
 		}
-
 		else
 		{
 			m_isStopped = true;

@@ -9,7 +9,7 @@ Button::Button(uth::GameObject* gameObj)
 	m_butAnim = gameObj->GetComponent<AnimatedSprite>();
 	auto lol =  m_butTransform;
 	auto rofl = m_butTransform->GetLocalBounds().position;
-	m_buttonSound = uthRS.LoadSound("Audio/Effects/Button.wav");
+	m_buttonSound = uthRS.LoadSound("Audio/Effects/Button.ogg");
 }
 
 Button::~Button()

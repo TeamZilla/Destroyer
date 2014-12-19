@@ -15,8 +15,8 @@ TitleScene::TitleScene()
 	Statistics.Load();
 
 	uthEngine.GetWindow().GetCamera().SetSize(1280, 720);
-	m_roar = uthRS.LoadSound("Audio/Effects/moz_howl.wav");
-	m_BGM = uthRS.LoadSound("Audio/Music/menu_theme.wav");
+	m_roar = uthRS.LoadSound("Audio/Effects/moz_howl.ogg");
+	m_BGM = uthRS.LoadSound("Audio/Music/menu_theme.ogg");
 	m_BGM->Play();
 	m_BGM->Loop(true);
 
@@ -124,7 +124,13 @@ TitleScene::TitleScene()
 
 }
 TitleScene::~TitleScene()
-{}
+{
+	delete button4;
+	delete button3;
+	delete button2;
+	delete button;
+}
+
 void TitleScene::Update(float dt)
 {
 	
@@ -147,6 +153,9 @@ void TitleScene::Update(float dt)
 			isGameStarting = true;
 			//Remember to close ad before playing game
 			javaFunc::CloseAd("6300978111");
+
+			Statistics.score.playTutorial = true;
+			Statistics.Save();
 		}
 
 		if (button2->IsPressedS() && !isGameStarting)
