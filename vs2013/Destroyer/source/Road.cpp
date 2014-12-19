@@ -32,7 +32,7 @@ Road::Road(const int blocks)
 	m_shockStartSpeed = 1100;
 	m_shockMinSpeed = 150;
 	m_shock_x = 0;
-	m_heightMod = 2.1;
+	m_heightMod = 2.6;
 	m_intensityScaler = 15;
 	m_afterShakeTime = 0;
 	m_delayCounter = 0;
@@ -116,7 +116,7 @@ void Road::m_shock()
 		m_randomFactor1 = Randomizer::GetFloat(2, 50);
 		m_randomFactor2 = Randomizer::GetFloat(2, 50);
 		m_randomFactor3 = Randomizer::GetFloat(2, 50);
-
+		m_randomFactor4 = Randomizer::GetFloat(2, 50);
 		if (m_shockMinSpeed < m_shockSpeed)
 		{
 
@@ -136,7 +136,7 @@ void Road::m_shock()
 		for (int i = 0; i < m_blocks.size(); i++)
 		{
 
-			m_modulator = m_heightMod * (sin((m_blocks[i]->GetPosition().x - m_shock_x) / (m_intensityScaler)) + sin((m_blocks[i]->GetPosition().x - m_shock_x) / (m_intensityScaler + m_randomFactor2)) + sin((m_blocks[i]->GetPosition().x - m_shock_x) / (m_intensityScaler + 3 * m_randomFactor3)));
+			m_modulator = m_heightMod * (sin((m_blocks[i]->GetPosition().x - m_shock_x) / (m_intensityScaler)) + sin((m_blocks[i]->GetPosition().x - m_shock_x) / (m_intensityScaler + m_randomFactor2)) + sin((m_blocks[i]->GetPosition().x - m_shock_x) / (m_intensityScaler + 3 * m_randomFactor3)) + sin((m_blocks[i]->GetPosition().x - m_shock_x) / (m_intensityScaler + m_randomFactor4)));
 
 			if (m_shockLenght < std::abs(m_shock_x - m_blocks[i]->GetPosition().x))
 			{

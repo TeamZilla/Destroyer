@@ -36,6 +36,7 @@ Heli::Heli(pmath::Vec2f givenPos, Player* player)
 	m_curPos = givenPos - pmath::Vec2(1,0);
 	Navigate(pmath::Vec2f(givenPos));
 	isShooting = false;
+	m_verticalScaler = 1;
 
 
 
@@ -67,6 +68,7 @@ Heli::~Heli()
 
 void Heli::update(float dt)
 {
+	m_verticalScaler = 0.4 + (transform.GetPosition().y + 300) / 1000;
 	m_dt = dt;
 	if (GetComponent<Rigidbody>())
 		Pilot();
@@ -167,7 +169,7 @@ void Heli::Pilot()
 	Torque();
 
 	// direction change
-	transform.SetScale((-m_shootingTarget.x + transform.GetPosition().x) / std::abs(m_shootingTarget.x - transform.GetPosition().x), 1);
+	transform.SetScale((-m_shootingTarget.x + transform.GetPosition().x) / std::abs(m_shootingTarget.x - transform.GetPosition().x) *m_verticalScaler, m_verticalScaler);
 	GetComponent<Rigidbody>()->SetPosition(m_curPos + m_hoverDisplacement);
 	slerpToAngle();
 	GetComponent<Rigidbody>()->SetAngle(m_currentAngle);

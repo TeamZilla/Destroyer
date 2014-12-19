@@ -16,6 +16,9 @@ public:
 	int pickupType;
 	bool isDestroyed;
 	float m_rotation;
+	float m_height;
+	float m_horizontal;
+	float m_size;
 
 	void update(float dt) override;
 };

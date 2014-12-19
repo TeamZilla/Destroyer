@@ -15,6 +15,8 @@ class SoldierBehavior : public uth::Component
 	float				m_attackTime;
 	float				m_attackCounter;
 	float				m_playerSpeed;
+	float				m_verticalScaler;
+	float				m_scale;
 
 	Player*	m_player;
 	uth::Rigidbody*		m_rigidBody;
@@ -45,7 +47,9 @@ public:
 		m_attackCounter = 0;
 		m_playerSpeed = 2;
 		m_hitRange = uth::Randomizer::GetFloat(0, 100);
+		m_scale = 1;
 
+		m_verticalScaler = 1;
 		m_slashSound = uthRS.LoadSound("Audio/Effects/Sword.wav");
 	}
 	~SoldierBehavior()
@@ -71,11 +75,14 @@ public:
 		{
 			m_isGoingLeft = false;
 			auto& transf = parent->transform;
-			transf.SetScale(-transf.GetScale().x, transf.GetScale().y);
+			m_scale = -transf.GetScale().x;
+
 		}
 		else
 		{
 			m_isGoingLeft = true;
+			auto& transf = parent->transform;
+			m_scale = abs(transf.GetScale().x);
 		}
 
 		parent->GetComponent<uth::AnimatedSprite>()->ChangeAnimation(m_walkAnim.x,
@@ -109,6 +116,12 @@ public:
 		}
 
 		Attack(dt);
+
+			m_verticalScaler = 0.7 + (m_rigidBody->GetPosition().y) / 1000;
+			auto& transf = parent->transform;
+			transf.SetScale(m_scale * m_verticalScaler, abs(m_scale) * m_verticalScaler);
+
+
 	}
 
 	void Movement()
@@ -118,7 +131,6 @@ public:
 		{
 			m_isStopped = false;
 			m_rigidBody->SetPosition(pmath::Vec2(m_rigidBody->GetPosition().x - m_speed - ((m_player->isGoingRight)*2 - 1) * m_playerSpeed, m_rigidBody->GetPosition().y));
-			std::cout << m_rigidBody->GetPosition().x << std::endl;
 			m_rigidBody->SetAngle(0);
 		}
 		else if (!m_isGoingLeft && !m_isDead && m_rigidBody->GetPosition().y > 630 && m_minDistance + m_hitRange < abs(m_rigidBody->GetPosition().x))
@@ -186,7 +198,7 @@ public:
 	{
 		m_rigidBody->ApplyImpulse(
 			pmath::Vec2(uth::Randomizer::GetFloat(-10, 10),      //X direction
-			-uth::Randomizer::GetFloat(20, 40)),				 //Y direction
+			-uth::Randomizer::GetFloat(10, 30)),				 //Y direction
 			pmath::Vec2(uth::Randomizer::GetFloat(-25, 25), 0)); //offset
 		m_rigidBody->SetPhysicsGroup(-2);
 		m_isGoingToExp = true;

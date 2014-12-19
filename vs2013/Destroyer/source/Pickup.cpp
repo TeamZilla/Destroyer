@@ -53,6 +53,10 @@ void Pickup::update(float dt)
 			transform.Move(m_Xdirection, -4 + m_timer);
 			transform.Rotate(m_timer * m_rotation);
 			//transform.SetScale(transform.GetScale() / m_timer);
+
+	/*		m_height = m_timer;
+			m_size = 0.5 + 0.5 * abs(cos(m_timer))
+			m_horizontal = */
 		}
 		else
 		{

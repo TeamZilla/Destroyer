@@ -31,6 +31,7 @@ class Road : public uth::GameObject
 		m_randomFactor1,
 		m_randomFactor2,
 		m_randomFactor3,
+		m_randomFactor4,
 		m_heightMod,
 		m_intensityScaler,
 		m_modulator,

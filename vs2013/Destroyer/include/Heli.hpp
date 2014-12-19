@@ -79,6 +79,7 @@ private:
 	void burst();
 	void m_reload();
 	int m_missileClip;
+	float m_verticalScaler;
 	float m_missileCount;
 	float m_missileRegenTimer;
 	float m_missileRegenTime;
