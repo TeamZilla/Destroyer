@@ -153,6 +153,9 @@ void TitleScene::Update(float dt)
 			isGameStarting = true;
 			//Remember to close ad before playing game
 			javaFunc::CloseAd("6300978111");
+
+			Statistics.score.playTutorial = true;
+			Statistics.Save();
 		}
 
 		if (button2->IsPressedS() && !isGameStarting)

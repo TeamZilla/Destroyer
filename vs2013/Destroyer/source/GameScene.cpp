@@ -409,14 +409,12 @@ void GameScene::Pause(float dt)
 	}
 	if (m_restartB->IsPressedS())
 	{
-		Statistics.score.playTutorial = true;
 		Statistics.Save();
 		uthSceneM.GoToScene(GAME);
 		m_music->Stop();
 	}
 	if (m_menuB->IsPressedS())
 	{
-		Statistics.score.playTutorial = true;
 		Statistics.Save();
 		uthSceneM.GoToScene(TITLE);
 		m_music->Stop();
@@ -788,7 +786,6 @@ GameScene::~GameScene()
 	delete m_restartB;
 	delete m_ExitB;
 	delete m_resumeB;
-	Statistics.score.playTutorial = true;
 	ExplosionEmitter::DeInit();
 }
 
