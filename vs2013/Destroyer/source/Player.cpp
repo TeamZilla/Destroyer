@@ -237,8 +237,8 @@ void Player::SwipeTail(float dt)
 void Player::Hurting()
 {
 	m_hurtTimer -= m_dt;
-	if (m_hurtTimer >= 1.2f)
-		m_hurtTimer = 1.1f;
+	if (m_hurtTimer >= 0.67f)
+		m_hurtTimer = 0.65f;
 
 	if (m_hurtTimer >= 0.5f)
 	{
@@ -267,7 +267,7 @@ void Player::Dying()
 void Player::Hit(float dmg)
 {
 	m_health->TakeDamage(dmg);
-	m_hurtTimer = dmg;
+	m_hurtTimer = 1.2f;
 	m_isHurting = true;
 }
 void Player::Acceleration()
