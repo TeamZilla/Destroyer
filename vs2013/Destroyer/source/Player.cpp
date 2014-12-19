@@ -5,24 +5,24 @@ using namespace uth;
 
 bool Player::isGoingRight = true;
 
-Player::Player(uth::PhysicsWorld* physworld)
+Player::Player(uth::PhysicsWorld* physworld) :
+m_speed(0),
+m_maxSpeed(400),
+m_minSpeed(-400),
+m_acceleration(750),
+m_jumpSpeed(0),
+m_jumpHeight(8),
+m_jumpTimer(0),
+m_tailTimer(0),
+m_tailSpeed(0),
+m_isJumping(false),
+m_isCrouching(false),
+m_isTurning(false),
+m_isHurting(false),
+m_isDoneDying(false),
+m_isDied(false),
+m_isSwiping(false)
 {
-	m_speed = 0;
-	m_maxSpeed = 400;
-	m_minSpeed = -400;
-	m_acceleration = 750;
-	m_jumpSpeed = 0;
-	m_jumpHeight = 8;
-	m_jumpTimer = 0;
-	m_tailTimer = 0;
-	m_tailSpeed = 0;
-	isGoingRight = true;
-	m_isJumping = false;
-	m_isCrouching = false;
-	m_isTurning = false;
-	m_isHurting = false;
-	m_isDoneDying = false;
-	m_isDied = false;
 	
 
 	//Create, set position and scale player Sprite

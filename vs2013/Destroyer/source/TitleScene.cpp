@@ -124,7 +124,13 @@ TitleScene::TitleScene()
 
 }
 TitleScene::~TitleScene()
-{}
+{
+	delete button4;
+	delete button3;
+	delete button2;
+	delete button;
+}
+
 void TitleScene::Update(float dt)
 {
 	
