@@ -1,14 +1,18 @@
 #include <Pickup.hpp>
 using namespace uth;
 
-Pickup::Pickup(int type)
+Pickup::Pickup(int type, pmath::Vec2 pos)
 {
 	m_type = type;
 	isDestroyed = false;
 	m_smaller = false;
 	m_timer = 0;
+	m_vertSpeed = 120;
+	m_angleSpeed = 5;
+	m_enlargement = 0.3;
+	m_angleAcc = 1;
 
-	m_displayTime = 1.8;
+	m_displayTime = 2.5;
 
 	std::string filepath;
 	switch (type)
@@ -36,6 +40,10 @@ Pickup::Pickup(int type)
 	m_rotation = Randomizer::GetFloat(-4, 4);
 
 	transform.SetScale(pmath::Vec2(0, 0));
+	transform.SetOrigin(5);
+	m_horizontal = 0;
+	m_size = 1;
+	m_pos = pos;
 }
 Pickup::~Pickup()
 {
@@ -47,68 +55,39 @@ void Pickup::update(float dt)
 	switch (m_type)
 	{
 	case 0:
+
 		m_timer += dt;
 		if (m_timer <= m_displayTime)
 		{
-			transform.Move(m_Xdirection, -4 + m_timer);
-			transform.Rotate(m_timer * m_rotation);
-			//transform.SetScale(transform.GetScale() / m_timer);
-
-	/*		m_height = m_timer;
-			m_size = 0.5 + 0.5 * abs(cos(m_timer))
-			m_horizontal = */
+			GetComponent<Sprite>()->SetColor(1, 1, 1, 1.5 - (m_timer / m_displayTime));
+			transform.SetPosition(m_pos + pmath::Vec2(50 * sin(3 * m_timer), -100 * m_timer));
+			transform.Rotate( m_timer);
+			transform.SetScale(0.5 + 0.5 * abs(sin(3 * m_timer)));
 		}
 		else
 		{
 			isDestroyed = true;
 		}
-
-		//Set scale from 0 to 1 and back to 0
-		if (!m_smaller)
-		{
-			if (transform.GetScale().x < 1.3)
-				transform.SetScale(pmath::Vec2(transform.GetScale().x + dt, transform.GetScale().y + dt));
-			else
-				m_smaller = true;
-		}
-		else
-		{
-			if (transform.GetScale().x > 0)
-				transform.SetScale(pmath::Vec2(transform.GetScale().x - dt * 4, transform.GetScale().y - dt * 4));
-		}
 		break;
-		break;
-
-
-
-
-
 
 	case 1:
 		m_timer += dt;
 		if (m_timer <= m_displayTime)
 		{
-			transform.Move(m_Xdirection, -4 + m_timer);
+			m_angleAcc += m_timer / 190;
+			m_horizontal = 10 * m_timer * sin(m_angleSpeed * m_timer * m_angleAcc) * (1 + m_angleAcc);
+			m_size = 0.4 + 0.6 *m_timer * m_enlargement;
+			m_scale = 1 + 0.3 * cos(m_angleSpeed * m_timer * m_angleAcc);
+			GetComponent<Sprite>()->SetColor(1, 1, 1, 1.3 - (m_timer / m_displayTime));
+
+
+			transform.SetPosition(m_pos + pmath::Vec2(m_horizontal, -m_timer * m_vertSpeed * m_angleAcc));
 			transform.Rotate(m_timer * m_rotation);
-			//transform.SetScale(transform.GetScale() / m_timer);
+			transform.SetScale(m_scale * m_size);
 		}
 		else
 		{
 			isDestroyed = true;
-		}
-
-		//Set scale from 0 to 1 and back to 0
-		if (!m_smaller)
-		{
-			if (transform.GetScale().x < 1.3)
-				transform.SetScale(pmath::Vec2(transform.GetScale().x + dt, transform.GetScale().y + dt));
-			else
-				m_smaller = true;
-		}
-		else
-		{
-			if (transform.GetScale().x > 0)
-				transform.SetScale(pmath::Vec2(transform.GetScale().x - dt * 4, transform.GetScale().y - dt * 4));
 		}
 		break;
 

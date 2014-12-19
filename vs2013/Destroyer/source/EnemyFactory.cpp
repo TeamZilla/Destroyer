@@ -116,25 +116,25 @@ std::shared_ptr<GameObject> EnemyFactory::CreateHeli()
 
 std::shared_ptr<GameObject> EnemyFactory::CreateHP(pmath::Vec2 pos)
 {
-	auto obj = new Pickup(0);
+	auto obj = new Pickup(0, pos);
 	obj->AddTag("HealthPickup");
-	obj->transform.SetPosition(pos);
+	// obj->transform.SetPosition(pos);
 
 	return m_layer->AddChild(obj);
 }
 
 std::shared_ptr<GameObject> EnemyFactory::CreateStar(pmath::Vec2 pos)
 {
-	auto obj = new Pickup(1);
+	auto obj = new Pickup(1, pos);
 	obj->AddTag("StarPickup");
-	obj->transform.SetPosition(pos);
+	//obj->transform.SetPosition(pos);
 
 	return m_layer->AddChild(obj);
 }
 
 std::shared_ptr<GameObject> EnemyFactory::CreateBoss()
 {
-	auto obj = new Pickup(2);
+	auto obj = new Pickup(2, pmath::Vec2(0,0));
 	obj->transform.SetPosition(pmath::Vec2(0, 280));
 	obj->AddTag("BossPickup");
 	return m_layer->AddChild(obj);
@@ -142,7 +142,7 @@ std::shared_ptr<GameObject> EnemyFactory::CreateBoss()
 
 std::shared_ptr<GameObject> EnemyFactory::CreateBossVictory()
 {
-	auto obj = new Pickup(3);
+	auto obj = new Pickup(3, pmath::Vec2(0, 0));
 	obj->transform.SetPosition(pmath::Vec2(0, 280));
 	obj->AddTag("BossVictoryPickup");
 	return m_layer->AddChild(obj);

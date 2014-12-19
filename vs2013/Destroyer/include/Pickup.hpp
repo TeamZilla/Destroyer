@@ -10,15 +10,20 @@ class Pickup : public uth::GameObject
 
 public:
 	//Pickup types-  0 Health  1 Score
-	Pickup(int type);
+	Pickup(int type, pmath::Vec2);
 	~Pickup();
 
 	int pickupType;
 	bool isDestroyed;
 	float m_rotation;
-	float m_height;
 	float m_horizontal;
 	float m_size;
+	float m_vertSpeed;
+	pmath::Vec2 m_pos;
+	float m_scale;
+	float m_angleSpeed;
+	float m_angleAcc;
+	float m_enlargement;
 
 	void update(float dt) override;
 };

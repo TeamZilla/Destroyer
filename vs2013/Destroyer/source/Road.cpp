@@ -144,7 +144,6 @@ void Road::m_shock()
 				m_modulator = m_heightMod * (sin((m_blocks[i]->GetPosition().x - m_shock_x) / (m_intensityScaler)) + sin((m_blocks[i]->GetPosition().x - m_shock_x) / (m_intensityScaler + m_randomFactor1)) + sin((m_blocks[i]->GetPosition().x - m_shock_x) / (m_intensityScaler + m_randomFactor3)));
 				m_blocks[i]->SetPosition(m_blocks[i]->GetPosition().x, m_roadY + m_modulator);
 
-
 			}
 			else
 			{
