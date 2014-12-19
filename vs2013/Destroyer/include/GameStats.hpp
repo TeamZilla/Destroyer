@@ -26,6 +26,9 @@ struct GameStats
 		size_t soldKills = 0;
 		size_t heliKills = 0;
 		size_t aeroKills = 0;
+
+		//tutorial boolean
+		bool playTutorial = true;
 	} score;
 
 	struct Music
